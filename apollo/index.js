@@ -1,6 +1,7 @@
-const express               = require('express');
-const { ApolloServer, gql } = require('apollo-server-express');
-const db = require('./db');
+import express from "express";
+import cors from 'cors';
+import { ApolloServer, gql } from 'apollo-server-express';
+import './db';
 
 const typeDefs = gql`
     type Query {
@@ -15,7 +16,11 @@ const resolvers = {
 };
 
 const server = new ApolloServer({ typeDefs, resolvers });
+
 const app = express();
+
+app.use(cors());
+
 server.applyMiddleware({ app });
 
 app.listen({ port: 4000 }, () =>
