@@ -1,27 +1,39 @@
 {
-  "name": "apollo",
+  "name": "spirit-apollo",
   "version": "1.0.0",
-  "description": "",
+  "private": true,
   "main": "index.js",
   "scripts": {
     "start:dev": "nodemon -L --exec babel-node ./index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
+  "lint-staged": {
+    "./**/*.js": [
+      "eslint --fix"
+    ]
+  },
   "dependencies": {
     "apollo-server": "^2.16.1",
     "apollo-server-express": "^2.16.1",
     "cors": "^2.8.5",
     "express": "^4.17.1",
     "graphql": "^15.3.0",
-    "mongoose": "^5.9.27",
-    "nodemon": "^2.0.4"
+    "mongoose": "^5.9.27"
   },
   "devDependencies": {
     "@babel/core": "^7.11.1",
     "@babel/node": "^7.10.5",
-    "@babel/preset-env": "^7.11.0"
+    "@babel/preset-env": "^7.11.0",
+    "eslint": "^7.6.0",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.22.0",
+    "husky": "^4.2.5",
+    "lint-staged": "^10.2.11",
+    "nodemon": "^2.0.4"
   }
 }

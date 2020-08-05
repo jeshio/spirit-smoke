@@ -1,0 +1,9 @@
+{
+  "name": "spirit-smoke",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/jeshio/spirit-smoke.git",
+  "author": "jeshio <jeshio@yandex.ru>",
+  "license": "MIT",
+  "private": true
+}
