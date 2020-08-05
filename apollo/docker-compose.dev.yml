@@ -4,13 +4,47 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
+    image: spirit-apollo
+    container_name: spirit-apollo
+    restart: unless-stopped
+    env_file: .env
     environment:
       NODE_ENV: development
-      SECRET: 'supersecretword'
-      MONGO_HOST: 'mongodb://mongo/app'
-      PORT: 4000
+      MONGO_USERNAME: ${DEV_MONGO_USERNAME}
+      MONGO_PASSWORD: ${DEV_MONGO_PASSWORD}
+      MONGO_HOSTNAME: db
+      MONGO_PORT: ${DEV_MONGO_PORT}
+      MONGO_DB: ${DEV_MONGO_DB}
     ports:
-    - "4000:4000"
+    - 4000:4000
     volumes:
       - ./:/usr/src/apollo
       - /node_modules
+    networks:
+      - app-network
+    depends_on:
+      - db
+
+  db:
+    image: mongo:4.1.8-xenial
+    container_name: db
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${DEV_MONGO_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${DEV_MONGO_PASSWORD}
+      MONGO_INITDB_DATABASE: ${DEV_MONGO_DB}
+    ports:
+    - 127.0.0.1:27017:27017
+    volumes:  
+      - dbdata:/data/db
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  dbdata:
+  node_modules: 

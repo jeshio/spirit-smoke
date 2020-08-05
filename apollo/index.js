@@ -1,5 +1,6 @@
 const express               = require('express');
 const { ApolloServer, gql } = require('apollo-server-express');
+const db = require('./db');
 
 const typeDefs = gql`
     type Query {
