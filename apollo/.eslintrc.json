@@ -29,6 +29,7 @@
 		],
 		"semi": ["error", "never"],
         "linebreak-style": [0, "unix"],
-        "import/no-commonjs": "error"
+        "import/no-commonjs": "error",
+        "implicit-arrow-linebreak": "off"
     }
 }

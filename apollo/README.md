@@ -12,10 +12,10 @@
 docker-compose -f docker-compose.dev.yml up
 ```
 
-Подключение к БД:
+Для работы с БД можно открыть web-интерфейс:
 
 ```
-mongodb://admin:password@localhost:27017
+http://localhost:8090
 ```
 
 Подключение к контейнеру для выполнения команд (например установка пакетов):
