@@ -4,7 +4,6 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.dev
-    restart: unless-stopped
     image: spirit-apollo
     container_name: spirit-apollo-dev
     env_file: .env
@@ -13,6 +12,7 @@ services:
       PG_USERNAME: ${DEV_PG_USERNAME}
       PG_PASSWORD: ${DEV_PG_PASSWORD}
       PG_HOSTNAME: db
+      PG_PORT: 5432
       PG_DB: ${DEV_PG_DB}
     ports:
     - 4000:4000
@@ -27,7 +27,6 @@ services:
 
   db:
     image: postgres:12.3-alpine
-    restart: unless-stopped
     container_name: spirit-db-dev
     env_file: .env
     environment:
@@ -40,18 +39,17 @@ services:
       - app-network
 
   pgAdmin:
-      restart: unless-stopped
-      image: dpage/pgadmin4
-      ports:
-        - "8090:80"
-      env_file: .env
-      environment:
-        PGADMIN_DEFAULT_EMAIL: admin@admin.com
-        PGADMIN_DEFAULT_PASSWORD: 1234
-      volumes:
-        - pgadmin:/var/lib/pgadmin
-      networks:
-        - app-network
+    image: dpage/pgadmin4
+    ports:
+      - "8090:80"
+    env_file: .env
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: 1234
+    volumes:
+      - pgadmin:/var/lib/pgadmin
+    networks:
+      - app-network
 
 networks:
   app-network:

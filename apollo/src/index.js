@@ -3,7 +3,7 @@ import cors from 'cors'
 import { ApolloServer } from 'apollo-server-express'
 import schema from './schema'
 import resolvers from './resolvers'
-import models, { sequelize } from './models'
+import models from './db/models'
 
 const server = new ApolloServer({
   typeDefs: schema,
@@ -19,6 +19,4 @@ app.use(cors())
 
 server.applyMiddleware({ app })
 
-sequelize.sync().then(async () => {
-  app.listen({ port: 4000 }, () => console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}!`))
-})
+app.listen({ port: 4000 }, () => console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}!`))

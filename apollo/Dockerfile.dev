@@ -13,8 +13,8 @@ RUN yarn install
 # RUN npm ci --only=production
 
 # копируем исходный код
-# COPY . .
+# COPY ./start.sh ./start.sh
 
 EXPOSE 4000
 
-CMD ./start.sh
+CMD ["sh", "-c", "./start.sh"]
