@@ -1,0 +1,100 @@
+Чтобы посмотреть нужно вставить код сюда:
+https://cruise.eecs.uottawa.ca/umpleonline/umple.php
+
+class product
+{
+  name;
+  slug;
+  float priceInRub;
+  count;
+  imageUrl;
+  model;
+  description;
+  int weightInGrams;
+  int ordersCount;
+  * -- 1 productCategory;
+  1 -- * company;
+}
+
+class productCategory
+{
+  name;
+  slug;
+  description;
+}
+
+class productCategoryFeature
+{
+  name;
+  slug;
+  imageUrl;
+  boolean invisible;
+  * -- * product;
+  * -- * productCategory;
+}
+
+class discount
+{
+  name;
+  percent;
+  rub;
+  code;
+  startDate;
+  endDate;
+  boolean isGlobal;
+  * -- * productCategory;
+  * -- * product;
+  * -- * productCategoryFeature;
+}
+
+class order
+{
+  address;
+  status;
+  intercomCode;
+  personsCount;
+  comment;
+  deliveryTime;
+  phoneNumber;
+}
+
+class productsToOrder
+{
+  int count;
+  1 -- 1 product;
+  1 -- 1 order;
+}
+
+class bonus
+{
+  name;
+  slug;
+  conditionsDescription;
+  iconUrl;
+* -- * order;
+}
+
+class company
+{
+  name;
+  slug;
+1 -- * productCategory;
+}
+
+class promotion
+{
+  name;
+  description;
+  imageUrl;
+  startDate;
+  endDate;
+  int priority;
+}
+
+class params
+{
+  name;
+  slug;
+  value;
+}
+

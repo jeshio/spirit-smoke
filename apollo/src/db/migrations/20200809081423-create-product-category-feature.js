@@ -10,19 +10,36 @@ module.exports = {
    * @returns
    */
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.addColumn(
-      'products',
-      'productCategoryId',
-      {
+    await queryInterface.createTable('productCategoryFeatures', {
+      productCategoryId: {
+        primaryKey: true,
         type: Sequelize.INTEGER,
+        allowNull: false,
         references: {
           model: 'productCategories',
           key: 'id',
         },
-        allowNull: false,
         onDelete: 'CASCADE',
       },
-    )
+      featureId: {
+        primaryKey: true,
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'features',
+          key: 'id',
+        },
+        onDelete: 'CASCADE',
+      },
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE,
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE,
+      },
+    })
   },
 
   /**
@@ -30,10 +47,8 @@ module.exports = {
    * @param {Sequelize} Sequelize
    * @returns
    */
+
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.sequelize.transaction(async (t) => {
-      await queryInterface.removeConstraint('products', 'products_productCategoryId_fkey', { transaction: t })
-      await queryInterface.removeColumn('products', 'productCategoryId', { transaction: t })
-    })
+    await queryInterface.dropTable('productCategoryFeatures')
   },
 }

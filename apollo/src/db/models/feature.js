@@ -3,17 +3,17 @@ const {
 } = require('sequelize')
 
 module.exports = (sequelize, DataTypes) => {
-  class Product extends Model {
+  class Feature extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Product.belongsTo(models.productCategory)
+      Feature.belongsToMany(models.productCategory, { through: 'productCategoryFeatures' })
     }
   }
-  Product.init({
+  Feature.init({
     name: {
       type: DataTypes.STRING,
       validate: {
@@ -26,25 +26,19 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: true,
       },
     },
-    price: {
-      type: DataTypes.FLOAT,
+    imageUrl: {
+      type: DataTypes.STRING,
       validate: {
         notEmpty: true,
-        isFloat: true,
-        min: 1,
       },
     },
-    count: {
-      type: DataTypes.INTEGER,
-      validate: {
-        notEmpty: true,
-        isInt: true,
-        min: 0,
-      },
+    invisible: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
     },
   }, {
     sequelize,
-    modelName: 'product',
+    modelName: 'feature',
   })
-  return Product
+  return Feature
 }

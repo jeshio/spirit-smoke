@@ -11,10 +11,6 @@ export const development = {
   database: PG_DB,
   host: PG_HOSTNAME,
   dialect: 'postgres',
-  // define: {
-  //   cameCased: true,
-  //   underscoredAll: true,
-  // },
 }
 export const test = {
   username: PG_USERNAME,

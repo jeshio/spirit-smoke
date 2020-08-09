@@ -11,12 +11,28 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       ProductCategory.hasMany(models.product, { onDelete: 'CASCADE' })
+      ProductCategory.belongsToMany(models.feature, { through: 'productCategoryFeatures' })
     }
   }
   ProductCategory.init({
-    name: DataTypes.STRING,
-    description: DataTypes.STRING,
-    slug: DataTypes.STRING,
+    name: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: true,
+      },
+    },
+    description: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: true,
+      },
+    },
+    slug: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: true,
+      },
+    },
   }, {
     sequelize,
     modelName: 'productCategory',

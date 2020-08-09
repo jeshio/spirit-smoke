@@ -1,0 +1,18 @@
+extend type Query {
+  products: [Product!]
+  product(id: ID!): Product
+}
+
+extend type Mutation {
+  createProduct(name: String!, slug: String!, price: Float!, productCategoryId: ID!, count: Int!): Product!
+}
+
+type Product {
+  id: ID!
+  name: String!
+  slug: String!
+  price: Float!
+  count: Int!
+  productCategoryName: String!
+  productCategoryId: ID!
+}

@@ -1,0 +1,19 @@
+extend type Query {
+  features: [Feature!]
+  feature(id: ID!): Feature
+}
+
+extend type Mutation {
+  createFeature(name: String!, slug: String!, imageUrl: String!, invisible: Boolean): Feature!
+  createProductCategoryFeature(name: String!, slug: String!, imageUrl: String!, invisible: Boolean, productCategoryId: ID!): Feature!
+  addProductCategoryFeature(featureId: ID!, productCategoryId: ID!): Feature!
+}
+
+type Feature {
+  id: ID!
+  name: String!
+  slug: String!
+  imageUrl: String!
+  invisible: Boolean!
+  productCategories: [ProductCategory]!
+} 
