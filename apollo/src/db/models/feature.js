@@ -25,6 +25,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       validate: {
         notEmpty: true,
+        is: /^[a-z-\d]+$/i,
       },
     },
     imageUrl: {
