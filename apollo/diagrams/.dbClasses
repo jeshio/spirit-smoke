@@ -23,7 +23,7 @@ class productCategory
   description;
 }
 
-class productCategoryFeature
+class feature
 {
   name;
   slug;
@@ -97,4 +97,3 @@ class params
   slug;
   value;
 }
-

@@ -17,10 +17,8 @@ const resolvers = {
   },
 
   Product: {
-    productCategoryName: async (product, args, { models }) => {
-      const productCategory = await models.productCategory.findByPk(product.productCategoryId)
-      return productCategory.dataValues.name
-    },
+    productCategory: async (product) => product.getProductCategory(),
+    features: async (product) => product.getFeatures(),
   },
 }
 

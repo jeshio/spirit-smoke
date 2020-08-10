@@ -7,6 +7,8 @@ extend type Mutation {
   createFeature(name: String!, slug: String!, imageUrl: String!, invisible: Boolean): Feature!
   createProductCategoryFeature(name: String!, slug: String!, imageUrl: String!, invisible: Boolean, productCategoryId: ID!): Feature!
   addProductCategoryFeature(featureId: ID!, productCategoryId: ID!): Feature!
+  createProductFeature(name: String!, slug: String!, imageUrl: String!, invisible: Boolean, productId: ID!): Feature!
+  addProductFeature(featureId: ID!, productId: ID!): Feature!
 }
 
 type Feature {
@@ -16,4 +18,5 @@ type Feature {
   imageUrl: String!
   invisible: Boolean!
   productCategories: [ProductCategory]!
+  products: [Product]!
 } 

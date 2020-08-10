@@ -12,5 +12,6 @@
     name: String!
     slug: String!
     description: String!
-    products: [Product!]
+    products: [Product]!
+    features: [Feature]!
   }

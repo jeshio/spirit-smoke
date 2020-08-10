@@ -10,13 +10,13 @@ module.exports = {
    * @returns
    */
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.createTable('productCategoryFeatures', {
-      productCategoryId: {
+    await queryInterface.createTable('productFeatures', {
+      productId: {
         primaryKey: true,
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: 'productCategories',
+          model: 'products',
           key: 'id',
         },
         onDelete: 'CASCADE',
@@ -41,6 +41,6 @@ module.exports = {
    */
 
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.dropTable('productCategoryFeatures')
+    await queryInterface.dropTable('productFeatures')
   },
 }

@@ -13,6 +13,6 @@ type Product {
   slug: String!
   price: Float!
   count: Int!
-  productCategoryName: String!
-  productCategoryId: ID!
+  productCategory: ProductCategory!
+  features: [Feature]!
 }

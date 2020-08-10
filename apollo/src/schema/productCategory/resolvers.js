@@ -11,11 +11,8 @@ const resolvers = {
   },
 
   ProductCategory: {
-    products: async (productCategory, args, { models }) => models.product.findAll({
-      where: {
-        productCategoryId: productCategory.id,
-      },
-    }),
+    products: async (productCategory) => productCategory.getProducts(),
+    features: async (productCategory) => productCategory.getFeatures(),
   },
 }
 
