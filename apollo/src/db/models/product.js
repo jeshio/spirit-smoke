@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       Product.belongsTo(models.productCategory)
       Product.belongsTo(models.company)
       Product.belongsToMany(models.feature, { through: 'productFeatures', timestamps: false })
+      Product.belongsToMany(models.discount, { through: 'productDiscounts', timestamps: false })
     }
   }
   Product.init({

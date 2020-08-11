@@ -21,6 +21,7 @@ const resolvers = {
     productCategory: async (product) => product.getProductCategory(),
     company: async (product) => product.getCompany(),
     features: async (product) => product.getFeatures(),
+    discounts: async (product) => product.getDiscounts(),
   },
 }
 

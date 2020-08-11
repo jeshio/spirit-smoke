@@ -11,7 +11,6 @@ class product
   model;
   description;
   int weightInGrams;
-  int ordersCount;
   * -- 1 productCategory;
   1 -- * company;
 }
@@ -44,7 +43,9 @@ class discount
   boolean isGlobal;
   * -- * productCategory;
   * -- * product;
-  * -- * productCategoryFeature;
+  * -- * order;
+  * -- * feature;
+  * -- * delivery;
 }
 
 class order
@@ -58,7 +59,7 @@ class order
   phoneNumber;
 }
 
-class productsToOrder
+class productOrder
 {
   int count;
   1 -- 1 product;
@@ -96,4 +97,17 @@ class params
   name;
   slug;
   value;
+}
+
+class delivery
+{
+  sum;
+}
+
+class productDelivery
+{
+  int count;
+  float costsInRub;
+  1 -- * product;
+  1 -- * delivery;
 }

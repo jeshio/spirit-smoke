@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Feature.belongsToMany(models.productCategory, { through: 'productCategoryFeatures', timestamps: false })
       Feature.belongsToMany(models.product, { through: 'productFeatures', timestamps: false })
+      Feature.belongsToMany(models.discount, { through: 'featureDiscounts', timestamps: false })
     }
   }
   Feature.init({

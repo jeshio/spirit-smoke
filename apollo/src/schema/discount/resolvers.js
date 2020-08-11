@@ -24,9 +24,30 @@ const resolvers = {
       endDate,
       isGlobal,
     }),
+    addProductCategoryDiscount: (parent, { discountId, productCategoryId }, { sequelize, models }) =>
+      sequelize.transaction(async (transaction) => {
+        const discount = await models.discount.findByPk(discountId, { transaction })
+        await discount.addProductCategory(productCategoryId, { transaction })
+        return discount
+      }),
+    addProductDiscount: (parent, { discountId, productId }, { sequelize, models }) =>
+      sequelize.transaction(async (transaction) => {
+        const discount = await models.discount.findByPk(discountId, { transaction })
+        await discount.addProduct(productId, { transaction })
+        return discount
+      }),
+    addFeatureDiscount: (parent, { discountId, featureId }, { sequelize, models }) =>
+      sequelize.transaction(async (transaction) => {
+        const discount = await models.discount.findByPk(discountId, { transaction })
+        await discount.addFeature(featureId, { transaction })
+        return discount
+      }),
   },
 
   Discount: {
+    productCategories: async (discount) => discount.getProductCategories(),
+    products: async (discount) => discount.getProducts(),
+    features: async (discount) => discount.getFeatures(),
   },
 }
 

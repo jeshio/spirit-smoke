@@ -19,4 +19,5 @@ type Feature {
   invisible: Boolean!
   productCategories: [ProductCategory]!
   products: [Product]!
+  discounts: [Discount]!
 } 

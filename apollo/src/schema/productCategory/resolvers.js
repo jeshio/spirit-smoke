@@ -13,6 +13,7 @@ const resolvers = {
   ProductCategory: {
     products: async (productCategory) => productCategory.getProducts(),
     features: async (productCategory) => productCategory.getFeatures(),
+    discounts: async (productCategory) => productCategory.getDiscounts(),
   },
 }
 

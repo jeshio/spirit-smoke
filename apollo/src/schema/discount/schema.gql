@@ -5,6 +5,9 @@ extend type Query {
 
 extend type Mutation {
   createDiscount(input: DiscountInput!): Discount!
+  addProductCategoryDiscount(discountId: ID!, productCategoryId: ID!): Discount!
+  addProductDiscount(discountId: ID!, productId: ID!): Discount!
+  addFeatureDiscount(discountId: ID!, featureId: ID!): Discount!
 }
 
 input DiscountInput {
@@ -26,4 +29,7 @@ type Discount {
   startDate: String!
   endDate: String!
   isGlobal: Boolean!
+  productCategories: [ProductCategory]!
+  products: [Product]!
+  features: [Feature]!
 } 

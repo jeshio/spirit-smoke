@@ -57,6 +57,7 @@ const resolvers = {
   Feature: {
     productCategories: async (feature) => feature.getProductCategories(),
     products: async (feature) => feature.getProducts(),
+    discounts: async (feature) => feature.getDiscounts(),
   },
 }
 

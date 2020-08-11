@@ -3,17 +3,19 @@ const {
 } = require('sequelize')
 
 module.exports = (sequelize, DataTypes) => {
-  class discount extends Model {
+  class Discount extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      Discount.belongsToMany(models.productCategory, { through: 'productCategoryDiscounts', timestamps: false })
+      Discount.belongsToMany(models.product, { through: 'productDiscounts', timestamps: false })
+      Discount.belongsToMany(models.feature, { through: 'featureDiscounts', timestamps: false })
     }
   }
-  discount.init({
+  Discount.init({
     name: {
       type: DataTypes.STRING,
       validate: {
@@ -59,6 +61,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'discount',
+    paranoid: true,
   })
-  return discount
+  return Discount
 }

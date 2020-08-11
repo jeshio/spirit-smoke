@@ -16,4 +16,5 @@ type Product {
   productCategory: ProductCategory!
   company: Company!
   features: [Feature]!
+  discounts: [Discount]!
 }

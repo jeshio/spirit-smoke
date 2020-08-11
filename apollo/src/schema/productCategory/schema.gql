@@ -14,4 +14,5 @@
     description: String!
     products: [Product]!
     features: [Feature]!
+    discounts: [Discount]!
   }
