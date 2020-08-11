@@ -1,0 +1,29 @@
+extend type Query {
+  discounts: [Discount!]
+  discount(id: ID!): Discount
+}
+
+extend type Mutation {
+  createDiscount(input: DiscountInput!): Discount!
+}
+
+input DiscountInput {
+  name: String!
+  percent: Float
+  rub: Float
+  code: String
+  startDate: String!
+  endDate: String!
+  isGlobal: Boolean
+}
+
+type Discount {
+  id: ID!
+  name: String!
+  percent: Float
+  rub: Float
+  code: String
+  startDate: String!
+  endDate: String!
+  isGlobal: Boolean!
+} 
