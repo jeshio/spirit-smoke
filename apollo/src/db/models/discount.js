@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       Discount.belongsToMany(models.productCategory, { through: 'productCategoryDiscounts', timestamps: false })
       Discount.belongsToMany(models.product, { through: 'productDiscounts', timestamps: false })
       Discount.belongsToMany(models.feature, { through: 'featureDiscounts', timestamps: false })
+      Discount.belongsToMany(models.order, { through: 'orderDiscounts', timestamps: false })
     }
   }
   Discount.init({

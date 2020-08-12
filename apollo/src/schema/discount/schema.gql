@@ -8,6 +8,7 @@ extend type Mutation {
   addProductCategoryDiscount(discountId: ID!, productCategoryId: ID!): Discount!
   addProductDiscount(discountId: ID!, productId: ID!): Discount!
   addFeatureDiscount(discountId: ID!, featureId: ID!): Discount!
+  addOrderDiscount(discountId: ID!, orderId: ID!): Discount!
 }
 
 input DiscountInput {
@@ -32,4 +33,5 @@ type Discount {
   productCategories: [ProductCategory]!
   products: [Product]!
   features: [Feature]!
+  orders: [Order]!
 } 

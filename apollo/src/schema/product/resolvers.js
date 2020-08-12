@@ -22,6 +22,7 @@ const resolvers = {
     company: async (product) => product.getCompany(),
     features: async (product) => product.getFeatures(),
     discounts: async (product) => product.getDiscounts(),
+    orders: async (product) => product.getOrders(),
   },
 }
 

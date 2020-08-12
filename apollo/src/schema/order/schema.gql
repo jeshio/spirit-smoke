@@ -1,0 +1,65 @@
+extend type Query {
+  orders: [Order!]
+  order(id: ID!): Order
+}
+
+extend type Mutation {
+  createOrder(input: OrderInput!): Order!
+}
+
+input OrderInput {
+  address: String!
+  intercomCode: String
+  personsCount: Int
+  comment: String
+  ourComment: String
+  deliveryTime: String!
+  phoneNumber: String!
+  products: [OrderProductInput]!
+}
+
+enum OrderStatus {
+  NOT_CONFIRMED 
+  CONFIRMED 
+  CANCELED 
+  SENT 
+  FAILURE 
+  SUCCESS
+}
+
+input OrderProductInput {
+  id: ID!
+  productsCount: Int!
+}
+
+type OrderProduct {
+  productsCount: Int!
+}
+
+type ProductWithOrderProduct implements IProduct {
+  id: ID!
+  name: String!
+  slug: String!
+  price: Float!
+  count: Int!
+  productCategory: ProductCategory!
+  company: Company!
+  features: [Feature]!
+  discounts: [Discount]!
+  orders: [Order]!
+  orderProduct: OrderProduct!
+}
+
+type Order {
+  id: ID!
+  address: String!
+  status: OrderStatus!
+  intercomCode: String
+  personsCount: Int
+  comment: String
+  ourComment: String
+  deliveryTime: String!
+  phoneNumber: String!
+  discounts: [Discount]!
+  products: [ProductWithOrderProduct]!
+} 

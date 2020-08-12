@@ -1,4 +1,4 @@
-Чтобы посмотреть нужно вставить код сюда:
+Чтобы посмотреть диаграмму нужно вставить код сюда:
 https://cruise.eecs.uottawa.ca/umpleonline/umple.php
 
 class product
@@ -41,8 +41,15 @@ class discount
   startDate;
   endDate;
   boolean isGlobal;
-  * -- * productCategory;
+  boolean forAll;
+  float minSum;
+int count;
+boolean disabled;
+int minProductsCount;
+* -- * productCategory;
   * -- * product;
+  * -- 0..1 productOrder;
+  * -- * bonus;
   * -- * order;
   * -- * feature;
   * -- * delivery;
@@ -57,11 +64,14 @@ class order
   comment;
   deliveryTime;
   phoneNumber;
+  ourComment;
+  boolean isCash;
+  float sum;
 }
 
 class productOrder
 {
-  int count;
+  int productsCount;
   1 -- 1 product;
   1 -- 1 order;
 }
@@ -102,6 +112,7 @@ class params
 class delivery
 {
   sum;
+  status;
 }
 
 class productDelivery
