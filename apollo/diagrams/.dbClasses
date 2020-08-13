@@ -42,13 +42,12 @@ class discount
   endDate;
   boolean isGlobal;
   boolean forAll;
-  float minSum;
+  float minimumSum;
 int count;
 boolean disabled;
 int minProductsCount;
 * -- * productCategory;
   * -- * product;
-  * -- 0..1 productOrder;
   * -- * bonus;
   * -- * order;
   * -- * feature;

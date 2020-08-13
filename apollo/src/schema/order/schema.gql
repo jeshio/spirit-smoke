@@ -1,5 +1,5 @@
 extend type Query {
-  orders: [Order!]
+  orders: [Order]!
   order(id: ID!): Order
 }
 
@@ -61,5 +61,6 @@ type Order {
   deliveryTime: String!
   phoneNumber: String!
   discounts: [Discount]!
+  bonuses: [Bonus]!
   products: [ProductWithOrderProduct]!
 } 

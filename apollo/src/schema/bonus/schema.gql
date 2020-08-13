@@ -1,0 +1,26 @@
+extend type Query {
+  bonuses: [Bonus]!
+  bonus(id: ID!): Bonus
+}
+
+extend type Mutation {
+  createBonus(input: BonusInput!): Bonus!
+  addOrderBonus(bonusId: ID!, orderId: ID!): Bonus!
+}
+
+input BonusInput {
+  name: String!
+  slug: String!
+  conditionsDescription: String!
+  iconUrl: String!
+}
+
+type Bonus {
+  id: ID!
+  name: String!
+  slug: String!
+  conditionsDescription: String!
+  iconUrl: String!
+  orders: [Order]!
+  discounts: [Discount]!
+} 

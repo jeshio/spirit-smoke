@@ -24,30 +24,31 @@ const resolvers = {
       endDate,
       isGlobal,
     }),
-    addProductCategoryDiscount: (parent, { discountId, productCategoryId }, { sequelize, models }) =>
-      sequelize.transaction(async (transaction) => {
-        const discount = await models.discount.findByPk(discountId, { transaction })
-        await discount.addProductCategory(productCategoryId, { transaction })
-        return discount
-      }),
-    addProductDiscount: (parent, { discountId, productId }, { sequelize, models }) =>
-      sequelize.transaction(async (transaction) => {
-        const discount = await models.discount.findByPk(discountId, { transaction })
-        await discount.addProduct(productId, { transaction })
-        return discount
-      }),
-    addFeatureDiscount: (parent, { discountId, featureId }, { sequelize, models }) =>
-      sequelize.transaction(async (transaction) => {
-        const discount = await models.discount.findByPk(discountId, { transaction })
-        await discount.addFeature(featureId, { transaction })
-        return discount
-      }),
-    addOrderDiscount: (parent, { discountId, orderId }, { sequelize, models }) =>
-      sequelize.transaction(async (transaction) => {
-        const discount = await models.discount.findByPk(discountId, { transaction })
-        await discount.addOrder(orderId, { transaction })
-        return discount
-      }),
+    addProductCategoryDiscount: async (parent, { discountId, productCategoryId }, { models }) => {
+      const discount = await models.discount.findByPk(discountId)
+      await discount.addProductCategory(productCategoryId)
+      return discount
+    },
+    addProductDiscount: async (parent, { discountId, productId }, { models }) => {
+      const discount = await models.discount.findByPk(discountId)
+      await discount.addProduct(productId)
+      return discount
+    },
+    addFeatureDiscount: async (parent, { discountId, featureId }, { models }) => {
+      const discount = await models.discount.findByPk(discountId)
+      await discount.addFeature(featureId)
+      return discount
+    },
+    addOrderDiscount: async (parent, { discountId, orderId }, { models }) => {
+      const discount = await models.discount.findByPk(discountId)
+      await discount.addOrder(orderId)
+      return discount
+    },
+    addBonusDiscount: async (parent, { discountId, bonusId }, { models }) => {
+      const discount = await models.discount.findByPk(discountId)
+      await discount.addBonus(bonusId)
+      return discount
+    },
   },
 
   Discount: {
@@ -55,6 +56,7 @@ const resolvers = {
     products: async (discount) => discount.getProducts(),
     features: async (discount) => discount.getFeatures(),
     orders: async (discount) => discount.getOrders(),
+    bonuses: async (discount) => discount.getBonuses(),
   },
 }
 

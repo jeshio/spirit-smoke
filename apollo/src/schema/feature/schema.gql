@@ -1,5 +1,5 @@
 extend type Query {
-  features: [Feature!]
+  features: [Feature]!
   feature(id: ID!): Feature
 }
 

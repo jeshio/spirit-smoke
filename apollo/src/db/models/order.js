@@ -12,6 +12,7 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Order.belongsToMany(models.discount, { through: 'orderDiscounts', timestamps: false })
       Order.belongsToMany(models.product, { through: models.orderProduct, timestamps: false })
+      Order.belongsToMany(models.bonus, { through: 'orderBonuses', timestamps: false })
     }
   }
   Order.init({

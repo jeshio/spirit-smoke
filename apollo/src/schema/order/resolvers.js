@@ -40,6 +40,7 @@ const resolvers = {
 
   Order: {
     discounts: async (order) => order.getDiscounts(),
+    bonuses: async (order) => order.getBonuses(),
     products: async (order) => order.getProducts({
       through: {
         attributes: ['productsCount'],

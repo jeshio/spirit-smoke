@@ -1,5 +1,5 @@
   extend type Query {
-    productCategories: [ProductCategory!]
+    productCategories: [ProductCategory]!
     productCategory(id: ID!): ProductCategory
   }
  

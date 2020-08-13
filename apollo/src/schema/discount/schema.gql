@@ -1,5 +1,5 @@
 extend type Query {
-  discounts: [Discount!]
+  discounts: [Discount]!
   discount(id: ID!): Discount
 }
 
@@ -9,6 +9,7 @@ extend type Mutation {
   addProductDiscount(discountId: ID!, productId: ID!): Discount!
   addFeatureDiscount(discountId: ID!, featureId: ID!): Discount!
   addOrderDiscount(discountId: ID!, orderId: ID!): Discount!
+  addBonusDiscount(discountId: ID!, bonusId: ID!): Discount!
 }
 
 input DiscountInput {
@@ -34,4 +35,5 @@ type Discount {
   products: [Product]!
   features: [Feature]!
   orders: [Order]!
+  bonuses: [Bonus]!
 } 
