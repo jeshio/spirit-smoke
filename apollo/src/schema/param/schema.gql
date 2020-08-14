@@ -1,0 +1,21 @@
+extend type Query {
+  params: [Param]!
+  param(id: ID!): Param
+}
+
+extend type Mutation {
+  createParam(input: ParamInput!): Param!
+}
+
+input ParamInput {
+  name: String!
+  slug: String!
+  value: String!
+}
+
+type Param {
+  id: ID!
+  name: String!
+  slug: String!
+  value: String!
+} 

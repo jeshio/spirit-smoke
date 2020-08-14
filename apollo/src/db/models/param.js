@@ -3,18 +3,17 @@ const {
 } = require('sequelize')
 
 module.exports = (sequelize, DataTypes) => {
-  class Company extends Model {
+  class Param extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Company.hasMany(models.product, { onDelete: 'CASCADE' })
-      Company.belongsTo(models.productCategory)
+      // define association here
     }
   }
-  Company.init({
+  Param.init({
     name: {
       type: DataTypes.STRING,
       validate: {
@@ -28,9 +27,15 @@ module.exports = (sequelize, DataTypes) => {
         is: /^[a-z-\d]+$/,
       },
     },
+    value: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: true,
+      },
+    },
   }, {
     sequelize,
-    modelName: 'company',
+    modelName: 'param',
   })
-  return Company
+  return Param
 }

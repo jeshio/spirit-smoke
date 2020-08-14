@@ -31,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       validate: {
         notEmpty: true,
-        is: /^[a-z-\d]+$/i,
+        is: /^[a-z-\d]+$/,
       },
     },
     price: {

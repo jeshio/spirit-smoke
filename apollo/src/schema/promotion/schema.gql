@@ -1,0 +1,27 @@
+extend type Query {
+  promotions: [Promotion]!
+  promotion(id: ID!): Promotion
+}
+
+extend type Mutation {
+  createPromotion(input: PromotionInput!): Promotion!
+}
+
+input PromotionInput {
+  name: String!
+  description: String!
+  imageUrl: String!
+  startDate: String!
+  endDate: String!
+  priority: Int!
+}
+
+type Promotion {
+  id: ID!
+  name: String!
+  description: String!
+  imageUrl: String!
+  startDate: String!
+  endDate: String!
+  priority: Int!
+} 

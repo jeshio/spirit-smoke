@@ -3,19 +3,17 @@ const {
 } = require('sequelize')
 
 module.exports = (sequelize, DataTypes) => {
-  class ProductCategory extends Model {
+  class Promotion extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      ProductCategory.hasMany(models.product, { onDelete: 'CASCADE' })
-      ProductCategory.belongsToMany(models.feature, { through: 'productCategoryFeatures', timestamps: false })
-      ProductCategory.belongsToMany(models.discount, { through: 'productCategoryDiscounts', timestamps: false })
+      // define association here
     }
   }
-  ProductCategory.init({
+  Promotion.init({
     name: {
       type: DataTypes.STRING,
       validate: {
@@ -28,16 +26,36 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: true,
       },
     },
-    slug: {
+    imageUrl: {
       type: DataTypes.STRING,
       validate: {
         notEmpty: true,
-        is: /^[a-z-\d]+$/,
+        isUrl: true,
+      },
+    },
+    startDate: {
+      type: DataTypes.DATE,
+      validate: {
+        notEmpty: true,
+        isDate: true,
+      },
+    },
+    endDate: {
+      type: DataTypes.DATE,
+      validate: {
+        notEmpty: true,
+        isDate: true,
+      },
+    },
+    priority: {
+      type: DataTypes.INTEGER,
+      validate: {
+        notEmpty: true,
       },
     },
   }, {
     sequelize,
-    modelName: 'productCategory',
+    modelName: 'promotion',
   })
-  return ProductCategory
+  return Promotion
 }

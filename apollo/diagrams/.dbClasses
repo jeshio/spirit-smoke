@@ -51,7 +51,6 @@ int minProductsCount;
   * -- * bonus;
   * -- * order;
   * -- * feature;
-  * -- * delivery;
 }
 
 class order
@@ -68,7 +67,7 @@ class order
   float sum;
 }
 
-class productOrder
+class orderProduct
 {
   int productsCount;
   1 -- 1 product;
@@ -108,16 +107,17 @@ class params
   value;
 }
 
-class delivery
+class procurement
 {
   sum;
   status;
+  date nextStatusDate;
 }
 
-class productDelivery
+class productProcurement
 {
   int count;
   float costsInRub;
   1 -- * product;
-  1 -- * delivery;
+  1 -- * procurement;
 }
