@@ -7,7 +7,7 @@ extend type Mutation {
   createProduct(name: String!, slug: String!, price: Float!, productCategoryId: ID!, companyId: ID!, count: Int!): Product!
 }
 
-interface IProduct {
+type Product {
   id: ID!
   name: String!
   slug: String!
@@ -17,18 +17,6 @@ interface IProduct {
   company: Company!
   features: [Feature]!
   discounts: [Discount]!
-  orders: [Order]!
-}
-
-type Product implements IProduct {
-  id: ID!
-  name: String!
-  slug: String!
-  price: Float!
-  count: Int!
-  productCategory: ProductCategory!
-  company: Company!
-  features: [Feature]!
-  discounts: [Discount]!
-  orders: [Order]!
+  orderProducts: [OrderProduct]!
+  productProcurements: [ProductProcurement]!
 }

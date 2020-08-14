@@ -1,0 +1,36 @@
+extend type Query {
+  procurements: [Procurement]!
+  procurement(id: ID!): Procurement
+}
+
+extend type Mutation {
+  createProcurement(input: ProcurementInput!): Procurement!
+  addProductProcurement(input: ProductProcurementInput): Procurement!
+}
+
+input ProductProcurementInput {
+  productId: ID!
+  procurementId: ID!
+  count: Int!
+  costsInRub: Float!
+}
+
+input ProcurementInput {
+  nextStatusDate: String
+  deliveryCost: Float
+}
+
+type ProductProcurement {
+  count: Int!
+  costsInRub: Float!
+  procurement: Procurement!
+  product: Product!
+}
+
+type Procurement {
+  id: ID!
+  status: String!
+  nextStatusDate: String
+  deliveryCost: Float
+  productProcurements: [ProductProcurement]!
+} 

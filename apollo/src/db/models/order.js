@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       Order.belongsToMany(models.discount, { through: 'orderDiscounts', timestamps: false })
       Order.belongsToMany(models.product, { through: models.orderProduct, timestamps: false })
       Order.belongsToMany(models.bonus, { through: 'orderBonuses', timestamps: false })
+      Order.hasMany(models.orderProduct)
     }
   }
   Order.init({

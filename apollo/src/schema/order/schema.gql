@@ -34,20 +34,8 @@ input OrderProductInput {
 
 type OrderProduct {
   productsCount: Int!
-}
-
-type ProductWithOrderProduct implements IProduct {
-  id: ID!
-  name: String!
-  slug: String!
-  price: Float!
-  count: Int!
-  productCategory: ProductCategory!
-  company: Company!
-  features: [Feature]!
-  discounts: [Discount]!
-  orders: [Order]!
-  orderProduct: OrderProduct!
+  product: Product!
+  order: Order!
 }
 
 type Order {
@@ -62,5 +50,5 @@ type Order {
   phoneNumber: String!
   discounts: [Discount]!
   bonuses: [Bonus]!
-  products: [ProductWithOrderProduct]!
+  orderProducts: [OrderProduct]!
 } 
