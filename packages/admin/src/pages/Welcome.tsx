@@ -15,7 +15,7 @@ export default (): React.ReactNode => (
   <PageContainer>
     <Card>
       <Alert
-        message="更快更强的重型组件，已经发布。"
+        message="Панель управления"
         type="success"
         showIcon
         banner
@@ -25,24 +25,10 @@ export default (): React.ReactNode => (
         }}
       />
       <Typography.Text strong>
-        高级表格{' '}
-        <a href="https://protable.ant.design/" rel="noopener noreferrer" target="__blank">
-          欢迎使用
-        </a>
+        Добро пожаловать
       </Typography.Text>
       <CodePreview>yarn add @ant-design/pro-table</CodePreview>
-      <Typography.Text
-        strong
-        style={{
-          marginBottom: 12,
-        }}
-      >
-        高级布局{' '}
-        <a href="https://prolayout.ant.design/" rel="noopener noreferrer" target="__blank">
-          欢迎使用
-        </a>
-      </Typography.Text>
-      <CodePreview>yarn add @ant-design/pro-layout</CodePreview>
+
     </Card>
   </PageContainer>
 );

@@ -2,8 +2,7 @@ import { Tooltip, Tag } from 'antd';
 import { Settings as ProSettings } from '@ant-design/pro-layout';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import React from 'react';
-import { connect, ConnectProps, SelectLang } from 'umi';
-import { ConnectState } from '@/models/connect';
+import { ConnectProps, SelectLang } from 'umi';
 import Avatar from './AvatarDropdown';
 import HeaderSearch from '../HeaderSearch';
 import styles from './index.less';
@@ -51,7 +50,7 @@ const GlobalHeaderRight: React.SFC<GlobalHeaderRightProps> = (props) => {
         //   //console.log('input', value);
         // }}
       />
-      <Tooltip title="使用文档">
+      <Tooltip title="Документация">
         <a
           style={{
             color: 'inherit',
@@ -75,7 +74,4 @@ const GlobalHeaderRight: React.SFC<GlobalHeaderRightProps> = (props) => {
   );
 };
 
-export default connect(({ settings }: ConnectState) => ({
-  theme: settings.navTheme,
-  layout: settings.layout,
-}))(GlobalHeaderRight);
+export default GlobalHeaderRight;

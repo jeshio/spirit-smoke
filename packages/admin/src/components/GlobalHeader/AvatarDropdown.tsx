@@ -1,8 +1,7 @@
 import { LogoutOutlined, SettingOutlined, UserOutlined } from '@ant-design/icons';
 import { Avatar, Menu, Spin } from 'antd';
 import React from 'react';
-import { history, ConnectProps, connect } from 'umi';
-import { ConnectState } from '@/models/connect';
+import { history, ConnectProps } from 'umi';
 import { CurrentUser } from '@/models/user';
 import HeaderDropdown from '../HeaderDropdown';
 import styles from './index.less';
@@ -40,7 +39,7 @@ class AvatarDropdown extends React.Component<GlobalHeaderRightProps> {
     const {
       currentUser = {
         avatar: '',
-        name: '',
+        name: 'test',
       },
       menu,
     } = this.props;
@@ -49,20 +48,20 @@ class AvatarDropdown extends React.Component<GlobalHeaderRightProps> {
         {menu && (
           <Menu.Item key="center">
             <UserOutlined />
-            个人中心
+            Пользователь
           </Menu.Item>
         )}
         {menu && (
           <Menu.Item key="settings">
             <SettingOutlined />
-            个人设置
+            Настройки
           </Menu.Item>
         )}
         {menu && <Menu.Divider />}
 
         <Menu.Item key="logout">
           <LogoutOutlined />
-          退出登录
+          Выйти
         </Menu.Item>
       </Menu>
     );
@@ -87,6 +86,4 @@ class AvatarDropdown extends React.Component<GlobalHeaderRightProps> {
   }
 }
 
-export default connect(({ user }: ConnectState) => ({
-  currentUser: user.currentUser,
-}))(AvatarDropdown);
+export default AvatarDropdown;
