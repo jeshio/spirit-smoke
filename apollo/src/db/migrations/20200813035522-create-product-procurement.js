@@ -35,7 +35,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
-      costsInRub: {
+      costs: {
         type: Sequelize.FLOAT,
         allowNull: false,
       },

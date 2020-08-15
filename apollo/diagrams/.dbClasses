@@ -5,7 +5,7 @@ class product
 {
   name;
   slug;
-  float priceInRub;
+  float price;
   count;
   imageUrl;
   model;
@@ -117,7 +117,7 @@ class procurement
 class productProcurement
 {
   int count;
-  float costsInRub;
+  float costs;
   1 -- * product;
   1 -- * procurement;
 }

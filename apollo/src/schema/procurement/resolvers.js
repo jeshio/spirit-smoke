@@ -15,13 +15,13 @@ const resolvers = {
     }),
     addProductProcurement: async (parent, {
       input: {
-        productId, procurementId, count, costsInRub,
+        productId, procurementId, count, costs,
       },
     }, { models }) => {
       const procurement = await models.procurement.findByPk(procurementId)
       await procurement.addProduct(productId, {
         through: {
-          count, costsInRub,
+          count, costs,
         },
       })
       return procurement

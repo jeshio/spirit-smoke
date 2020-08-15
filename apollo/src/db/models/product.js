@@ -45,10 +45,10 @@ module.exports = (sequelize, DataTypes) => {
     count: {
       type: DataTypes.INTEGER,
       validate: {
-        notEmpty: true,
         isInt: true,
         min: 0,
       },
+      defaultValue: 0,
     },
   }, {
     sequelize,

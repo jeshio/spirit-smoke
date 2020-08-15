@@ -23,7 +23,7 @@ module.exports = (sequelize, DataTypes) => {
         min: 1,
       },
     },
-    costsInRub: {
+    costs: {
       type: DataTypes.FLOAT,
       validate: {
         notEmpty: true,

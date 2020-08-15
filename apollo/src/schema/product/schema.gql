@@ -4,7 +4,16 @@ extend type Query {
 }
 
 extend type Mutation {
-  createProduct(name: String!, slug: String!, price: Float!, productCategoryId: ID!, companyId: ID!, count: Int!): Product!
+  createProduct(input: ProductInput): Product!
+}
+
+input ProductInput {
+  name: String!
+  slug: String!
+  price: Float!
+  productCategoryId: ID!
+  companyId: ID!
+  count: Int
 }
 
 type Product {

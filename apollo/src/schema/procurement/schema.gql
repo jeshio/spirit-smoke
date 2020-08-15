@@ -12,7 +12,7 @@ input ProductProcurementInput {
   productId: ID!
   procurementId: ID!
   count: Int!
-  costsInRub: Float!
+  costs: Float!
 }
 
 input ProcurementInput {
@@ -22,7 +22,7 @@ input ProcurementInput {
 
 type ProductProcurement {
   count: Int!
-  costsInRub: Float!
+  costs: Float!
   procurement: Procurement!
   product: Product!
 }

@@ -6,7 +6,9 @@ const resolvers = {
 
   Mutation: {
     createProduct: (parent, {
-      name, slug, price, count, productCategoryId, companyId,
+      input: {
+        name, slug, price, count, productCategoryId, companyId,
+      },
     }, { models }) => models.product.create({
       name,
       slug,
