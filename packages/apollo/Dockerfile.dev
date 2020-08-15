@@ -1,7 +1,7 @@
 FROM node:12-alpine
 
 # создание директории приложения
-WORKDIR /usr/src/app/apollo
+WORKDIR /usr/src/app/packages/apollo
 
 # установка зависимостей
 # символ астериск ("*") используется для того чтобы по возможности 
