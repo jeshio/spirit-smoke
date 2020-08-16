@@ -14,12 +14,6 @@ export default defineConfig({
   define: {
     APOLLO_URI: 'http://localhost:4000/graphql',
   },
-  locale: {
-    default: 'ru-RU',
-    antd: true,
-    // default true, when it is true, will use `navigator.language` overwrite default
-    baseNavigator: true,
-  },
   dynamicImport: {
     loading: '@/components/PageLoading/index',
   },

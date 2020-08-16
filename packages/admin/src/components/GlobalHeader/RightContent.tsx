@@ -2,7 +2,7 @@ import { Tooltip, Tag } from 'antd';
 import { Settings as ProSettings } from '@ant-design/pro-layout';
 import { QuestionCircleOutlined } from '@ant-design/icons';
 import React from 'react';
-import { ConnectProps, SelectLang } from 'umi';
+import { ConnectProps } from 'umi';
 import Avatar from './AvatarDropdown';
 import HeaderSearch from '../HeaderSearch';
 import styles from './index.less';
@@ -29,8 +29,7 @@ const GlobalHeaderRight: React.SFC<GlobalHeaderRightProps> = (props) => {
     <div className={className}>
       <HeaderSearch
         className={`${styles.action} ${styles.search}`}
-        placeholder="站内搜索"
-        defaultValue="umi ui"
+        placeholder="Поиск"
         options={[
           { label: <a href="https://umijs.org/zh/guide/umi-ui.html">umi ui</a>, value: 'umi ui' },
           {
@@ -69,7 +68,6 @@ const GlobalHeaderRight: React.SFC<GlobalHeaderRightProps> = (props) => {
           <Tag color={ENVTagColor[REACT_APP_ENV]}>{REACT_APP_ENV}</Tag>
         </span>
       )}
-      <SelectLang className={styles.action} />
     </div>
   );
 };
