@@ -11,9 +11,7 @@ function formatter(routes, parentPath = '') {
       result.push(`${fixedParentPath}/${item.path}`.replace(/\/{1,}/g, '/'));
     }
     if (item.routes) {
-      result = result.concat(
-        formatter(item.routes, item.path ? `${fixedParentPath}/${item.path}` : parentPath),
-      );
+      result = result.concat(formatter(item.routes, item.path ? `${fixedParentPath}/${item.path}` : parentPath));
     }
   });
   return uniq(result.filter((item) => !!item));
@@ -32,9 +30,7 @@ describe('Ant Design Pro E2E test', () => {
     await page.waitForSelector('footer', {
       timeout: 2000,
     });
-    const haveFooter = await page.evaluate(
-      () => document.getElementsByTagName('footer').length > 0,
-    );
+    const haveFooter = await page.evaluate(() => document.getElementsByTagName('footer').length > 0);
     expect(haveFooter).toBeTruthy();
   };
 
@@ -49,9 +45,7 @@ describe('Ant Design Pro E2E test', () => {
     await page.waitForSelector('footer', {
       timeout: 2000,
     });
-    const haveFooter = await page.evaluate(
-      () => document.getElementsByTagName('footer').length > 0,
-    );
+    const haveFooter = await page.evaluate(() => document.getElementsByTagName('footer').length > 0);
     expect(haveFooter).toBeTruthy();
   });
 });

@@ -2,3 +2,10 @@
 /scripts
 /config
 .history
+
+/src/e2e/
+service-worker.js
+
+/node_modules
+/dist
+/src/.umi/*

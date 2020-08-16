@@ -1,0 +1,13 @@
+{
+    "eslint.validate": [
+        "javascript",
+        "javascriptreact",
+        "typescriptreact",
+        "typescript",
+    ],
+    "eslint.workingDirectories": [
+        {
+           "pattern": "./packages/*/"
+        },
+    ],
+}

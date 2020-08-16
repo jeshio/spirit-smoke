@@ -25,20 +25,20 @@ export default defineConfig({
   },
   // umi routes: https://umijs.org/docs/routing
   routes: [
-    {
-      path: '/user',
-      component: '../layouts/UserLayout',
-      routes: [
-        {
-          name: 'login',
-          path: '/user/login',
-          component: './user/login',
-        },
-      ],
-    },
+    // {
+    //   path: '/user',
+    //   component: '../layouts/UserLayout',
+    //   routes: [
+    //     {
+    //       name: 'login',
+    //       path: '/user/login',
+    //       component: './user/login',
+    //     },
+    //   ],
+    // },
     {
       path: '/',
-      component: '../layouts/SecurityLayout',
+      component: '../layouts/ProvidersLayout',
       routes: [
         {
           path: '/',
@@ -73,14 +73,14 @@ export default defineConfig({
             // },
             {
               name: 'Продукты',
-              icon: 'table',
+              icon: 'appstore',
               path: '/products',
-              component: './ListTableList',
+              component: './Products',
               routes: [
                 {
                   path: '/products/list',
                   name: 'Список',
-                  component: './ListTableList',
+                  component: './Products',
                 },
               ],
             },

@@ -7,9 +7,7 @@ const { pwa } = defaultSettings; // if pwa is true
 if (pwa) {
   // Notify user if offline now
   window.addEventListener('sw.offline', () => {
-    message.warning(
-      'Сейчас вы в оффлайне',
-    );
+    message.warning('Сейчас вы в оффлайне');
   }); // Pop up a prompt on the page asking the user if they want to use the latest version
 
   window.addEventListener('sw.updated', (event: Event) => {
@@ -56,7 +54,7 @@ if (pwa) {
           reloadSW();
         }}
       >
-       Доступен новый контент
+        Доступен новый контент
       </Button>
     );
     notification.open({
