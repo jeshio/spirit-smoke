@@ -1,57 +1,23 @@
-# Ant Design Pro
+# Spirit-Smoke Apollo
 
-This project is initialized with [Ant Design Pro](https://pro.ant.design). Follow is the quick guide for how to use.
+В качестве базы (роутинг, стили и прочая основа) для админки используются [https://pro.ant.design/](Ant Design Pro) и [https://umijs.org/](UmiJS).
 
-## Environment Prepare
+Для реализации контента страниц и прочих элементов используется [https://ant.design/](An Design).
 
-Install `node_modules`:
+Для работы с бэкэндом и [https://www.apollographql.com/docs/react/local-state/local-state-management/](локальным стейтом) используется [https://www.apollographql.com/docs/react/](Apollo Client).
 
-```bash
-npm install
+## Запуск и разработка
+
+Перед началом работы нужно создать файл `./config/config.local.ts` (`./config/config.prod.ts` для прода) со следующим содержимым (актуальная версия находится в `./config/config.example.ts`):
+
+```js
+import { defineConfig } from 'umi';
+
+export default defineConfig({
+  define: {
+    APOLLO_URI: 'http://wsl.ru:4000/graphql',
+  },
+});
 ```
 
-or
-
-```bash
-yarn
-```
-
-## Provided Scripts
-
-Ant Design Pro provides some useful script to help you quick start and build with web project, code style check and test.
-
-Scripts provided in `package.json`. It's safe to modify or add additional script:
-
-### Start project
-
-```bash
-npm start
-```
-
-### Build project
-
-```bash
-npm run build
-```
-
-### Check code style
-
-```bash
-npm run lint
-```
-
-You can also use script to auto fix some lint error:
-
-```bash
-npm run lint:fix
-```
-
-### Test code
-
-```bash
-npm test
-```
-
-## More
-
-You can view full document on our [official website](https://pro.ant.design). And welcome any feedback in our [github](https://github.com/ant-design/ant-design-pro).
+и заполнить константы необходимыми значениями.

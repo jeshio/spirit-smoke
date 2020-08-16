@@ -15,7 +15,7 @@ export default (): React.ReactNode => (
   <PageContainer>
     <Card>
       <Alert
-        message="Панель управления"
+        message="Панель управления!"
         type="success"
         showIcon
         banner

@@ -11,6 +11,9 @@ export default defineConfig({
   dva: {
     hmr: true,
   },
+  define: {
+    APOLLO_URI: 'http://localhost:4000/graphql',
+  },
   locale: {
     default: 'ru-RU',
     antd: true,

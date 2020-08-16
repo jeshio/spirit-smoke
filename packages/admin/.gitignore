@@ -34,3 +34,5 @@ screenshot
 .eslintcache
 
 build
+
+config.local.ts
