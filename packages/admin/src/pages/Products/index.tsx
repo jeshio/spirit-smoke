@@ -1,17 +1,15 @@
 import * as React from 'react';
 import { useQuery, gql } from '@apollo/client';
-import { Table } from 'antd';
+import UTable from '@/ui-components/UTable';
 
-const columns = [
+const columns: UTableTypes.IColumn[] = [
   {
     title: 'ID',
-    dataIndex: 'id',
-    key: 'id',
+    field: 'id',
   },
   {
     title: 'Имя',
-    dataIndex: 'name',
-    key: 'name',
+    field: 'name',
   },
 ];
 
@@ -33,7 +31,7 @@ const Products: React.FunctionComponent<IProductsProps> = () => {
 
   if (error) return <div>Ошибка :(</div>;
 
-  return <Table<{ name: string }> columns={columns} dataSource={data?.products || []} rowKey="id" />;
+  return <UTable<{ name: string }> columns={columns} dataSource={data?.products || []} rowKey="id" />;
 };
 
 export default Products;

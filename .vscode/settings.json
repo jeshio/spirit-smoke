@@ -10,4 +10,5 @@
            "pattern": "./packages/*/"
         },
     ],
+    "editor.tabSize": 2
 }
