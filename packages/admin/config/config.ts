@@ -107,4 +107,15 @@ export default defineConfig({
   manifest: {
     basePath: '/',
   },
+  chainWebpack: (config, { webpack }) => {
+    config.resolve.extensions.add('.gql');
+    config.resolve.extensions.add('.graphql');
+    config.module
+      .rule('graphql')
+      .test(/\.(graphql|gql)$/)
+      .exclude.add(/node_modules/)
+      .end()
+      .use('graphql')
+      .loader('graphql-tag/loader');
+  },
 });

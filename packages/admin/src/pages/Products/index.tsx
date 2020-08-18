@@ -1,6 +1,8 @@
 import * as React from 'react';
-import { useQuery, gql } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import UTable from '@/ui-components/UTable';
+
+import productsQuery from './gql/products.gql';
 
 const columns: UTableTypes.IColumn[] = [
   {
@@ -13,19 +15,10 @@ const columns: UTableTypes.IColumn[] = [
   },
 ];
 
-const EXCHANGE_RATES = gql`
-  query GetProducts {
-    products {
-      id
-      name
-    }
-  }
-`;
-
 interface IProductsProps {}
 
 const Products: React.FunctionComponent<IProductsProps> = () => {
-  const { loading, error, data } = useQuery<{ products: Array<{ name: string }> }>(EXCHANGE_RATES);
+  const { loading, error, data } = useQuery<{ products: Array<{ name: string }> }>(productsQuery);
 
   if (loading) return <div>Загрузка</div>;
 

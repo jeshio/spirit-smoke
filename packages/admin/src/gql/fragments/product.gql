@@ -1,0 +1,7 @@
+fragment ProductSimple on Product {
+  id
+  name
+  slug
+  price
+  count
+}

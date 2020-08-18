@@ -3,6 +3,7 @@ declare module '*.css';
 declare module '*.less';
 declare module '*.scss';
 declare module '*.sass';
+declare module '*.gql';
 declare module '*.svg';
 declare module '*.png';
 declare module '*.jpg';
@@ -33,3 +34,10 @@ declare let ANT_DESIGN_PRO_ONLY_DO_NOT_USE_IN_YOUR_PRODUCTION: 'site' | undefine
 
 declare const REACT_APP_ENV: 'test' | 'dev' | 'pre' | false;
 declare const APOLLO_URI: string;
+
+declare module '*.graphql' {
+  import { DocumentNode } from 'graphql';
+
+  const value: DocumentNode;
+  export = value;
+}

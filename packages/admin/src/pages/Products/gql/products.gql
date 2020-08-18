@@ -1,0 +1,7 @@
+#import "@/gql/fragments/product.gql"
+
+query products {
+  products {
+    ...ProductSimple
+  }
+}
