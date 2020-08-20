@@ -41,7 +41,7 @@ services:
   pgAdmin:
     image: dpage/pgadmin4
     ports:
-      - "8090:80"
+      - 8090:80
     env_file: .env
     environment:
       PGADMIN_DEFAULT_EMAIL: admin@admin.com

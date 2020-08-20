@@ -2,7 +2,7 @@
   "name": "spirit-apollo",
   "version": "1.0.0",
   "private": true,
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "start:dev": "nodemon --inspect=0.0.0.0:9229 --exec babel-node ./src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -33,10 +33,13 @@
     "@babel/node": "^7.10.5",
     "@babel/preset-env": "^7.11.0",
     "@babel/register": "^7.10.5",
+    "babel-plugin-module-resolver": "^4.0.0",
     "dotenv": "^8.2.0",
     "eslint": "^7.6.0",
     "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-import-resolver-babel-module": "^5.1.2",
     "eslint-plugin-import": "^2.22.0",
+    "faker": "^4.1.0",
     "husky": "^4.2.5",
     "lint-staged": "^10.2.11",
     "nodemon": "^2.0.4",

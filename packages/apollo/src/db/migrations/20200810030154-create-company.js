@@ -16,15 +16,6 @@ module.exports = {
         allowNull: false,
         unique: true,
       },
-      productCategoryId: {
-        type: Sequelize.INTEGER,
-        references: {
-          model: 'productCategories',
-          key: 'id',
-        },
-        allowNull: false,
-        onDelete: 'CASCADE',
-      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

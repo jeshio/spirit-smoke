@@ -11,6 +11,8 @@ export const development = {
   database: PG_DB,
   host: PG_HOSTNAME,
   dialect: 'postgres',
+  seederStorage: 'sequelize',
+  seederStorageTableName: 'SequelizeSeeders',
 }
 export const test = {
   username: PG_USERNAME,

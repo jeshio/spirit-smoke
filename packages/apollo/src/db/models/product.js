@@ -1,3 +1,5 @@
+const { numberToPrice } = require('@@utils')
+
 const {
   Model,
 } = require('sequelize')
@@ -36,6 +38,7 @@ module.exports = (sequelize, DataTypes) => {
     },
     price: {
       type: DataTypes.FLOAT,
+      set: numberToPrice,
       validate: {
         notEmpty: true,
         isFloat: true,

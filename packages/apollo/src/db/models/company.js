@@ -11,7 +11,6 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       Company.hasMany(models.product, { onDelete: 'CASCADE' })
-      Company.belongsTo(models.productCategory)
     }
   }
   Company.init({

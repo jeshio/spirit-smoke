@@ -23,5 +23,5 @@
     }
   },
   "include": [".", "./.eslintrc.js", "../types/."],
-  "exclude": ["node_modules", "build", "dist", "scripts", "src/.umi/*", "webpack", "jest"]
+  "exclude": ["node_modules", "build", "dist", "scripts", "src/.umi/*", "webpack", "jest", ".."]
 }

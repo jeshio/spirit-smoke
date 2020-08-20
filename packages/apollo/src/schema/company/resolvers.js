@@ -6,14 +6,13 @@ const resolvers = {
 
   Mutation: {
     createCompany: (parent, {
-      name, slug, productCategoryId,
+      name, slug,
     }, { models }) => models.company.create({
-      name, slug, productCategoryId,
+      name, slug,
     }),
   },
 
   Company: {
-    productCategory: async (company) => company.getProductCategory(),
     products: async (company) => company.getProducts(),
   },
 }

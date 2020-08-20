@@ -4,13 +4,12 @@ extend type Query {
 }
 
 extend type Mutation {
-  createCompany(name: String!, slug: String!, productCategoryId: ID!): Company!
+  createCompany(name: String!, slug: String!): Company!
 }
 
 type Company {
   id: ID!
   name: String!
   slug: String!
-  productCategory: ProductCategory!
   products: [Product]!
 } 
