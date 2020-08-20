@@ -9,3 +9,4 @@ service-worker.js
 /node_modules
 /dist
 /src/.umi/*
+__generated__

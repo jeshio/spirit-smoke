@@ -19,9 +19,9 @@
     "strict": true,
     "paths": {
       "@/*": ["./src/*"],
-      "@@/*": ["./src/.umi/*"]
+      "@@types/*": ["../types/*"]
     }
   },
-  "include": [".", "./.eslintrc.js"],
+  "include": [".", "./.eslintrc.js", "../types/."],
   "exclude": ["node_modules", "build", "dist", "scripts", "src/.umi/*", "webpack", "jest"]
 }

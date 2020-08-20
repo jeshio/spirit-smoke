@@ -36,3 +36,5 @@ screenshot
 build
 
 config.local.ts
+
+graphql.schema.json
