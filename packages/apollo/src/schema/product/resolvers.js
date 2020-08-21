@@ -20,7 +20,8 @@ const resolvers = {
   },
 
   Product: {
-    productCategory: async (product) => product.getProductCategory(),
+    productCategory: async (product, args, { loaders }) =>
+      loaders.productCategory.load(product.productCategoryId),
     company: async (product) => product.getCompany(),
     features: async (product) => product.getFeatures(),
     discounts: async (product) => product.getDiscounts(),

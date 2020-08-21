@@ -1,8 +1,19 @@
 import express from 'express'
 import cors from 'cors'
 import { ApolloServer } from 'apollo-server-express'
+
 import schema from './schema'
+import * as loadersCreator from './loaders'
 import models from './db/models'
+
+const loaders = Object.keys(loadersCreator).reduce(
+  (base, key) => ({
+    ...base,
+    /* eslint-disable-next-line import/namespace */
+    [key]: loadersCreator[key](models),
+  }),
+  {},
+)
 
 const server = new ApolloServer({
   schema,
@@ -20,6 +31,7 @@ const server = new ApolloServer({
   },
   context: async () => ({
     models,
+    loaders,
     sequelize: models.sequelize,
   }),
 })

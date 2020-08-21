@@ -1,7 +1,7 @@
 const resolvers = {
   Query: {
     productCategories: async (parent, args, { models }) => models.productCategory.findAll(),
-    productCategory: async (parent, { id }, { models }) => models.productCategory.findByPk(id),
+    productCategory: async (parent, { id }, { loaders }) => loaders.productCategory.load(id),
   },
 
   Mutation: {
