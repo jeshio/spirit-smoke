@@ -1,15 +1,14 @@
 #import "@/gql/fragments/product.gql"
 
-fragment ListPageProduct on Product {
+fragment ProductsListPage on Product {
   ...ProductSimple
   productCategory {
     name
-    description
   }
 }
 
 query productsListPage {
   products {
-    ...ListPageProduct
+    ...ProductsListPage
   }
 }

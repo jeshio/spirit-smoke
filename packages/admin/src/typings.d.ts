@@ -1,3 +1,5 @@
+import { useSelector as useSelectorOriginal } from 'react-redux';
+
 declare module 'slash2';
 declare module '*.css';
 declare module '*.less';
@@ -40,4 +42,9 @@ declare module '*.graphql' {
 
   const value: DocumentNode;
   export = value;
+}
+
+declare module 'umi' {
+  const useSelector: typeof useSelectorOriginal;
+  function connect<StoreType>(storeGetter: (store: StoreType) => any): any;
 }

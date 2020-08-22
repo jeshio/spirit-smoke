@@ -69,15 +69,25 @@ export default defineConfig({
             //   ],
             // },
             {
+              path: '/products',
+              redirect: '/products/list',
+              exact: true,
+            },
+            {
               name: 'Продукты',
               icon: 'appstore',
               path: '/products',
-              component: './Products',
               routes: [
                 {
                   path: '/products/list',
                   name: 'Список',
                   component: './Products',
+                },
+                {
+                  path: '/products/:id',
+                  name: 'Продукт',
+                  hideInMenu: true,
+                  component: './Products/[id]',
                 },
               ],
             },

@@ -2,6 +2,17 @@
 
 ## Разработка
 
+### Быстрый старт
+
+Для выполнения всех команд для запуска проекта достаточно в корне выполнить:
+
+```bash
+docker-compose -f docker-compose.admin.dev.yml -f docker-compose.apollo.dev.yml build # один раз и потом только после изменений конфигов докера
+sudo ./start.dev.server.sh
+```
+
+### Docker-Compose
+
 Для запуска докера в режмие разработки нужно в корне проекта ввести команду:
 
 ```bash
@@ -17,7 +28,7 @@ docker-compose -f docker-compose.admin.dev.yml -f docker-compose.apollo.dev.yml 
 
 ```bash
 docker container ps # находим нужный id
-docker exec -it --user node <container id> /bin/sh
+./exec.docker.sh <container id>
 yarn add ...
 ```
 

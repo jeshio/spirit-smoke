@@ -1,20 +1,21 @@
 import * as React from 'react';
-import { useQuery } from '@apollo/client';
 import UTable from '@/ui-components/UTable';
 
-import { ProductsListPageQuery, ListPageProductFragment } from '@/gql/__generated__/types';
-import withPageHeader from '@/hocs/ui/withPageHeader';
+import { ProductsListPageFragment, useProductsListPageQuery } from '@/gql/__generated__/types';
 import { IColumn } from '@/ui-components/UTable/types';
-import productsQuery from './gql/products.gql';
+import { Link } from 'umi';
+import UPageContainer from '@/ui-components/UPageContainer';
 
-const columns: IColumn<ListPageProductFragment>[] = [
-  {
-    title: 'ID',
-    field: 'id',
-  },
+const columns: IColumn<ProductsListPageFragment>[] = [
   {
     title: 'Имя',
     field: 'name',
+    render: (name, { id }) => <Link to={`/products/${id}`}>{name}</Link>,
+  },
+  {
+    title: 'Slug',
+    field: 'slug',
+    responsive: ['xl'],
   },
   {
     title: 'Количество',
@@ -33,15 +34,17 @@ const columns: IColumn<ListPageProductFragment>[] = [
 interface IProductsProps {}
 
 const Products: React.FunctionComponent<IProductsProps> = () => {
-  const { loading, error, data } = useQuery<ProductsListPageQuery, ListPageProductFragment>(productsQuery);
+  const { loading, error, data } = useProductsListPageQuery();
 
   if (loading) return <div>Загрузка</div>;
 
   if (error) return <div>Ошибка :(</div>;
 
-  return <UTable<ListPageProductFragment | any> columns={columns} dataSource={data?.products || []} />;
+  return (
+    <UPageContainer title="Список продуктов">
+      <UTable<ProductsListPageFragment | any> columns={columns} dataSource={data?.products || []} />
+    </UPageContainer>
+  );
 };
 
-export default withPageHeader({
-  title: 'Список продуктов',
-})(Products);
+export default Products;

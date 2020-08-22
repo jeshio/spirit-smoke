@@ -5,3 +5,5 @@ if [ "$NODE_ENV" = "production" ] ; then
 else
   yarn run start
 fi 
+
+exit 0

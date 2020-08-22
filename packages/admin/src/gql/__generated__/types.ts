@@ -117,7 +117,6 @@ export type MutationAddOrderBonusArgs = {
 export type MutationCreateCompanyArgs = {
   name: Scalars['String'];
   slug: Scalars['String'];
-  productCategoryId: Scalars['ID'];
 };
 
 export type MutationCreateDiscountArgs = {
@@ -240,7 +239,6 @@ export type Company = {
   id: Scalars['ID'];
   name: Scalars['String'];
   slug: Scalars['String'];
-  productCategory: ProductCategory;
   products: Array<Maybe<Product>>;
 };
 
@@ -434,14 +432,26 @@ export type ProductSimpleFragment = { __typename?: 'Product' } & Pick<
   'id' | 'name' | 'slug' | 'price' | 'count'
 >;
 
-export type ListPageProductFragment = { __typename?: 'Product' } & {
-  productCategory: { __typename?: 'ProductCategory' } & Pick<ProductCategory, 'name' | 'description'>;
+export type ProductItemPageFragment = { __typename?: 'Product' } & {
+  productCategory: { __typename?: 'ProductCategory' } & Pick<ProductCategory, 'name'>;
+} & ProductSimpleFragment;
+
+export type ProductItemPageQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+export type ProductItemPageQuery = { __typename?: 'Query' } & {
+  product?: Maybe<{ __typename?: 'Product' } & ProductItemPageFragment>;
+};
+
+export type ProductsListPageFragment = { __typename?: 'Product' } & {
+  productCategory: { __typename?: 'ProductCategory' } & Pick<ProductCategory, 'name'>;
 } & ProductSimpleFragment;
 
 export type ProductsListPageQueryVariables = Exact<{ [key: string]: never }>;
 
 export type ProductsListPageQuery = { __typename?: 'Query' } & {
-  products: Array<Maybe<{ __typename?: 'Product' } & ListPageProductFragment>>;
+  products: Array<Maybe<{ __typename?: 'Product' } & ProductsListPageFragment>>;
 };
 
 export type ResolverTypeWrapper<T> = Promise<T> | T;
@@ -654,7 +664,7 @@ export type MutationResolvers<
     ResolversTypes['Company'],
     ParentType,
     ContextType,
-    RequireFields<MutationCreateCompanyArgs, 'name' | 'slug' | 'productCategoryId'>
+    RequireFields<MutationCreateCompanyArgs, 'name' | 'slug'>
   >;
   createDiscount?: Resolver<
     ResolversTypes['Discount'],
@@ -794,7 +804,6 @@ export type CompanyResolvers<
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  productCategory?: Resolver<ResolversTypes['ProductCategory'], ParentType, ContextType>;
   products?: Resolver<Array<Maybe<ResolversTypes['Product']>>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 };
@@ -976,23 +985,69 @@ export const ProductSimpleFragmentDoc = gql`
     count
   }
 `;
-export const ListPageProductFragmentDoc = gql`
-  fragment ListPageProduct on Product {
+export const ProductItemPageFragmentDoc = gql`
+  fragment ProductItemPage on Product {
     ...ProductSimple
     productCategory {
       name
-      description
     }
   }
   ${ProductSimpleFragmentDoc}
 `;
+export const ProductsListPageFragmentDoc = gql`
+  fragment ProductsListPage on Product {
+    ...ProductSimple
+    productCategory {
+      name
+    }
+  }
+  ${ProductSimpleFragmentDoc}
+`;
+export const ProductItemPageDocument = gql`
+  query productItemPage($id: ID!) {
+    product(id: $id) {
+      ...ProductItemPage
+    }
+  }
+  ${ProductItemPageFragmentDoc}
+`;
+
+/**
+ * __useProductItemPageQuery__
+ *
+ * To run a query within a React component, call `useProductItemPageQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProductItemPageQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProductItemPageQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useProductItemPageQuery(
+  baseOptions?: Apollo.QueryHookOptions<ProductItemPageQuery, ProductItemPageQueryVariables>,
+) {
+  return Apollo.useQuery<ProductItemPageQuery, ProductItemPageQueryVariables>(ProductItemPageDocument, baseOptions);
+}
+export function useProductItemPageLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<ProductItemPageQuery, ProductItemPageQueryVariables>,
+) {
+  return Apollo.useLazyQuery<ProductItemPageQuery, ProductItemPageQueryVariables>(ProductItemPageDocument, baseOptions);
+}
+export type ProductItemPageQueryHookResult = ReturnType<typeof useProductItemPageQuery>;
+export type ProductItemPageLazyQueryHookResult = ReturnType<typeof useProductItemPageLazyQuery>;
+export type ProductItemPageQueryResult = Apollo.QueryResult<ProductItemPageQuery, ProductItemPageQueryVariables>;
 export const ProductsListPageDocument = gql`
   query productsListPage {
     products {
-      ...ListPageProduct
+      ...ProductsListPage
     }
   }
-  ${ListPageProductFragmentDoc}
+  ${ProductsListPageFragmentDoc}
 `;
 
 /**

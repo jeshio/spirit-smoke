@@ -126,16 +126,18 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
 
         return <Link to={menuItemProps.path}>{defaultDom}</Link>;
       }}
-      breadcrumbRender={(routers = []) => [
-        {
-          path: '/',
-          breadcrumbName: 'Главная',
-        },
-        ...routers,
-      ]}
-      itemRender={(route, params, routes, paths) => {
-        const first = routes.indexOf(route) === 0;
-        return first ? <Link to={paths.join('/')}>{route.breadcrumbName}</Link> : <span>{route.breadcrumbName}</span>;
+      breadcrumbRender={(routers = []) => {
+        return [
+          {
+            path: '/',
+            breadcrumbName: 'Главная',
+          },
+          ...routers,
+        ];
+      }}
+      itemRender={(route, params, routes) => {
+        const isLast = routes.indexOf(route) === routes.length - 1;
+        return isLast ? <span>{route.breadcrumbName}</span> : <Link to={route.path}>{route.breadcrumbName}</Link>;
       }}
       footerRender={() => defaultFooterDom}
       menuDataRender={menuDataRender}

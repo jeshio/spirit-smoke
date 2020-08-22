@@ -1,0 +1,14 @@
+#import "@/gql/fragments/product.gql"
+
+fragment ProductItemPage on Product {
+  ...ProductSimple
+  productCategory {
+    name
+  }
+}
+
+query productItemPage($id: ID!) {
+  product(id: $id) {
+    ...ProductItemPage
+  }
+}

@@ -17,11 +17,12 @@
     "skipLibCheck": true,
     "experimentalDecorators": true,
     "strict": true,
+    "esModuleInterop": true,
     "paths": {
       "@/*": ["./src/*"],
       "@@types/*": ["../types/*"]
     }
   },
   "include": [".", "./.eslintrc.js", "../types/."],
-  "exclude": ["node_modules", "build", "dist", "scripts", "src/.umi/*", "webpack", "jest", ".."]
+  "exclude": ["node_modules", "build", "dist", "scripts", "src/.umi/*", "webpack", "jest"]
 }
