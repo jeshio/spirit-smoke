@@ -49,6 +49,6 @@ module.exports = {
     '@typescript-eslint/no-unsafe-return': 0,
     '@typescript-eslint/no-unsafe-call': 0,
     '@typescript-eslint/restrict-template-expressions': [2, { allowAny: true }],
-    'import/no-extraneous-dependencies': 1,
+    'import/no-extraneous-dependencies': 0,
   },
 };

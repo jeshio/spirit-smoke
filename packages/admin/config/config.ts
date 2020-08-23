@@ -1,11 +1,14 @@
 // https://umijs.org/config/
-import { defineConfig } from 'umi';
+import { defineConfig, IConfig } from 'umi';
 import defaultSettings from './defaultSettings';
 import proxy from './proxy';
 
 const { REACT_APP_ENV } = process.env;
 
 export default defineConfig({
+  alias: {
+    '@@utils': __dirname + '/../../utils',
+  },
   hash: true,
   antd: {},
   dva: {
@@ -84,6 +87,11 @@ export default defineConfig({
                   component: './Products',
                 },
                 {
+                  path: '/products/add',
+                  name: 'Добавить продукт',
+                  component: './Products/Add',
+                },
+                {
                   path: '/products/:id',
                   name: 'Продукт',
                   hideInMenu: true,
@@ -110,12 +118,14 @@ export default defineConfig({
     // ...darkTheme,
     'primary-color': defaultSettings.primaryColor,
   },
-  // @ts-ignore
   title: false,
   ignoreMomentLocale: true,
   proxy: proxy[REACT_APP_ENV || 'dev'],
   manifest: {
     basePath: '/',
+  },
+  cssModulesTypescriptLoader: {
+    mode: 'emit',
   },
   chainWebpack: (config, { webpack }) => {
     config.resolve.extensions.add('.gql');
@@ -128,4 +138,4 @@ export default defineConfig({
       .use('graphql')
       .loader('graphql-tag/loader');
   },
-});
+} as IConfig);

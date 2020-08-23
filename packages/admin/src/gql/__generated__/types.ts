@@ -19,7 +19,7 @@ export type Query = {
   _?: Maybe<Scalars['Boolean']>;
   bonuses: Array<Maybe<Bonus>>;
   bonus?: Maybe<Bonus>;
-  companies: Array<Maybe<Company>>;
+  companies: Array<Company>;
   company?: Maybe<Company>;
   discounts: Array<Maybe<Discount>>;
   discount?: Maybe<Discount>;
@@ -33,7 +33,7 @@ export type Query = {
   procurement?: Maybe<Procurement>;
   products: Array<Maybe<Product>>;
   product?: Maybe<Product>;
-  productCategories: Array<Maybe<ProductCategory>>;
+  productCategories: Array<ProductCategory>;
   productCategory?: Maybe<ProductCategory>;
   promotions: Array<Maybe<Promotion>>;
   promotion?: Maybe<Promotion>;
@@ -198,7 +198,7 @@ export type MutationAddProductProcurementArgs = {
 };
 
 export type MutationCreateProductArgs = {
-  input?: Maybe<ProductInput>;
+  input: ProductInput;
 };
 
 export type MutationCreateProductCategoryArgs = {
@@ -378,7 +378,6 @@ export type ProductInput = {
   price: Scalars['Float'];
   productCategoryId: Scalars['ID'];
   companyId: Scalars['ID'];
-  count?: Maybe<Scalars['Int']>;
 };
 
 export type Product = {
@@ -427,13 +426,35 @@ export type Promotion = {
   priority: Scalars['Int'];
 };
 
+export type CompanyMinimumFragment = { __typename?: 'Company' } & Pick<Company, 'id' | 'name'>;
+
 export type ProductSimpleFragment = { __typename?: 'Product' } & Pick<
   Product,
   'id' | 'name' | 'slug' | 'price' | 'count'
 >;
 
+export type ProductCategoryMinimumFragment = { __typename?: 'ProductCategory' } & Pick<ProductCategory, 'id' | 'name'>;
+
+export type CompanyMinimumListQueryVariables = Exact<{ [key: string]: never }>;
+
+export type CompanyMinimumListQuery = { __typename?: 'Query' } & {
+  companies: Array<{ __typename?: 'Company' } & CompanyMinimumFragment>;
+};
+
+export type ProductSimpleListQueryVariables = Exact<{ [key: string]: never }>;
+
+export type ProductSimpleListQuery = { __typename?: 'Query' } & {
+  products: Array<Maybe<{ __typename?: 'Product' } & ProductSimpleFragment>>;
+};
+
+export type ProductCategoryMinimumListQueryVariables = Exact<{ [key: string]: never }>;
+
+export type ProductCategoryMinimumListQuery = { __typename?: 'Query' } & {
+  productCategories: Array<{ __typename?: 'ProductCategory' } & ProductCategoryMinimumFragment>;
+};
+
 export type ProductItemPageFragment = { __typename?: 'Product' } & {
-  productCategory: { __typename?: 'ProductCategory' } & Pick<ProductCategory, 'name'>;
+  productCategory: { __typename?: 'ProductCategory' } & Pick<ProductCategory, 'id' | 'name'>;
 } & ProductSimpleFragment;
 
 export type ProductItemPageQueryVariables = Exact<{
@@ -444,8 +465,16 @@ export type ProductItemPageQuery = { __typename?: 'Query' } & {
   product?: Maybe<{ __typename?: 'Product' } & ProductItemPageFragment>;
 };
 
+export type CreateProductMutationVariables = Exact<{
+  input: ProductInput;
+}>;
+
+export type CreateProductMutation = { __typename?: 'Mutation' } & {
+  createProduct: { __typename?: 'Product' } & ProductSimpleFragment;
+};
+
 export type ProductsListPageFragment = { __typename?: 'Product' } & {
-  productCategory: { __typename?: 'ProductCategory' } & Pick<ProductCategory, 'name'>;
+  productCategory: { __typename?: 'ProductCategory' } & ProductCategoryMinimumFragment;
 } & ProductSimpleFragment;
 
 export type ProductsListPageQueryVariables = Exact<{ [key: string]: never }>;
@@ -603,7 +632,7 @@ export type QueryResolvers<
   _?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   bonuses?: Resolver<Array<Maybe<ResolversTypes['Bonus']>>, ParentType, ContextType>;
   bonus?: Resolver<Maybe<ResolversTypes['Bonus']>, ParentType, ContextType, RequireFields<QueryBonusArgs, 'id'>>;
-  companies?: Resolver<Array<Maybe<ResolversTypes['Company']>>, ParentType, ContextType>;
+  companies?: Resolver<Array<ResolversTypes['Company']>, ParentType, ContextType>;
   company?: Resolver<Maybe<ResolversTypes['Company']>, ParentType, ContextType, RequireFields<QueryCompanyArgs, 'id'>>;
   discounts?: Resolver<Array<Maybe<ResolversTypes['Discount']>>, ParentType, ContextType>;
   discount?: Resolver<
@@ -627,7 +656,7 @@ export type QueryResolvers<
   >;
   products?: Resolver<Array<Maybe<ResolversTypes['Product']>>, ParentType, ContextType>;
   product?: Resolver<Maybe<ResolversTypes['Product']>, ParentType, ContextType, RequireFields<QueryProductArgs, 'id'>>;
-  productCategories?: Resolver<Array<Maybe<ResolversTypes['ProductCategory']>>, ParentType, ContextType>;
+  productCategories?: Resolver<Array<ResolversTypes['ProductCategory']>, ParentType, ContextType>;
   productCategory?: Resolver<
     Maybe<ResolversTypes['ProductCategory']>,
     ParentType,
@@ -760,7 +789,7 @@ export type MutationResolvers<
     ResolversTypes['Product'],
     ParentType,
     ContextType,
-    RequireFields<MutationCreateProductArgs, never>
+    RequireFields<MutationCreateProductArgs, 'input'>
   >;
   createProductCategory?: Resolver<
     ResolversTypes['ProductCategory'],
@@ -976,6 +1005,12 @@ export type Resolvers<ContextType = any> = {
  */
 export type IResolvers<ContextType = any> = Resolvers<ContextType>;
 
+export const CompanyMinimumFragmentDoc = gql`
+  fragment CompanyMinimum on Company {
+    id
+    name
+  }
+`;
 export const ProductSimpleFragmentDoc = gql`
   fragment ProductSimple on Product {
     id
@@ -989,20 +1024,163 @@ export const ProductItemPageFragmentDoc = gql`
   fragment ProductItemPage on Product {
     ...ProductSimple
     productCategory {
+      id
       name
     }
   }
   ${ProductSimpleFragmentDoc}
+`;
+export const ProductCategoryMinimumFragmentDoc = gql`
+  fragment ProductCategoryMinimum on ProductCategory {
+    id
+    name
+  }
 `;
 export const ProductsListPageFragmentDoc = gql`
   fragment ProductsListPage on Product {
     ...ProductSimple
     productCategory {
-      name
+      ...ProductCategoryMinimum
+    }
+  }
+  ${ProductSimpleFragmentDoc}
+  ${ProductCategoryMinimumFragmentDoc}
+`;
+export const CompanyMinimumListDocument = gql`
+  query companyMinimumList {
+    companies {
+      ...CompanyMinimum
+    }
+  }
+  ${CompanyMinimumFragmentDoc}
+`;
+
+/**
+ * __useCompanyMinimumListQuery__
+ *
+ * To run a query within a React component, call `useCompanyMinimumListQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCompanyMinimumListQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCompanyMinimumListQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useCompanyMinimumListQuery(
+  baseOptions?: Apollo.QueryHookOptions<CompanyMinimumListQuery, CompanyMinimumListQueryVariables>,
+) {
+  return Apollo.useQuery<CompanyMinimumListQuery, CompanyMinimumListQueryVariables>(
+    CompanyMinimumListDocument,
+    baseOptions,
+  );
+}
+export function useCompanyMinimumListLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<CompanyMinimumListQuery, CompanyMinimumListQueryVariables>,
+) {
+  return Apollo.useLazyQuery<CompanyMinimumListQuery, CompanyMinimumListQueryVariables>(
+    CompanyMinimumListDocument,
+    baseOptions,
+  );
+}
+export type CompanyMinimumListQueryHookResult = ReturnType<typeof useCompanyMinimumListQuery>;
+export type CompanyMinimumListLazyQueryHookResult = ReturnType<typeof useCompanyMinimumListLazyQuery>;
+export type CompanyMinimumListQueryResult = Apollo.QueryResult<
+  CompanyMinimumListQuery,
+  CompanyMinimumListQueryVariables
+>;
+export const ProductSimpleListDocument = gql`
+  query productSimpleList {
+    products {
+      ...ProductSimple
     }
   }
   ${ProductSimpleFragmentDoc}
 `;
+
+/**
+ * __useProductSimpleListQuery__
+ *
+ * To run a query within a React component, call `useProductSimpleListQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProductSimpleListQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProductSimpleListQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useProductSimpleListQuery(
+  baseOptions?: Apollo.QueryHookOptions<ProductSimpleListQuery, ProductSimpleListQueryVariables>,
+) {
+  return Apollo.useQuery<ProductSimpleListQuery, ProductSimpleListQueryVariables>(
+    ProductSimpleListDocument,
+    baseOptions,
+  );
+}
+export function useProductSimpleListLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<ProductSimpleListQuery, ProductSimpleListQueryVariables>,
+) {
+  return Apollo.useLazyQuery<ProductSimpleListQuery, ProductSimpleListQueryVariables>(
+    ProductSimpleListDocument,
+    baseOptions,
+  );
+}
+export type ProductSimpleListQueryHookResult = ReturnType<typeof useProductSimpleListQuery>;
+export type ProductSimpleListLazyQueryHookResult = ReturnType<typeof useProductSimpleListLazyQuery>;
+export type ProductSimpleListQueryResult = Apollo.QueryResult<ProductSimpleListQuery, ProductSimpleListQueryVariables>;
+export const ProductCategoryMinimumListDocument = gql`
+  query productCategoryMinimumList {
+    productCategories {
+      ...ProductCategoryMinimum
+    }
+  }
+  ${ProductCategoryMinimumFragmentDoc}
+`;
+
+/**
+ * __useProductCategoryMinimumListQuery__
+ *
+ * To run a query within a React component, call `useProductCategoryMinimumListQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProductCategoryMinimumListQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProductCategoryMinimumListQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useProductCategoryMinimumListQuery(
+  baseOptions?: Apollo.QueryHookOptions<ProductCategoryMinimumListQuery, ProductCategoryMinimumListQueryVariables>,
+) {
+  return Apollo.useQuery<ProductCategoryMinimumListQuery, ProductCategoryMinimumListQueryVariables>(
+    ProductCategoryMinimumListDocument,
+    baseOptions,
+  );
+}
+export function useProductCategoryMinimumListLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<ProductCategoryMinimumListQuery, ProductCategoryMinimumListQueryVariables>,
+) {
+  return Apollo.useLazyQuery<ProductCategoryMinimumListQuery, ProductCategoryMinimumListQueryVariables>(
+    ProductCategoryMinimumListDocument,
+    baseOptions,
+  );
+}
+export type ProductCategoryMinimumListQueryHookResult = ReturnType<typeof useProductCategoryMinimumListQuery>;
+export type ProductCategoryMinimumListLazyQueryHookResult = ReturnType<typeof useProductCategoryMinimumListLazyQuery>;
+export type ProductCategoryMinimumListQueryResult = Apollo.QueryResult<
+  ProductCategoryMinimumListQuery,
+  ProductCategoryMinimumListQueryVariables
+>;
 export const ProductItemPageDocument = gql`
   query productItemPage($id: ID!) {
     product(id: $id) {
@@ -1041,6 +1219,44 @@ export function useProductItemPageLazyQuery(
 export type ProductItemPageQueryHookResult = ReturnType<typeof useProductItemPageQuery>;
 export type ProductItemPageLazyQueryHookResult = ReturnType<typeof useProductItemPageLazyQuery>;
 export type ProductItemPageQueryResult = Apollo.QueryResult<ProductItemPageQuery, ProductItemPageQueryVariables>;
+export const CreateProductDocument = gql`
+  mutation createProduct($input: ProductInput!) {
+    createProduct(input: $input) {
+      ...ProductSimple
+    }
+  }
+  ${ProductSimpleFragmentDoc}
+`;
+export type CreateProductMutationFn = Apollo.MutationFunction<CreateProductMutation, CreateProductMutationVariables>;
+
+/**
+ * __useCreateProductMutation__
+ *
+ * To run a mutation, you first call `useCreateProductMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateProductMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createProductMutation, { data, loading, error }] = useCreateProductMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateProductMutation(
+  baseOptions?: Apollo.MutationHookOptions<CreateProductMutation, CreateProductMutationVariables>,
+) {
+  return Apollo.useMutation<CreateProductMutation, CreateProductMutationVariables>(CreateProductDocument, baseOptions);
+}
+export type CreateProductMutationHookResult = ReturnType<typeof useCreateProductMutation>;
+export type CreateProductMutationResult = Apollo.MutationResult<CreateProductMutation>;
+export type CreateProductMutationOptions = Apollo.BaseMutationOptions<
+  CreateProductMutation,
+  CreateProductMutationVariables
+>;
 export const ProductsListPageDocument = gql`
   query productsListPage {
     products {

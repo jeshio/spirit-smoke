@@ -1,8 +1,9 @@
-#import "@/gql/fragments/product.gql"
+#import "@/gql/fragments/product/simple.gql"
 
 fragment ProductItemPage on Product {
   ...ProductSimple
   productCategory {
+    id
     name
   }
 }

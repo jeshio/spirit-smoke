@@ -10,3 +10,4 @@ service-worker.js
 /dist
 /src/.umi/*
 __generated__
+*.less.d.ts

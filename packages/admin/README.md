@@ -21,3 +21,13 @@ export default defineConfig({
 ```
 
 и заполнить константы необходимыми значениями.
+
+## Добавление алиасов
+
+Алиасы нужно добавлять в 3-х местах:
+
+1. `./tsconfig.json`. Параметр `paths`
+
+2. `./jsconfig.json`. Параметр `paths`
+
+3. `./config/config.ts`. Параметр `alias`

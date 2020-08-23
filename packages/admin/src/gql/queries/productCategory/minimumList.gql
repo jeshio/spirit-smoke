@@ -1,0 +1,7 @@
+#import "@/gql/fragments/productCategory/minimum.gql"
+
+query productCategoryMinimumList {
+  productCategories {
+    ...ProductCategoryMinimum
+  }
+}

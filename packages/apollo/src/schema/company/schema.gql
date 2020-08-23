@@ -1,5 +1,5 @@
 extend type Query {
-  companies: [Company]!
+  companies: [Company!]!
   company(id: ID!): Company
 }
 

@@ -38,7 +38,9 @@ module.exports = (sequelize, DataTypes) => {
     },
     price: {
       type: DataTypes.FLOAT,
-      set: numberToPrice,
+      set(val) {
+        this.setDataValue('price', numberToPrice(val))
+      },
       validate: {
         notEmpty: true,
         isFloat: true,

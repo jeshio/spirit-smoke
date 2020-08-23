@@ -1,0 +1,7 @@
+#import "@/gql/fragments/company/minimum.gql"
+
+query companyMinimumList {
+  companies {
+    ...CompanyMinimum
+  }
+}

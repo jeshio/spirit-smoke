@@ -4,7 +4,7 @@ extend type Query {
 }
 
 extend type Mutation {
-  createProduct(input: ProductInput): Product!
+  createProduct(input: ProductInput!): Product!
 }
 
 input ProductInput {
@@ -13,7 +13,6 @@ input ProductInput {
   price: Float!
   productCategoryId: ID!
   companyId: ID!
-  count: Int
 }
 
 type Product {

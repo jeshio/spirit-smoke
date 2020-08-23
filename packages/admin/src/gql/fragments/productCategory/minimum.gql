@@ -1,0 +1,4 @@
+fragment ProductCategoryMinimum on ProductCategory {
+  id
+  name
+}

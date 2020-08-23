@@ -3,21 +3,33 @@ import classNames from 'classnames';
 import { Button } from 'antd';
 import config from './typeConfig';
 import styles from './index.less';
+import { ExceptionProps } from './types';
 
-class Exception extends React.PureComponent {
+class Exception extends React.PureComponent<ExceptionProps> {
   static defaultProps = {
     backText: 'вернуться на главную',
     redirect: '/',
   };
 
-  constructor(props) {
+  constructor(props: ExceptionProps) {
     super(props);
     this.state = {};
   }
 
   render() {
-    const { className, backText, linkElement = 'a', type, title, desc, img, actions, redirect, ...rest } = this.props;
-    const pageType = type in config ? type : '404';
+    const {
+      className,
+      backText,
+      linkElement = 'a',
+      type,
+      title,
+      desc,
+      img,
+      actions,
+      redirect = '/',
+      ...rest
+    } = this.props;
+    const pageType = type && type in config ? type : '404';
     const clsString = classNames(styles.exception, className);
     return (
       <div className={clsString} {...rest}>
