@@ -23,6 +23,8 @@ type Product {
   count: Int!
   productCategory: ProductCategory!
   company: Company!
+  createdAt: String
+  updatedAt: String
   features: [Feature]!
   discounts: [Discount]!
   orderProducts: [OrderProduct]!

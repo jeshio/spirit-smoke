@@ -6,6 +6,10 @@ fragment ProductItemPage on Product {
     id
     name
   }
+  company {
+    id
+    name
+  }
 }
 
 query productItemPage($id: ID!) {

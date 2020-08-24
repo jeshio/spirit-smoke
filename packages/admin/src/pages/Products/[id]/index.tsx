@@ -26,14 +26,17 @@ const ProductPage: React.FunctionComponent<IProductPageProps> = (props) => {
   if (!product) return <Exception type="404" />;
 
   return (
-    <UPageContainer title={product.name} pageTitle={`Продукт ${product.name}`}>
+    <UPageContainer title={`${product.company.name}, ${product.name}`} pageTitle={`Продукт ${product.name}`}>
       <Card>
         <UDescriptions title={`Информация о продукте (ID ${product.id})`}>
+          <UDescriptions.Item label="Осталось штук">{product.count}</UDescriptions.Item>
+          <UDescriptions.Item label="Текущая цена">{product.price} ₽</UDescriptions.Item>
           <UDescriptions.Item label="Категория">{product.productCategory.name}</UDescriptions.Item>
+          <UDescriptions.Item label="Компания">{product.company.name}</UDescriptions.Item>
           <UDescriptions.Item label="Название">{product.name}</UDescriptions.Item>
           <UDescriptions.Item label="Slug">{product.slug}</UDescriptions.Item>
-          <UDescriptions.Item label="Осталось штук">{product.count}</UDescriptions.Item>
-          <UDescriptions.Item label="Текущая цена">{product.price}</UDescriptions.Item>
+          <UDescriptions.Item label="Добавлен">{product.createdAt}</UDescriptions.Item>
+          <UDescriptions.Item label="Обновлён">{product.updatedAt}</UDescriptions.Item>
         </UDescriptions>
       </Card>
     </UPageContainer>

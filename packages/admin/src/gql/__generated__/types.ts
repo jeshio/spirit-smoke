@@ -389,6 +389,8 @@ export type Product = {
   count: Scalars['Int'];
   productCategory: ProductCategory;
   company: Company;
+  createdAt?: Maybe<Scalars['String']>;
+  updatedAt?: Maybe<Scalars['String']>;
   features: Array<Maybe<Feature>>;
   discounts: Array<Maybe<Discount>>;
   orderProducts: Array<Maybe<OrderProduct>>;
@@ -430,7 +432,7 @@ export type CompanyMinimumFragment = { __typename?: 'Company' } & Pick<Company, 
 
 export type ProductSimpleFragment = { __typename?: 'Product' } & Pick<
   Product,
-  'id' | 'name' | 'slug' | 'price' | 'count'
+  'id' | 'name' | 'slug' | 'price' | 'count' | 'createdAt' | 'updatedAt'
 >;
 
 export type ProductCategoryMinimumFragment = { __typename?: 'ProductCategory' } & Pick<ProductCategory, 'id' | 'name'>;
@@ -455,6 +457,7 @@ export type ProductCategoryMinimumListQuery = { __typename?: 'Query' } & {
 
 export type ProductItemPageFragment = { __typename?: 'Product' } & {
   productCategory: { __typename?: 'ProductCategory' } & Pick<ProductCategory, 'id' | 'name'>;
+  company: { __typename?: 'Company' } & Pick<Company, 'id' | 'name'>;
 } & ProductSimpleFragment;
 
 export type ProductItemPageQueryVariables = Exact<{
@@ -946,6 +949,8 @@ export type ProductResolvers<
   count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   productCategory?: Resolver<ResolversTypes['ProductCategory'], ParentType, ContextType>;
   company?: Resolver<ResolversTypes['Company'], ParentType, ContextType>;
+  createdAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  updatedAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   features?: Resolver<Array<Maybe<ResolversTypes['Feature']>>, ParentType, ContextType>;
   discounts?: Resolver<Array<Maybe<ResolversTypes['Discount']>>, ParentType, ContextType>;
   orderProducts?: Resolver<Array<Maybe<ResolversTypes['OrderProduct']>>, ParentType, ContextType>;
@@ -1018,12 +1023,18 @@ export const ProductSimpleFragmentDoc = gql`
     slug
     price
     count
+    createdAt
+    updatedAt
   }
 `;
 export const ProductItemPageFragmentDoc = gql`
   fragment ProductItemPage on Product {
     ...ProductSimple
     productCategory {
+      id
+      name
+    }
+    company {
       id
       name
     }

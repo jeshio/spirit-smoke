@@ -17,12 +17,15 @@ interface IAddProductProps extends RouteComponentProps {}
 
 const AddProduct: React.FunctionComponent<IAddProductProps> = ({ history }) => {
   const [createProduct, createProductRequest] = useCreateProductMutation({
-    onCompleted: () => {
-      notification.success({
-        message: 'Продукт успешно добавлен!',
-      });
-      history.push('/products');
+    onCompleted: (r) => {
+      if (!('errors' in r)) {
+        notification.success({
+          message: 'Продукт успешно добавлен!',
+        });
+        history.push('/products');
+      }
     },
+    onError: () => {},
   });
   const categoriesRequest = useProductCategoryMinimumListQuery();
   const companyRequest = useCompanyMinimumListQuery();
@@ -37,12 +40,12 @@ const AddProduct: React.FunctionComponent<IAddProductProps> = ({ history }) => {
 
   return (
     <UPageContainer title="Добавление продукта">
-      <Card loading={createProductRequest.loading}>
-        <UForm onFinish={handleSubmit}>
+      <UForm onFinish={handleSubmit}>
+        <Card loading={categoriesRequest.loading || companyRequest.loading}>
           <URow>
             <UCol>
               <UForm.Item label="Категория" name="productCategoryId" required>
-                <Select loading={categoriesRequest.loading}>
+                <Select>
                   {categoriesRequest.data?.productCategories.map(({ id, name }) => (
                     <Select.Option value={id} key={id}>
                       ({id}) {name}
@@ -53,7 +56,7 @@ const AddProduct: React.FunctionComponent<IAddProductProps> = ({ history }) => {
             </UCol>
             <UCol>
               <UForm.Item label="Производитель" name="companyId" required>
-                <Select loading={companyRequest.loading}>
+                <Select>
                   {companyRequest.data?.companies.map(({ id, name }) => (
                     <Select.Option value={id} key={id}>
                       ({id}) {name}
@@ -78,7 +81,7 @@ const AddProduct: React.FunctionComponent<IAddProductProps> = ({ history }) => {
                 <Input name="count" disabled value="0" />
               </UForm.Item>
               <UForm.Item label="Цена (₽)" required name="price">
-                <InputNumber />
+                <InputNumber min={0} />
               </UForm.Item>
             </UCol>
           </URow>
@@ -86,15 +89,17 @@ const AddProduct: React.FunctionComponent<IAddProductProps> = ({ history }) => {
           <URow>
             <UCol>
               <UForm.Item>
-                <UButton htmlType="submit" type="primary">
+                <UButton htmlType="submit" type="primary" loading={createProductRequest.loading}>
                   Добавить
                 </UButton>
-                <UButton>Отмена</UButton>
+                <UButton href="/products" type="link" loading={createProductRequest.loading}>
+                  Отмена
+                </UButton>
               </UForm.Item>
             </UCol>
           </URow>
-        </UForm>
-      </Card>
+        </Card>
+      </UForm>
     </UPageContainer>
   );
 };

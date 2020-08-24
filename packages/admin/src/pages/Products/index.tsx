@@ -5,6 +5,7 @@ import { ProductsListPageFragment, useProductsListPageQuery } from '@/gql/__gene
 import { IColumn } from '@/ui-components/UTable/types';
 import { Link } from 'umi';
 import UPageContainer from '@/ui-components/UPageContainer';
+import UButton from '@/ui-components/UButton';
 
 const columns: IColumn<ProductsListPageFragment>[] = [
   {
@@ -29,6 +30,10 @@ const columns: IColumn<ProductsListPageFragment>[] = [
     title: 'Категория',
     field: ['productCategory', 'name'],
   },
+  {
+    title: 'Создан',
+    field: 'createdAt',
+  },
 ];
 
 interface IProductsProps {}
@@ -41,7 +46,14 @@ const Products: React.FunctionComponent<IProductsProps> = () => {
   if (error) return <div>Ошибка :(</div>;
 
   return (
-    <UPageContainer title="Список продуктов">
+    <UPageContainer
+      title="Список продуктов"
+      extra={
+        <UButton href="/products/add" type="primary">
+          Добавить продукт
+        </UButton>
+      }
+    >
       <UTable<ProductsListPageFragment | any> columns={columns} dataSource={data?.products || []} />
     </UPageContainer>
   );

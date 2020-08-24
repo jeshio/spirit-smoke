@@ -1,6 +1,8 @@
 const resolvers = {
   Query: {
-    products: async (parent, args, { models }) => models.product.findAll(),
+    products: async (parent, args, { models }) => models.product.findAll({
+      order: [['createdAt', 'DESC']],
+    }),
     product: async (parent, { id }, { models }) => models.product.findByPk(id),
   },
 

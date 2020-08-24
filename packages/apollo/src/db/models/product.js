@@ -44,7 +44,7 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         notEmpty: true,
         isFloat: true,
-        min: 1,
+        min: 0,
       },
     },
     count: {

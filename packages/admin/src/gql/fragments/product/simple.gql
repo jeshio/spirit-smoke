@@ -4,4 +4,6 @@ fragment ProductSimple on Product {
   slug
   price
   count
+  createdAt
+  updatedAt
 }
