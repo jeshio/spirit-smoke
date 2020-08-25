@@ -4,6 +4,7 @@ import { notification } from 'antd';
 import { useUpdateProductMutation, useProductSimpleItemQuery } from '@/gql/__generated__/types';
 import { RouteComponentProps } from 'react-router';
 import Exception from '@/components/Exception';
+import ULoading from '@/ui-components/ULoading';
 import Form, { IFormProps } from './Form';
 
 interface IAddProductProps
@@ -32,7 +33,7 @@ const UpdateProduct: React.FunctionComponent<IAddProductProps> = (props) => {
 
   if (productRequest.error) return <Exception type="404" />;
 
-  if (productRequest.loading || !productRequest.data) return <div>loading..</div>;
+  if (productRequest.loading || !productRequest.data) return <ULoading />;
 
   const { product } = productRequest.data;
 
@@ -46,7 +47,7 @@ const UpdateProduct: React.FunctionComponent<IAddProductProps> = (props) => {
   };
 
   return (
-    <UPageContainer>
+    <UPageContainer title={`Редактирование продукта ${product.name}`}>
       <Form onSubmit={handleSubmit} loading={updateProductRequest.loading} product={product} isUpdate />
     </UPageContainer>
   );

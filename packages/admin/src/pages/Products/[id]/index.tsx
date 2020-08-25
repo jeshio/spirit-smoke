@@ -7,6 +7,8 @@ import { Card } from 'antd';
 import UDescriptions from '@/ui-components/UDescriptions';
 import UButton from '@/ui-components/UButton';
 import UPopconfirm from '@/ui-components/UPopconfirm';
+import ULoading from '@/ui-components/ULoading';
+import { DeleteFilled, EditFilled } from '@ant-design/icons';
 
 interface IProductPageProps
   extends RouteComponentProps<{
@@ -33,7 +35,7 @@ const ProductPage: React.FunctionComponent<IProductPageProps> = (props) => {
 
   if (error) return <div>Ошибка :(</div>;
 
-  if (loading) return <div>Загрузка</div>;
+  if (loading) return <ULoading tip="Загрузка продукта" />;
 
   if (!product) return <Exception type="404" />;
 
@@ -44,9 +46,11 @@ const ProductPage: React.FunctionComponent<IProductPageProps> = (props) => {
       extra={
         <>
           <UPopconfirm onConfirm={deleteProduct as any}>
-            <UButton danger>Удалить</UButton>
+            <UButton danger icon={<DeleteFilled />}>
+              Удалить
+            </UButton>
           </UPopconfirm>
-          <UButton type="primary" href={`/products/${product.id}/edit`}>
+          <UButton type="primary" href={`/products/${product.id}/edit`} icon={<EditFilled />}>
             Редактировать
           </UButton>
         </>

@@ -12,11 +12,16 @@ import { IColumn } from '@/ui-components/UTable/types';
 import { Link } from 'umi';
 import UPageContainer from '@/ui-components/UPageContainer';
 import UButton from '@/ui-components/UButton';
-import { EditFilled, DeleteFilled } from '@ant-design/icons';
+import { EditFilled, DeleteFilled, PlusOutlined } from '@ant-design/icons';
 import { notification } from 'antd';
 import UPopconfirm from '@/ui-components/UPopconfirm';
+import ULoading from '@/ui-components/ULoading';
 
 const columns = (deleteProduct: (id: string) => any): IColumn<ProductsListPageFragment>[] => [
+  {
+    title: 'ID',
+    field: 'id',
+  },
   {
     title: 'Имя',
     field: 'name',
@@ -108,7 +113,7 @@ const Products: React.FunctionComponent<IProductsProps> = () => {
       },
     });
 
-  if (!data) return <div>Загрузка</div>;
+  if (!data) return <ULoading tip="Загрузка продуктов" />;
 
   if (error) return <div>Ошибка :(</div>;
 
@@ -116,7 +121,7 @@ const Products: React.FunctionComponent<IProductsProps> = () => {
     <UPageContainer
       title="Список продуктов"
       extra={
-        <UButton href="/products/add" type="primary">
+        <UButton href="/products/add" type="primary" icon={<PlusOutlined />}>
           Добавить продукт
         </UButton>
       }
