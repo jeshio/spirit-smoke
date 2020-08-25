@@ -1,0 +1,6 @@
+
+#import "@/gql/fragments/product/simple.gql"
+
+mutation deleteProduct($id: ID!) {
+	deleteProduct(id: $id)
+}

@@ -1,13 +1,19 @@
 overwrite: true
-schema: "http://wsl.ru:4000/graphql"
-documents: "src/**/*.gql"
+schema: http://wsl.ru:4000/graphql
+documents: src/**/*.gql
 generates:
+  ./src/gql/__generated__/introspection-result.ts:
+    plugins:
+      - fragment-matcher
+    config:
+      apolloClientVersion: 3
+      useExplicitTyping: true
   ./src/gql/__generated__/types.ts:
     plugins:
-      - "typescript"
-      - "typescript-operations"
-      - "typescript-resolvers"
-      - "typescript-react-apollo"
+      - typescript
+      - typescript-operations
+      - typescript-resolvers
+      - typescript-react-apollo
   ./src/gql/__generated__/graphql.schema.json:
     plugins:
-      - "introspection"
+      - introspection

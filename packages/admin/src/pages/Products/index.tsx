@@ -1,13 +1,22 @@
 import * as React from 'react';
 import UTable from '@/ui-components/UTable';
 
-import { ProductsListPageFragment, useProductsListPageQuery } from '@/gql/__generated__/types';
+import {
+  ProductsListPageFragment,
+  useProductsListPageQuery,
+  useDeleteProductMutation,
+  ProductsListPageDocument,
+  ProductsListPageQueryResult,
+} from '@/gql/__generated__/types';
 import { IColumn } from '@/ui-components/UTable/types';
 import { Link } from 'umi';
 import UPageContainer from '@/ui-components/UPageContainer';
 import UButton from '@/ui-components/UButton';
+import { EditFilled, DeleteFilled } from '@ant-design/icons';
+import { notification } from 'antd';
+import UPopconfirm from '@/ui-components/UPopconfirm';
 
-const columns: IColumn<ProductsListPageFragment>[] = [
+const columns = (deleteProduct: (id: string) => any): IColumn<ProductsListPageFragment>[] => [
   {
     title: 'Имя',
     field: 'name',
@@ -34,14 +43,72 @@ const columns: IColumn<ProductsListPageFragment>[] = [
     title: 'Создан',
     field: 'createdAt',
   },
+  {
+    title: '',
+    field: 'id',
+    key: 'controls',
+    disableSort: true,
+    render: (id) => (
+      <>
+        <UPopconfirm onConfirm={() => deleteProduct(id)}>
+          <UButton type="link" danger>
+            <DeleteFilled />
+          </UButton>
+        </UPopconfirm>
+        <Link to={`/products/${id}/edit`}>
+          <EditFilled />
+        </Link>
+      </>
+    ),
+  },
 ];
 
 interface IProductsProps {}
 
 const Products: React.FunctionComponent<IProductsProps> = () => {
-  const { loading, error, data } = useProductsListPageQuery();
+  const { error, data } = useProductsListPageQuery();
+  const [deleteProduct] = useDeleteProductMutation({
+    update: (cache, { data: responseData }) => {
+      const deletedProductId = responseData?.deleteProduct;
+      const queryResult = cache.readQuery<ProductsListPageQueryResult['data']>({
+        query: ProductsListPageDocument,
+      });
+      if (queryResult && deletedProductId) {
+        const products = [...queryResult.products];
 
-  if (loading) return <div>Загрузка</div>;
+        const deletedIndex = products.findIndex((product) => product.id === deletedProductId);
+
+        if (deletedIndex < 0) return;
+
+        products.splice(deletedIndex, 1);
+
+        cache.writeQuery({
+          query: ProductsListPageDocument,
+          data: {
+            products,
+          },
+        });
+      }
+    },
+    onCompleted: (response) => {
+      if (!('error' in response)) {
+        notification.success({ message: 'Продукт удалён.' });
+      }
+    },
+    onError: () => {},
+  });
+  const handleDeleteProduct = (id: string) =>
+    deleteProduct({
+      variables: {
+        id,
+      },
+      optimisticResponse: {
+        __typename: 'Mutation',
+        deleteProduct: id,
+      },
+    });
+
+  if (!data) return <div>Загрузка</div>;
 
   if (error) return <div>Ошибка :(</div>;
 
@@ -54,7 +121,10 @@ const Products: React.FunctionComponent<IProductsProps> = () => {
         </UButton>
       }
     >
-      <UTable<ProductsListPageFragment | any> columns={columns} dataSource={data?.products || []} />
+      <UTable<ProductsListPageFragment | any>
+        columns={columns(handleDeleteProduct)}
+        dataSource={data?.products || []}
+      />
     </UPageContainer>
   );
 };

@@ -12,4 +12,6 @@ export interface IColumn<RecordType> {
   render?: ColumnProps<RecordType>['render'];
   /** Минимальный размер экрана для отображения */
   responsive?: ColumnProps<RecordType>['responsive'];
+  /** Отключить сортировку для колонки */
+  disableSort?: boolean;
 }

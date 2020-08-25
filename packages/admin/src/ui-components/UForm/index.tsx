@@ -16,14 +16,7 @@ const UForm: React.FunctionComponent<IUFormProps> & {
     }),
     [props.validateMessages],
   );
-  return (
-    <Form
-      size="large"
-      labelCol={{ span: 6, sm: 6, md: 9, lg: 9, xl: 7, xxl: 7 }}
-      validateMessages={allValidateMessages}
-      {...props}
-    />
-  );
+  return <Form size="large" validateMessages={allValidateMessages} {...props} />;
 };
 
 UForm.Item = UFormItem;

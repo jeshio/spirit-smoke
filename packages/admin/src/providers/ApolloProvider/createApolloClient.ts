@@ -1,4 +1,5 @@
 import { ApolloClient, InMemoryCache, from, HttpLink } from '@apollo/client';
+import introspectionResult from '@/gql/__generated__/introspection-result';
 import errorHandler from './errorHandler';
 
 const httpLink = new HttpLink({
@@ -9,7 +10,9 @@ const link = from([errorHandler, httpLink]);
 
 const createApolloClient = () => {
   const client = new ApolloClient({
-    cache: new InMemoryCache(),
+    cache: new InMemoryCache({
+      possibleTypes: introspectionResult.possibleTypes,
+    }),
     link,
     defaultOptions: {
       watchQuery: {

@@ -1,0 +1,9 @@
+#import "@/gql/fragments/product/simple.gql"
+
+query productSimpleItem($id: ID!) {
+  product(id: $id) {
+    ...ProductSimple
+    productCategoryId
+    companyId
+  }
+}

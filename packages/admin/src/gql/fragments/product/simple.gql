@@ -1,4 +1,4 @@
-fragment ProductSimple on Product {
+fragment ProductSimple on IProduct {
   id
   name
   slug

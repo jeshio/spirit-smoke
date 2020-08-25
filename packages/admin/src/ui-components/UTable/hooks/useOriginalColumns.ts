@@ -9,11 +9,11 @@ import { IColumn } from '../types';
  */
 export default function useOriginalColumns(columns: IColumn<any>[]): ColumnsType<any> {
   const result = useMemo(() => {
-    const cols = columns.map(({ title, field, key, render, responsive }) => ({
+    const cols = columns.map(({ title, field, key, render, responsive, disableSort }) => ({
       title,
       dataIndex: field,
       key: key || field,
-      sorter: (a, b) => `${get(a, field)}`.localeCompare(get(b, field)),
+      sorter: disableSort ? undefined : (a, b) => `${get(a, field)}`.localeCompare(get(b, field)),
       render,
       responsive,
     })) as ColumnsType<any>;

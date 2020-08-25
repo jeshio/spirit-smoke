@@ -1,10 +1,12 @@
 import * as React from 'react';
 import { RouteComponentProps } from 'react-router';
-import { useProductItemPageQuery } from '@/gql/__generated__/types';
+import { useProductItemPageQuery, useDeleteProductMutation } from '@/gql/__generated__/types';
 import Exception from '@/components/Exception';
 import UPageContainer from '@/ui-components/UPageContainer';
 import { Card } from 'antd';
 import UDescriptions from '@/ui-components/UDescriptions';
+import UButton from '@/ui-components/UButton';
+import UPopconfirm from '@/ui-components/UPopconfirm';
 
 interface IProductPageProps
   extends RouteComponentProps<{
@@ -12,10 +14,20 @@ interface IProductPageProps
   }> {}
 
 const ProductPage: React.FunctionComponent<IProductPageProps> = (props) => {
+  const { id } = props.match.params;
   const { loading, error, data } = useProductItemPageQuery({
     variables: {
-      id: props.match.params.id,
+      id,
     },
+  });
+  const [deleteProduct] = useDeleteProductMutation({
+    variables: {
+      id,
+    },
+    onCompleted: () => {
+      props.history.push('/products');
+    },
+    onError: () => {},
   });
   const { product } = data || {};
 
@@ -26,7 +38,20 @@ const ProductPage: React.FunctionComponent<IProductPageProps> = (props) => {
   if (!product) return <Exception type="404" />;
 
   return (
-    <UPageContainer title={`${product.company.name}, ${product.name}`} pageTitle={`Продукт ${product.name}`}>
+    <UPageContainer
+      title={`${product.company.name}, ${product.name}`}
+      pageTitle={`Продукт ${product.name}`}
+      extra={
+        <>
+          <UPopconfirm onConfirm={deleteProduct as any}>
+            <UButton danger>Удалить</UButton>
+          </UPopconfirm>
+          <UButton type="primary" href={`/products/${product.id}/edit`}>
+            Редактировать
+          </UButton>
+        </>
+      }
+    >
       <Card>
         <UDescriptions title={`Информация о продукте (ID ${product.id})`}>
           <UDescriptions.Item label="Осталось штук">{product.count}</UDescriptions.Item>

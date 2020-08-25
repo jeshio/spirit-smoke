@@ -1,7 +1,7 @@
 const resolvers = {
   Query: {
     products: async (parent, args, { models }) => models.product.findAll({
-      order: [['createdAt', 'DESC']],
+      order: [['createdAt', 'DESC'], ['updatedAt', 'DESC'], ['name']],
     }),
     product: async (parent, { id }, { models }) => models.product.findByPk(id),
   },
@@ -19,6 +19,24 @@ const resolvers = {
       productCategoryId,
       companyId,
     }),
+    updateProduct: (parent, {
+      id,
+      input: {
+        name, slug, price, count, productCategoryId, companyId,
+      },
+    }, { models }) => models.product.update({
+      name,
+      slug,
+      price,
+      count,
+      productCategoryId,
+      companyId,
+    }, { where: { id }, returning: true }).then(([, [product]]) => product),
+    deleteProduct: (parent, { id }, { models }) => models.product.destroy({
+      where: {
+        id,
+      },
+    }).then(() => id),
   },
 
   Product: {

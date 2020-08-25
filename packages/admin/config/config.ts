@@ -92,6 +92,12 @@ export default defineConfig({
                   component: './Products/Add',
                 },
                 {
+                  path: '/products/:id/edit',
+                  name: 'Редактирование продукта',
+                  hideInMenu: true,
+                  component: './Products/Update',
+                },
+                {
                   path: '/products/:id',
                   name: 'Продукт',
                   hideInMenu: true,

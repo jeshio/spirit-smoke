@@ -1,10 +1,12 @@
 extend type Query {
-  products: [Product]!
-  product(id: ID!): Product
+  products: [Product!]!
+  product(id: ID!): Product!
 }
 
 extend type Mutation {
-  createProduct(input: ProductInput!): Product!
+  createProduct(input: ProductInput!): ProductSimple!
+  updateProduct(id: ID!, input: ProductInput!): ProductSimple!
+  deleteProduct(id: ID!): ID!
 }
 
 input ProductInput {
@@ -15,16 +17,42 @@ input ProductInput {
   companyId: ID!
 }
 
-type Product {
+interface IProduct {
   id: ID!
   name: String!
   slug: String!
   price: Float!
   count: Int!
-  productCategory: ProductCategory!
-  company: Company!
+  productCategoryId: ID!
+  companyId: ID!
   createdAt: String
   updatedAt: String
+}
+
+type ProductSimple implements IProduct {
+  id: ID!
+  name: String!
+  slug: String!
+  price: Float!
+  count: Int!
+  productCategoryId: ID!
+  companyId: ID!
+  createdAt: String
+  updatedAt: String
+}
+
+type Product implements IProduct {
+  id: ID!
+  name: String!
+  slug: String!
+  price: Float!
+  count: Int!
+  productCategoryId: ID!
+  companyId: ID!
+  createdAt: String
+  updatedAt: String
+  company: Company!
+  productCategory: ProductCategory!
   features: [Feature]!
   discounts: [Discount]!
   orderProducts: [OrderProduct]!
