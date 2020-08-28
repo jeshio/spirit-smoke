@@ -10,6 +10,11 @@ const resolvers = {
     }, { models }) => models.company.create({
       name, slug,
     }),
+    deleteCompany: (parent, { id }, { models }) => models.company.destroy({
+      where: {
+        id,
+      },
+    }).then(() => id),
   },
 
   Company: {

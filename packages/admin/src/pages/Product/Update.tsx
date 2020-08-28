@@ -7,12 +7,12 @@ import Exception from '@/components/Exception';
 import ULoading from '@/ui-components/ULoading';
 import Form, { IFormProps } from './Form';
 
-interface IAddProductProps
+interface IUpdateProductPageProps
   extends RouteComponentProps<{
     id: string;
   }> {}
 
-const UpdateProduct: React.FunctionComponent<IAddProductProps> = (props) => {
+const UpdateProductPage: React.FunctionComponent<IUpdateProductPageProps> = (props) => {
   const id = props.match.params.id || '';
   const productRequest = useProductSimpleItemQuery({
     variables: {
@@ -31,7 +31,7 @@ const UpdateProduct: React.FunctionComponent<IAddProductProps> = (props) => {
     onError: () => {},
   });
 
-  if (productRequest.error) return <Exception type="404" />;
+  if (productRequest.error) return <Exception apolloError={productRequest.error} />;
 
   if (productRequest.loading || !productRequest.data) return <ULoading />;
 
@@ -53,4 +53,4 @@ const UpdateProduct: React.FunctionComponent<IAddProductProps> = (props) => {
   );
 };
 
-export default UpdateProduct;
+export default UpdateProductPage;

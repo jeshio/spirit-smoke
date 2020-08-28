@@ -9,11 +9,15 @@ const resolvers = {
   Mutation: {
     createProduct: (parent, {
       input: {
-        name, slug, price, count, productCategoryId, companyId,
+        name, slug,
+        description,
+        imageUrl, price, count, productCategoryId, companyId,
       },
     }, { models }) => models.product.create({
       name,
       slug,
+      description,
+      imageUrl,
       price,
       count,
       productCategoryId,
@@ -22,11 +26,15 @@ const resolvers = {
     updateProduct: (parent, {
       id,
       input: {
-        name, slug, price, count, productCategoryId, companyId,
+        name, slug,
+        description,
+        imageUrl, price, count, productCategoryId, companyId,
       },
     }, { models }) => models.product.update({
       name,
       slug,
+      description,
+      imageUrl,
       price,
       count,
       productCategoryId,

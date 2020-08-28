@@ -84,25 +84,62 @@ export default defineConfig({
                 {
                   path: '/products/list',
                   name: 'Список',
-                  component: './Products',
+                  hideInMenu: true,
+                  component: './Product/List',
                 },
                 {
                   path: '/products/add',
                   name: 'Добавить продукт',
-                  component: './Products/Add',
+                  hideInMenu: true,
+                  component: './Product/Add',
                 },
                 {
                   path: '/products/:id/edit',
                   name: 'Редактирование продукта',
                   hideInMenu: true,
-                  component: './Products/Update',
+                  component: './Product/Update',
                 },
                 {
                   path: '/products/:id',
                   name: 'Продукт',
                   hideInMenu: true,
-                  component: './Products/[id]',
+                  component: './Product/Item',
                 },
+              ],
+            },
+            {
+              path: '/companies',
+              redirect: '/companies/list',
+              exact: true,
+            },
+            {
+              name: 'Производители',
+              icon: 'deploymentUnit',
+              path: '/companies',
+              routes: [
+                {
+                  path: '/companies/list',
+                  name: 'Список',
+                  component: './Company/List',
+                  hideInMenu: true,
+                },
+                // {
+                //   path: '/companies/add',
+                //   name: 'Добавить продукт',
+                //   component: './Company/Add',
+                // },
+                // {
+                //   path: '/companies/:id/edit',
+                //   name: 'Редактирование продукта',
+                //   hideInMenu: true,
+                //   component: './Company/Update',
+                // },
+                // {
+                //   path: '/companies/:id',
+                //   name: 'Продукт',
+                //   hideInMenu: true,
+                //   component: './Company/[id]',
+                // },
               ],
             },
             {

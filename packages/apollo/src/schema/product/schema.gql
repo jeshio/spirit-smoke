@@ -12,6 +12,8 @@ extend type Mutation {
 input ProductInput {
   name: String!
   slug: String!
+  description: String!
+  imageUrl: String!
   price: Float!
   productCategoryId: ID!
   companyId: ID!
@@ -21,38 +23,44 @@ interface IProduct {
   id: ID!
   name: String!
   slug: String!
+  description: String!
+  imageUrl: String!
   price: Float!
   count: Int!
   productCategoryId: ID!
   companyId: ID!
-  createdAt: String
-  updatedAt: String
+  createdAt: String!
+  updatedAt: String!
 }
 
 type ProductSimple implements IProduct {
   id: ID!
   name: String!
   slug: String!
+  description: String!
+  imageUrl: String!
   price: Float!
   count: Int!
   productCategoryId: ID!
   companyId: ID!
-  createdAt: String
-  updatedAt: String
+  createdAt: String!
+  updatedAt: String!
 }
 
 type Product implements IProduct {
   id: ID!
   name: String!
   slug: String!
+  description: String!
+  imageUrl: String!
   price: Float!
   count: Int!
   productCategoryId: ID!
   companyId: ID!
-  createdAt: String
-  updatedAt: String
-  company: Company!
-  productCategory: ProductCategory!
+  createdAt: String!
+  updatedAt: String!
+  company: Company
+  productCategory: ProductCategory
   features: [Feature]!
   discounts: [Discount]!
   orderProducts: [OrderProduct]!

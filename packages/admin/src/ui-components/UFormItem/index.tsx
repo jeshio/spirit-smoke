@@ -12,7 +12,7 @@ const UFormItem: React.FunctionComponent<IUFormItemProps> = (props) => {
   const rules = props.rules || [];
   let wrapperColDefault: ColProps = {};
 
-  if (!withLabel) {
+  if (!withLabel && !props.colon) {
     wrapperColDefault = { sm: { offset: 5 }, md: { offset: 7 }, lg: { offset: 6 }, xl: { offset: 5 } };
   }
 

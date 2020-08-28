@@ -85,6 +85,7 @@ export type Mutation = {
   createBonus: Bonus;
   addOrderBonus: Bonus;
   createCompany: Company;
+  deleteCompany: Scalars['ID'];
   createDiscount: Discount;
   addProductCategoryDiscount: Discount;
   addProductDiscount: Discount;
@@ -119,6 +120,10 @@ export type MutationAddOrderBonusArgs = {
 export type MutationCreateCompanyArgs = {
   name: Scalars['String'];
   slug: Scalars['String'];
+};
+
+export type MutationDeleteCompanyArgs = {
+  id: Scalars['ID'];
 };
 
 export type MutationCreateDiscountArgs = {
@@ -251,6 +256,8 @@ export type Company = {
   name: Scalars['String'];
   slug: Scalars['String'];
   products: Array<Maybe<Product>>;
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
 };
 
 export type DiscountInput = {
@@ -386,6 +393,8 @@ export type Procurement = {
 export type ProductInput = {
   name: Scalars['String'];
   slug: Scalars['String'];
+  description: Scalars['String'];
+  imageUrl: Scalars['String'];
   price: Scalars['Float'];
   productCategoryId: Scalars['ID'];
   companyId: Scalars['ID'];
@@ -395,12 +404,14 @@ export type IProduct = {
   id: Scalars['ID'];
   name: Scalars['String'];
   slug: Scalars['String'];
+  description: Scalars['String'];
+  imageUrl: Scalars['String'];
   price: Scalars['Float'];
   count: Scalars['Int'];
   productCategoryId: Scalars['ID'];
   companyId: Scalars['ID'];
-  createdAt?: Maybe<Scalars['String']>;
-  updatedAt?: Maybe<Scalars['String']>;
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
 };
 
 export type ProductSimple = IProduct & {
@@ -408,12 +419,14 @@ export type ProductSimple = IProduct & {
   id: Scalars['ID'];
   name: Scalars['String'];
   slug: Scalars['String'];
+  description: Scalars['String'];
+  imageUrl: Scalars['String'];
   price: Scalars['Float'];
   count: Scalars['Int'];
   productCategoryId: Scalars['ID'];
   companyId: Scalars['ID'];
-  createdAt?: Maybe<Scalars['String']>;
-  updatedAt?: Maybe<Scalars['String']>;
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
 };
 
 export type Product = IProduct & {
@@ -421,12 +434,14 @@ export type Product = IProduct & {
   id: Scalars['ID'];
   name: Scalars['String'];
   slug: Scalars['String'];
+  description: Scalars['String'];
+  imageUrl: Scalars['String'];
   price: Scalars['Float'];
   count: Scalars['Int'];
   productCategoryId: Scalars['ID'];
   companyId: Scalars['ID'];
-  createdAt?: Maybe<Scalars['String']>;
-  updatedAt?: Maybe<Scalars['String']>;
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
   company: Company;
   productCategory: ProductCategory;
   features: Array<Maybe<Feature>>;
@@ -468,19 +483,56 @@ export type Promotion = {
 
 export type CompanyMinimumFragment = { __typename?: 'Company' } & Pick<Company, 'id' | 'name'>;
 
+export type CompanySimpleFragment = { __typename?: 'Company' } & Pick<
+  Company,
+  'id' | 'name' | 'slug' | 'createdAt' | 'updatedAt'
+>;
+
+type ProductMinimum_ProductSimple_Fragment = { __typename?: 'ProductSimple' } & Pick<ProductSimple, 'id' | 'name'>;
+
+type ProductMinimum_Product_Fragment = { __typename?: 'Product' } & Pick<Product, 'id' | 'name'>;
+
+export type ProductMinimumFragment = ProductMinimum_ProductSimple_Fragment | ProductMinimum_Product_Fragment;
+
 type ProductSimple_ProductSimple_Fragment = { __typename?: 'ProductSimple' } & Pick<
   ProductSimple,
-  'id' | 'name' | 'slug' | 'price' | 'count' | 'createdAt' | 'updatedAt'
+  | 'id'
+  | 'name'
+  | 'slug'
+  | 'description'
+  | 'imageUrl'
+  | 'productCategoryId'
+  | 'companyId'
+  | 'price'
+  | 'count'
+  | 'createdAt'
+  | 'updatedAt'
 >;
 
 type ProductSimple_Product_Fragment = { __typename?: 'Product' } & Pick<
   Product,
-  'id' | 'name' | 'slug' | 'price' | 'count' | 'createdAt' | 'updatedAt'
+  | 'id'
+  | 'name'
+  | 'slug'
+  | 'description'
+  | 'imageUrl'
+  | 'productCategoryId'
+  | 'companyId'
+  | 'price'
+  | 'count'
+  | 'createdAt'
+  | 'updatedAt'
 >;
 
 export type ProductSimpleFragment = ProductSimple_ProductSimple_Fragment | ProductSimple_Product_Fragment;
 
 export type ProductCategoryMinimumFragment = { __typename?: 'ProductCategory' } & Pick<ProductCategory, 'id' | 'name'>;
+
+export type DeleteCompanyMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+export type DeleteCompanyMutation = { __typename?: 'Mutation' } & Pick<Mutation, 'deleteCompany'>;
 
 export type CreateProductMutationVariables = Exact<{
   input: ProductInput;
@@ -516,8 +568,7 @@ export type ProductSimpleItemQueryVariables = Exact<{
 }>;
 
 export type ProductSimpleItemQuery = { __typename?: 'Query' } & {
-  product: { __typename?: 'Product' } & Pick<Product, 'productCategoryId' | 'companyId'> &
-    ProductSimple_Product_Fragment;
+  product: { __typename?: 'Product' } & ProductSimple_Product_Fragment;
 };
 
 export type ProductSimpleListQueryVariables = Exact<{ [key: string]: never }>;
@@ -530,6 +581,16 @@ export type ProductCategoryMinimumListQueryVariables = Exact<{ [key: string]: ne
 
 export type ProductCategoryMinimumListQuery = { __typename?: 'Query' } & {
   productCategories: Array<{ __typename?: 'ProductCategory' } & ProductCategoryMinimumFragment>;
+};
+
+export type CompanyListPageFragment = { __typename?: 'Company' } & {
+  products: Array<Maybe<{ __typename?: 'Product' } & ProductMinimum_Product_Fragment>>;
+} & CompanySimpleFragment;
+
+export type CompanyListPageQueryVariables = Exact<{ [key: string]: never }>;
+
+export type CompanyListPageQuery = { __typename?: 'Query' } & {
+  companies: Array<{ __typename?: 'Company' } & CompanyListPageFragment>;
 };
 
 export type ProductItemPageFragment = { __typename?: 'Product' } & {
@@ -547,6 +608,7 @@ export type ProductItemPageQuery = { __typename?: 'Query' } & {
 
 export type ProductsListPageFragment = { __typename?: 'Product' } & {
   productCategory: { __typename?: 'ProductCategory' } & ProductCategoryMinimumFragment;
+  company: { __typename?: 'Company' } & CompanyMinimumFragment;
 } & ProductSimple_Product_Fragment;
 
 export type ProductsListPageQueryVariables = Exact<{ [key: string]: never }>;
@@ -771,6 +833,12 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationCreateCompanyArgs, 'name' | 'slug'>
   >;
+  deleteCompany?: Resolver<
+    ResolversTypes['ID'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationDeleteCompanyArgs, 'id'>
+  >;
   createDiscount?: Resolver<
     ResolversTypes['Discount'],
     ParentType,
@@ -922,6 +990,8 @@ export type CompanyResolvers<
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   products?: Resolver<Array<Maybe<ResolversTypes['Product']>>, ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 };
 
@@ -1031,12 +1101,14 @@ export type IProductResolvers<
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  imageUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   price?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   productCategoryId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   companyId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  createdAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  updatedAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
 };
 
 export type ProductSimpleResolvers<
@@ -1046,12 +1118,14 @@ export type ProductSimpleResolvers<
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  imageUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   price?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   productCategoryId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   companyId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  createdAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  updatedAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 };
 
@@ -1062,12 +1136,14 @@ export type ProductResolvers<
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  imageUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   price?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   productCategoryId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   companyId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  createdAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  updatedAt?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   company?: Resolver<ResolversTypes['Company'], ParentType, ContextType>;
   productCategory?: Resolver<ResolversTypes['ProductCategory'], ParentType, ContextType>;
   features?: Resolver<Array<Maybe<ResolversTypes['Feature']>>, ParentType, ContextType>;
@@ -1131,17 +1207,40 @@ export type Resolvers<ContextType = any> = {
  */
 export type IResolvers<ContextType = any> = Resolvers<ContextType>;
 
-export const CompanyMinimumFragmentDoc = gql`
-  fragment CompanyMinimum on Company {
+export const CompanySimpleFragmentDoc = gql`
+  fragment CompanySimple on Company {
+    id
+    name
+    slug
+    createdAt
+    updatedAt
+  }
+`;
+export const ProductMinimumFragmentDoc = gql`
+  fragment ProductMinimum on IProduct {
     id
     name
   }
+`;
+export const CompanyListPageFragmentDoc = gql`
+  fragment CompanyListPage on Company {
+    ...CompanySimple
+    products {
+      ...ProductMinimum
+    }
+  }
+  ${CompanySimpleFragmentDoc}
+  ${ProductMinimumFragmentDoc}
 `;
 export const ProductSimpleFragmentDoc = gql`
   fragment ProductSimple on IProduct {
     id
     name
     slug
+    description
+    imageUrl
+    productCategoryId
+    companyId
     price
     count
     createdAt
@@ -1168,16 +1267,61 @@ export const ProductCategoryMinimumFragmentDoc = gql`
     name
   }
 `;
+export const CompanyMinimumFragmentDoc = gql`
+  fragment CompanyMinimum on Company {
+    id
+    name
+  }
+`;
 export const ProductsListPageFragmentDoc = gql`
   fragment ProductsListPage on Product {
     ...ProductSimple
     productCategory {
       ...ProductCategoryMinimum
     }
+    company {
+      ...CompanyMinimum
+    }
   }
   ${ProductSimpleFragmentDoc}
   ${ProductCategoryMinimumFragmentDoc}
+  ${CompanyMinimumFragmentDoc}
 `;
+export const DeleteCompanyDocument = gql`
+  mutation deleteCompany($id: ID!) {
+    deleteCompany(id: $id)
+  }
+`;
+export type DeleteCompanyMutationFn = Apollo.MutationFunction<DeleteCompanyMutation, DeleteCompanyMutationVariables>;
+
+/**
+ * __useDeleteCompanyMutation__
+ *
+ * To run a mutation, you first call `useDeleteCompanyMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteCompanyMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteCompanyMutation, { data, loading, error }] = useDeleteCompanyMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteCompanyMutation(
+  baseOptions?: Apollo.MutationHookOptions<DeleteCompanyMutation, DeleteCompanyMutationVariables>,
+) {
+  return Apollo.useMutation<DeleteCompanyMutation, DeleteCompanyMutationVariables>(DeleteCompanyDocument, baseOptions);
+}
+export type DeleteCompanyMutationHookResult = ReturnType<typeof useDeleteCompanyMutation>;
+export type DeleteCompanyMutationResult = Apollo.MutationResult<DeleteCompanyMutation>;
+export type DeleteCompanyMutationOptions = Apollo.BaseMutationOptions<
+  DeleteCompanyMutation,
+  DeleteCompanyMutationVariables
+>;
 export const CreateProductDocument = gql`
   mutation createProduct($input: ProductInput!) {
     createProduct(input: $input) {
@@ -1340,8 +1484,6 @@ export const ProductSimpleItemDocument = gql`
   query productSimpleItem($id: ID!) {
     product(id: $id) {
       ...ProductSimple
-      productCategoryId
-      companyId
     }
   }
   ${ProductSimpleFragmentDoc}
@@ -1471,6 +1613,43 @@ export type ProductCategoryMinimumListQueryResult = Apollo.QueryResult<
   ProductCategoryMinimumListQuery,
   ProductCategoryMinimumListQueryVariables
 >;
+export const CompanyListPageDocument = gql`
+  query companyListPage {
+    companies {
+      ...CompanyListPage
+    }
+  }
+  ${CompanyListPageFragmentDoc}
+`;
+
+/**
+ * __useCompanyListPageQuery__
+ *
+ * To run a query within a React component, call `useCompanyListPageQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCompanyListPageQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCompanyListPageQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useCompanyListPageQuery(
+  baseOptions?: Apollo.QueryHookOptions<CompanyListPageQuery, CompanyListPageQueryVariables>,
+) {
+  return Apollo.useQuery<CompanyListPageQuery, CompanyListPageQueryVariables>(CompanyListPageDocument, baseOptions);
+}
+export function useCompanyListPageLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<CompanyListPageQuery, CompanyListPageQueryVariables>,
+) {
+  return Apollo.useLazyQuery<CompanyListPageQuery, CompanyListPageQueryVariables>(CompanyListPageDocument, baseOptions);
+}
+export type CompanyListPageQueryHookResult = ReturnType<typeof useCompanyListPageQuery>;
+export type CompanyListPageLazyQueryHookResult = ReturnType<typeof useCompanyListPageLazyQuery>;
+export type CompanyListPageQueryResult = Apollo.QueryResult<CompanyListPageQuery, CompanyListPageQueryVariables>;
 export const ProductItemPageDocument = gql`
   query productItemPage($id: ID!) {
     product(id: $id) {

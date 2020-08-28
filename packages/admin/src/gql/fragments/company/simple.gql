@@ -1,0 +1,7 @@
+fragment CompanySimple on Company {
+  id
+  name
+  slug
+  createdAt
+  updatedAt
+}

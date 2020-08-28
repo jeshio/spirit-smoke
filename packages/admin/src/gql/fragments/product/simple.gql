@@ -2,6 +2,10 @@ fragment ProductSimple on IProduct {
   id
   name
   slug
+  description
+  imageUrl
+  productCategoryId
+  companyId
   price
   count
   createdAt

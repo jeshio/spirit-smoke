@@ -21,6 +21,14 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      description: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      imageUrl: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
       price: {
         type: Sequelize.FLOAT,
         allowNull: false,
@@ -40,6 +48,9 @@ module.exports = {
       },
       updatedAt: {
         allowNull: false,
+        type: Sequelize.DATE,
+      },
+      deletedAt: {
         type: Sequelize.DATE,
       },
     })

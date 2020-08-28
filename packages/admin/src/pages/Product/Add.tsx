@@ -5,9 +5,9 @@ import { useCreateProductMutation } from '@/gql/__generated__/types';
 import { RouteComponentProps } from 'react-router';
 import Form, { IFormProps } from './Form';
 
-interface IAddProductProps extends RouteComponentProps {}
+interface IAddProductPageProps extends RouteComponentProps {}
 
-const AddProduct: React.FunctionComponent<IAddProductProps> = ({ history }) => {
+const AddProductPage: React.FunctionComponent<IAddProductPageProps> = ({ history }) => {
   const [createProduct, createProductRequest] = useCreateProductMutation({
     onCompleted: (r) => {
       if (!('errors' in r)) {
@@ -35,4 +35,4 @@ const AddProduct: React.FunctionComponent<IAddProductProps> = ({ history }) => {
   );
 };
 
-export default AddProduct;
+export default AddProductPage;

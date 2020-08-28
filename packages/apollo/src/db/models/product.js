@@ -29,6 +29,19 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: true,
       },
     },
+    description: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: true,
+      },
+    },
+    imageUrl: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: true,
+        isUrl: true,
+      },
+    },
     slug: {
       type: DataTypes.STRING,
       validate: {
@@ -58,6 +71,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'product',
+    paranoid: true,
   })
   return Product
 }

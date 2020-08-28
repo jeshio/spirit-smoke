@@ -12,6 +12,22 @@ const createApolloClient = () => {
   const client = new ApolloClient({
     cache: new InMemoryCache({
       possibleTypes: introspectionResult.possibleTypes,
+      typePolicies: {
+        Query: {
+          fields: {
+            products: {
+              merge(existing, incoming) {
+                return incoming;
+              },
+            },
+            companies: {
+              merge(existing, incoming) {
+                return incoming;
+              },
+            },
+          },
+        },
+      },
     }),
     link,
     defaultOptions: {

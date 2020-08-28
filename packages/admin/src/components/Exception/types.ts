@@ -1,5 +1,6 @@
 import React from 'react';
 import * as H from 'history';
+import { ApolloError } from '@apollo/client';
 
 export interface ExceptionProps<
   L = {
@@ -19,4 +20,5 @@ export interface ExceptionProps<
   className?: string;
   backText?: React.ReactNode;
   redirect?: string;
+  apolloError?: ApolloError;
 }

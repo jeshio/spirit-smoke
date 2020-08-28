@@ -3,7 +3,5 @@
 query productSimpleItem($id: ID!) {
   product(id: $id) {
     ...ProductSimple
-    productCategoryId
-    companyId
   }
 }

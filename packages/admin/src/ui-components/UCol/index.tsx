@@ -7,12 +7,7 @@ interface IUColProps extends ColProps {
 }
 
 const UCol: React.FunctionComponent<IUColProps> = (props) => {
-  const sizes = {
-    md: 12,
-    xxl: 8,
-  };
-
-  return <Col span={24} {...(!props.fullRow && sizes)} {...props} />;
+  return <Col span={24} {...props} />;
 };
 
 export default UCol;

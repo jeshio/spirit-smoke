@@ -1,0 +1,4 @@
+fragment ProductMinimum on IProduct {
+  id
+  name
+}

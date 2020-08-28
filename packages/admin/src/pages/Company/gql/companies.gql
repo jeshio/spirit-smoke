@@ -1,0 +1,15 @@
+#import "@/gql/fragments/productCategory/minimum.gql"
+#import "@/gql/fragments/product/simple.gql"
+
+fragment CompanyListPage on Company {
+  ...CompanySimple
+  products {
+    ...ProductMinimum
+  }
+}
+
+query companyListPage {
+  companies {
+    ...CompanyListPage
+  }
+}

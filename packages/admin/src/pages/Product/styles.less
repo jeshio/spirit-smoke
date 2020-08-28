@@ -1,0 +1,30 @@
+@import '~@/styles/mixins/mq.less';
+@import '~antd/es/style/themes/default.less';
+
+.Item {
+  &Image {
+    width: 100%;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+
+    &Wrapper {
+      width: 100%;
+      height: 300px;
+      background-color: @normal-color;
+
+      .mq(md; {
+        height: 250px;
+      });
+
+      .mq(xl; {
+        height: 300px;
+      });
+
+      .mq(xxl; {
+        height: 350px;
+      });
+    }
+  }
+}

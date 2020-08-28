@@ -14,4 +14,6 @@ export interface IColumn<RecordType> {
   responsive?: ColumnProps<RecordType>['responsive'];
   /** Отключить сортировку для колонки */
   disableSort?: boolean;
+  /** Ширина колонки */
+  width?: number;
 }

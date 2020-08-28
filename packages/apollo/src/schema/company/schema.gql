@@ -5,6 +5,7 @@ extend type Query {
 
 extend type Mutation {
   createCompany(name: String!, slug: String!): Company!
+  deleteCompany(id: ID!): ID!
 }
 
 type Company {
@@ -12,4 +13,6 @@ type Company {
   name: String!
   slug: String!
   products: [Product]!
+  createdAt: String!
+  updatedAt: String!
 } 
