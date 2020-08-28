@@ -8,16 +8,16 @@ import ProLayout, {
   BasicLayoutProps as ProLayoutProps,
   Settings,
   DefaultFooter,
-} from '@ant-design/pro-layout';
-import React from 'react';
-import { Link, connect, Dispatch, history } from 'umi';
-import { GithubOutlined } from '@ant-design/icons';
+} from '@ant-design/pro-layout'
+import React from 'react'
+import { Link, connect, Dispatch, history } from 'umi'
+import { GithubOutlined } from '@ant-design/icons'
 // import { Result, Button } from 'antd';
-import Authorized from '@/utils/Authorized';
-import RightContent from '@/components/GlobalHeader/RightContent';
-import { ConnectState } from '@/models/connect';
+import Authorized from '@/utils/Authorized'
+import RightContent from '@/components/GlobalHeader/RightContent'
+import { ConnectState } from '@/models/connect'
 // import { getAuthorityFromRouter } from '@/utils/utils';
-import logo from '../assets/logo.svg';
+import logo from '../assets/logo.svg'
 
 // const noMatch = (
 //   <Result
@@ -33,19 +33,19 @@ import logo from '../assets/logo.svg';
 // );
 export interface BasicLayoutProps extends ProLayoutProps {
   breadcrumbNameMap: {
-    [path: string]: MenuDataItem;
-  };
+    [path: string]: MenuDataItem
+  }
   route: ProLayoutProps['route'] & {
-    authority: string[];
-  };
-  settings: Settings;
-  dispatch: Dispatch;
+    authority: string[]
+  }
+  settings: Settings
+  dispatch: Dispatch
 }
 export type BasicLayoutContext = { [K in 'location']: BasicLayoutProps[K] } & {
   breadcrumbNameMap: {
-    [path: string]: MenuDataItem;
-  };
-};
+    [path: string]: MenuDataItem
+  }
+}
 /**
  * use Authorized check all menu item
  */
@@ -55,9 +55,9 @@ const menuDataRender = (menuList: MenuDataItem[]): MenuDataItem[] =>
     const localItem = {
       ...item,
       children: item.children ? menuDataRender(item.children) : undefined,
-    };
-    return Authorized.check(item.authority, localItem, null) as MenuDataItem;
-  });
+    }
+    return Authorized.check(item.authority, localItem, null) as MenuDataItem
+  })
 
 const defaultFooterDom = (
   <DefaultFooter
@@ -83,7 +83,7 @@ const defaultFooterDom = (
       },
     ]}
   />
-);
+)
 
 const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
   const {
@@ -93,7 +93,7 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
     // location = {
     //   pathname: '/',
     // },
-  } = props;
+  } = props
   /**
    * constructor
    */
@@ -107,9 +107,9 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
       dispatch({
         type: 'global/changeLayoutCollapsed',
         payload,
-      });
+      })
     }
-  }; // get children authority
+  } // get children authority
 
   // const authorized = getAuthorityFromRouter(props.route.routes, location.pathname || '/') || {
   //   authority: undefined,
@@ -121,10 +121,10 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
       onMenuHeaderClick={() => history.push('/')}
       menuItemRender={(menuItemProps, defaultDom) => {
         if (menuItemProps.isUrl || !menuItemProps.path) {
-          return defaultDom;
+          return defaultDom
         }
 
-        return <Link to={menuItemProps.path}>{defaultDom}</Link>;
+        return <Link to={menuItemProps.path}>{defaultDom}</Link>
       }}
       breadcrumbRender={(routers = []) => {
         return [
@@ -133,11 +133,11 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
             breadcrumbName: 'Главная',
           },
           ...routers,
-        ];
+        ]
       }}
       itemRender={(route, params, routes) => {
-        const isLast = routes.indexOf(route) === routes.length - 1;
-        return isLast ? <span>{route.breadcrumbName}</span> : <Link to={route.path}>{route.breadcrumbName}</Link>;
+        const isLast = routes.indexOf(route) === routes.length - 1
+        return isLast ? <span>{route.breadcrumbName}</span> : <Link to={route.path}>{route.breadcrumbName}</Link>
       }}
       footerRender={() => defaultFooterDom}
       menuDataRender={menuDataRender}
@@ -149,10 +149,10 @@ const BasicLayout: React.FC<BasicLayoutProps> = (props) => {
       {children}
       {/* </Authorized> */}
     </ProLayout>
-  );
-};
+  )
+}
 
 export default connect(({ global, settings }: ConnectState) => ({
   collapsed: global.collapsed,
   settings,
-}))(BasicLayout);
+}))(BasicLayout)

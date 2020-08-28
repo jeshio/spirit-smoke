@@ -1,7 +1,7 @@
-import React from 'react';
-import { PageContainer } from '@ant-design/pro-layout';
-import { Card, Alert, Typography } from 'antd';
-import styles from './Welcome.less';
+import React from 'react'
+import { PageContainer } from '@ant-design/pro-layout'
+import { Card, Alert, Typography } from 'antd'
+import styles from './Welcome.less'
 
 const CodePreview: React.FC = ({ children }) => (
   <pre className={styles.pre}>
@@ -9,7 +9,7 @@ const CodePreview: React.FC = ({ children }) => (
       <Typography.Text copyable>{children}</Typography.Text>
     </code>
   </pre>
-);
+)
 
 export default (): React.ReactNode => (
   <PageContainer>
@@ -28,4 +28,4 @@ export default (): React.ReactNode => (
       <CodePreview>yarn add @ant-design/pro-table</CodePreview>
     </Card>
   </PageContainer>
-);
+)

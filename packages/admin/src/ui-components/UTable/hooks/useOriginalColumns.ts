@@ -1,13 +1,13 @@
-import { ColumnsType } from 'antd/lib/table';
-import { useMemo } from 'react';
-import { get } from 'lodash';
-import { IColumn } from '../types';
-import { IS_INVALID_ROW_COLUMN } from './useServiceDataWithRows';
+import { ColumnsType } from 'antd/lib/table'
+import { useMemo } from 'react'
+import { get } from 'lodash'
+import { IColumn } from '../types'
+import { IS_INVALID_ROW_COLUMN } from './useServiceDataWithRows'
 
-const GRAY_COLOR = '#f5f5f5';
+const GRAY_COLOR = '#f5f5f5'
 
 const colRender = (render: IColumn<any>['render']) => (...args: Parameters<Required<IColumn<any>>['render']>) => {
-  const { [IS_INVALID_ROW_COLUMN]: isGrayRow = false } = args[1];
+  const { [IS_INVALID_ROW_COLUMN]: isGrayRow = false } = args[1]
   return {
     props: {
       style: {
@@ -15,8 +15,8 @@ const colRender = (render: IColumn<any>['render']) => (...args: Parameters<Requi
       },
     },
     children: render ? render(...args) : args[0],
-  };
-};
+  }
+}
 
 /**
  * Преобразует колонки к формату, необходимому для оригинальной таблицы
@@ -32,17 +32,17 @@ export default function useOriginalColumns(columns: IColumn<any>[]): ColumnsType
       render: colRender(render),
       responsive,
       width,
-    })) as ColumnsType<any>;
+    })) as ColumnsType<any>
 
     cols.unshift({
       title: '№',
       key: 'index',
       render: colRender((text, record, index) => index + 1),
       width: 50,
-    });
+    })
 
-    return cols;
-  }, [columns]);
+    return cols
+  }, [columns])
 
-  return result;
+  return result
 }

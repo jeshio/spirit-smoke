@@ -1,19 +1,19 @@
-import React, { createElement } from 'react';
-import classNames from 'classnames';
-import { Button } from 'antd';
-import config from './typeConfig';
-import styles from './index.less';
-import { ExceptionProps } from './types';
+import React, { createElement } from 'react'
+import classNames from 'classnames'
+import { Button } from 'antd'
+import config from './typeConfig'
+import styles from './index.less'
+import { ExceptionProps } from './types'
 
 class Exception extends React.PureComponent<ExceptionProps> {
   static defaultProps = {
     backText: 'вернуться на главную',
     redirect: '/',
-  };
+  }
 
   constructor(props: ExceptionProps) {
-    super(props);
-    this.state = {};
+    super(props)
+    this.state = {}
   }
 
   render() {
@@ -28,9 +28,9 @@ class Exception extends React.PureComponent<ExceptionProps> {
       actions,
       redirect = '/',
       ...rest
-    } = this.props;
-    const pageType = type && type in config ? type : '404';
-    const clsString = classNames(styles.exception, className);
+    } = this.props
+    const pageType = type && type in config ? type : '404'
+    const clsString = classNames(styles.exception, className)
     return (
       <div className={clsString} {...rest}>
         <div className={styles.imgBlock}>
@@ -47,13 +47,13 @@ class Exception extends React.PureComponent<ExceptionProps> {
                   to: redirect,
                   href: redirect,
                 },
-                <Button type="primary">{backText}</Button>,
+                <Button type="primary">{backText}</Button>
               )}
           </div>
         </div>
       </div>
-    );
+    )
   }
 }
 
-export default Exception;
+export default Exception

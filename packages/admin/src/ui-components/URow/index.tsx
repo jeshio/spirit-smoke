@@ -1,6 +1,6 @@
-import * as React from 'react';
-import { Row } from 'antd';
-import { RowProps } from 'antd/lib/row';
+import * as React from 'react'
+import { Row } from 'antd'
+import { RowProps } from 'antd/lib/row'
 
 interface IURowProps extends RowProps {}
 
@@ -16,7 +16,7 @@ const URow: React.FunctionComponent<IURowProps> = (props) => {
       }}
       {...props}
     />
-  );
-};
+  )
+}
 
-export default URow;
+export default URow

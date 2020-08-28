@@ -1,47 +1,47 @@
-import * as React from 'react';
-import { RouteComponentProps } from 'react-router';
-import { useProductItemPageQuery, useDeleteProductMutation } from '@/gql/__generated__/types';
-import Exception from '@/components/Exception';
-import UPageContainer from '@/ui-components/UPageContainer';
-import { Card, Divider } from 'antd';
-import UDescriptions from '@/ui-components/UDescriptions';
-import UButton from '@/ui-components/UButton';
-import UPopconfirm from '@/ui-components/UPopconfirm';
-import ULoading from '@/ui-components/ULoading';
-import { DeleteFilled, EditFilled } from '@ant-design/icons';
-import URow from '@/ui-components/URow';
-import UCol from '@/ui-components/UCol';
+import * as React from 'react'
+import { RouteComponentProps } from 'react-router'
+import { useProductItemPageQuery, useDeleteProductMutation } from '@/gql/__generated__/types'
+import Exception from '@/components/Exception'
+import UPageContainer from '@/ui-components/UPageContainer'
+import { Card, Divider } from 'antd'
+import UDescriptions from '@/ui-components/UDescriptions'
+import UButton from '@/ui-components/UButton'
+import UPopconfirm from '@/ui-components/UPopconfirm'
+import ULoading from '@/ui-components/ULoading'
+import { DeleteFilled, EditFilled } from '@ant-design/icons'
+import URow from '@/ui-components/URow'
+import UCol from '@/ui-components/UCol'
 
-import styles from './styles.less';
+import styles from './styles.less'
 
 interface IProductItemPageProps
   extends RouteComponentProps<{
-    id: string;
+    id: string
   }> {}
 
 const ProductItemPage: React.FunctionComponent<IProductItemPageProps> = (props) => {
-  const { id } = props.match.params;
+  const { id } = props.match.params
   const { loading, error, data } = useProductItemPageQuery({
     variables: {
       id,
     },
-  });
+  })
   const [deleteProduct] = useDeleteProductMutation({
     variables: {
       id,
     },
     onCompleted: () => {
-      props.history.push('/products');
+      props.history.push('/products')
     },
     onError: () => {},
-  });
-  const { product } = data || {};
+  })
+  const { product } = data || {}
 
-  if (error) return <Exception apolloError={error} />;
+  if (error) return <Exception apolloError={error} />
 
-  if (loading) return <ULoading tip="Загрузка продукта" />;
+  if (loading) return <ULoading tip="Загрузка продукта" />
 
-  if (!product) return <Exception type="404" />;
+  if (!product) return <Exception type="404" />
 
   return (
     <UPageContainer
@@ -89,7 +89,7 @@ const ProductItemPage: React.FunctionComponent<IProductItemPageProps> = (props) 
         </UCol>
       </URow>
     </UPageContainer>
-  );
-};
+  )
+}
 
-export default ProductItemPage;
+export default ProductItemPage

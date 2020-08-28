@@ -14,6 +14,6 @@ const config = {
     title: '500',
     desc: 'Неизвестная ошибка',
   },
-};
+}
 
-export default config;
+export default config

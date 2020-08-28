@@ -1,32 +1,32 @@
-import * as React from 'react';
-import { Input, Card, InputNumber, Select } from 'antd';
-import UForm from '@/ui-components/UForm';
-import URow from '@/ui-components/URow';
-import UCol from '@/ui-components/UCol';
-import UButton from '@/ui-components/UButton';
+import * as React from 'react'
+import { Input, Card, InputNumber, Select } from 'antd'
+import UForm from '@/ui-components/UForm'
+import URow from '@/ui-components/URow'
+import UCol from '@/ui-components/UCol'
+import UButton from '@/ui-components/UButton'
 import {
   useProductCategoryMinimumListQuery,
   useCompanyMinimumListQuery,
   ProductSimpleItemQuery,
-} from '@/gql/__generated__/types';
-import numberToPrice from '@@utils/src/numberToPrice';
-import TextArea from 'antd/lib/input/TextArea';
+} from '@/gql/__generated__/types'
+import numberToPrice from '@@utils/src/numberToPrice'
+import TextArea from 'antd/lib/input/TextArea'
 
 export interface IFormProps {
-  loading?: boolean;
-  onSubmit: (values: Record<string, string>) => void;
-  isUpdate?: boolean;
-  product?: ProductSimpleItemQuery['product'];
+  loading?: boolean
+  onSubmit: (values: Record<string, string>) => void
+  isUpdate?: boolean
+  product?: ProductSimpleItemQuery['product']
 }
 
 const Form: React.FunctionComponent<IFormProps> = ({ loading = false, onSubmit, isUpdate = false, product }) => {
-  const categoriesRequest = useProductCategoryMinimumListQuery();
-  const companyRequest = useCompanyMinimumListQuery();
+  const categoriesRequest = useProductCategoryMinimumListQuery()
+  const companyRequest = useCompanyMinimumListQuery()
   const handleSubmit = (fields: any) =>
     onSubmit({
       ...fields,
       price: numberToPrice(parseFloat(fields.price)),
-    });
+    })
 
   return (
     <UForm onFinish={handleSubmit} labelCol={{ span: 6, sm: 6, md: 9, lg: 9, xl: 7, xxl: 7 }}>
@@ -104,7 +104,7 @@ const Form: React.FunctionComponent<IFormProps> = ({ loading = false, onSubmit, 
         </UForm.Item>
       </Card>
     </UForm>
-  );
-};
+  )
+}
 
-export default Form;
+export default Form

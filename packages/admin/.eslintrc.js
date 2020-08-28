@@ -49,6 +49,7 @@ module.exports = {
     '@typescript-eslint/no-unsafe-return': 0,
     '@typescript-eslint/no-unsafe-call': 0,
     '@typescript-eslint/restrict-template-expressions': [2, { allowAny: true }],
+    '@typescript-eslint/restrict-plus-operands': 0,
     'import/no-extraneous-dependencies': 0,
   },
-};
+}

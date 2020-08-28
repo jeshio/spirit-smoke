@@ -1,17 +1,17 @@
-import * as React from 'react';
-import useSettings from '@/hooks/useSettings';
-import { Helmet } from 'react-helmet';
+import * as React from 'react'
+import useSettings from '@/hooks/useSettings'
+import { Helmet } from 'react-helmet'
 
 interface IUContainerWithPageTitleProps {
-  title?: string;
+  title?: string
 }
 
 const UContainerWithPageTitle: React.FunctionComponent<IUContainerWithPageTitleProps> = (props) => {
-  const { title: settingsTitle } = useSettings();
+  const { title: settingsTitle } = useSettings()
 
-  if (!props.title) return <>{props.children}</>;
+  if (!props.title) return <>{props.children}</>
 
-  const title = `${props.title} - ${settingsTitle}`;
+  const title = `${props.title} - ${settingsTitle}`
   return (
     <>
       <Helmet>
@@ -19,7 +19,7 @@ const UContainerWithPageTitle: React.FunctionComponent<IUContainerWithPageTitleP
       </Helmet>
       {props.children}
     </>
-  );
-};
+  )
+}
 
-export default UContainerWithPageTitle;
+export default UContainerWithPageTitle

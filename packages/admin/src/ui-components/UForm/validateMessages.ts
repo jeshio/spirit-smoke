@@ -1,5 +1,5 @@
 const validateMessages = {
   required: 'Нужно заполнить',
-};
+}
 
-export default validateMessages;
+export default validateMessages

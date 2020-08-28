@@ -1,17 +1,17 @@
-import * as React from 'react';
+import * as React from 'react'
 
-import { IColumn } from '@/ui-components/UTable/types';
-import { Link } from 'umi';
-import UButton from '@/ui-components/UButton';
-import { EditFilled, DeleteFilled } from '@ant-design/icons';
-import UPopconfirm from '@/ui-components/UPopconfirm';
+import { IColumn } from '@/ui-components/UTable/types'
+import { Link } from 'umi'
+import UButton from '@/ui-components/UButton'
+import { EditFilled, DeleteFilled } from '@ant-design/icons'
+import UPopconfirm from '@/ui-components/UPopconfirm'
 import {
   CompanyListPageFragment,
   useCompanyListPageQuery,
   useDeleteCompanyMutation,
   CompanyListPageDocument,
-} from '@/gql/__generated__/types';
-import ListPageBuilder, { ListColumnsType } from '@/pageBuilders/List';
+} from '@/gql/__generated__/types'
+import ListPageBuilder, { ListColumnsType } from '@/pageBuilders/List'
 
 const columns: ListColumnsType = ({ deleteItem }): IColumn<CompanyListPageFragment>[] => [
   {
@@ -56,7 +56,7 @@ const columns: ListColumnsType = ({ deleteItem }): IColumn<CompanyListPageFragme
       </>
     ),
   },
-];
+]
 
 interface ICompanyListPageProps {}
 
@@ -82,7 +82,7 @@ const CompanyListPage: React.FunctionComponent<ICompanyListPageProps> = () => {
         successMessage: 'Компания удалена.',
       }}
     />
-  );
-};
+  )
+}
 
-export default CompanyListPage;
+export default CompanyListPage

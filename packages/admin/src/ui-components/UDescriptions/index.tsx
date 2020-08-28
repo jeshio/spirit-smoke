@@ -1,11 +1,11 @@
-import * as React from 'react';
-import { Descriptions } from 'antd';
-import { DescriptionsProps } from 'antd/lib/descriptions';
+import * as React from 'react'
+import { Descriptions } from 'antd'
+import { DescriptionsProps } from 'antd/lib/descriptions'
 
 interface IUDescriptionsProps extends DescriptionsProps {}
 
 const UDescriptions: React.FunctionComponent<IUDescriptionsProps> & {
-  Item: React.ComponentType<React.ComponentProps<typeof Descriptions.Item>>;
+  Item: React.ComponentType<React.ComponentProps<typeof Descriptions.Item>>
 } = (props) => {
   return (
     <Descriptions
@@ -15,9 +15,9 @@ const UDescriptions: React.FunctionComponent<IUDescriptionsProps> & {
       layout="vertical"
       {...props}
     />
-  );
-};
+  )
+}
 
-UDescriptions.Item = Descriptions.Item;
+UDescriptions.Item = Descriptions.Item
 
-export default UDescriptions;
+export default UDescriptions

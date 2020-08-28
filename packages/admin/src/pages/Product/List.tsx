@@ -1,17 +1,17 @@
-import * as React from 'react';
+import * as React from 'react'
 
 import {
   ProductsListPageFragment,
   useProductsListPageQuery,
   useDeleteProductMutation,
   ProductsListPageDocument,
-} from '@/gql/__generated__/types';
-import { IColumn } from '@/ui-components/UTable/types';
-import { Link } from 'umi';
-import UButton from '@/ui-components/UButton';
-import { EditFilled, DeleteFilled } from '@ant-design/icons';
-import UPopconfirm from '@/ui-components/UPopconfirm';
-import ListPageBuilder, { ListColumnsType } from '@/pageBuilders/List';
+} from '@/gql/__generated__/types'
+import { IColumn } from '@/ui-components/UTable/types'
+import { Link } from 'umi'
+import UButton from '@/ui-components/UButton'
+import { EditFilled, DeleteFilled } from '@ant-design/icons'
+import UPopconfirm from '@/ui-components/UPopconfirm'
+import ListPageBuilder, { ListColumnsType } from '@/pageBuilders/List'
 
 const columns: ListColumnsType = ({ deleteItem }): IColumn<ProductsListPageFragment>[] => [
   {
@@ -69,7 +69,7 @@ const columns: ListColumnsType = ({ deleteItem }): IColumn<ProductsListPageFragm
       </>
     ),
   },
-];
+]
 
 interface IProductListPageProps {}
 
@@ -101,7 +101,7 @@ const ProductListPage: React.FunctionComponent<IProductListPageProps> = () => {
         },
       }}
     />
-  );
-};
+  )
+}
 
-export default ProductListPage;
+export default ProductListPage

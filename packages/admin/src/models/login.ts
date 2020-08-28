@@ -1,26 +1,26 @@
-import { stringify } from 'querystring';
-import { history, Reducer, Effect } from 'umi';
+import { stringify } from 'querystring'
+import { history, Reducer, Effect } from 'umi'
 
-import { fakeAccountLogin } from '@/services/login';
-import { setAuthority } from '@/utils/authority';
-import { getPageQuery } from '@/utils/utils';
+import { fakeAccountLogin } from '@/services/login'
+import { setAuthority } from '@/utils/authority'
+import { getPageQuery } from '@/utils/utils'
 
 export interface StateType {
-  status?: 'ok' | 'error';
-  type?: string;
-  currentAuthority?: 'user' | 'guest' | 'admin';
+  status?: 'ok' | 'error'
+  type?: string
+  currentAuthority?: 'user' | 'guest' | 'admin'
 }
 
 export interface LoginModelType {
-  namespace: string;
-  state: StateType;
+  namespace: string
+  state: StateType
   effects: {
-    login: Effect;
-    logout: Effect;
-  };
+    login: Effect
+    logout: Effect
+  }
   reducers: {
-    changeLoginStatus: Reducer<StateType>;
-  };
+    changeLoginStatus: Reducer<StateType>
+  }
 }
 
 const Model: LoginModelType = {
@@ -32,34 +32,34 @@ const Model: LoginModelType = {
 
   effects: {
     *login({ payload }, { call, put }) {
-      const response = yield call(fakeAccountLogin, payload);
+      const response = yield call(fakeAccountLogin, payload)
       yield put({
         type: 'changeLoginStatus',
         payload: response,
-      });
+      })
       // Login successfully
       if (response.status === 'ok') {
-        const urlParams = new URL(window.location.href);
-        const params = getPageQuery();
-        let { redirect } = params as { redirect: string };
+        const urlParams = new URL(window.location.href)
+        const params = getPageQuery()
+        let { redirect } = params as { redirect: string }
         if (redirect) {
-          const redirectUrlParams = new URL(redirect);
+          const redirectUrlParams = new URL(redirect)
           if (redirectUrlParams.origin === urlParams.origin) {
-            redirect = redirect.substr(urlParams.origin.length);
+            redirect = redirect.substr(urlParams.origin.length)
             if (/^\/.*#/.exec(redirect)) {
-              redirect = redirect.substr(redirect.indexOf('#') + 1);
+              redirect = redirect.substr(redirect.indexOf('#') + 1)
             }
           } else {
-            window.location.href = '/';
-            return;
+            window.location.href = '/'
+            return
           }
         }
-        history.replace(redirect || '/');
+        history.replace(redirect || '/')
       }
     },
 
     logout() {
-      const { redirect } = getPageQuery();
+      const { redirect } = getPageQuery()
       // Note: There may be security issues, please note
       if (window.location.pathname !== '/user/login' && !redirect) {
         history.replace({
@@ -67,21 +67,21 @@ const Model: LoginModelType = {
           search: stringify({
             redirect: window.location.href,
           }),
-        });
+        })
       }
     },
   },
 
   reducers: {
     changeLoginStatus(state, { payload }) {
-      setAuthority(payload.currentAuthority);
+      setAuthority(payload.currentAuthority)
       return {
         ...state,
         status: payload.status,
         type: payload.type,
-      };
+      }
     },
   },
-};
+}
 
-export default Model;
+export default Model

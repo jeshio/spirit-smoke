@@ -1,12 +1,12 @@
-import { ApolloClient, InMemoryCache, from, HttpLink } from '@apollo/client';
-import introspectionResult from '@/gql/__generated__/introspection-result';
-import errorHandler from './errorHandler';
+import { ApolloClient, InMemoryCache, from, HttpLink } from '@apollo/client'
+import introspectionResult from '@/gql/__generated__/introspection-result'
+import errorHandler from './errorHandler'
 
 const httpLink = new HttpLink({
   uri: APOLLO_URI,
-});
+})
 
-const link = from([errorHandler, httpLink]);
+const link = from([errorHandler, httpLink])
 
 const createApolloClient = () => {
   const client = new ApolloClient({
@@ -17,12 +17,12 @@ const createApolloClient = () => {
           fields: {
             products: {
               merge(existing, incoming) {
-                return incoming;
+                return incoming
               },
             },
             companies: {
               merge(existing, incoming) {
-                return incoming;
+                return incoming
               },
             },
           },
@@ -43,9 +43,9 @@ const createApolloClient = () => {
         errorPolicy: 'all',
       },
     },
-  });
+  })
 
-  return client;
-};
+  return client
+}
 
-export default createApolloClient;
+export default createApolloClient

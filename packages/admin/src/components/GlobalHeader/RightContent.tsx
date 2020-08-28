@@ -1,28 +1,28 @@
-import { Tooltip, Tag } from 'antd';
-import { Settings as ProSettings } from '@ant-design/pro-layout';
-import { QuestionCircleOutlined } from '@ant-design/icons';
-import React from 'react';
-import { ConnectProps } from 'umi';
-import Avatar from './AvatarDropdown';
-import HeaderSearch from '../HeaderSearch';
-import styles from './index.less';
+import { Tooltip, Tag } from 'antd'
+import { Settings as ProSettings } from '@ant-design/pro-layout'
+import { QuestionCircleOutlined } from '@ant-design/icons'
+import React from 'react'
+import { ConnectProps } from 'umi'
+import Avatar from './AvatarDropdown'
+import HeaderSearch from '../HeaderSearch'
+import styles from './index.less'
 
 export interface GlobalHeaderRightProps extends Partial<ConnectProps>, Partial<ProSettings> {
-  theme?: ProSettings['navTheme'] | 'realDark';
+  theme?: ProSettings['navTheme'] | 'realDark'
 }
 
 const ENVTagColor = {
   dev: 'orange',
   test: 'green',
   pre: '#87d068',
-};
+}
 
 const GlobalHeaderRight: React.SFC<GlobalHeaderRightProps> = (props) => {
-  const { theme, layout } = props;
-  let className = styles.right;
+  const { theme, layout } = props
+  let className = styles.right
 
   if (theme === 'dark' && layout === 'top') {
-    className = `${styles.right}  ${styles.dark}`;
+    className = `${styles.right}  ${styles.dark}`
   }
 
   return (
@@ -69,7 +69,7 @@ const GlobalHeaderRight: React.SFC<GlobalHeaderRightProps> = (props) => {
         </span>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default GlobalHeaderRight;
+export default GlobalHeaderRight

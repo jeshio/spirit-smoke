@@ -1,12 +1,12 @@
-import React from 'react';
-import { message } from 'antd';
-import NoticeIcon from '../NoticeIcon';
-import styles from './index.less';
+import React from 'react'
+import { message } from 'antd'
+import NoticeIcon from '../NoticeIcon'
+import styles from './index.less'
 
 export interface GlobalHeaderRightProps extends Partial<ConnectProps> {
-  fetchingNotices?: boolean;
-  onNoticeVisibleChange?: (visible: boolean) => void;
-  onNoticeClear?: (tabName?: string) => void;
+  fetchingNotices?: boolean
+  onNoticeVisibleChange?: (visible: boolean) => void
+  onNoticeClear?: (tabName?: string) => void
 }
 
 const GlobalHeaderRight: React.FC<GlobalHeaderRightProps> = () => (
@@ -24,6 +24,6 @@ const GlobalHeaderRight: React.FC<GlobalHeaderRightProps> = () => (
   >
     <NoticeIcon.Tab tabKey="notification" count={0} list={[]} title="Заголовок" emptyText="Пусто" showViewMore />
   </NoticeIcon>
-);
+)
 
-export default GlobalHeaderRight;
+export default GlobalHeaderRight

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import * as React from 'react'
 
 export interface IErrorsHandlerProviderProps {}
 
@@ -8,8 +8,8 @@ class ErrorsHandlerProvider extends React.PureComponent<IErrorsHandlerProviderPr
   // }
 
   public render() {
-    return <div>{this.props.children}</div>;
+    return <div>{this.props.children}</div>
   }
 }
 
-export default ErrorsHandlerProvider;
+export default ErrorsHandlerProvider

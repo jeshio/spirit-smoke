@@ -1,19 +1,19 @@
-import { PossiblePaths } from '@@types/utils/PossiblePaths';
-import { ColumnProps } from 'antd/lib/table';
+import { PossiblePaths } from '@@types/utils/PossiblePaths'
+import { ColumnProps } from 'antd/lib/table'
 
 export interface IColumn<RecordType> {
   /** Заголовок колонки */
-  title: string;
+  title: string
   /** Путь по объекту данных для отображения значения */
-  field: keyof RecordType | PossiblePaths<RecordType>;
+  field: keyof RecordType | PossiblePaths<RecordType>
   /** Уникальное название колонки (по-умолчанию берётся из field) */
-  key?: string;
+  key?: string
   /** Обработчик вывода */
-  render?: ColumnProps<RecordType>['render'];
+  render?: ColumnProps<RecordType>['render']
   /** Минимальный размер экрана для отображения */
-  responsive?: ColumnProps<RecordType>['responsive'];
+  responsive?: ColumnProps<RecordType>['responsive']
   /** Отключить сортировку для колонки */
-  disableSort?: boolean;
+  disableSort?: boolean
   /** Ширина колонки */
-  width?: number;
+  width?: number
 }
