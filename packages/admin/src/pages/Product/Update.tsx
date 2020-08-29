@@ -1,7 +1,7 @@
 import * as React from 'react'
 import UPageContainer from '@/ui-components/UPageContainer'
 import { notification } from 'antd'
-import { useUpdateProductMutation, useProductSimpleItemQuery } from '@/gql/__generated__/types'
+import { useUpdateProductMutation, useProductItemPageQuery } from '@/gql/__generated__/types'
 import { RouteComponentProps } from 'react-router'
 import useStableQuery from '@/hooks/gql/useStableQuery'
 import Form, { IFormProps } from './Form'
@@ -13,7 +13,7 @@ interface IUpdateProductPageProps
 
 const UpdateProductPage: React.FunctionComponent<IUpdateProductPageProps> = (props) => {
   const id = props.match.params.id || ''
-  const [productQuery, productQueryComponent] = useStableQuery(useProductSimpleItemQuery, {
+  const [productQuery, productQueryComponent] = useStableQuery(useProductItemPageQuery, {
     variables: {
       id,
     },

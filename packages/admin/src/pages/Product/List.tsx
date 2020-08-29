@@ -12,7 +12,7 @@ import UButton from '@/ui-components/UButton'
 import { EditFilled, DeleteFilled, ImportOutlined } from '@ant-design/icons'
 import UPopconfirm from '@/ui-components/UPopconfirm'
 import ListPageBuilder, { ListColumnsType } from '@/builders/ListPage'
-import { Badge } from 'antd'
+import { Badge, Tooltip } from 'antd'
 
 const columns: ListColumnsType = ({ deleteItem }): IColumn<ProductsListPageFragment>[] => [
   {
@@ -31,7 +31,9 @@ const columns: ListColumnsType = ({ deleteItem }): IColumn<ProductsListPageFragm
           {name}
         </>
       ) : (
-        <Badge status="error" text="БЕЗ ПРОИЗВОДИТЕЛЯ" />
+        <Tooltip title="Продукт невидим для клиентов">
+          <Badge status="warning" text="БЕЗ ПРОИЗВОДИТЕЛЯ" />
+        </Tooltip>
       ),
   },
   {

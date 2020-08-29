@@ -27,6 +27,7 @@ class Exception extends React.PureComponent<ExceptionProps> {
       img,
       actions,
       redirect = '/',
+      apolloError,
       ...rest
     } = this.props
     const pageType = type && type in config ? type : '404'

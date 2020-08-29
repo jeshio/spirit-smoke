@@ -78,7 +78,11 @@ const ProductItemPage: React.FunctionComponent<IProductItemPageProps> = (props) 
                 {product.company && (
                   <UButton href={`/companies/${product.company.id}`} type="link" icon={<ImportOutlined />} />
                 )}
-                {product.company ? product.company.name : <Badge status="error" text="БЕЗ ПРОИЗВОДИТЕЛЯ" />}
+                {product.company ? (
+                  product.company.name
+                ) : (
+                  <Badge status="warning" text="БЕЗ ПРОИЗВОДИТЕЛЯ - продукт невидим клиентам." />
+                )}
               </UDescriptions.Item>
               <UDescriptions.Item label="Категория">{product.productCategory?.name}</UDescriptions.Item>
               <UDescriptions.Item label="Slug">{product.slug}</UDescriptions.Item>
