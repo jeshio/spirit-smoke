@@ -5,6 +5,7 @@ import URow from '@/ui-components/URow'
 import UCol from '@/ui-components/UCol'
 import UButton from '@/ui-components/UButton'
 import { CompanyItemPageFragment } from '@/gql/__generated__/types'
+import UBlock from '@/ui-components/UBlock'
 import ProductsTable from './components/ProductsTable'
 
 export interface ICompanyFormProps {
@@ -19,31 +20,33 @@ const CompanyForm: React.FunctionComponent<ICompanyFormProps> = ({ isUpdate = fa
     <UForm labelCol={{ span: 6, sm: 6, md: 9, lg: 9, xl: 7, xxl: 7 }} onFinish={onSubmit}>
       <Card>
         <URow>
-          <UCol md={14} lg={12} xl={10} xxl={8} style={{ paddingTop: '30px' }}>
-            <UForm.Item label="Название" name="name" required initialValue={company?.name}>
-              <Input />
-            </UForm.Item>
-            <UForm.Item label="Slug" name="slug" required initialValue={company?.slug}>
-              <Input />
-            </UForm.Item>
+          <UCol md={20} lg={18} xl={10} xxl={8}>
+            <UBlock mt={{ xl: 6 }}>
+              <UForm.Item label="Название" name="name" required initialValue={company?.name}>
+                <Input />
+              </UForm.Item>
+              <UForm.Item label="Slug" name="slug" required initialValue={company?.slug}>
+                <Input />
+              </UForm.Item>
 
-            <UForm.Item wrapperCol={{ md: { offset: 2 } }}>
-              <UButton htmlType="submit" type="primary" loading={loading}>
-                {isUpdate ? 'Применить изменения' : 'Добавить'}
-              </UButton>
-              {isUpdate && company ? (
-                <UButton type="link" href={`/companies/${company.id}`}>
-                  Вернуться к производителю
+              <UForm.Item wrapperCol={{ md: { offset: 2 } }}>
+                <UButton htmlType="submit" type="primary" loading={loading}>
+                  {isUpdate ? 'Применить изменения' : 'Добавить'}
                 </UButton>
-              ) : (
-                <UButton href="/companies" type="link">
-                  Вернуться к списку
-                </UButton>
-              )}
-            </UForm.Item>
+                {isUpdate && company ? (
+                  <UButton type="link" href={`/companies/${company.id}`}>
+                    Вернуться к производителю
+                  </UButton>
+                ) : (
+                  <UButton href="/companies" type="link">
+                    Вернуться к списку
+                  </UButton>
+                )}
+              </UForm.Item>
+            </UBlock>
           </UCol>
           {isUpdate && (
-            <UCol lg={12} xl={{ offset: 2, span: 12 }} xxl={{ offset: 4, span: 12 }}>
+            <UCol xl={{ offset: 2, span: 12 }} xxl={{ offset: 4, span: 12 }}>
               <Card title="Продукты производителя" size="small">
                 <ProductsTable
                   products={company?.products}

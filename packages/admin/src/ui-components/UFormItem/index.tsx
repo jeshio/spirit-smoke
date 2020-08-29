@@ -3,9 +3,23 @@ import { FormItemProps } from 'antd/lib/form/FormItem'
 import { ColProps } from 'antd/lib/col'
 import { Form } from 'antd'
 
-import styles from './styles.less'
+import styled from 'styled-components'
 
 interface IUFormItemProps extends FormItemProps {}
+
+const Root = styled(Form.Item)`
+  button,
+  a {
+    margin-top: 4px;
+    margin-bottom: 4px;
+  }
+  button + button,
+  button + a,
+  a + button,
+  a + a {
+    margin-left: 16px;
+  }
+`
 
 const UFormItem: React.FunctionComponent<IUFormItemProps> = (props) => {
   const withLabel = !!props.label
@@ -26,7 +40,7 @@ const UFormItem: React.FunctionComponent<IUFormItemProps> = (props) => {
     }
   }
 
-  return <Form.Item wrapperCol={wrapperColDefault} {...props} rules={rules} className={styles.root} />
+  return <Root wrapperCol={wrapperColDefault} {...props} rules={rules} />
 }
 
 export default UFormItem

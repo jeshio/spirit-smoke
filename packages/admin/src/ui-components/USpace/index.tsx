@@ -1,22 +1,50 @@
 import * as React from 'react'
 import { SpaceProps } from 'antd/lib/space'
 import cn from 'classnames'
-import styles from './styles.less'
+import styled from 'styled-components'
 
 interface IUSpaceProps extends Pick<SpaceProps, 'size' | 'direction'> {}
 
+const Root = styled.div`
+  &.isVertical {
+    > * + * {
+      margin-top: 5px !important;
+
+      &.isMiddle {
+        margin-top: 10px !important;
+      }
+
+      &.isLarge {
+        margin-top: 15px !important;
+      }
+    }
+  }
+  &.isHorizontal {
+    > * + * {
+      margin-left: 5px !important;
+
+      &.isMiddle {
+        margin-left: 10px !important;
+      }
+
+      &.isLarge {
+        margin-left: 15px !important;
+      }
+    }
+  }
+`
+
 const USpace: React.FunctionComponent<IUSpaceProps> = ({ direction, size, children }) => {
   return (
-    <div
+    <Root
       className={cn(
-        styles.root,
         direction === 'vertical' && styles.isVertical,
         size === 'middle' && styles.isMiddle,
         size === 'large' && styles.isLarge
       )}
     >
       {children}
-    </div>
+    </Root>
   )
 }
 

@@ -11,7 +11,7 @@ import URow from '@/ui-components/URow'
 import UCol from '@/ui-components/UCol'
 
 import useStableQuery from '@/hooks/gql/useStableQuery'
-import styles from './styles.less'
+import { ItemImage, ItemImageWrapper } from './styles/item'
 
 interface IProductItemPageProps
   extends RouteComponentProps<{
@@ -59,14 +59,13 @@ const ProductItemPage: React.FunctionComponent<IProductItemPageProps> = (props) 
     >
       <URow>
         <UCol span={24} md={7} xl={6} xxl={5}>
-          <div className={styles.ItemImageWrapper}>
-            <div
-              className={styles.ItemImage}
+          <ItemImageWrapper>
+            <ItemImage
               style={{
                 backgroundImage: `url(${product.imageUrl})`,
               }}
             />
-          </div>
+          </ItemImageWrapper>
         </UCol>
         <UCol span={24} md={17} xl={18} xxl={19}>
           <Card title={`Информация о продукте (ID ${product.id})`}>
