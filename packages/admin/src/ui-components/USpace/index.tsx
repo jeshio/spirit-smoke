@@ -38,9 +38,9 @@ const USpace: React.FunctionComponent<IUSpaceProps> = ({ direction, size, childr
   return (
     <Root
       className={cn(
-        direction === 'vertical' && styles.isVertical,
-        size === 'middle' && styles.isMiddle,
-        size === 'large' && styles.isLarge
+        direction === 'vertical' && 'isVertical',
+        size === 'middle' && 'isMiddle',
+        size === 'large' && 'isLarge'
       )}
     >
       {children}
