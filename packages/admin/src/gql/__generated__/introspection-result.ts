@@ -1,11 +1,11 @@
 export type PossibleTypesResultData = {
   possibleTypes: {
-    IProduct: ['ProductSimple', 'Product'];
-  };
-};
+    IProduct: ['ProductSimple', 'Product']
+  }
+}
 const result: PossibleTypesResultData = {
   possibleTypes: {
     IProduct: ['ProductSimple', 'Product'],
   },
-};
-export default result;
+}
+export default result

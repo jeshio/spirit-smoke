@@ -6,10 +6,17 @@ const resolvers = {
 
   Mutation: {
     createCompany: (parent, {
-      name, slug,
+      input: { name, slug },
     }, { models }) => models.company.create({
       name, slug,
     }),
+    updateCompany: (parent, {
+      id, input: { name, slug },
+    }, { models }) => models.company.update({
+      name, slug,
+    }, {
+      where: { id }, returning: true,
+    }).then(([, [company]]) => company),
     deleteCompany: (parent, { id }, { models }) => models.company.destroy({
       where: {
         id,
@@ -18,7 +25,7 @@ const resolvers = {
   },
 
   Company: {
-    products: async (company) => company.getProducts(),
+    products: async (company) => company.getProducts(), // TODO: сделать loader
   },
 }
 

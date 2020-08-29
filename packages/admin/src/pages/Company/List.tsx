@@ -11,7 +11,7 @@ import {
   useDeleteCompanyMutation,
   CompanyListPageDocument,
 } from '@/gql/__generated__/types'
-import ListPageBuilder, { ListColumnsType } from '@/pageBuilders/List'
+import ListPageBuilder, { ListColumnsType } from '@/builders/ListPage'
 
 const columns: ListColumnsType = ({ deleteItem }): IColumn<CompanyListPageFragment>[] => [
   {

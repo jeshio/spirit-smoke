@@ -1,9 +1,9 @@
 // https://umijs.org/config/
-import { defineConfig, IConfig } from 'umi';
-import defaultSettings from './defaultSettings';
-import proxy from './proxy';
+import { defineConfig, IConfig } from 'umi'
+import defaultSettings from './defaultSettings'
+import proxy from './proxy'
 
-const { REACT_APP_ENV } = process.env;
+const { REACT_APP_ENV } = process.env
 
 export default defineConfig({
   alias: {
@@ -123,23 +123,24 @@ export default defineConfig({
                   component: './Company/List',
                   hideInMenu: true,
                 },
-                // {
-                //   path: '/companies/add',
-                //   name: 'Добавить продукт',
-                //   component: './Company/Add',
-                // },
-                // {
-                //   path: '/companies/:id/edit',
-                //   name: 'Редактирование продукта',
-                //   hideInMenu: true,
-                //   component: './Company/Update',
-                // },
-                // {
-                //   path: '/companies/:id',
-                //   name: 'Продукт',
-                //   hideInMenu: true,
-                //   component: './Company/[id]',
-                // },
+                {
+                  path: '/companies/add',
+                  name: 'Добавить производителя',
+                  component: './Company/Add',
+                  hideInMenu: true,
+                },
+                {
+                  path: '/companies/:id/edit',
+                  name: 'Редактирование производителя',
+                  hideInMenu: true,
+                  component: './Company/Update',
+                },
+                {
+                  path: '/companies/:id',
+                  name: 'Производитель',
+                  hideInMenu: true,
+                  component: './Company/Item',
+                },
               ],
             },
             {
@@ -171,14 +172,14 @@ export default defineConfig({
     mode: 'emit',
   },
   chainWebpack: (config, { webpack }) => {
-    config.resolve.extensions.add('.gql');
-    config.resolve.extensions.add('.graphql');
+    config.resolve.extensions.add('.gql')
+    config.resolve.extensions.add('.graphql')
     config.module
       .rule('graphql')
       .test(/\.(graphql|gql)$/)
       .exclude.add(/node_modules/)
       .end()
       .use('graphql')
-      .loader('graphql-tag/loader');
+      .loader('graphql-tag/loader')
   },
-} as IConfig);
+} as IConfig)

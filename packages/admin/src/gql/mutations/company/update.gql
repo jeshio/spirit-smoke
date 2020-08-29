@@ -1,0 +1,8 @@
+
+#import "@/gql/fragments/company/simple.gql"
+
+mutation updateCompany($id: ID!, $input: CompanyInput!) {
+	updateCompany(id: $id, input: $input) {
+		...CompanySimple
+	}
+}

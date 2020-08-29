@@ -9,9 +9,10 @@ import {
 import { IColumn } from '@/ui-components/UTable/types'
 import { Link } from 'umi'
 import UButton from '@/ui-components/UButton'
-import { EditFilled, DeleteFilled } from '@ant-design/icons'
+import { EditFilled, DeleteFilled, ImportOutlined } from '@ant-design/icons'
 import UPopconfirm from '@/ui-components/UPopconfirm'
-import ListPageBuilder, { ListColumnsType } from '@/pageBuilders/List'
+import ListPageBuilder, { ListColumnsType } from '@/builders/ListPage'
+import { Badge } from 'antd'
 
 const columns: ListColumnsType = ({ deleteItem }): IColumn<ProductsListPageFragment>[] => [
   {
@@ -21,8 +22,17 @@ const columns: ListColumnsType = ({ deleteItem }): IColumn<ProductsListPageFragm
   },
   {
     title: 'Производитель',
+    width: 250,
     field: ['company', 'name'],
-    render: (name, { companyId }) => <Link to={`/companies/${companyId}`}>{name}</Link>,
+    render: (name, { companyId }) =>
+      name ? (
+        <>
+          <UButton href={`/companies/${companyId}`} type="link" icon={<ImportOutlined />} />
+          {name}
+        </>
+      ) : (
+        <Badge status="error" text="БЕЗ ПРОИЗВОДИТЕЛЯ" />
+      ),
   },
   {
     title: 'Имя',
@@ -41,6 +51,7 @@ const columns: ListColumnsType = ({ deleteItem }): IColumn<ProductsListPageFragm
   {
     title: 'Текущая цена',
     field: 'price',
+    render: (price) => `${price} ₽`,
   },
   {
     title: 'Категория',

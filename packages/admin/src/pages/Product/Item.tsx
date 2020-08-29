@@ -1,17 +1,16 @@
 import * as React from 'react'
 import { RouteComponentProps } from 'react-router'
 import { useProductItemPageQuery, useDeleteProductMutation } from '@/gql/__generated__/types'
-import Exception from '@/components/Exception'
 import UPageContainer from '@/ui-components/UPageContainer'
-import { Card, Divider } from 'antd'
+import { Card, Divider, Badge } from 'antd'
 import UDescriptions from '@/ui-components/UDescriptions'
 import UButton from '@/ui-components/UButton'
 import UPopconfirm from '@/ui-components/UPopconfirm'
-import ULoading from '@/ui-components/ULoading'
-import { DeleteFilled, EditFilled } from '@ant-design/icons'
+import { DeleteFilled, EditFilled, ImportOutlined } from '@ant-design/icons'
 import URow from '@/ui-components/URow'
 import UCol from '@/ui-components/UCol'
 
+import useStableQuery from '@/hooks/gql/useStableQuery'
 import styles from './styles.less'
 
 interface IProductItemPageProps
@@ -21,10 +20,12 @@ interface IProductItemPageProps
 
 const ProductItemPage: React.FunctionComponent<IProductItemPageProps> = (props) => {
   const { id } = props.match.params
-  const { loading, error, data } = useProductItemPageQuery({
+  const [query, queryComponent] = useStableQuery(useProductItemPageQuery, {
     variables: {
       id,
     },
+    loadingTip: 'Загрузка продукта',
+    queryName: 'product',
   })
   const [deleteProduct] = useDeleteProductMutation({
     variables: {
@@ -35,18 +36,14 @@ const ProductItemPage: React.FunctionComponent<IProductItemPageProps> = (props) 
     },
     onError: () => {},
   })
-  const { product } = data || {}
 
-  if (error) return <Exception apolloError={error} />
+  if (queryComponent || !query?.data.product) return queryComponent as React.ReactElement
 
-  if (loading) return <ULoading tip="Загрузка продукта" />
-
-  if (!product) return <Exception type="404" />
+  const { product } = query.data
 
   return (
     <UPageContainer
-      title={`${product.company.name}, ${product.name}`}
-      pageTitle={`${product.name} продукт`}
+      title={product.company ? `${product.company.name}, ${product.name}` : product.name}
       extra={
         <>
           <UPopconfirm onConfirm={deleteProduct as any}>
@@ -72,13 +69,18 @@ const ProductItemPage: React.FunctionComponent<IProductItemPageProps> = (props) 
           </div>
         </UCol>
         <UCol span={24} md={17} xl={18} xxl={19}>
-          <Card>
-            <UDescriptions title={`Информация о продукте (ID ${product.id})`}>
+          <Card title={`Информация о продукте (ID ${product.id})`}>
+            <UDescriptions>
               <UDescriptions.Item label="Осталось штук">{product.count}</UDescriptions.Item>
               <UDescriptions.Item label="Текущая цена">{product.price} ₽</UDescriptions.Item>
               <UDescriptions.Item label="Название">{product.name}</UDescriptions.Item>
-              <UDescriptions.Item label="Компания">{product.company.name}</UDescriptions.Item>
-              <UDescriptions.Item label="Категория">{product.productCategory.name}</UDescriptions.Item>
+              <UDescriptions.Item label="Производитель">
+                {product.company && (
+                  <UButton href={`/companies/${product.company.id}`} type="link" icon={<ImportOutlined />} />
+                )}
+                {product.company ? product.company.name : <Badge status="error" text="БЕЗ ПРОИЗВОДИТЕЛЯ" />}
+              </UDescriptions.Item>
+              <UDescriptions.Item label="Категория">{product.productCategory?.name}</UDescriptions.Item>
               <UDescriptions.Item label="Slug">{product.slug}</UDescriptions.Item>
               <UDescriptions.Item label="Добавлен">{product.createdAt}</UDescriptions.Item>
               <UDescriptions.Item label="Обновлён">{product.updatedAt}</UDescriptions.Item>

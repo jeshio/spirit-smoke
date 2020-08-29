@@ -18,6 +18,19 @@ const colRender = (render: IColumn<any>['render']) => (...args: Parameters<Requi
   }
 }
 
+const defaultSorter = (field: any | any[]) => (a: any, b: any) => {
+  const aVal = get(a, field)
+  const bVal = get(b, field)
+
+  // если использовать Number.isNaN, то проверка происходит неверно
+  /* eslint-disable-next-line no-restricted-properties */
+  if (!window.isNaN(aVal) && !window.isNaN(bVal)) {
+    return parseFloat(aVal) - parseFloat(bVal)
+  }
+
+  return `${aVal}`.localeCompare(bVal)
+}
+
 /**
  * Преобразует колонки к формату, необходимому для оригинальной таблицы
  * @param columns IColumn[]
@@ -28,7 +41,7 @@ export default function useOriginalColumns(columns: IColumn<any>[]): ColumnsType
       title,
       dataIndex: field,
       key: key || field,
-      sorter: disableSort ? undefined : (a, b) => `${get(a, field)}`.localeCompare(get(b, field)),
+      sorter: disableSort ? undefined : defaultSorter(field),
       render: colRender(render),
       responsive,
       width,

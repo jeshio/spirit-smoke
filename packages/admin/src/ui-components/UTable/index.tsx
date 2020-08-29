@@ -14,7 +14,18 @@ export interface IUTableProps<RecordType> extends TableProps<RecordType> {
 function UTable<RecordType extends Record<string, any> = any>(props: IUTableProps<RecordType>): JSX.Element {
   const columns = useOriginalColumns(props.columns)
   const dataSource = useServiceDataWithRows(props.dataSource || [], props.invalidRowCondition)
-  return <Table<RecordType> {...props} dataSource={dataSource} columns={columns} rowKey={props.rowKey || 'id'} />
+  return (
+    <Table<RecordType>
+      scroll={{
+        scrollToFirstRowOnChange: true,
+        x: true,
+      }}
+      {...props}
+      dataSource={dataSource}
+      columns={columns}
+      rowKey={props.rowKey || 'id'}
+    />
+  )
 }
 
 export default UTable

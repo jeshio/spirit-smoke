@@ -14,7 +14,7 @@ const AddProductPage: React.FunctionComponent<IAddProductPageProps> = ({ history
         notification.success({
           message: 'Продукт успешно добавлен!',
         })
-        history.push('/products')
+        history.push(`/products/${r.createProduct.id}`)
       }
     },
     onError: () => {},

@@ -92,8 +92,8 @@ const Form: React.FunctionComponent<IFormProps> = ({ loading = false, onSubmit, 
           <UButton htmlType="submit" type="primary" loading={loading}>
             {isUpdate ? 'Применить изменения' : 'Добавить'}
           </UButton>
-          {isUpdate ? (
-            <UButton href={`/products/${product?.id || ''}`} type="link">
+          {isUpdate && product ? (
+            <UButton href={`/products/${product.id}`} type="link">
               Вернуться к продукту
             </UButton>
           ) : (

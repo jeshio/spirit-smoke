@@ -1,0 +1,17 @@
+#import "@/gql/fragments/company/simple.gql"
+#import "@/gql/fragments/product/minimum.gql"
+
+fragment CompanyItemPage on Company {
+  ...CompanySimple
+  products {
+    ...ProductMinimum
+    price
+    count
+  }
+}
+
+query companyItemPage($id: ID!) {
+  company(id: $id) {
+    ...CompanyItemPage
+  }
+}

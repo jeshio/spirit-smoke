@@ -3,8 +3,7 @@ import UPageContainer from '@/ui-components/UPageContainer'
 import { notification } from 'antd'
 import { useUpdateProductMutation, useProductSimpleItemQuery } from '@/gql/__generated__/types'
 import { RouteComponentProps } from 'react-router'
-import Exception from '@/components/Exception'
-import ULoading from '@/ui-components/ULoading'
+import useStableQuery from '@/hooks/gql/useStableQuery'
 import Form, { IFormProps } from './Form'
 
 interface IUpdateProductPageProps
@@ -14,16 +13,18 @@ interface IUpdateProductPageProps
 
 const UpdateProductPage: React.FunctionComponent<IUpdateProductPageProps> = (props) => {
   const id = props.match.params.id || ''
-  const productRequest = useProductSimpleItemQuery({
+  const [productQuery, productQueryComponent] = useStableQuery(useProductSimpleItemQuery, {
     variables: {
       id,
     },
+    loadingTip: 'Загрузка продукта',
+    queryName: 'product',
   })
   const [updateProduct, updateProductRequest] = useUpdateProductMutation({
     onCompleted: (r) => {
       if (!('errors' in r)) {
         notification.success({
-          message: 'Продукт успешно обнавлён!',
+          message: 'Продукт успешно обновлён!',
         })
         props.history.push(`/products/${id}`)
       }
@@ -31,11 +32,9 @@ const UpdateProductPage: React.FunctionComponent<IUpdateProductPageProps> = (pro
     onError: () => {},
   })
 
-  if (productRequest.error) return <Exception apolloError={productRequest.error} />
+  if (productQueryComponent || !productQuery?.data.product) return productQueryComponent as React.ReactElement
 
-  if (productRequest.loading || !productRequest.data) return <ULoading />
-
-  const { product } = productRequest.data
+  const { product } = productQuery.data
 
   const handleSubmit: IFormProps['onSubmit'] = (fields) => {
     updateProduct({

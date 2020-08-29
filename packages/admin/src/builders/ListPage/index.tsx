@@ -5,11 +5,10 @@ import { IColumn } from '@/ui-components/UTable/types'
 import UPageContainer from '@/ui-components/UPageContainer'
 import UButton from '@/ui-components/UButton'
 import { PlusOutlined } from '@ant-design/icons'
-import ULoading from '@/ui-components/ULoading'
-import Exception from '@/components/Exception'
 import { QueryHookType, MutationHookType } from '@/types/apollo'
 import { QueryHookOptions, DocumentNode } from '@apollo/client'
 import useDeleteListItemMutation from '@/hooks/gql/useDeleteListItemMutation'
+import useStableQuery from '@/hooks/gql/useStableQuery'
 
 export type DeleteItemType = (id: string) => void
 
@@ -47,8 +46,11 @@ function ListPageBuilder<RecordType>({
   deleteItemMutation,
   tableProps,
 }: IListPageBuilderProps<RecordType>) {
-  const useQuery = listQuery.hook
-  const { error, data } = useQuery(listQuery.hookOptions || {})
+  const [query, queryComponent] = useStableQuery(listQuery.hook, {
+    ...listQuery.hookOptions,
+    loadingTip,
+    queryName: listQuery.queryName,
+  })
   const [handleDeleteItem] = useDeleteListItemMutation(
     deleteItemMutation.hook,
     deleteItemMutation.listQueryDocument,
@@ -57,9 +59,7 @@ function ListPageBuilder<RecordType>({
     deleteItemMutation.successMessage
   )
 
-  if (!data) return <ULoading tip={loadingTip} />
-
-  if (error) return <Exception apolloError={error} />
+  if (queryComponent || !query?.data[listQuery.queryName]) return queryComponent as React.ReactElement
 
   return (
     <UPageContainer
@@ -73,7 +73,7 @@ function ListPageBuilder<RecordType>({
       <UTable<any>
         {...tableProps}
         columns={columns({ deleteItem: handleDeleteItem })}
-        dataSource={data?.[listQuery.queryName] || []}
+        dataSource={query.data[listQuery.queryName] || []}
       />
     </UPageContainer>
   )
