@@ -4,8 +4,15 @@ extend type Query {
 }
 
 extend type Mutation {
-  createProductCategory(name: String!, slug: String!, description: String!): ProductCategorySimple!
+  createProductCategory(input: ProductCategoryInput!): ProductCategorySimple!
+  updateProductCategory(id: ID!, input: ProductCategoryInput!): ProductCategorySimple!
   deleteProductCategory(id: ID!): ID!
+}
+
+input ProductCategoryInput {
+  name: String!
+  slug: String!
+  description: String!
 }
 
 interface IProductCategory {
@@ -33,7 +40,7 @@ type ProductCategory implements IProductCategory {
   description: String!
   createdAt: String!
   updatedAt: String!
-  products: [Product]!
-  features: [Feature]!
-  discounts: [Discount]!
+  products: [Product!]!
+  features: [Feature!]!
+  discounts: [Discount!]!
 }

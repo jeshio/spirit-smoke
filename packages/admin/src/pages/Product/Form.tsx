@@ -12,14 +12,19 @@ import {
 import numberToPrice from '@@utils/src/numberToPrice'
 import TextArea from 'antd/lib/input/TextArea'
 
-export interface IFormProps {
+export interface IProductFormProps {
   loading?: boolean
   onSubmit: (values: Record<string, string>) => void
   isUpdate?: boolean
   product?: ProductItemPageFragment
 }
 
-const Form: React.FunctionComponent<IFormProps> = ({ loading = false, onSubmit, isUpdate = false, product }) => {
+const ProductForm: React.FunctionComponent<IProductFormProps> = ({
+  loading = false,
+  onSubmit,
+  isUpdate = false,
+  product,
+}) => {
   const categoriesRequest = useProductCategoryMinimumListQuery()
   const companyRequest = useCompanyMinimumListQuery()
   const handleSubmit = (fields: any) =>
@@ -128,4 +133,4 @@ const Form: React.FunctionComponent<IFormProps> = ({ loading = false, onSubmit, 
   )
 }
 
-export default Form
+export default ProductForm

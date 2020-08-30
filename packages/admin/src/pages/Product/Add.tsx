@@ -3,7 +3,7 @@ import UPageContainer from '@/ui-components/UPageContainer'
 import { notification } from 'antd'
 import { useCreateProductMutation } from '@/gql/__generated__/types'
 import { RouteComponentProps } from 'react-router'
-import Form, { IFormProps } from './Form'
+import ProductForm, { IProductFormProps } from './Form'
 
 interface IAddProductPageProps extends RouteComponentProps {}
 
@@ -20,7 +20,7 @@ const AddProductPage: React.FunctionComponent<IAddProductPageProps> = ({ history
     onError: () => {},
   })
 
-  const handleSubmit: IFormProps['onSubmit'] = (fields) => {
+  const handleSubmit: IProductFormProps['onSubmit'] = (fields) => {
     createProduct({
       variables: {
         input: fields as any,
@@ -30,7 +30,7 @@ const AddProductPage: React.FunctionComponent<IAddProductPageProps> = ({ history
 
   return (
     <UPageContainer title="Добавление продукта">
-      <Form onSubmit={handleSubmit} loading={createProductRequest.loading} />
+      <ProductForm onSubmit={handleSubmit} loading={createProductRequest.loading} />
     </UPageContainer>
   )
 }

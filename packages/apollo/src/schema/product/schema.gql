@@ -1,6 +1,6 @@
 extend type Query {
   products: [Product!]!
-  product(id: ID!): Product!
+  product(id: ID!): Product
 }
 
 extend type Mutation {

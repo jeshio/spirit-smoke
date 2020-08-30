@@ -1,0 +1,8 @@
+
+#import "@/gql/fragments/productCategory/simple.gql"
+
+mutation createProductCategory($input: ProductCategoryInput!) {
+	createProductCategory(input: $input) {
+		...ProductCategorySimple
+	}
+}

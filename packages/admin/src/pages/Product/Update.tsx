@@ -4,7 +4,7 @@ import { notification } from 'antd'
 import { useUpdateProductMutation, useProductItemPageQuery } from '@/gql/__generated__/types'
 import { RouteComponentProps } from 'react-router'
 import useStableQuery from '@/hooks/gql/useStableQuery'
-import Form, { IFormProps } from './Form'
+import ProductForm, { IProductFormProps } from './Form'
 
 interface IUpdateProductPageProps
   extends RouteComponentProps<{
@@ -32,22 +32,22 @@ const UpdateProductPage: React.FunctionComponent<IUpdateProductPageProps> = (pro
     onError: () => {},
   })
 
-  if (productQueryComponent || !productQuery?.data.product) return productQueryComponent as React.ReactElement
-
-  const { product } = productQuery.data
-
-  const handleSubmit: IFormProps['onSubmit'] = (fields) => {
+  const handleSubmit: IProductFormProps['onSubmit'] = (fields) => {
     updateProduct({
       variables: {
-        id: product.id,
+        id,
         input: fields as any,
       },
     })
   }
 
+  if (productQueryComponent || !productQuery?.data.product) return productQueryComponent as React.ReactElement
+
+  const { product } = productQuery.data
+
   return (
     <UPageContainer title={`Редактирование продукта ${product.name}`}>
-      <Form onSubmit={handleSubmit} loading={updateProductRequest.loading} product={product} isUpdate />
+      <ProductForm onSubmit={handleSubmit} loading={updateProductRequest.loading} product={product} isUpdate />
     </UPageContainer>
   )
 }

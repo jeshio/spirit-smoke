@@ -1,0 +1,17 @@
+#import "@/gql/fragments/productCategory/simple.gql"
+#import "@/gql/fragments/product/minimum.gql"
+
+fragment ProductCategoryItemPage on ProductCategory {
+  ...ProductCategorySimple
+  products {
+    ...ProductMinimum
+    price
+    count
+  }
+}
+
+query productCategoryItemPage($id: ID!) {
+  productCategory(id: $id) {
+    ...ProductCategoryItemPage
+  }
+}

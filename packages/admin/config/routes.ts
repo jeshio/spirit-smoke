@@ -113,24 +113,24 @@ export const baseRoutes = [
         component: './ProductCategory/List',
         hideInMenu: true,
       },
-      // {
-      //   path: '/product-categories/add',
-      //   name: 'Добавить производителя',
-      //   component: './ProductCategory/Add',
-      //   hideInMenu: true,
-      // },
-      // {
-      //   path: '/product-categories/:id/edit',
-      //   name: 'Редактирование производителя',
-      //   hideInMenu: true,
-      //   component: './ProductCategory/Update',
-      // },
-      // {
-      //   path: '/product-categories/:id',
-      //   name: 'Производитель',
-      //   hideInMenu: true,
-      //   component: './ProductCategory/Item',
-      // },
+      {
+        path: '/product-categories/add',
+        name: 'Добавить категорию продуктов',
+        component: './ProductCategory/Add',
+        hideInMenu: true,
+      },
+      {
+        path: '/product-categories/:id/edit',
+        name: 'Редактирование категории продуктов',
+        hideInMenu: true,
+        component: './ProductCategory/Update',
+      },
+      {
+        path: '/product-categories/:id',
+        name: 'Категория продуктов',
+        hideInMenu: true,
+        component: './ProductCategory/Item',
+      },
     ],
   },
   {

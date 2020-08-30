@@ -32,7 +32,7 @@ export type Query = {
   procurements: Array<Maybe<Procurement>>
   procurement?: Maybe<Procurement>
   products: Array<Product>
-  product: Product
+  product?: Maybe<Product>
   productCategories: Array<ProductCategory>
   productCategory?: Maybe<ProductCategory>
   promotions: Array<Maybe<Promotion>>
@@ -106,6 +106,7 @@ export type Mutation = {
   updateProduct: ProductSimple
   deleteProduct: Scalars['ID']
   createProductCategory: ProductCategorySimple
+  updateProductCategory: ProductCategorySimple
   deleteProductCategory: Scalars['ID']
   createPromotion: Promotion
 }
@@ -224,9 +225,12 @@ export type MutationDeleteProductArgs = {
 }
 
 export type MutationCreateProductCategoryArgs = {
-  name: Scalars['String']
-  slug: Scalars['String']
-  description: Scalars['String']
+  input: ProductCategoryInput
+}
+
+export type MutationUpdateProductCategoryArgs = {
+  id: Scalars['ID']
+  input: ProductCategoryInput
 }
 
 export type MutationDeleteProductCategoryArgs = {
@@ -482,6 +486,12 @@ export type Product = IProduct & {
   productProcurements: Array<Maybe<ProductProcurement>>
 }
 
+export type ProductCategoryInput = {
+  name: Scalars['String']
+  slug: Scalars['String']
+  description: Scalars['String']
+}
+
 export type IProductCategory = {
   id: Scalars['ID']
   name: Scalars['String']
@@ -509,9 +519,9 @@ export type ProductCategory = IProductCategory & {
   description: Scalars['String']
   createdAt: Scalars['String']
   updatedAt: Scalars['String']
-  products: Array<Maybe<Product>>
-  features: Array<Maybe<Feature>>
-  discounts: Array<Maybe<Discount>>
+  products: Array<Product>
+  features: Array<Feature>
+  discounts: Array<Discount>
 }
 
 export type PromotionInput = {
@@ -664,11 +674,28 @@ export type UpdateProductMutation = { __typename?: 'Mutation' } & {
   updateProduct: { __typename?: 'ProductSimple' } & ProductSimple_ProductSimple_Fragment
 }
 
+export type CreateProductCategoryMutationVariables = Exact<{
+  input: ProductCategoryInput
+}>
+
+export type CreateProductCategoryMutation = { __typename?: 'Mutation' } & {
+  createProductCategory: { __typename?: 'ProductCategorySimple' } & ProductCategorySimple_ProductCategorySimple_Fragment
+}
+
 export type DeleteProductCategoryMutationVariables = Exact<{
   id: Scalars['ID']
 }>
 
 export type DeleteProductCategoryMutation = { __typename?: 'Mutation' } & Pick<Mutation, 'deleteProductCategory'>
+
+export type UpdateProductCategoryMutationVariables = Exact<{
+  id: Scalars['ID']
+  input: ProductCategoryInput
+}>
+
+export type UpdateProductCategoryMutation = { __typename?: 'Mutation' } & {
+  updateProductCategory: { __typename?: 'ProductCategorySimple' } & ProductCategorySimple_ProductCategorySimple_Fragment
+}
 
 export type CompanyMinimumListQueryVariables = Exact<{ [key: string]: never }>
 
@@ -695,7 +722,7 @@ export type ProductSimpleItemQueryVariables = Exact<{
 }>
 
 export type ProductSimpleItemQuery = { __typename?: 'Query' } & {
-  product: { __typename?: 'Product' } & ProductSimple_Product_Fragment
+  product?: Maybe<{ __typename?: 'Product' } & ProductSimple_Product_Fragment>
 }
 
 export type ProductSimpleListQueryVariables = Exact<{ [key: string]: never }>
@@ -742,7 +769,7 @@ export type ProductItemPageQueryVariables = Exact<{
 }>
 
 export type ProductItemPageQuery = { __typename?: 'Query' } & {
-  product: { __typename?: 'Product' } & ProductItemPageFragment
+  product?: Maybe<{ __typename?: 'Product' } & ProductItemPageFragment>
 }
 
 export type ProductsListPageFragment = { __typename?: 'Product' } & Pick<
@@ -769,6 +796,18 @@ export type ProductCategoryListPageQueryVariables = Exact<{ [key: string]: never
 
 export type ProductCategoryListPageQuery = { __typename?: 'Query' } & {
   productCategories: Array<{ __typename?: 'ProductCategory' } & ProductCategoryListPageFragment>
+}
+
+export type ProductCategoryItemPageFragment = { __typename?: 'ProductCategory' } & {
+  products: Array<{ __typename?: 'Product' } & Pick<Product, 'price' | 'count'> & ProductMinimum_Product_Fragment>
+} & ProductCategorySimple_ProductCategory_Fragment
+
+export type ProductCategoryItemPageQueryVariables = Exact<{
+  id: Scalars['ID']
+}>
+
+export type ProductCategoryItemPageQuery = { __typename?: 'Query' } & {
+  productCategory?: Maybe<{ __typename?: 'ProductCategory' } & ProductCategoryItemPageFragment>
 }
 
 export type ResolverTypeWrapper<T> = Promise<T> | T
@@ -880,6 +919,7 @@ export type ResolversTypes = {
   IProduct: ResolversTypes['ProductSimple'] | ResolversTypes['Product']
   ProductSimple: ResolverTypeWrapper<ProductSimple>
   Product: ResolverTypeWrapper<Product>
+  ProductCategoryInput: ProductCategoryInput
   IProductCategory: ResolversTypes['ProductCategorySimple'] | ResolversTypes['ProductCategory']
   ProductCategorySimple: ResolverTypeWrapper<ProductCategorySimple>
   ProductCategory: ResolverTypeWrapper<ProductCategory>
@@ -920,6 +960,7 @@ export type ResolversParentTypes = {
   IProduct: ResolversParentTypes['ProductSimple'] | ResolversParentTypes['Product']
   ProductSimple: ProductSimple
   Product: Product
+  ProductCategoryInput: ProductCategoryInput
   IProductCategory: ResolversParentTypes['ProductCategorySimple'] | ResolversParentTypes['ProductCategory']
   ProductCategorySimple: ProductCategorySimple
   ProductCategory: ProductCategory
@@ -957,7 +998,7 @@ export type QueryResolvers<
     RequireFields<QueryProcurementArgs, 'id'>
   >
   products?: Resolver<Array<ResolversTypes['Product']>, ParentType, ContextType>
-  product?: Resolver<ResolversTypes['Product'], ParentType, ContextType, RequireFields<QueryProductArgs, 'id'>>
+  product?: Resolver<Maybe<ResolversTypes['Product']>, ParentType, ContextType, RequireFields<QueryProductArgs, 'id'>>
   productCategories?: Resolver<Array<ResolversTypes['ProductCategory']>, ParentType, ContextType>
   productCategory?: Resolver<
     Maybe<ResolversTypes['ProductCategory']>,
@@ -1121,7 +1162,13 @@ export type MutationResolvers<
     ResolversTypes['ProductCategorySimple'],
     ParentType,
     ContextType,
-    RequireFields<MutationCreateProductCategoryArgs, 'name' | 'slug' | 'description'>
+    RequireFields<MutationCreateProductCategoryArgs, 'input'>
+  >
+  updateProductCategory?: Resolver<
+    ResolversTypes['ProductCategorySimple'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationUpdateProductCategoryArgs, 'id' | 'input'>
   >
   deleteProductCategory?: Resolver<
     ResolversTypes['ID'],
@@ -1389,9 +1436,9 @@ export type ProductCategoryResolvers<
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   updatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>
-  products?: Resolver<Array<Maybe<ResolversTypes['Product']>>, ParentType, ContextType>
-  features?: Resolver<Array<Maybe<ResolversTypes['Feature']>>, ParentType, ContextType>
-  discounts?: Resolver<Array<Maybe<ResolversTypes['Discount']>>, ParentType, ContextType>
+  products?: Resolver<Array<ResolversTypes['Product']>, ParentType, ContextType>
+  features?: Resolver<Array<ResolversTypes['Feature']>, ParentType, ContextType>
+  discounts?: Resolver<Array<ResolversTypes['Discount']>, ParentType, ContextType>
   __isTypeOf?: IsTypeOfResolverFn<ParentType>
 }
 
@@ -1439,16 +1486,6 @@ export type Resolvers<ContextType = any> = {
  */
 export type IResolvers<ContextType = any> = Resolvers<ContextType>
 
-export const ProductCategorySimpleFragmentDoc = gql`
-  fragment ProductCategorySimple on IProductCategory {
-    id
-    name
-    slug
-    description
-    createdAt
-    updatedAt
-  }
-`
 export const CompanyMinimumFragmentDoc = gql`
   fragment CompanyMinimum on ICompany {
     id
@@ -1556,6 +1593,28 @@ export const ProductCategoryListPageFragmentDoc = gql`
     createdAt
   }
   ${ProductCategoryMinimumFragmentDoc}
+`
+export const ProductCategorySimpleFragmentDoc = gql`
+  fragment ProductCategorySimple on IProductCategory {
+    id
+    name
+    slug
+    description
+    createdAt
+    updatedAt
+  }
+`
+export const ProductCategoryItemPageFragmentDoc = gql`
+  fragment ProductCategoryItemPage on ProductCategory {
+    ...ProductCategorySimple
+    products {
+      ...ProductMinimum
+      price
+      count
+    }
+  }
+  ${ProductCategorySimpleFragmentDoc}
+  ${ProductMinimumFragmentDoc}
 `
 export const CreateCompanyDocument = gql`
   mutation createCompany($input: CompanyInput!) {
@@ -1781,6 +1840,50 @@ export type UpdateProductMutationOptions = Apollo.BaseMutationOptions<
   UpdateProductMutation,
   UpdateProductMutationVariables
 >
+export const CreateProductCategoryDocument = gql`
+  mutation createProductCategory($input: ProductCategoryInput!) {
+    createProductCategory(input: $input) {
+      ...ProductCategorySimple
+    }
+  }
+  ${ProductCategorySimpleFragmentDoc}
+`
+export type CreateProductCategoryMutationFn = Apollo.MutationFunction<
+  CreateProductCategoryMutation,
+  CreateProductCategoryMutationVariables
+>
+
+/**
+ * __useCreateProductCategoryMutation__
+ *
+ * To run a mutation, you first call `useCreateProductCategoryMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateProductCategoryMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createProductCategoryMutation, { data, loading, error }] = useCreateProductCategoryMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateProductCategoryMutation(
+  baseOptions?: Apollo.MutationHookOptions<CreateProductCategoryMutation, CreateProductCategoryMutationVariables>
+) {
+  return Apollo.useMutation<CreateProductCategoryMutation, CreateProductCategoryMutationVariables>(
+    CreateProductCategoryDocument,
+    baseOptions
+  )
+}
+export type CreateProductCategoryMutationHookResult = ReturnType<typeof useCreateProductCategoryMutation>
+export type CreateProductCategoryMutationResult = Apollo.MutationResult<CreateProductCategoryMutation>
+export type CreateProductCategoryMutationOptions = Apollo.BaseMutationOptions<
+  CreateProductCategoryMutation,
+  CreateProductCategoryMutationVariables
+>
 export const DeleteProductCategoryDocument = gql`
   mutation deleteProductCategory($id: ID!) {
     deleteProductCategory(id: $id)
@@ -1821,6 +1924,51 @@ export type DeleteProductCategoryMutationResult = Apollo.MutationResult<DeletePr
 export type DeleteProductCategoryMutationOptions = Apollo.BaseMutationOptions<
   DeleteProductCategoryMutation,
   DeleteProductCategoryMutationVariables
+>
+export const UpdateProductCategoryDocument = gql`
+  mutation updateProductCategory($id: ID!, $input: ProductCategoryInput!) {
+    updateProductCategory(id: $id, input: $input) {
+      ...ProductCategorySimple
+    }
+  }
+  ${ProductCategorySimpleFragmentDoc}
+`
+export type UpdateProductCategoryMutationFn = Apollo.MutationFunction<
+  UpdateProductCategoryMutation,
+  UpdateProductCategoryMutationVariables
+>
+
+/**
+ * __useUpdateProductCategoryMutation__
+ *
+ * To run a mutation, you first call `useUpdateProductCategoryMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateProductCategoryMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateProductCategoryMutation, { data, loading, error }] = useUpdateProductCategoryMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateProductCategoryMutation(
+  baseOptions?: Apollo.MutationHookOptions<UpdateProductCategoryMutation, UpdateProductCategoryMutationVariables>
+) {
+  return Apollo.useMutation<UpdateProductCategoryMutation, UpdateProductCategoryMutationVariables>(
+    UpdateProductCategoryDocument,
+    baseOptions
+  )
+}
+export type UpdateProductCategoryMutationHookResult = ReturnType<typeof useUpdateProductCategoryMutation>
+export type UpdateProductCategoryMutationResult = Apollo.MutationResult<UpdateProductCategoryMutation>
+export type UpdateProductCategoryMutationOptions = Apollo.BaseMutationOptions<
+  UpdateProductCategoryMutation,
+  UpdateProductCategoryMutationVariables
 >
 export const CompanyMinimumListDocument = gql`
   query companyMinimumList {
@@ -2286,4 +2434,51 @@ export type ProductCategoryListPageLazyQueryHookResult = ReturnType<typeof usePr
 export type ProductCategoryListPageQueryResult = Apollo.QueryResult<
   ProductCategoryListPageQuery,
   ProductCategoryListPageQueryVariables
+>
+export const ProductCategoryItemPageDocument = gql`
+  query productCategoryItemPage($id: ID!) {
+    productCategory(id: $id) {
+      ...ProductCategoryItemPage
+    }
+  }
+  ${ProductCategoryItemPageFragmentDoc}
+`
+
+/**
+ * __useProductCategoryItemPageQuery__
+ *
+ * To run a query within a React component, call `useProductCategoryItemPageQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProductCategoryItemPageQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProductCategoryItemPageQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useProductCategoryItemPageQuery(
+  baseOptions?: Apollo.QueryHookOptions<ProductCategoryItemPageQuery, ProductCategoryItemPageQueryVariables>
+) {
+  return Apollo.useQuery<ProductCategoryItemPageQuery, ProductCategoryItemPageQueryVariables>(
+    ProductCategoryItemPageDocument,
+    baseOptions
+  )
+}
+export function useProductCategoryItemPageLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<ProductCategoryItemPageQuery, ProductCategoryItemPageQueryVariables>
+) {
+  return Apollo.useLazyQuery<ProductCategoryItemPageQuery, ProductCategoryItemPageQueryVariables>(
+    ProductCategoryItemPageDocument,
+    baseOptions
+  )
+}
+export type ProductCategoryItemPageQueryHookResult = ReturnType<typeof useProductCategoryItemPageQuery>
+export type ProductCategoryItemPageLazyQueryHookResult = ReturnType<typeof useProductCategoryItemPageLazyQuery>
+export type ProductCategoryItemPageQueryResult = Apollo.QueryResult<
+  ProductCategoryItemPageQuery,
+  ProductCategoryItemPageQueryVariables
 >
