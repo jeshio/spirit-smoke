@@ -1,14 +1,14 @@
 #import "@/gql/fragments/product/simple.gql"
+#import "@/gql/fragments/productCategory/minimum.gql"
+#import "@/gql/fragments/company/minimum.gql"
 
 fragment ProductItemPage on Product {
   ...ProductSimple
   productCategory {
-    id
-    name
+    ...ProductCategoryMinimum
   }
   company {
-    id
-    name
+    ...CompanyMinimum
   }
 }
 

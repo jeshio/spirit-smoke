@@ -8,6 +8,11 @@ const resolvers = {
     createProductCategory: async (parent, { name, description, slug }, { models }) => models.productCategory.create({
       name, description, slug,
     }),
+    deleteProductCategory: (parent, { id }, { models }) => models.productCategory.destroy({
+      where: {
+        id,
+      },
+    }).then(() => id),
   },
 
   ProductCategory: {

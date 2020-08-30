@@ -32,6 +32,8 @@ const Form: React.FunctionComponent<IFormProps> = ({ loading = false, onSubmit, 
     <UForm onFinish={handleSubmit} labelCol={{ span: 6, sm: 6, md: 9, lg: 9, xl: 7, xxl: 7 }}>
       {(fields) => {
         const companyWarning = isUpdate && !product?.company && fields.companyId === product?.companyId
+        const productCategoryWarning =
+          isUpdate && !product?.productCategory && fields.productCategoryId === product?.productCategoryId
         return (
           <Card loading={categoriesRequest.loading || companyRequest.loading}>
             <URow>
@@ -41,6 +43,8 @@ const Form: React.FunctionComponent<IFormProps> = ({ loading = false, onSubmit, 
                   name="productCategoryId"
                   required
                   initialValue={product?.productCategoryId}
+                  help={productCategoryWarning && 'Эта категория удалена, продукт невидим'}
+                  validateStatus={(productCategoryWarning && 'warning') || undefined}
                 >
                   <Select>
                     {categoriesRequest.data?.productCategories.map(({ id, name }) => (

@@ -84,8 +84,8 @@ export type Mutation = {
   _?: Maybe<Scalars['Boolean']>
   createBonus: Bonus
   addOrderBonus: Bonus
-  createCompany: Company
-  updateCompany: Company
+  createCompany: CompanySimple
+  updateCompany: CompanySimple
   deleteCompany: Scalars['ID']
   createDiscount: Discount
   addProductCategoryDiscount: Discount
@@ -105,7 +105,8 @@ export type Mutation = {
   createProduct: ProductSimple
   updateProduct: ProductSimple
   deleteProduct: Scalars['ID']
-  createProductCategory: ProductCategory
+  createProductCategory: ProductCategorySimple
+  deleteProductCategory: Scalars['ID']
   createPromotion: Promotion
 }
 
@@ -228,6 +229,10 @@ export type MutationCreateProductCategoryArgs = {
   description: Scalars['String']
 }
 
+export type MutationDeleteProductCategoryArgs = {
+  id: Scalars['ID']
+}
+
 export type MutationCreatePromotionArgs = {
   input: PromotionInput
 }
@@ -260,7 +265,24 @@ export type CompanyInput = {
   slug: Scalars['String']
 }
 
-export type Company = {
+export type ICompany = {
+  id: Scalars['ID']
+  name: Scalars['String']
+  slug: Scalars['String']
+  createdAt: Scalars['String']
+  updatedAt: Scalars['String']
+}
+
+export type CompanySimple = ICompany & {
+  __typename?: 'CompanySimple'
+  id: Scalars['ID']
+  name: Scalars['String']
+  slug: Scalars['String']
+  createdAt: Scalars['String']
+  updatedAt: Scalars['String']
+}
+
+export type Company = ICompany & {
   __typename?: 'Company'
   id: Scalars['ID']
   name: Scalars['String']
@@ -460,12 +482,33 @@ export type Product = IProduct & {
   productProcurements: Array<Maybe<ProductProcurement>>
 }
 
-export type ProductCategory = {
+export type IProductCategory = {
+  id: Scalars['ID']
+  name: Scalars['String']
+  slug: Scalars['String']
+  description: Scalars['String']
+  createdAt: Scalars['String']
+  updatedAt: Scalars['String']
+}
+
+export type ProductCategorySimple = IProductCategory & {
+  __typename?: 'ProductCategorySimple'
+  id: Scalars['ID']
+  name: Scalars['String']
+  slug: Scalars['String']
+  description: Scalars['String']
+  createdAt: Scalars['String']
+  updatedAt: Scalars['String']
+}
+
+export type ProductCategory = IProductCategory & {
   __typename?: 'ProductCategory'
   id: Scalars['ID']
   name: Scalars['String']
   slug: Scalars['String']
   description: Scalars['String']
+  createdAt: Scalars['String']
+  updatedAt: Scalars['String']
   products: Array<Maybe<Product>>
   features: Array<Maybe<Feature>>
   discounts: Array<Maybe<Discount>>
@@ -491,12 +534,23 @@ export type Promotion = {
   priority: Scalars['Int']
 }
 
-export type CompanyMinimumFragment = { __typename?: 'Company' } & Pick<Company, 'id' | 'name'>
+type CompanyMinimum_CompanySimple_Fragment = { __typename?: 'CompanySimple' } & Pick<CompanySimple, 'id' | 'name'>
 
-export type CompanySimpleFragment = { __typename?: 'Company' } & Pick<
+type CompanyMinimum_Company_Fragment = { __typename?: 'Company' } & Pick<Company, 'id' | 'name'>
+
+export type CompanyMinimumFragment = CompanyMinimum_CompanySimple_Fragment | CompanyMinimum_Company_Fragment
+
+type CompanySimple_CompanySimple_Fragment = { __typename?: 'CompanySimple' } & Pick<
+  CompanySimple,
+  'id' | 'name' | 'slug' | 'createdAt' | 'updatedAt'
+>
+
+type CompanySimple_Company_Fragment = { __typename?: 'Company' } & Pick<
   Company,
   'id' | 'name' | 'slug' | 'createdAt' | 'updatedAt'
 >
+
+export type CompanySimpleFragment = CompanySimple_CompanySimple_Fragment | CompanySimple_Company_Fragment
 
 type ProductMinimum_ProductSimple_Fragment = { __typename?: 'ProductSimple' } & Pick<ProductSimple, 'id' | 'name'>
 
@@ -536,14 +590,40 @@ type ProductSimple_Product_Fragment = { __typename?: 'Product' } & Pick<
 
 export type ProductSimpleFragment = ProductSimple_ProductSimple_Fragment | ProductSimple_Product_Fragment
 
-export type ProductCategoryMinimumFragment = { __typename?: 'ProductCategory' } & Pick<ProductCategory, 'id' | 'name'>
+type ProductCategoryMinimum_ProductCategorySimple_Fragment = { __typename?: 'ProductCategorySimple' } & Pick<
+  ProductCategorySimple,
+  'id' | 'name'
+>
+
+type ProductCategoryMinimum_ProductCategory_Fragment = { __typename?: 'ProductCategory' } & Pick<
+  ProductCategory,
+  'id' | 'name'
+>
+
+export type ProductCategoryMinimumFragment =
+  | ProductCategoryMinimum_ProductCategorySimple_Fragment
+  | ProductCategoryMinimum_ProductCategory_Fragment
+
+type ProductCategorySimple_ProductCategorySimple_Fragment = { __typename?: 'ProductCategorySimple' } & Pick<
+  ProductCategorySimple,
+  'id' | 'name' | 'slug' | 'description' | 'createdAt' | 'updatedAt'
+>
+
+type ProductCategorySimple_ProductCategory_Fragment = { __typename?: 'ProductCategory' } & Pick<
+  ProductCategory,
+  'id' | 'name' | 'slug' | 'description' | 'createdAt' | 'updatedAt'
+>
+
+export type ProductCategorySimpleFragment =
+  | ProductCategorySimple_ProductCategorySimple_Fragment
+  | ProductCategorySimple_ProductCategory_Fragment
 
 export type CreateCompanyMutationVariables = Exact<{
   input: CompanyInput
 }>
 
 export type CreateCompanyMutation = { __typename?: 'Mutation' } & {
-  createCompany: { __typename?: 'Company' } & CompanySimpleFragment
+  createCompany: { __typename?: 'CompanySimple' } & CompanySimple_CompanySimple_Fragment
 }
 
 export type DeleteCompanyMutationVariables = Exact<{
@@ -558,7 +638,7 @@ export type UpdateCompanyMutationVariables = Exact<{
 }>
 
 export type UpdateCompanyMutation = { __typename?: 'Mutation' } & {
-  updateCompany: { __typename?: 'Company' } & CompanySimpleFragment
+  updateCompany: { __typename?: 'CompanySimple' } & CompanySimple_CompanySimple_Fragment
 }
 
 export type CreateProductMutationVariables = Exact<{
@@ -584,10 +664,16 @@ export type UpdateProductMutation = { __typename?: 'Mutation' } & {
   updateProduct: { __typename?: 'ProductSimple' } & ProductSimple_ProductSimple_Fragment
 }
 
+export type DeleteProductCategoryMutationVariables = Exact<{
+  id: Scalars['ID']
+}>
+
+export type DeleteProductCategoryMutation = { __typename?: 'Mutation' } & Pick<Mutation, 'deleteProductCategory'>
+
 export type CompanyMinimumListQueryVariables = Exact<{ [key: string]: never }>
 
 export type CompanyMinimumListQuery = { __typename?: 'Query' } & {
-  companies: Array<{ __typename?: 'Company' } & CompanyMinimumFragment>
+  companies: Array<{ __typename?: 'Company' } & CompanyMinimum_Company_Fragment>
 }
 
 export type CompanySimpleItemQueryVariables = Exact<{
@@ -595,13 +681,13 @@ export type CompanySimpleItemQueryVariables = Exact<{
 }>
 
 export type CompanySimpleItemQuery = { __typename?: 'Query' } & {
-  company?: Maybe<{ __typename?: 'Company' } & CompanySimpleFragment>
+  company?: Maybe<{ __typename?: 'Company' } & CompanySimple_Company_Fragment>
 }
 
 export type CompanySimpleListQueryVariables = Exact<{ [key: string]: never }>
 
 export type CompanySimpleListQuery = { __typename?: 'Query' } & {
-  companies: Array<{ __typename?: 'Company' } & CompanySimpleFragment>
+  companies: Array<{ __typename?: 'Company' } & CompanySimple_Company_Fragment>
 }
 
 export type ProductSimpleItemQueryVariables = Exact<{
@@ -621,12 +707,12 @@ export type ProductSimpleListQuery = { __typename?: 'Query' } & {
 export type ProductCategoryMinimumListQueryVariables = Exact<{ [key: string]: never }>
 
 export type ProductCategoryMinimumListQuery = { __typename?: 'Query' } & {
-  productCategories: Array<{ __typename?: 'ProductCategory' } & ProductCategoryMinimumFragment>
+  productCategories: Array<{ __typename?: 'ProductCategory' } & ProductCategoryMinimum_ProductCategory_Fragment>
 }
 
-export type CompanyListPageFragment = { __typename?: 'Company' } & {
-  products: Array<{ __typename?: 'Product' } & ProductMinimum_Product_Fragment>
-} & CompanySimpleFragment
+export type CompanyListPageFragment = { __typename?: 'Company' } & Pick<Company, 'slug' | 'createdAt'> & {
+    products: Array<{ __typename?: 'Product' } & ProductMinimum_Product_Fragment>
+  } & CompanyMinimum_Company_Fragment
 
 export type CompanyListPageQueryVariables = Exact<{ [key: string]: never }>
 
@@ -636,7 +722,7 @@ export type CompanyListPageQuery = { __typename?: 'Query' } & {
 
 export type CompanyItemPageFragment = { __typename?: 'Company' } & {
   products: Array<{ __typename?: 'Product' } & Pick<Product, 'price' | 'count'> & ProductMinimum_Product_Fragment>
-} & CompanySimpleFragment
+} & CompanySimple_Company_Fragment
 
 export type CompanyItemPageQueryVariables = Exact<{
   id: Scalars['ID']
@@ -647,8 +733,8 @@ export type CompanyItemPageQuery = { __typename?: 'Query' } & {
 }
 
 export type ProductItemPageFragment = { __typename?: 'Product' } & {
-  productCategory?: Maybe<{ __typename?: 'ProductCategory' } & Pick<ProductCategory, 'id' | 'name'>>
-  company?: Maybe<{ __typename?: 'Company' } & Pick<Company, 'id' | 'name'>>
+  productCategory?: Maybe<{ __typename?: 'ProductCategory' } & ProductCategoryMinimum_ProductCategory_Fragment>
+  company?: Maybe<{ __typename?: 'Company' } & CompanyMinimum_Company_Fragment>
 } & ProductSimple_Product_Fragment
 
 export type ProductItemPageQueryVariables = Exact<{
@@ -659,15 +745,30 @@ export type ProductItemPageQuery = { __typename?: 'Query' } & {
   product: { __typename?: 'Product' } & ProductItemPageFragment
 }
 
-export type ProductsListPageFragment = { __typename?: 'Product' } & {
-  productCategory?: Maybe<{ __typename?: 'ProductCategory' } & ProductCategoryMinimumFragment>
-  company?: Maybe<{ __typename?: 'Company' } & CompanyMinimumFragment>
-} & ProductSimple_Product_Fragment
+export type ProductsListPageFragment = { __typename?: 'Product' } & Pick<
+  Product,
+  'slug' | 'productCategoryId' | 'companyId' | 'price' | 'count' | 'createdAt'
+> & {
+    productCategory?: Maybe<{ __typename?: 'ProductCategory' } & ProductCategoryMinimum_ProductCategory_Fragment>
+    company?: Maybe<{ __typename?: 'Company' } & CompanyMinimum_Company_Fragment>
+  } & ProductMinimum_Product_Fragment
 
 export type ProductsListPageQueryVariables = Exact<{ [key: string]: never }>
 
 export type ProductsListPageQuery = { __typename?: 'Query' } & {
   products: Array<{ __typename?: 'Product' } & ProductsListPageFragment>
+}
+
+export type ProductCategoryListPageFragment = { __typename?: 'ProductCategory' } & Pick<
+  ProductCategory,
+  'slug' | 'createdAt'
+> &
+  ProductCategoryMinimum_ProductCategory_Fragment
+
+export type ProductCategoryListPageQueryVariables = Exact<{ [key: string]: never }>
+
+export type ProductCategoryListPageQuery = { __typename?: 'Query' } & {
+  productCategories: Array<{ __typename?: 'ProductCategory' } & ProductCategoryListPageFragment>
 }
 
 export type ResolverTypeWrapper<T> = Promise<T> | T
@@ -756,6 +857,8 @@ export type ResolversTypes = {
   BonusInput: BonusInput
   Bonus: ResolverTypeWrapper<Bonus>
   CompanyInput: CompanyInput
+  ICompany: ResolversTypes['CompanySimple'] | ResolversTypes['Company']
+  CompanySimple: ResolverTypeWrapper<CompanySimple>
   Company: ResolverTypeWrapper<Company>
   DiscountInput: DiscountInput
   Float: ResolverTypeWrapper<Scalars['Float']>
@@ -777,6 +880,8 @@ export type ResolversTypes = {
   IProduct: ResolversTypes['ProductSimple'] | ResolversTypes['Product']
   ProductSimple: ResolverTypeWrapper<ProductSimple>
   Product: ResolverTypeWrapper<Product>
+  IProductCategory: ResolversTypes['ProductCategorySimple'] | ResolversTypes['ProductCategory']
+  ProductCategorySimple: ResolverTypeWrapper<ProductCategorySimple>
   ProductCategory: ResolverTypeWrapper<ProductCategory>
   PromotionInput: PromotionInput
   Promotion: ResolverTypeWrapper<Promotion>
@@ -793,6 +898,8 @@ export type ResolversParentTypes = {
   BonusInput: BonusInput
   Bonus: Bonus
   CompanyInput: CompanyInput
+  ICompany: ResolversParentTypes['CompanySimple'] | ResolversParentTypes['Company']
+  CompanySimple: CompanySimple
   Company: Company
   DiscountInput: DiscountInput
   Float: Scalars['Float']
@@ -813,6 +920,8 @@ export type ResolversParentTypes = {
   IProduct: ResolversParentTypes['ProductSimple'] | ResolversParentTypes['Product']
   ProductSimple: ProductSimple
   Product: Product
+  IProductCategory: ResolversParentTypes['ProductCategorySimple'] | ResolversParentTypes['ProductCategory']
+  ProductCategorySimple: ProductCategorySimple
   ProductCategory: ProductCategory
   PromotionInput: PromotionInput
   Promotion: Promotion
@@ -883,13 +992,13 @@ export type MutationResolvers<
     RequireFields<MutationAddOrderBonusArgs, 'bonusId' | 'orderId'>
   >
   createCompany?: Resolver<
-    ResolversTypes['Company'],
+    ResolversTypes['CompanySimple'],
     ParentType,
     ContextType,
     RequireFields<MutationCreateCompanyArgs, 'input'>
   >
   updateCompany?: Resolver<
-    ResolversTypes['Company'],
+    ResolversTypes['CompanySimple'],
     ParentType,
     ContextType,
     RequireFields<MutationUpdateCompanyArgs, 'id' | 'input'>
@@ -1009,10 +1118,16 @@ export type MutationResolvers<
     RequireFields<MutationDeleteProductArgs, 'id'>
   >
   createProductCategory?: Resolver<
-    ResolversTypes['ProductCategory'],
+    ResolversTypes['ProductCategorySimple'],
     ParentType,
     ContextType,
     RequireFields<MutationCreateProductCategoryArgs, 'name' | 'slug' | 'description'>
+  >
+  deleteProductCategory?: Resolver<
+    ResolversTypes['ID'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationDeleteProductCategoryArgs, 'id'>
   >
   createPromotion?: Resolver<
     ResolversTypes['Promotion'],
@@ -1040,6 +1155,30 @@ export type BonusResolvers<
   iconUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   orders?: Resolver<Array<Maybe<ResolversTypes['Order']>>, ParentType, ContextType>
   discounts?: Resolver<Array<Maybe<ResolversTypes['Discount']>>, ParentType, ContextType>
+  __isTypeOf?: IsTypeOfResolverFn<ParentType>
+}
+
+export type ICompanyResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['ICompany'] = ResolversParentTypes['ICompany']
+> = {
+  __resolveType: TypeResolveFn<'CompanySimple' | 'Company', ParentType, ContextType>
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  updatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+}
+
+export type CompanySimpleResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['CompanySimple'] = ResolversParentTypes['CompanySimple']
+> = {
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  updatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   __isTypeOf?: IsTypeOfResolverFn<ParentType>
 }
 
@@ -1214,6 +1353,32 @@ export type ProductResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType>
 }
 
+export type IProductCategoryResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['IProductCategory'] = ResolversParentTypes['IProductCategory']
+> = {
+  __resolveType: TypeResolveFn<'ProductCategorySimple' | 'ProductCategory', ParentType, ContextType>
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  updatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+}
+
+export type ProductCategorySimpleResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['ProductCategorySimple'] = ResolversParentTypes['ProductCategorySimple']
+> = {
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  updatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  __isTypeOf?: IsTypeOfResolverFn<ParentType>
+}
+
 export type ProductCategoryResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['ProductCategory'] = ResolversParentTypes['ProductCategory']
@@ -1222,6 +1387,8 @@ export type ProductCategoryResolvers<
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  updatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   products?: Resolver<Array<Maybe<ResolversTypes['Product']>>, ParentType, ContextType>
   features?: Resolver<Array<Maybe<ResolversTypes['Feature']>>, ParentType, ContextType>
   discounts?: Resolver<Array<Maybe<ResolversTypes['Discount']>>, ParentType, ContextType>
@@ -1247,6 +1414,8 @@ export type Resolvers<ContextType = any> = {
   Mutation?: MutationResolvers<ContextType>
   Subscription?: SubscriptionResolvers<ContextType>
   Bonus?: BonusResolvers<ContextType>
+  ICompany?: ICompanyResolvers<ContextType>
+  CompanySimple?: CompanySimpleResolvers<ContextType>
   Company?: CompanyResolvers<ContextType>
   Discount?: DiscountResolvers<ContextType>
   Feature?: FeatureResolvers<ContextType>
@@ -1258,6 +1427,8 @@ export type Resolvers<ContextType = any> = {
   IProduct?: IProductResolvers<ContextType>
   ProductSimple?: ProductSimpleResolvers<ContextType>
   Product?: ProductResolvers<ContextType>
+  IProductCategory?: IProductCategoryResolvers<ContextType>
+  ProductCategorySimple?: ProductCategorySimpleResolvers<ContextType>
   ProductCategory?: ProductCategoryResolvers<ContextType>
   Promotion?: PromotionResolvers<ContextType>
 }
@@ -1268,13 +1439,20 @@ export type Resolvers<ContextType = any> = {
  */
 export type IResolvers<ContextType = any> = Resolvers<ContextType>
 
-export const CompanySimpleFragmentDoc = gql`
-  fragment CompanySimple on Company {
+export const ProductCategorySimpleFragmentDoc = gql`
+  fragment ProductCategorySimple on IProductCategory {
     id
     name
     slug
+    description
     createdAt
     updatedAt
+  }
+`
+export const CompanyMinimumFragmentDoc = gql`
+  fragment CompanyMinimum on ICompany {
+    id
+    name
   }
 `
 export const ProductMinimumFragmentDoc = gql`
@@ -1285,13 +1463,24 @@ export const ProductMinimumFragmentDoc = gql`
 `
 export const CompanyListPageFragmentDoc = gql`
   fragment CompanyListPage on Company {
-    ...CompanySimple
+    ...CompanyMinimum
+    slug
+    createdAt
     products {
       ...ProductMinimum
     }
   }
-  ${CompanySimpleFragmentDoc}
+  ${CompanyMinimumFragmentDoc}
   ${ProductMinimumFragmentDoc}
+`
+export const CompanySimpleFragmentDoc = gql`
+  fragment CompanySimple on ICompany {
+    id
+    name
+    slug
+    createdAt
+    updatedAt
+  }
 `
 export const CompanyItemPageFragmentDoc = gql`
   fragment CompanyItemPage on Company {
@@ -1320,34 +1509,14 @@ export const ProductSimpleFragmentDoc = gql`
     updatedAt
   }
 `
+export const ProductCategoryMinimumFragmentDoc = gql`
+  fragment ProductCategoryMinimum on IProductCategory {
+    id
+    name
+  }
+`
 export const ProductItemPageFragmentDoc = gql`
   fragment ProductItemPage on Product {
-    ...ProductSimple
-    productCategory {
-      id
-      name
-    }
-    company {
-      id
-      name
-    }
-  }
-  ${ProductSimpleFragmentDoc}
-`
-export const ProductCategoryMinimumFragmentDoc = gql`
-  fragment ProductCategoryMinimum on ProductCategory {
-    id
-    name
-  }
-`
-export const CompanyMinimumFragmentDoc = gql`
-  fragment CompanyMinimum on Company {
-    id
-    name
-  }
-`
-export const ProductsListPageFragmentDoc = gql`
-  fragment ProductsListPage on Product {
     ...ProductSimple
     productCategory {
       ...ProductCategoryMinimum
@@ -1359,6 +1528,34 @@ export const ProductsListPageFragmentDoc = gql`
   ${ProductSimpleFragmentDoc}
   ${ProductCategoryMinimumFragmentDoc}
   ${CompanyMinimumFragmentDoc}
+`
+export const ProductsListPageFragmentDoc = gql`
+  fragment ProductsListPage on Product {
+    ...ProductMinimum
+    slug
+    productCategoryId
+    companyId
+    price
+    count
+    createdAt
+    productCategory {
+      ...ProductCategoryMinimum
+    }
+    company {
+      ...CompanyMinimum
+    }
+  }
+  ${ProductMinimumFragmentDoc}
+  ${ProductCategoryMinimumFragmentDoc}
+  ${CompanyMinimumFragmentDoc}
+`
+export const ProductCategoryListPageFragmentDoc = gql`
+  fragment ProductCategoryListPage on ProductCategory {
+    ...ProductCategoryMinimum
+    slug
+    createdAt
+  }
+  ${ProductCategoryMinimumFragmentDoc}
 `
 export const CreateCompanyDocument = gql`
   mutation createCompany($input: CompanyInput!) {
@@ -1583,6 +1780,47 @@ export type UpdateProductMutationResult = Apollo.MutationResult<UpdateProductMut
 export type UpdateProductMutationOptions = Apollo.BaseMutationOptions<
   UpdateProductMutation,
   UpdateProductMutationVariables
+>
+export const DeleteProductCategoryDocument = gql`
+  mutation deleteProductCategory($id: ID!) {
+    deleteProductCategory(id: $id)
+  }
+`
+export type DeleteProductCategoryMutationFn = Apollo.MutationFunction<
+  DeleteProductCategoryMutation,
+  DeleteProductCategoryMutationVariables
+>
+
+/**
+ * __useDeleteProductCategoryMutation__
+ *
+ * To run a mutation, you first call `useDeleteProductCategoryMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteProductCategoryMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteProductCategoryMutation, { data, loading, error }] = useDeleteProductCategoryMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteProductCategoryMutation(
+  baseOptions?: Apollo.MutationHookOptions<DeleteProductCategoryMutation, DeleteProductCategoryMutationVariables>
+) {
+  return Apollo.useMutation<DeleteProductCategoryMutation, DeleteProductCategoryMutationVariables>(
+    DeleteProductCategoryDocument,
+    baseOptions
+  )
+}
+export type DeleteProductCategoryMutationHookResult = ReturnType<typeof useDeleteProductCategoryMutation>
+export type DeleteProductCategoryMutationResult = Apollo.MutationResult<DeleteProductCategoryMutation>
+export type DeleteProductCategoryMutationOptions = Apollo.BaseMutationOptions<
+  DeleteProductCategoryMutation,
+  DeleteProductCategoryMutationVariables
 >
 export const CompanyMinimumListDocument = gql`
   query companyMinimumList {
@@ -2003,3 +2241,49 @@ export function useProductsListPageLazyQuery(
 export type ProductsListPageQueryHookResult = ReturnType<typeof useProductsListPageQuery>
 export type ProductsListPageLazyQueryHookResult = ReturnType<typeof useProductsListPageLazyQuery>
 export type ProductsListPageQueryResult = Apollo.QueryResult<ProductsListPageQuery, ProductsListPageQueryVariables>
+export const ProductCategoryListPageDocument = gql`
+  query productCategoryListPage {
+    productCategories {
+      ...ProductCategoryListPage
+    }
+  }
+  ${ProductCategoryListPageFragmentDoc}
+`
+
+/**
+ * __useProductCategoryListPageQuery__
+ *
+ * To run a query within a React component, call `useProductCategoryListPageQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProductCategoryListPageQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProductCategoryListPageQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useProductCategoryListPageQuery(
+  baseOptions?: Apollo.QueryHookOptions<ProductCategoryListPageQuery, ProductCategoryListPageQueryVariables>
+) {
+  return Apollo.useQuery<ProductCategoryListPageQuery, ProductCategoryListPageQueryVariables>(
+    ProductCategoryListPageDocument,
+    baseOptions
+  )
+}
+export function useProductCategoryListPageLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<ProductCategoryListPageQuery, ProductCategoryListPageQueryVariables>
+) {
+  return Apollo.useLazyQuery<ProductCategoryListPageQuery, ProductCategoryListPageQueryVariables>(
+    ProductCategoryListPageDocument,
+    baseOptions
+  )
+}
+export type ProductCategoryListPageQueryHookResult = ReturnType<typeof useProductCategoryListPageQuery>
+export type ProductCategoryListPageLazyQueryHookResult = ReturnType<typeof useProductCategoryListPageLazyQuery>
+export type ProductCategoryListPageQueryResult = Apollo.QueryResult<
+  ProductCategoryListPageQuery,
+  ProductCategoryListPageQueryVariables
+>

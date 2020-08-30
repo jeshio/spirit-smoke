@@ -4,8 +4,8 @@ extend type Query {
 }
 
 extend type Mutation {
-  createCompany(input: CompanyInput!): Company!
-  updateCompany(id: ID!, input: CompanyInput!): Company!
+  createCompany(input: CompanyInput!): CompanySimple!
+  updateCompany(id: ID!, input: CompanyInput!): CompanySimple!
   deleteCompany(id: ID!): ID!
 }
 
@@ -14,7 +14,23 @@ input CompanyInput {
   slug: String!
 }
 
-type Company {
+interface ICompany {
+  id: ID!
+  name: String!
+  slug: String!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type CompanySimple implements ICompany {
+  id: ID!
+  name: String!
+  slug: String!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type Company implements ICompany {
   id: ID!
   name: String!
   slug: String!

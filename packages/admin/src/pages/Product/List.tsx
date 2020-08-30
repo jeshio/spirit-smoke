@@ -58,6 +58,17 @@ const columns: ListColumnsType = ({ deleteItem }): IColumn<ProductsListPageFragm
   {
     title: 'Категория',
     field: ['productCategory', 'name'],
+    render: (name, { productCategoryId }) =>
+      name ? (
+        <>
+          <UButton href={`/product-categories/${productCategoryId}`} type="link" icon={<ImportOutlined />} />
+          {name}
+        </>
+      ) : (
+        <Tooltip title="Продукт невидим для клиентов">
+          <Badge status="warning" text="БЕЗ КАТЕГОРИИ" />
+        </Tooltip>
+      ),
   },
   {
     title: 'Создан',

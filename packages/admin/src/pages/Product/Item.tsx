@@ -68,7 +68,14 @@ const ProductItemPage: React.FunctionComponent<IProductItemPageProps> = (props) 
           </ItemImageWrapper>
         </UCol>
         <UCol span={24} md={17} xl={18} xxl={19}>
-          <Card title={`Информация о продукте (ID ${product.id})`}>
+          <Card
+            title={`Информация о продукте (ID ${product.id})`}
+            extra={
+              !product.company || !product.productCategory ? (
+                <Badge status="warning" text="НЕВИДИМ для клиентов" />
+              ) : null
+            }
+          >
             <UDescriptions>
               <UDescriptions.Item label="Осталось штук">{product.count}</UDescriptions.Item>
               <UDescriptions.Item label="Текущая цена">{product.price} ₽</UDescriptions.Item>
@@ -77,13 +84,22 @@ const ProductItemPage: React.FunctionComponent<IProductItemPageProps> = (props) 
                 {product.company && (
                   <UButton href={`/companies/${product.company.id}`} type="link" icon={<ImportOutlined />} />
                 )}
-                {product.company ? (
-                  product.company.name
+                {product.company ? product.company.name : <Badge status="warning" text="БЕЗ ПРОИЗВОДИТЕЛЯ" />}
+              </UDescriptions.Item>
+              <UDescriptions.Item label="Категория">
+                {product.productCategory && (
+                  <UButton
+                    href={`/product-categories/${product.productCategory.id}`}
+                    type="link"
+                    icon={<ImportOutlined />}
+                  />
+                )}
+                {product.productCategory ? (
+                  product.productCategory.name
                 ) : (
-                  <Badge status="warning" text="БЕЗ ПРОИЗВОДИТЕЛЯ - продукт невидим клиентам." />
+                  <Badge status="warning" text="БЕЗ КАТЕГОРИИ" />
                 )}
               </UDescriptions.Item>
-              <UDescriptions.Item label="Категория">{product.productCategory?.name}</UDescriptions.Item>
               <UDescriptions.Item label="Slug">{product.slug}</UDescriptions.Item>
               <UDescriptions.Item label="Добавлен">{product.createdAt}</UDescriptions.Item>
               <UDescriptions.Item label="Обновлён">{product.updatedAt}</UDescriptions.Item>

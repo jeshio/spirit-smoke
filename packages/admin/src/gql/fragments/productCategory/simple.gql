@@ -1,0 +1,8 @@
+fragment ProductCategorySimple on IProductCategory {
+  id
+  name
+  slug
+  description
+  createdAt
+  updatedAt
+}

@@ -1,18 +1,39 @@
-  extend type Query {
-    productCategories: [ProductCategory!]!
-    productCategory(id: ID!): ProductCategory
-  }
- 
-  extend type Mutation {
-    createProductCategory(name: String!, slug: String!, description: String!): ProductCategory!
-  }
- 
-  type ProductCategory {
-    id: ID!
-    name: String!
-    slug: String!
-    description: String!
-    products: [Product]!
-    features: [Feature]!
-    discounts: [Discount]!
-  }
+extend type Query {
+  productCategories: [ProductCategory!]!
+  productCategory(id: ID!): ProductCategory
+}
+
+extend type Mutation {
+  createProductCategory(name: String!, slug: String!, description: String!): ProductCategorySimple!
+  deleteProductCategory(id: ID!): ID!
+}
+
+interface IProductCategory {
+  id: ID!
+  name: String!
+  slug: String!
+  description: String!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type ProductCategorySimple implements IProductCategory {
+  id: ID!
+  name: String!
+  slug: String!
+  description: String!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type ProductCategory implements IProductCategory {
+  id: ID!
+  name: String!
+  slug: String!
+  description: String!
+  createdAt: String!
+  updatedAt: String!
+  products: [Product]!
+  features: [Feature]!
+  discounts: [Discount]!
+}

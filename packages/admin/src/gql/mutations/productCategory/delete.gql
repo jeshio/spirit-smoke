@@ -1,0 +1,4 @@
+
+mutation deleteProductCategory($id: ID!) {
+	deleteProductCategory(id: $id)
+}

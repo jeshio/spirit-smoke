@@ -25,6 +25,11 @@ const createApolloClient = () => {
                 return incoming
               },
             },
+            productCategories: {
+              merge(existing, incoming) {
+                return incoming
+              },
+            },
           },
         },
       },

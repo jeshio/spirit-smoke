@@ -1,4 +1,4 @@
-fragment CompanySimple on Company {
+fragment CompanySimple on ICompany {
   id
   name
   slug

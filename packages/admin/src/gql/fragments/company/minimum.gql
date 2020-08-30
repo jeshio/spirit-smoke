@@ -1,4 +1,4 @@
-fragment CompanyMinimum on Company {
+fragment CompanyMinimum on ICompany {
   id
   name
 }

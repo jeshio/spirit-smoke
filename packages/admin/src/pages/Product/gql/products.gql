@@ -1,9 +1,15 @@
 #import "@/gql/fragments/productCategory/minimum.gql"
 #import "@/gql/fragments/company/minimum.gql"
-#import "@/gql/fragments/product/simple.gql"
+#import "@/gql/fragments/product/minimum.gql"
 
 fragment ProductsListPage on Product {
-  ...ProductSimple
+  ...ProductMinimum
+  slug
+  productCategoryId
+  companyId
+  price
+  count
+  createdAt
   productCategory {
     ...ProductCategoryMinimum
   }
