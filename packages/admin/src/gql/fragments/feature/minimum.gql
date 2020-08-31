@@ -1,0 +1,6 @@
+fragment FeatureMinimum on IFeature {
+  id
+  name
+  imageUrl
+  isDisabled
+}

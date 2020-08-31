@@ -7,7 +7,7 @@ const devRows = [...Array(70)].map((v, i) => {
     name: faker.commerce.productMaterial(),
     slug,
     imageUrl: `https://picsum.photos/id/${i + 500}/128/128`,
-    invisible: Math.random() > 0.85,
+    isDisabled: Math.random() > 0.85,
     createdAt: new Date(),
     updatedAt: new Date(),
   }

@@ -23,7 +23,7 @@ export type Query = {
   company?: Maybe<Company>
   discounts: Array<Maybe<Discount>>
   discount?: Maybe<Discount>
-  features: Array<Maybe<Feature>>
+  features: Array<Feature>
   feature?: Maybe<Feature>
   orders: Array<Maybe<Order>>
   order?: Maybe<Order>
@@ -93,11 +93,10 @@ export type Mutation = {
   addFeatureDiscount: Discount
   addOrderDiscount: Discount
   addBonusDiscount: Discount
-  createFeature: Feature
-  createProductCategoryFeature: Feature
+  createFeature: FeatureSimple
   addProductCategoryFeature: Feature
-  createProductFeature: Feature
   addProductFeature: Feature
+  deleteFeature: Scalars['ID']
   createOrder: Order
   createParam: Param
   createProcurement: Procurement
@@ -163,18 +162,7 @@ export type MutationAddBonusDiscountArgs = {
 }
 
 export type MutationCreateFeatureArgs = {
-  name: Scalars['String']
-  slug: Scalars['String']
-  imageUrl: Scalars['String']
-  invisible?: Maybe<Scalars['Boolean']>
-}
-
-export type MutationCreateProductCategoryFeatureArgs = {
-  name: Scalars['String']
-  slug: Scalars['String']
-  imageUrl: Scalars['String']
-  invisible?: Maybe<Scalars['Boolean']>
-  productCategoryId: Scalars['ID']
+  input: FeatureInput
 }
 
 export type MutationAddProductCategoryFeatureArgs = {
@@ -182,17 +170,13 @@ export type MutationAddProductCategoryFeatureArgs = {
   productCategoryId: Scalars['ID']
 }
 
-export type MutationCreateProductFeatureArgs = {
-  name: Scalars['String']
-  slug: Scalars['String']
-  imageUrl: Scalars['String']
-  invisible?: Maybe<Scalars['Boolean']>
-  productId: Scalars['ID']
-}
-
 export type MutationAddProductFeatureArgs = {
   featureId: Scalars['ID']
   productId: Scalars['ID']
+}
+
+export type MutationDeleteFeatureArgs = {
+  id: Scalars['ID']
 }
 
 export type MutationCreateOrderArgs = {
@@ -323,16 +307,46 @@ export type Discount = {
   bonuses: Array<Maybe<Bonus>>
 }
 
-export type Feature = {
+export type FeatureInput = {
+  name: Scalars['String']
+  slug: Scalars['String']
+  imageUrl: Scalars['String']
+  isDisabled?: Maybe<Scalars['Boolean']>
+}
+
+export type IFeature = {
+  id: Scalars['ID']
+  name: Scalars['String']
+  slug: Scalars['String']
+  imageUrl: Scalars['String']
+  isDisabled: Scalars['Boolean']
+  createdAt: Scalars['String']
+  updatedAt: Scalars['String']
+}
+
+export type FeatureSimple = IFeature & {
+  __typename?: 'FeatureSimple'
+  id: Scalars['ID']
+  name: Scalars['String']
+  slug: Scalars['String']
+  imageUrl: Scalars['String']
+  isDisabled: Scalars['Boolean']
+  createdAt: Scalars['String']
+  updatedAt: Scalars['String']
+}
+
+export type Feature = IFeature & {
   __typename?: 'Feature'
   id: Scalars['ID']
   name: Scalars['String']
   slug: Scalars['String']
   imageUrl: Scalars['String']
-  invisible: Scalars['Boolean']
-  productCategories: Array<Maybe<ProductCategory>>
-  products: Array<Maybe<Product>>
-  discounts: Array<Maybe<Discount>>
+  isDisabled: Scalars['Boolean']
+  createdAt: Scalars['String']
+  updatedAt: Scalars['String']
+  productCategories: Array<ProductCategory>
+  products: Array<Product>
+  discounts: Array<Discount>
 }
 
 export type OrderInput = {
@@ -562,6 +576,30 @@ type CompanySimple_Company_Fragment = { __typename?: 'Company' } & Pick<
 
 export type CompanySimpleFragment = CompanySimple_CompanySimple_Fragment | CompanySimple_Company_Fragment
 
+type FeatureMinimum_FeatureSimple_Fragment = { __typename?: 'FeatureSimple' } & Pick<
+  FeatureSimple,
+  'id' | 'name' | 'imageUrl' | 'isDisabled'
+>
+
+type FeatureMinimum_Feature_Fragment = { __typename?: 'Feature' } & Pick<
+  Feature,
+  'id' | 'name' | 'imageUrl' | 'isDisabled'
+>
+
+export type FeatureMinimumFragment = FeatureMinimum_FeatureSimple_Fragment | FeatureMinimum_Feature_Fragment
+
+type FeatureSimple_FeatureSimple_Fragment = { __typename?: 'FeatureSimple' } & Pick<
+  FeatureSimple,
+  'id' | 'slug' | 'name' | 'imageUrl' | 'isDisabled' | 'createdAt' | 'updatedAt'
+>
+
+type FeatureSimple_Feature_Fragment = { __typename?: 'Feature' } & Pick<
+  Feature,
+  'id' | 'slug' | 'name' | 'imageUrl' | 'isDisabled' | 'createdAt' | 'updatedAt'
+>
+
+export type FeatureSimpleFragment = FeatureSimple_FeatureSimple_Fragment | FeatureSimple_Feature_Fragment
+
 type ProductMinimum_ProductSimple_Fragment = { __typename?: 'ProductSimple' } & Pick<ProductSimple, 'id' | 'name'>
 
 type ProductMinimum_Product_Fragment = { __typename?: 'Product' } & Pick<Product, 'id' | 'name'>
@@ -650,6 +688,12 @@ export type UpdateCompanyMutationVariables = Exact<{
 export type UpdateCompanyMutation = { __typename?: 'Mutation' } & {
   updateCompany: { __typename?: 'CompanySimple' } & CompanySimple_CompanySimple_Fragment
 }
+
+export type DeleteFeatureMutationVariables = Exact<{
+  id: Scalars['ID']
+}>
+
+export type DeleteFeatureMutation = { __typename?: 'Mutation' } & Pick<Mutation, 'deleteFeature'>
 
 export type CreateProductMutationVariables = Exact<{
   input: ProductInput
@@ -757,6 +801,17 @@ export type CompanyItemPageQueryVariables = Exact<{
 
 export type CompanyItemPageQuery = { __typename?: 'Query' } & {
   company?: Maybe<{ __typename?: 'Company' } & CompanyItemPageFragment>
+}
+
+export type FeatureListPageFragment = { __typename?: 'Feature' } & Pick<
+  Feature,
+  'id' | 'name' | 'slug' | 'imageUrl' | 'isDisabled' | 'createdAt'
+>
+
+export type FeatureListPageQueryVariables = Exact<{ [key: string]: never }>
+
+export type FeatureListPageQuery = { __typename?: 'Query' } & {
+  features: Array<{ __typename?: 'Feature' } & FeatureListPageFragment>
 }
 
 export type ProductItemPageFragment = { __typename?: 'Product' } & {
@@ -891,9 +946,9 @@ export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>
   ID: ResolverTypeWrapper<Scalars['ID']>
   Mutation: ResolverTypeWrapper<{}>
-  String: ResolverTypeWrapper<Scalars['String']>
   Subscription: ResolverTypeWrapper<{}>
   BonusInput: BonusInput
+  String: ResolverTypeWrapper<Scalars['String']>
   Bonus: ResolverTypeWrapper<Bonus>
   CompanyInput: CompanyInput
   ICompany: ResolversTypes['CompanySimple'] | ResolversTypes['Company']
@@ -902,6 +957,9 @@ export type ResolversTypes = {
   DiscountInput: DiscountInput
   Float: ResolverTypeWrapper<Scalars['Float']>
   Discount: ResolverTypeWrapper<Discount>
+  FeatureInput: FeatureInput
+  IFeature: ResolversTypes['FeatureSimple'] | ResolversTypes['Feature']
+  FeatureSimple: ResolverTypeWrapper<FeatureSimple>
   Feature: ResolverTypeWrapper<Feature>
   OrderInput: OrderInput
   Int: ResolverTypeWrapper<Scalars['Int']>
@@ -933,9 +991,9 @@ export type ResolversParentTypes = {
   Boolean: Scalars['Boolean']
   ID: Scalars['ID']
   Mutation: {}
-  String: Scalars['String']
   Subscription: {}
   BonusInput: BonusInput
+  String: Scalars['String']
   Bonus: Bonus
   CompanyInput: CompanyInput
   ICompany: ResolversParentTypes['CompanySimple'] | ResolversParentTypes['Company']
@@ -944,6 +1002,9 @@ export type ResolversParentTypes = {
   DiscountInput: DiscountInput
   Float: Scalars['Float']
   Discount: Discount
+  FeatureInput: FeatureInput
+  IFeature: ResolversParentTypes['FeatureSimple'] | ResolversParentTypes['Feature']
+  FeatureSimple: FeatureSimple
   Feature: Feature
   OrderInput: OrderInput
   Int: Scalars['Int']
@@ -984,7 +1045,7 @@ export type QueryResolvers<
     ContextType,
     RequireFields<QueryDiscountArgs, 'id'>
   >
-  features?: Resolver<Array<Maybe<ResolversTypes['Feature']>>, ParentType, ContextType>
+  features?: Resolver<Array<ResolversTypes['Feature']>, ParentType, ContextType>
   feature?: Resolver<Maybe<ResolversTypes['Feature']>, ParentType, ContextType, RequireFields<QueryFeatureArgs, 'id'>>
   orders?: Resolver<Array<Maybe<ResolversTypes['Order']>>, ParentType, ContextType>
   order?: Resolver<Maybe<ResolversTypes['Order']>, ParentType, ContextType, RequireFields<QueryOrderArgs, 'id'>>
@@ -1087,16 +1148,10 @@ export type MutationResolvers<
     RequireFields<MutationAddBonusDiscountArgs, 'discountId' | 'bonusId'>
   >
   createFeature?: Resolver<
-    ResolversTypes['Feature'],
+    ResolversTypes['FeatureSimple'],
     ParentType,
     ContextType,
-    RequireFields<MutationCreateFeatureArgs, 'name' | 'slug' | 'imageUrl'>
-  >
-  createProductCategoryFeature?: Resolver<
-    ResolversTypes['Feature'],
-    ParentType,
-    ContextType,
-    RequireFields<MutationCreateProductCategoryFeatureArgs, 'name' | 'slug' | 'imageUrl' | 'productCategoryId'>
+    RequireFields<MutationCreateFeatureArgs, 'input'>
   >
   addProductCategoryFeature?: Resolver<
     ResolversTypes['Feature'],
@@ -1104,17 +1159,17 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationAddProductCategoryFeatureArgs, 'featureId' | 'productCategoryId'>
   >
-  createProductFeature?: Resolver<
-    ResolversTypes['Feature'],
-    ParentType,
-    ContextType,
-    RequireFields<MutationCreateProductFeatureArgs, 'name' | 'slug' | 'imageUrl' | 'productId'>
-  >
   addProductFeature?: Resolver<
     ResolversTypes['Feature'],
     ParentType,
     ContextType,
     RequireFields<MutationAddProductFeatureArgs, 'featureId' | 'productId'>
+  >
+  deleteFeature?: Resolver<
+    ResolversTypes['ID'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationDeleteFeatureArgs, 'id'>
   >
   createOrder?: Resolver<
     ResolversTypes['Order'],
@@ -1262,6 +1317,34 @@ export type DiscountResolvers<
   __isTypeOf?: IsTypeOfResolverFn<ParentType>
 }
 
+export type IFeatureResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['IFeature'] = ResolversParentTypes['IFeature']
+> = {
+  __resolveType: TypeResolveFn<'FeatureSimple' | 'Feature', ParentType, ContextType>
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  imageUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  isDisabled?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>
+  createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  updatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+}
+
+export type FeatureSimpleResolvers<
+  ContextType = any,
+  ParentType extends ResolversParentTypes['FeatureSimple'] = ResolversParentTypes['FeatureSimple']
+> = {
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  imageUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  isDisabled?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>
+  createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  updatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  __isTypeOf?: IsTypeOfResolverFn<ParentType>
+}
+
 export type FeatureResolvers<
   ContextType = any,
   ParentType extends ResolversParentTypes['Feature'] = ResolversParentTypes['Feature']
@@ -1270,10 +1353,12 @@ export type FeatureResolvers<
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   imageUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>
-  invisible?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>
-  productCategories?: Resolver<Array<Maybe<ResolversTypes['ProductCategory']>>, ParentType, ContextType>
-  products?: Resolver<Array<Maybe<ResolversTypes['Product']>>, ParentType, ContextType>
-  discounts?: Resolver<Array<Maybe<ResolversTypes['Discount']>>, ParentType, ContextType>
+  isDisabled?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>
+  createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  updatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>
+  productCategories?: Resolver<Array<ResolversTypes['ProductCategory']>, ParentType, ContextType>
+  products?: Resolver<Array<ResolversTypes['Product']>, ParentType, ContextType>
+  discounts?: Resolver<Array<ResolversTypes['Discount']>, ParentType, ContextType>
   __isTypeOf?: IsTypeOfResolverFn<ParentType>
 }
 
@@ -1465,6 +1550,8 @@ export type Resolvers<ContextType = any> = {
   CompanySimple?: CompanySimpleResolvers<ContextType>
   Company?: CompanyResolvers<ContextType>
   Discount?: DiscountResolvers<ContextType>
+  IFeature?: IFeatureResolvers<ContextType>
+  FeatureSimple?: FeatureSimpleResolvers<ContextType>
   Feature?: FeatureResolvers<ContextType>
   OrderProduct?: OrderProductResolvers<ContextType>
   Order?: OrderResolvers<ContextType>
@@ -1486,6 +1573,25 @@ export type Resolvers<ContextType = any> = {
  */
 export type IResolvers<ContextType = any> = Resolvers<ContextType>
 
+export const FeatureMinimumFragmentDoc = gql`
+  fragment FeatureMinimum on IFeature {
+    id
+    name
+    imageUrl
+    isDisabled
+  }
+`
+export const FeatureSimpleFragmentDoc = gql`
+  fragment FeatureSimple on IFeature {
+    id
+    slug
+    name
+    imageUrl
+    isDisabled
+    createdAt
+    updatedAt
+  }
+`
 export const CompanyMinimumFragmentDoc = gql`
   fragment CompanyMinimum on ICompany {
     id
@@ -1530,6 +1636,16 @@ export const CompanyItemPageFragmentDoc = gql`
   }
   ${CompanySimpleFragmentDoc}
   ${ProductMinimumFragmentDoc}
+`
+export const FeatureListPageFragmentDoc = gql`
+  fragment FeatureListPage on Feature {
+    id
+    name
+    slug
+    imageUrl
+    isDisabled
+    createdAt
+  }
 `
 export const ProductSimpleFragmentDoc = gql`
   fragment ProductSimple on IProduct {
@@ -1727,6 +1843,41 @@ export type UpdateCompanyMutationResult = Apollo.MutationResult<UpdateCompanyMut
 export type UpdateCompanyMutationOptions = Apollo.BaseMutationOptions<
   UpdateCompanyMutation,
   UpdateCompanyMutationVariables
+>
+export const DeleteFeatureDocument = gql`
+  mutation deleteFeature($id: ID!) {
+    deleteFeature(id: $id)
+  }
+`
+export type DeleteFeatureMutationFn = Apollo.MutationFunction<DeleteFeatureMutation, DeleteFeatureMutationVariables>
+
+/**
+ * __useDeleteFeatureMutation__
+ *
+ * To run a mutation, you first call `useDeleteFeatureMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteFeatureMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteFeatureMutation, { data, loading, error }] = useDeleteFeatureMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteFeatureMutation(
+  baseOptions?: Apollo.MutationHookOptions<DeleteFeatureMutation, DeleteFeatureMutationVariables>
+) {
+  return Apollo.useMutation<DeleteFeatureMutation, DeleteFeatureMutationVariables>(DeleteFeatureDocument, baseOptions)
+}
+export type DeleteFeatureMutationHookResult = ReturnType<typeof useDeleteFeatureMutation>
+export type DeleteFeatureMutationResult = Apollo.MutationResult<DeleteFeatureMutation>
+export type DeleteFeatureMutationOptions = Apollo.BaseMutationOptions<
+  DeleteFeatureMutation,
+  DeleteFeatureMutationVariables
 >
 export const CreateProductDocument = gql`
   mutation createProduct($input: ProductInput!) {
@@ -2311,6 +2462,43 @@ export function useCompanyItemPageLazyQuery(
 export type CompanyItemPageQueryHookResult = ReturnType<typeof useCompanyItemPageQuery>
 export type CompanyItemPageLazyQueryHookResult = ReturnType<typeof useCompanyItemPageLazyQuery>
 export type CompanyItemPageQueryResult = Apollo.QueryResult<CompanyItemPageQuery, CompanyItemPageQueryVariables>
+export const FeatureListPageDocument = gql`
+  query featureListPage {
+    features {
+      ...FeatureListPage
+    }
+  }
+  ${FeatureListPageFragmentDoc}
+`
+
+/**
+ * __useFeatureListPageQuery__
+ *
+ * To run a query within a React component, call `useFeatureListPageQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFeatureListPageQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFeatureListPageQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useFeatureListPageQuery(
+  baseOptions?: Apollo.QueryHookOptions<FeatureListPageQuery, FeatureListPageQueryVariables>
+) {
+  return Apollo.useQuery<FeatureListPageQuery, FeatureListPageQueryVariables>(FeatureListPageDocument, baseOptions)
+}
+export function useFeatureListPageLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<FeatureListPageQuery, FeatureListPageQueryVariables>
+) {
+  return Apollo.useLazyQuery<FeatureListPageQuery, FeatureListPageQueryVariables>(FeatureListPageDocument, baseOptions)
+}
+export type FeatureListPageQueryHookResult = ReturnType<typeof useFeatureListPageQuery>
+export type FeatureListPageLazyQueryHookResult = ReturnType<typeof useFeatureListPageLazyQuery>
+export type FeatureListPageQueryResult = Apollo.QueryResult<FeatureListPageQuery, FeatureListPageQueryVariables>
 export const ProductItemPageDocument = gql`
   query productItemPage($id: ID!) {
     product(id: $id) {

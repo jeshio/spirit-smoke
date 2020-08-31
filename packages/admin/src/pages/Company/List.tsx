@@ -43,7 +43,7 @@ const columns: ListColumnsType = ({ deleteItem }): IColumn<CompanyListPageFragme
       <>
         <UPopconfirm
           onConfirm={() => deleteItem(id)}
-          title="Все товары производителя станут недоступны для клиентов. Вы уверены?"
+          title="Все продукты производителя станут недоступны для клиентов. Вы уверены?"
           placement="topRight"
         >
           <UButton type="link" danger>

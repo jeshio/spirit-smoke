@@ -23,7 +23,10 @@ function useStableQuery<TData, TVariables>(
   useQuery: QueryHookType<TData, TVariables>,
   { loadingTip, queryName, ...options }: IOptions<TData, TVariables>
 ): [RequiredQueryResult<TData, TVariables>, undefined] | [undefined, ReactElement] {
-  const query = useQuery(options)
+  const query = useQuery({
+    ...options,
+    fetchPolicy: 'cache-first',
+  })
 
   if (query.error) return [undefined, <Exception apolloError={query.error} />]
   if (query.loading) return [undefined, <ULoading tip={loadingTip} />]

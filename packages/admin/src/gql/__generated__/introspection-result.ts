@@ -1,6 +1,7 @@
 export type PossibleTypesResultData = {
   possibleTypes: {
     ICompany: ['CompanySimple', 'Company']
+    IFeature: ['FeatureSimple', 'Feature']
     IProduct: ['ProductSimple', 'Product']
     IProductCategory: ['ProductCategorySimple', 'ProductCategory']
   }
@@ -8,6 +9,7 @@ export type PossibleTypesResultData = {
 const result: PossibleTypesResultData = {
   possibleTypes: {
     ICompany: ['CompanySimple', 'Company'],
+    IFeature: ['FeatureSimple', 'Feature'],
     IProduct: ['ProductSimple', 'Product'],
     IProductCategory: ['ProductCategorySimple', 'ProductCategory'],
   },

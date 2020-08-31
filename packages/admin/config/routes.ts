@@ -134,6 +134,42 @@ export const baseRoutes = [
     ],
   },
   {
+    path: '/features',
+    redirect: '/features/list',
+    exact: true,
+  },
+  {
+    name: 'Особенности',
+    icon: 'infoCircle',
+    path: '/features',
+    routes: [
+      {
+        path: '/features/list',
+        name: 'Список',
+        component: './Feature/List',
+        hideInMenu: true,
+      },
+      // {
+      //   path: '/features/add',
+      //   name: 'Добавить особенность',
+      //   component: './Feature/Add',
+      //   hideInMenu: true,
+      // },
+      // {
+      //   path: '/features/:id/edit',
+      //   name: 'Редактирование особенности',
+      //   hideInMenu: true,
+      //   component: './Feature/Update',
+      // },
+      // {
+      //   path: '/features/:id',
+      //   name: 'Особенность',
+      //   hideInMenu: true,
+      //   component: './Feature/Item',
+      // },
+    ],
+  },
+  {
     component: './404',
   },
 ]

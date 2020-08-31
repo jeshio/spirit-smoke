@@ -1,23 +1,51 @@
 extend type Query {
-  features: [Feature]!
+  features: [Feature!]!
   feature(id: ID!): Feature
 }
 
 extend type Mutation {
-  createFeature(name: String!, slug: String!, imageUrl: String!, invisible: Boolean): Feature!
-  createProductCategoryFeature(name: String!, slug: String!, imageUrl: String!, invisible: Boolean, productCategoryId: ID!): Feature!
+  createFeature(input: FeatureInput!): FeatureSimple!
   addProductCategoryFeature(featureId: ID!, productCategoryId: ID!): Feature!
-  createProductFeature(name: String!, slug: String!, imageUrl: String!, invisible: Boolean, productId: ID!): Feature!
   addProductFeature(featureId: ID!, productId: ID!): Feature!
+  deleteFeature(id: ID!): ID!
 }
 
-type Feature {
+input FeatureInput {
+  name: String!
+  slug: String!
+  imageUrl: String!
+  isDisabled: Boolean
+}
+
+interface IFeature {
   id: ID!
   name: String!
   slug: String!
   imageUrl: String!
-  invisible: Boolean!
-  productCategories: [ProductCategory]!
-  products: [Product]!
-  discounts: [Discount]!
+  isDisabled: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type FeatureSimple implements IFeature {
+  id: ID!
+  name: String!
+  slug: String!
+  imageUrl: String!
+  isDisabled: Boolean!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type Feature implements IFeature {
+  id: ID!
+  name: String!
+  slug: String!
+  imageUrl: String!
+  isDisabled: Boolean!
+  createdAt: String!
+  updatedAt: String!
+  productCategories: [ProductCategory!]!
+  products: [Product!]!
+  discounts: [Discount!]!
 } 

@@ -1,0 +1,14 @@
+fragment FeatureListPage on Feature {
+  id
+  name
+  slug
+  imageUrl
+  isDisabled
+  createdAt
+}
+
+query featureListPage {
+  features {
+    ...FeatureListPage
+  }
+}

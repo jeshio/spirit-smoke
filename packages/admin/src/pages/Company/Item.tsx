@@ -45,7 +45,11 @@ const CompanyItemPage: React.FunctionComponent<CompanyItemPageProps> = (props) =
       title={`${company.name}`}
       extra={
         <>
-          <UPopconfirm onConfirm={deleteCompany as any}>
+          <UPopconfirm
+            onConfirm={deleteCompany as any}
+            title="Все продукты производителя станут недоступны для клиентов. Вы уверены?"
+            placement="topRight"
+          >
             <UButton danger icon={<DeleteFilled />}>
               Удалить
             </UButton>

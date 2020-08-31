@@ -8,46 +8,29 @@ const httpLink = new HttpLink({
 
 const link = from([errorHandler, httpLink])
 
+const models = ['products', 'companies', 'productCategories', 'features']
+
 const createApolloClient = () => {
   const client = new ApolloClient({
     cache: new InMemoryCache({
       possibleTypes: introspectionResult.possibleTypes,
       typePolicies: {
         Query: {
-          fields: {
-            products: {
-              merge(existing, incoming) {
-                return incoming
+          fields: models.reduce(
+            (base, key) => ({
+              ...base,
+              [key]: {
+                merge(existing: any, incoming: any) {
+                  return incoming
+                },
               },
-            },
-            companies: {
-              merge(existing, incoming) {
-                return incoming
-              },
-            },
-            productCategories: {
-              merge(existing, incoming) {
-                return incoming
-              },
-            },
-          },
+            }),
+            {}
+          ),
         },
       },
     }),
     link,
-    defaultOptions: {
-      watchQuery: {
-        fetchPolicy: 'cache-and-network',
-        errorPolicy: 'all',
-      },
-      query: {
-        fetchPolicy: 'cache-first',
-        errorPolicy: 'all',
-      },
-      mutate: {
-        errorPolicy: 'all',
-      },
-    },
   })
 
   return client

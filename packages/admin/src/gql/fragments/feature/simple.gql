@@ -1,0 +1,9 @@
+fragment FeatureSimple on IFeature {
+  id
+  slug
+  name
+  imageUrl
+  isDisabled
+  createdAt
+  updatedAt
+}

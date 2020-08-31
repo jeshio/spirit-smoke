@@ -30,7 +30,7 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
-      invisible: {
+      isDisabled: {
         type: Sequelize.BOOLEAN,
         defaultValue: false,
       },

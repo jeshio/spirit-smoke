@@ -36,7 +36,7 @@ module.exports = (sequelize, DataTypes) => {
         isUrl: true,
       },
     },
-    invisible: {
+    isDisabled: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
     },

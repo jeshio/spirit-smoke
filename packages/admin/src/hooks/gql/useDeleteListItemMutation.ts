@@ -13,22 +13,25 @@ const useDeleteListItemMutation = (
     update: (cache, { data: responseData }) => {
       const deletedItemId = responseData?.[deleteName]
       if (deletedItemId) {
-        cache.modify({
-          id: deletedItemId,
-          fields: {
-            [queryName]: (itemRefs, { readField }) => {
-              const items = [...itemRefs]
+        const cacheQuery = cache.readQuery<{ [key: string]: any[] }>({ query })
 
-              const deletedIndex = items.findIndex((item) => readField('id', item) === deletedItemId)
+        if (cacheQuery) {
+          const { [queryName]: items } = cacheQuery
+          const result = [...items]
 
-              if (deletedIndex < 0) return items
+          const deletedIndex = result.findIndex((item) => item.id === deletedItemId)
 
-              items.splice(deletedIndex, 1)
+          if (deletedIndex < 0) return
 
-              return items
+          result.splice(deletedIndex, 1)
+
+          cache.writeQuery({
+            query,
+            data: {
+              [queryName]: result,
             },
-          },
-        })
+          })
+        }
       }
     },
     onCompleted: (response) => {
