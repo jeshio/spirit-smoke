@@ -149,24 +149,24 @@ export const baseRoutes = [
         component: './Feature/List',
         hideInMenu: true,
       },
-      // {
-      //   path: '/features/add',
-      //   name: 'Добавить особенность',
-      //   component: './Feature/Add',
-      //   hideInMenu: true,
-      // },
-      // {
-      //   path: '/features/:id/edit',
-      //   name: 'Редактирование особенности',
-      //   hideInMenu: true,
-      //   component: './Feature/Update',
-      // },
-      // {
-      //   path: '/features/:id',
-      //   name: 'Особенность',
-      //   hideInMenu: true,
-      //   component: './Feature/Item',
-      // },
+      {
+        path: '/features/add',
+        name: 'Добавить особенность',
+        component: './Feature/Add',
+        hideInMenu: true,
+      },
+      {
+        path: '/features/:id/edit',
+        name: 'Редактирование особенности',
+        hideInMenu: true,
+        component: './Feature/Update',
+      },
+      {
+        path: '/features/:id',
+        name: 'Особенность',
+        hideInMenu: true,
+        component: './Feature/Item',
+      },
     ],
   },
   {

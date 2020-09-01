@@ -1,0 +1,12 @@
+#import "@/gql/fragments/feature/simple.gql"
+#import "@/gql/fragments/product/minimum.gql"
+
+fragment FeatureItemPage on Feature {
+  ...FeatureSimple
+}
+
+query featureItemPage($id: ID!) {
+  feature(id: $id) {
+    ...FeatureItemPage
+  }
+}

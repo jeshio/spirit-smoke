@@ -46,10 +46,11 @@ function ListPageBuilder<RecordType>({
   deleteItemMutation,
   tableProps,
 }: IListPageBuilderProps<RecordType>) {
-  const [query, queryComponent] = useStableQuery(listQuery.hook, {
+  const [query, queryComponent, originalQuery] = useStableQuery(listQuery.hook, {
     ...listQuery.hookOptions,
     loadingTip,
     queryName: listQuery.queryName,
+    fetchPolicy: 'cache-first',
   })
   const [handleDeleteItem] = useDeleteListItemMutation(
     deleteItemMutation.hook,
@@ -58,6 +59,12 @@ function ListPageBuilder<RecordType>({
     deleteItemMutation.deleteName,
     deleteItemMutation.successMessage
   )
+
+  React.useEffect(() => {
+    // обход cache-first, принудительно делаем запрос при посещении страницы
+    // для проверки добавляем сущность и возвращаемся к списку
+    if (!originalQuery.loading) originalQuery.refetch()
+  }, [])
 
   if (queryComponent || !query?.data[listQuery.queryName]) return queryComponent as React.ReactElement
 

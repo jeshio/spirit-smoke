@@ -47,7 +47,7 @@ const ProductCategoryItemPage: React.FunctionComponent<IProductCategoryItemPageP
         <>
           <UPopconfirm
             onConfirm={deleteProductCategory as any}
-            title="Все продукты категории станут недоступны для клиентов. Вы уверены?"
+            title="Все продукты этой категории станут недоступны для клиентов. Вы уверены?"
             placement="topRight"
           >
             <UButton danger icon={<DeleteFilled />}>

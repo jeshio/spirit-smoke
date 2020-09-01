@@ -22,18 +22,17 @@ interface RequiredQueryResult<TData, TVariables> extends QueryResult<TData, TVar
 function useStableQuery<TData, TVariables>(
   useQuery: QueryHookType<TData, TVariables>,
   { loadingTip, queryName, ...options }: IOptions<TData, TVariables>
-): [RequiredQueryResult<TData, TVariables>, undefined] | [undefined, ReactElement] {
-  const query = useQuery({
-    ...options,
-    fetchPolicy: 'cache-first',
-  })
+):
+  | [RequiredQueryResult<TData, TVariables>, undefined, QueryResult<TData, TVariables>]
+  | [undefined, ReactElement, QueryResult<TData, TVariables>] {
+  const query = useQuery(options)
 
-  if (query.error) return [undefined, <Exception apolloError={query.error} />]
-  if (query.loading) return [undefined, <ULoading tip={loadingTip} />]
+  if (query.error) return [undefined, <Exception apolloError={query.error} />, query]
+  if (query.loading) return [undefined, <ULoading tip={loadingTip} />, query]
 
-  if (!query?.data?.[queryName]) return [undefined, <Exception type="404" />]
+  if (!query?.data?.[queryName]) return [undefined, <Exception type="404" />, query]
 
-  return [query as RequiredQueryResult<TData, TVariables>, undefined]
+  return [query as RequiredQueryResult<TData, TVariables>, undefined, query]
 }
 
 export default useStableQuery

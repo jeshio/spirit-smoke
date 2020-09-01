@@ -11,7 +11,7 @@ import URow from '@/ui-components/URow'
 import UCol from '@/ui-components/UCol'
 
 import useStableQuery from '@/hooks/gql/useStableQuery'
-import { ItemImage, ItemImageWrapper } from './styles/item'
+import { ItemImage, ItemImageWrapper } from './styles/item.styled'
 
 interface IProductItemPageProps
   extends RouteComponentProps<{

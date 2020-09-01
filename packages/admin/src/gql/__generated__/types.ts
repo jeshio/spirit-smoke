@@ -94,8 +94,9 @@ export type Mutation = {
   addOrderDiscount: Discount
   addBonusDiscount: Discount
   createFeature: FeatureSimple
-  addProductCategoryFeature: Feature
-  addProductFeature: Feature
+  updateFeature: FeatureSimple
+  addProductCategoryFeature: FeatureSimple
+  addProductFeature: FeatureSimple
   deleteFeature: Scalars['ID']
   createOrder: Order
   createParam: Param
@@ -162,6 +163,11 @@ export type MutationAddBonusDiscountArgs = {
 }
 
 export type MutationCreateFeatureArgs = {
+  input: FeatureInput
+}
+
+export type MutationUpdateFeatureArgs = {
+  id: Scalars['ID']
   input: FeatureInput
 }
 
@@ -695,6 +701,23 @@ export type DeleteFeatureMutationVariables = Exact<{
 
 export type DeleteFeatureMutation = { __typename?: 'Mutation' } & Pick<Mutation, 'deleteFeature'>
 
+export type CreateFeatureMutationVariables = Exact<{
+  input: FeatureInput
+}>
+
+export type CreateFeatureMutation = { __typename?: 'Mutation' } & {
+  createFeature: { __typename?: 'FeatureSimple' } & FeatureSimple_FeatureSimple_Fragment
+}
+
+export type UpdateFeatureMutationVariables = Exact<{
+  id: Scalars['ID']
+  input: FeatureInput
+}>
+
+export type UpdateFeatureMutation = { __typename?: 'Mutation' } & {
+  updateFeature: { __typename?: 'FeatureSimple' } & FeatureSimple_FeatureSimple_Fragment
+}
+
 export type CreateProductMutationVariables = Exact<{
   input: ProductInput
 }>
@@ -801,6 +824,16 @@ export type CompanyItemPageQueryVariables = Exact<{
 
 export type CompanyItemPageQuery = { __typename?: 'Query' } & {
   company?: Maybe<{ __typename?: 'Company' } & CompanyItemPageFragment>
+}
+
+export type FeatureItemPageFragment = { __typename?: 'Feature' } & FeatureSimple_Feature_Fragment
+
+export type FeatureItemPageQueryVariables = Exact<{
+  id: Scalars['ID']
+}>
+
+export type FeatureItemPageQuery = { __typename?: 'Query' } & {
+  feature?: Maybe<{ __typename?: 'Feature' } & FeatureItemPageFragment>
 }
 
 export type FeatureListPageFragment = { __typename?: 'Feature' } & Pick<
@@ -1153,14 +1186,20 @@ export type MutationResolvers<
     ContextType,
     RequireFields<MutationCreateFeatureArgs, 'input'>
   >
+  updateFeature?: Resolver<
+    ResolversTypes['FeatureSimple'],
+    ParentType,
+    ContextType,
+    RequireFields<MutationUpdateFeatureArgs, 'id' | 'input'>
+  >
   addProductCategoryFeature?: Resolver<
-    ResolversTypes['Feature'],
+    ResolversTypes['FeatureSimple'],
     ParentType,
     ContextType,
     RequireFields<MutationAddProductCategoryFeatureArgs, 'featureId' | 'productCategoryId'>
   >
   addProductFeature?: Resolver<
-    ResolversTypes['Feature'],
+    ResolversTypes['FeatureSimple'],
     ParentType,
     ContextType,
     RequireFields<MutationAddProductFeatureArgs, 'featureId' | 'productId'>
@@ -1581,17 +1620,6 @@ export const FeatureMinimumFragmentDoc = gql`
     isDisabled
   }
 `
-export const FeatureSimpleFragmentDoc = gql`
-  fragment FeatureSimple on IFeature {
-    id
-    slug
-    name
-    imageUrl
-    isDisabled
-    createdAt
-    updatedAt
-  }
-`
 export const CompanyMinimumFragmentDoc = gql`
   fragment CompanyMinimum on ICompany {
     id
@@ -1636,6 +1664,23 @@ export const CompanyItemPageFragmentDoc = gql`
   }
   ${CompanySimpleFragmentDoc}
   ${ProductMinimumFragmentDoc}
+`
+export const FeatureSimpleFragmentDoc = gql`
+  fragment FeatureSimple on IFeature {
+    id
+    slug
+    name
+    imageUrl
+    isDisabled
+    createdAt
+    updatedAt
+  }
+`
+export const FeatureItemPageFragmentDoc = gql`
+  fragment FeatureItemPage on Feature {
+    ...FeatureSimple
+  }
+  ${FeatureSimpleFragmentDoc}
 `
 export const FeatureListPageFragmentDoc = gql`
   fragment FeatureListPage on Feature {
@@ -1878,6 +1923,83 @@ export type DeleteFeatureMutationResult = Apollo.MutationResult<DeleteFeatureMut
 export type DeleteFeatureMutationOptions = Apollo.BaseMutationOptions<
   DeleteFeatureMutation,
   DeleteFeatureMutationVariables
+>
+export const CreateFeatureDocument = gql`
+  mutation createFeature($input: FeatureInput!) {
+    createFeature(input: $input) {
+      ...FeatureSimple
+    }
+  }
+  ${FeatureSimpleFragmentDoc}
+`
+export type CreateFeatureMutationFn = Apollo.MutationFunction<CreateFeatureMutation, CreateFeatureMutationVariables>
+
+/**
+ * __useCreateFeatureMutation__
+ *
+ * To run a mutation, you first call `useCreateFeatureMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateFeatureMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createFeatureMutation, { data, loading, error }] = useCreateFeatureMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateFeatureMutation(
+  baseOptions?: Apollo.MutationHookOptions<CreateFeatureMutation, CreateFeatureMutationVariables>
+) {
+  return Apollo.useMutation<CreateFeatureMutation, CreateFeatureMutationVariables>(CreateFeatureDocument, baseOptions)
+}
+export type CreateFeatureMutationHookResult = ReturnType<typeof useCreateFeatureMutation>
+export type CreateFeatureMutationResult = Apollo.MutationResult<CreateFeatureMutation>
+export type CreateFeatureMutationOptions = Apollo.BaseMutationOptions<
+  CreateFeatureMutation,
+  CreateFeatureMutationVariables
+>
+export const UpdateFeatureDocument = gql`
+  mutation updateFeature($id: ID!, $input: FeatureInput!) {
+    updateFeature(id: $id, input: $input) {
+      ...FeatureSimple
+    }
+  }
+  ${FeatureSimpleFragmentDoc}
+`
+export type UpdateFeatureMutationFn = Apollo.MutationFunction<UpdateFeatureMutation, UpdateFeatureMutationVariables>
+
+/**
+ * __useUpdateFeatureMutation__
+ *
+ * To run a mutation, you first call `useUpdateFeatureMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateFeatureMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateFeatureMutation, { data, loading, error }] = useUpdateFeatureMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateFeatureMutation(
+  baseOptions?: Apollo.MutationHookOptions<UpdateFeatureMutation, UpdateFeatureMutationVariables>
+) {
+  return Apollo.useMutation<UpdateFeatureMutation, UpdateFeatureMutationVariables>(UpdateFeatureDocument, baseOptions)
+}
+export type UpdateFeatureMutationHookResult = ReturnType<typeof useUpdateFeatureMutation>
+export type UpdateFeatureMutationResult = Apollo.MutationResult<UpdateFeatureMutation>
+export type UpdateFeatureMutationOptions = Apollo.BaseMutationOptions<
+  UpdateFeatureMutation,
+  UpdateFeatureMutationVariables
 >
 export const CreateProductDocument = gql`
   mutation createProduct($input: ProductInput!) {
@@ -2462,6 +2584,44 @@ export function useCompanyItemPageLazyQuery(
 export type CompanyItemPageQueryHookResult = ReturnType<typeof useCompanyItemPageQuery>
 export type CompanyItemPageLazyQueryHookResult = ReturnType<typeof useCompanyItemPageLazyQuery>
 export type CompanyItemPageQueryResult = Apollo.QueryResult<CompanyItemPageQuery, CompanyItemPageQueryVariables>
+export const FeatureItemPageDocument = gql`
+  query featureItemPage($id: ID!) {
+    feature(id: $id) {
+      ...FeatureItemPage
+    }
+  }
+  ${FeatureItemPageFragmentDoc}
+`
+
+/**
+ * __useFeatureItemPageQuery__
+ *
+ * To run a query within a React component, call `useFeatureItemPageQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFeatureItemPageQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFeatureItemPageQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useFeatureItemPageQuery(
+  baseOptions?: Apollo.QueryHookOptions<FeatureItemPageQuery, FeatureItemPageQueryVariables>
+) {
+  return Apollo.useQuery<FeatureItemPageQuery, FeatureItemPageQueryVariables>(FeatureItemPageDocument, baseOptions)
+}
+export function useFeatureItemPageLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<FeatureItemPageQuery, FeatureItemPageQueryVariables>
+) {
+  return Apollo.useLazyQuery<FeatureItemPageQuery, FeatureItemPageQueryVariables>(FeatureItemPageDocument, baseOptions)
+}
+export type FeatureItemPageQueryHookResult = ReturnType<typeof useFeatureItemPageQuery>
+export type FeatureItemPageLazyQueryHookResult = ReturnType<typeof useFeatureItemPageLazyQuery>
+export type FeatureItemPageQueryResult = Apollo.QueryResult<FeatureItemPageQuery, FeatureItemPageQueryVariables>
 export const FeatureListPageDocument = gql`
   query featureListPage {
     features {

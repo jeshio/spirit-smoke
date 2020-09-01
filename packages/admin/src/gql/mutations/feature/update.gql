@@ -1,0 +1,8 @@
+
+#import "@/gql/fragments/feature/simple.gql"
+
+mutation updateFeature($id: ID!, $input: FeatureInput!) {
+	updateFeature(id: $id, input: $input) {
+		...FeatureSimple
+	}
+}

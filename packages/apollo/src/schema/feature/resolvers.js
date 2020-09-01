@@ -6,10 +6,21 @@ const resolvers = {
 
   Mutation: {
     createFeature: (parent, {
-      name, slug, imageUrl, isDisabled,
+      input: {
+        name, slug, imageUrl, isDisabled,
+      },
     }, { models }) => models.feature.create({
       name, slug, imageUrl, isDisabled,
     }),
+    updateFeature: (parent, {
+      id, input: {
+        name, slug, imageUrl, isDisabled,
+      },
+    }, { models }) => models.feature.update({
+      name, slug, imageUrl, isDisabled,
+    }, {
+      where: { id }, returning: true,
+    }).then(([, [feature]]) => feature),
     addProductCategoryFeature: (parent, { featureId, productCategoryId }, { sequelize, models }) =>
       sequelize.transaction(async (transaction) => {
         const feature = await models.feature.findByPk(featureId, { transaction })

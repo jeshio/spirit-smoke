@@ -50,7 +50,7 @@ const columns: ListColumnsType = ({ deleteItem }): IColumn<FeatureListPageFragme
     responsive: ['xl'],
   },
   {
-    title: 'Создан',
+    title: 'Создано',
     field: 'createdAt',
   },
   {

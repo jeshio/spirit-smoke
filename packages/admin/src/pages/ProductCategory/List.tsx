@@ -43,7 +43,7 @@ const columns: ListColumnsType = ({ deleteItem }): IColumn<ProductCategoryListPa
       <>
         <UPopconfirm
           onConfirm={() => deleteItem(id)}
-          title="Все продукты категории станут недоступны для клиентов. Вы уверены?"
+          title="Все продукты этой категории станут недоступны для клиентов. Вы уверены?"
           placement="topRight"
         >
           <UButton type="link" danger>

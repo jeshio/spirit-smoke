@@ -5,8 +5,9 @@ extend type Query {
 
 extend type Mutation {
   createFeature(input: FeatureInput!): FeatureSimple!
-  addProductCategoryFeature(featureId: ID!, productCategoryId: ID!): Feature!
-  addProductFeature(featureId: ID!, productId: ID!): Feature!
+  updateFeature(id: ID!, input: FeatureInput!): FeatureSimple!
+  addProductCategoryFeature(featureId: ID!, productCategoryId: ID!): FeatureSimple!
+  addProductFeature(featureId: ID!, productId: ID!): FeatureSimple!
   deleteFeature(id: ID!): ID!
 }
 
