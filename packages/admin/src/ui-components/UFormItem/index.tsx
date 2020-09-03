@@ -8,15 +8,15 @@ import styled from 'styled-components'
 interface IUFormItemProps extends FormItemProps {}
 
 const Root = styled(Form.Item)`
-  button,
-  a {
+  > button,
+  > a {
     margin-top: 4px;
     margin-bottom: 4px;
   }
-  button + button,
-  button + a,
-  a + button,
-  a + a {
+  > button + button,
+  > button + a,
+  > a + button,
+  > a + a {
     margin-left: 16px;
   }
 `

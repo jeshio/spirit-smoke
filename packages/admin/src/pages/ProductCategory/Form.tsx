@@ -4,8 +4,9 @@ import { Card, Input } from 'antd'
 import URow from '@/ui-components/URow'
 import UCol from '@/ui-components/UCol'
 import UButton from '@/ui-components/UButton'
-import { ProductCategoryItemPageFragment } from '@/gql/__generated__/types'
+import { ProductCategoryItemPageFragment, useFeatureMinimumListQuery } from '@/gql/__generated__/types'
 import UBlock from '@/ui-components/UBlock'
+import UItemsSelector from '@/ui-components/UItemsSelector'
 import ProductsTable from '../Company/components/ProductsTable'
 
 export interface IProductCategoryFormProps {
@@ -21,6 +22,26 @@ const ProductCategoryForm: React.FunctionComponent<IProductCategoryFormProps> = 
   loading,
   onSubmit,
 }) => {
+  const features = useFeatureMinimumListQuery({
+    onError: () => {},
+  })
+  const featureOptions =
+    React.useMemo(
+      () =>
+        features.data?.features.map((feature) => ({
+          title: feature.name,
+          value: feature.id,
+          iconUrl: feature.imageUrl,
+          extra: Math.random() > 0.5 && 'something info',
+          link: `/features/${feature.id}`,
+          isDisabled: feature.isDisabled,
+        })) as React.ComponentProps<typeof UItemsSelector>['optionsToAdd'],
+      [features]
+    ) || []
+  const initialSelectedFeatureIds = React.useMemo(() => productCategory?.features.map(({ id }) => id), [
+    productCategory,
+  ])
+
   return (
     <UForm labelCol={{ span: 6, sm: 6, md: 9, lg: 9, xl: 7, xxl: 7 }} onFinish={onSubmit}>
       <Card>
@@ -35,6 +56,9 @@ const ProductCategoryForm: React.FunctionComponent<IProductCategoryFormProps> = 
               </UForm.Item>
               <UForm.Item label="Описание" name="description" required initialValue={productCategory?.description}>
                 <Input.TextArea />
+              </UForm.Item>
+              <UForm.Item label="Особенности" name="features" initialValue={initialSelectedFeatureIds}>
+                <UItemsSelector optionsToAdd={featureOptions} loading={features.loading} enableToSelectDisabledItems />
               </UForm.Item>
 
               <UForm.Item wrapperCol={{ md: { offset: 2 } }}>

@@ -695,12 +695,6 @@ export type UpdateCompanyMutation = { __typename?: 'Mutation' } & {
   updateCompany: { __typename?: 'CompanySimple' } & CompanySimple_CompanySimple_Fragment
 }
 
-export type DeleteFeatureMutationVariables = Exact<{
-  id: Scalars['ID']
-}>
-
-export type DeleteFeatureMutation = { __typename?: 'Mutation' } & Pick<Mutation, 'deleteFeature'>
-
 export type CreateFeatureMutationVariables = Exact<{
   input: FeatureInput
 }>
@@ -708,6 +702,12 @@ export type CreateFeatureMutationVariables = Exact<{
 export type CreateFeatureMutation = { __typename?: 'Mutation' } & {
   createFeature: { __typename?: 'FeatureSimple' } & FeatureSimple_FeatureSimple_Fragment
 }
+
+export type DeleteFeatureMutationVariables = Exact<{
+  id: Scalars['ID']
+}>
+
+export type DeleteFeatureMutation = { __typename?: 'Mutation' } & Pick<Mutation, 'deleteFeature'>
 
 export type UpdateFeatureMutationVariables = Exact<{
   id: Scalars['ID']
@@ -782,6 +782,12 @@ export type CompanySimpleListQueryVariables = Exact<{ [key: string]: never }>
 
 export type CompanySimpleListQuery = { __typename?: 'Query' } & {
   companies: Array<{ __typename?: 'Company' } & CompanySimple_Company_Fragment>
+}
+
+export type FeatureMinimumListQueryVariables = Exact<{ [key: string]: never }>
+
+export type FeatureMinimumListQuery = { __typename?: 'Query' } & {
+  features: Array<{ __typename?: 'Feature' } & FeatureMinimum_Feature_Fragment>
 }
 
 export type ProductSimpleItemQueryVariables = Exact<{
@@ -888,6 +894,7 @@ export type ProductCategoryListPageQuery = { __typename?: 'Query' } & {
 
 export type ProductCategoryItemPageFragment = { __typename?: 'ProductCategory' } & {
   products: Array<{ __typename?: 'Product' } & Pick<Product, 'price' | 'count'> & ProductMinimum_Product_Fragment>
+  features: Array<{ __typename?: 'Feature' } & FeatureMinimum_Feature_Fragment>
 } & ProductCategorySimple_ProductCategory_Fragment
 
 export type ProductCategoryItemPageQueryVariables = Exact<{
@@ -1612,14 +1619,6 @@ export type Resolvers<ContextType = any> = {
  */
 export type IResolvers<ContextType = any> = Resolvers<ContextType>
 
-export const FeatureMinimumFragmentDoc = gql`
-  fragment FeatureMinimum on IFeature {
-    id
-    name
-    imageUrl
-    isDisabled
-  }
-`
 export const CompanyMinimumFragmentDoc = gql`
   fragment CompanyMinimum on ICompany {
     id
@@ -1765,6 +1764,14 @@ export const ProductCategorySimpleFragmentDoc = gql`
     updatedAt
   }
 `
+export const FeatureMinimumFragmentDoc = gql`
+  fragment FeatureMinimum on IFeature {
+    id
+    name
+    imageUrl
+    isDisabled
+  }
+`
 export const ProductCategoryItemPageFragmentDoc = gql`
   fragment ProductCategoryItemPage on ProductCategory {
     ...ProductCategorySimple
@@ -1773,9 +1780,13 @@ export const ProductCategoryItemPageFragmentDoc = gql`
       price
       count
     }
+    features {
+      ...FeatureMinimum
+    }
   }
   ${ProductCategorySimpleFragmentDoc}
   ${ProductMinimumFragmentDoc}
+  ${FeatureMinimumFragmentDoc}
 `
 export const CreateCompanyDocument = gql`
   mutation createCompany($input: CompanyInput!) {
@@ -1889,41 +1900,6 @@ export type UpdateCompanyMutationOptions = Apollo.BaseMutationOptions<
   UpdateCompanyMutation,
   UpdateCompanyMutationVariables
 >
-export const DeleteFeatureDocument = gql`
-  mutation deleteFeature($id: ID!) {
-    deleteFeature(id: $id)
-  }
-`
-export type DeleteFeatureMutationFn = Apollo.MutationFunction<DeleteFeatureMutation, DeleteFeatureMutationVariables>
-
-/**
- * __useDeleteFeatureMutation__
- *
- * To run a mutation, you first call `useDeleteFeatureMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useDeleteFeatureMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [deleteFeatureMutation, { data, loading, error }] = useDeleteFeatureMutation({
- *   variables: {
- *      id: // value for 'id'
- *   },
- * });
- */
-export function useDeleteFeatureMutation(
-  baseOptions?: Apollo.MutationHookOptions<DeleteFeatureMutation, DeleteFeatureMutationVariables>
-) {
-  return Apollo.useMutation<DeleteFeatureMutation, DeleteFeatureMutationVariables>(DeleteFeatureDocument, baseOptions)
-}
-export type DeleteFeatureMutationHookResult = ReturnType<typeof useDeleteFeatureMutation>
-export type DeleteFeatureMutationResult = Apollo.MutationResult<DeleteFeatureMutation>
-export type DeleteFeatureMutationOptions = Apollo.BaseMutationOptions<
-  DeleteFeatureMutation,
-  DeleteFeatureMutationVariables
->
 export const CreateFeatureDocument = gql`
   mutation createFeature($input: FeatureInput!) {
     createFeature(input: $input) {
@@ -1961,6 +1937,41 @@ export type CreateFeatureMutationResult = Apollo.MutationResult<CreateFeatureMut
 export type CreateFeatureMutationOptions = Apollo.BaseMutationOptions<
   CreateFeatureMutation,
   CreateFeatureMutationVariables
+>
+export const DeleteFeatureDocument = gql`
+  mutation deleteFeature($id: ID!) {
+    deleteFeature(id: $id)
+  }
+`
+export type DeleteFeatureMutationFn = Apollo.MutationFunction<DeleteFeatureMutation, DeleteFeatureMutationVariables>
+
+/**
+ * __useDeleteFeatureMutation__
+ *
+ * To run a mutation, you first call `useDeleteFeatureMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteFeatureMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteFeatureMutation, { data, loading, error }] = useDeleteFeatureMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteFeatureMutation(
+  baseOptions?: Apollo.MutationHookOptions<DeleteFeatureMutation, DeleteFeatureMutationVariables>
+) {
+  return Apollo.useMutation<DeleteFeatureMutation, DeleteFeatureMutationVariables>(DeleteFeatureDocument, baseOptions)
+}
+export type DeleteFeatureMutationHookResult = ReturnType<typeof useDeleteFeatureMutation>
+export type DeleteFeatureMutationResult = Apollo.MutationResult<DeleteFeatureMutation>
+export type DeleteFeatureMutationOptions = Apollo.BaseMutationOptions<
+  DeleteFeatureMutation,
+  DeleteFeatureMutationVariables
 >
 export const UpdateFeatureDocument = gql`
   mutation updateFeature($id: ID!, $input: FeatureInput!) {
@@ -2376,6 +2387,52 @@ export function useCompanySimpleListLazyQuery(
 export type CompanySimpleListQueryHookResult = ReturnType<typeof useCompanySimpleListQuery>
 export type CompanySimpleListLazyQueryHookResult = ReturnType<typeof useCompanySimpleListLazyQuery>
 export type CompanySimpleListQueryResult = Apollo.QueryResult<CompanySimpleListQuery, CompanySimpleListQueryVariables>
+export const FeatureMinimumListDocument = gql`
+  query featureMinimumList {
+    features {
+      ...FeatureMinimum
+    }
+  }
+  ${FeatureMinimumFragmentDoc}
+`
+
+/**
+ * __useFeatureMinimumListQuery__
+ *
+ * To run a query within a React component, call `useFeatureMinimumListQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFeatureMinimumListQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFeatureMinimumListQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useFeatureMinimumListQuery(
+  baseOptions?: Apollo.QueryHookOptions<FeatureMinimumListQuery, FeatureMinimumListQueryVariables>
+) {
+  return Apollo.useQuery<FeatureMinimumListQuery, FeatureMinimumListQueryVariables>(
+    FeatureMinimumListDocument,
+    baseOptions
+  )
+}
+export function useFeatureMinimumListLazyQuery(
+  baseOptions?: Apollo.LazyQueryHookOptions<FeatureMinimumListQuery, FeatureMinimumListQueryVariables>
+) {
+  return Apollo.useLazyQuery<FeatureMinimumListQuery, FeatureMinimumListQueryVariables>(
+    FeatureMinimumListDocument,
+    baseOptions
+  )
+}
+export type FeatureMinimumListQueryHookResult = ReturnType<typeof useFeatureMinimumListQuery>
+export type FeatureMinimumListLazyQueryHookResult = ReturnType<typeof useFeatureMinimumListLazyQuery>
+export type FeatureMinimumListQueryResult = Apollo.QueryResult<
+  FeatureMinimumListQuery,
+  FeatureMinimumListQueryVariables
+>
 export const ProductSimpleItemDocument = gql`
   query productSimpleItem($id: ID!) {
     product(id: $id) {

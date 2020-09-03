@@ -5,21 +5,43 @@ const resolvers = {
   },
 
   Mutation: {
-    createProductCategory: async (parent, { input: { name, description, slug } }, { models }) =>
-      models.productCategory.create({
-        name, description, slug,
+    createProductCategory: async (parent, {
+      input: {
+        name, description, slug, features,
+      },
+    }, { models, sequelize }) =>
+      sequelize.transaction(async (transaction) => {
+        const createdProductCategory = await models.productCategory.create({
+          name, description, slug,
+        }, { transaction })
+
+        if (features) {
+          await createdProductCategory.setFeatures(features, { transaction })
+        }
+
+        return createdProductCategory
       }),
     updateProductCategory: (parent, {
       id,
       input: {
         name, slug,
         description,
+        features,
       },
-    }, { models }) => models.productCategory.update({
-      name,
-      slug,
-      description,
-    }, { where: { id }, returning: true }).then(([, [productCategory]]) => productCategory),
+    }, { models, sequelize }) =>
+      sequelize.transaction(async (transaction) => {
+        const updatedProductCategory = await models.productCategory.update({
+          name,
+          slug,
+          description,
+        }, { where: { id }, returning: true, transaction }).then(([, [productCategory]]) => productCategory)
+
+        if (features) {
+          await updatedProductCategory.setFeatures(features, { transaction })
+        }
+
+        return updatedProductCategory
+      }),
     deleteProductCategory: (parent, { id }, { models }) => models.productCategory.destroy({
       where: {
         id,
@@ -29,7 +51,9 @@ const resolvers = {
 
   ProductCategory: {
     products: async (productCategory) => productCategory.getProducts(),
-    features: async (productCategory) => productCategory.getFeatures(),
+    features: async (productCategory) => productCategory.getFeatures({
+      order: [['id', 'desc']],
+    }),
     discounts: async (productCategory) => productCategory.getDiscounts(),
   },
 }

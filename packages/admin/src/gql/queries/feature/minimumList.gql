@@ -1,0 +1,7 @@
+#import "@/gql/fragments/feature/minimum.gql"
+
+query featureMinimumList {
+  features {
+    ...FeatureMinimum
+  }
+}
