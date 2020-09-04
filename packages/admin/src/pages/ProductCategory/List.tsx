@@ -12,6 +12,7 @@ import {
   ProductCategoryListPageDocument,
 } from '@/gql/__generated__/types'
 import ListPageBuilder, { ListColumnsType } from '@/builders/ListPage'
+import UFeaturesList from '@/ui-components/UFeaturesList'
 
 const columns: ListColumnsType = ({ deleteItem }): IColumn<ProductCategoryListPageFragment>[] => [
   {
@@ -28,6 +29,12 @@ const columns: ListColumnsType = ({ deleteItem }): IColumn<ProductCategoryListPa
     title: 'Slug',
     field: 'slug',
     responsive: ['xl'],
+  },
+  {
+    title: 'Особенности',
+    field: 'features',
+    render: (features) => <UFeaturesList features={features} isMini />,
+    responsive: ['sm'],
   },
   {
     title: 'Создан',

@@ -51,9 +51,11 @@ const resolvers = {
 
   ProductCategory: {
     products: async (productCategory) => productCategory.getProducts(),
-    features: async (productCategory) => productCategory.getFeatures({
-      order: [['id', 'desc']],
-    }),
+    features: async (productCategory, args, { loaders }) => {
+      const featureIds = await loaders.featureIdsByProductCategory.load(productCategory.id)
+      const features = await loaders.feature.loadMany(featureIds)
+      return features
+    },
     discounts: async (productCategory) => productCategory.getDiscounts(),
   },
 }

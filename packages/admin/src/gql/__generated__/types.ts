@@ -510,6 +510,7 @@ export type ProductCategoryInput = {
   name: Scalars['String']
   slug: Scalars['String']
   description: Scalars['String']
+  features?: Maybe<Array<Scalars['ID']>>
 }
 
 export type IProductCategory = {
@@ -883,8 +884,9 @@ export type ProductsListPageQuery = { __typename?: 'Query' } & {
 export type ProductCategoryListPageFragment = { __typename?: 'ProductCategory' } & Pick<
   ProductCategory,
   'slug' | 'createdAt'
-> &
-  ProductCategoryMinimum_ProductCategory_Fragment
+> & {
+    features: Array<{ __typename?: 'Feature' } & FeatureMinimum_Feature_Fragment>
+  } & ProductCategoryMinimum_ProductCategory_Fragment
 
 export type ProductCategoryListPageQueryVariables = Exact<{ [key: string]: never }>
 
@@ -1746,13 +1748,25 @@ export const ProductsListPageFragmentDoc = gql`
   ${ProductCategoryMinimumFragmentDoc}
   ${CompanyMinimumFragmentDoc}
 `
+export const FeatureMinimumFragmentDoc = gql`
+  fragment FeatureMinimum on IFeature {
+    id
+    name
+    imageUrl
+    isDisabled
+  }
+`
 export const ProductCategoryListPageFragmentDoc = gql`
   fragment ProductCategoryListPage on ProductCategory {
     ...ProductCategoryMinimum
     slug
     createdAt
+    features {
+      ...FeatureMinimum
+    }
   }
   ${ProductCategoryMinimumFragmentDoc}
+  ${FeatureMinimumFragmentDoc}
 `
 export const ProductCategorySimpleFragmentDoc = gql`
   fragment ProductCategorySimple on IProductCategory {
@@ -1762,14 +1776,6 @@ export const ProductCategorySimpleFragmentDoc = gql`
     description
     createdAt
     updatedAt
-  }
-`
-export const FeatureMinimumFragmentDoc = gql`
-  fragment FeatureMinimum on IFeature {
-    id
-    name
-    imageUrl
-    isDisabled
   }
 `
 export const ProductCategoryItemPageFragmentDoc = gql`

@@ -18,6 +18,7 @@ import { ThemeType } from '@/styles/theme'
 interface IUBlockProps extends SpaceProps, ColorProps<ThemeType>, DisplayProps, AlignItemsProps, JustifyContentProps {
   children?: React.ReactNode
   className?: string
+  style?: React.CSSProperties
 }
 
 const Root = styled(({ children, className }: IUBlockProps) => <div className={className}>{children}</div>)`

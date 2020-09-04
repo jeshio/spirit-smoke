@@ -10,6 +10,7 @@ import UCol from '@/ui-components/UCol'
 import { RouteComponentProps } from 'react-router'
 import useStableQuery from '@/hooks/gql/useStableQuery'
 import { useProductCategoryItemPageQuery, useDeleteProductCategoryMutation } from '@/gql/__generated__/types'
+import UFeaturesList from '@/ui-components/UFeaturesList'
 import ProductsTable from '../Company/components/ProductsTable'
 
 interface IProductCategoryItemPageProps
@@ -61,10 +62,14 @@ const ProductCategoryItemPage: React.FunctionComponent<IProductCategoryItemPageP
       }
     >
       <Card title={`Информация о категории продуктов (ID ${productCategory.id})`}>
-        <UDescriptions>
+        <UDescriptions column={{ xs: 1, sm: 2 }}>
           <UDescriptions.Item label="Название">{productCategory.name}</UDescriptions.Item>
-          <UDescriptions.Item label="slug">{productCategory.slug}</UDescriptions.Item>
+          <UDescriptions.Item label="Slug">{productCategory.slug}</UDescriptions.Item>
+          <UDescriptions.Item label="Особенности">
+            <UFeaturesList features={productCategory.features} />
+          </UDescriptions.Item>
         </UDescriptions>
+
         <Divider />
         <p>{productCategory.description}</p>
       </Card>
