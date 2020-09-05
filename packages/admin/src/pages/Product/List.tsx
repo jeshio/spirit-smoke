@@ -13,6 +13,7 @@ import { EditFilled, DeleteFilled, ImportOutlined } from '@ant-design/icons'
 import UPopconfirm from '@/ui-components/UPopconfirm'
 import ListPageBuilder, { ListColumnsType } from '@/builders/ListPage'
 import { Badge, Tooltip } from 'antd'
+import UFeaturesList from '@/ui-components/UFeaturesList'
 
 const columns: ListColumnsType = ({ deleteItem }): IColumn<ProductsListPageFragment>[] => [
   {
@@ -69,6 +70,12 @@ const columns: ListColumnsType = ({ deleteItem }): IColumn<ProductsListPageFragm
           <Badge status="warning" text="БЕЗ КАТЕГОРИИ" />
         </Tooltip>
       ),
+  },
+  {
+    title: 'Особенности',
+    field: ['features'],
+    render: (features) => <UFeaturesList features={features} isMini />,
+    responsive: ['sm'],
   },
   {
     title: 'Создан',

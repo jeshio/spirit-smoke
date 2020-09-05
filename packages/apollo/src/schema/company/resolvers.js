@@ -1,7 +1,9 @@
 const resolvers = {
   Query: {
-    companies: async (parent, args, { models }) => models.company.findAll(),
-    company: async (parent, { id }, { models }) => models.company.findByPk(id),
+    companies: async (parent, args, { models }) => models.company.findAll({
+      order: [['id', 'DESC']],
+    }),
+    company: async (parent, { id }, { loaders }) => loaders.company.load(Number(id)),
   },
 
   Mutation: {

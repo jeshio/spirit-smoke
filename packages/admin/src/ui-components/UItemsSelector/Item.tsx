@@ -6,9 +6,11 @@ import { OptionType } from './types'
 
 interface IItemProps {
   option: OptionType
+  disabled?: boolean
+  noLink?: boolean
 }
 
-const Item: React.FunctionComponent<IItemProps> = ({ option }) => {
+const Item: React.FunctionComponent<IItemProps> = ({ option, disabled, noLink }) => {
   return (
     <styled.ItemWrapper isDisabled={option.isDisabled}>
       {option.iconUrl && (
@@ -19,12 +21,15 @@ const Item: React.FunctionComponent<IItemProps> = ({ option }) => {
         />
       )}
       <UBlock>
-        {!option.link && <styled.ItemTitle>{option.title}</styled.ItemTitle>}
-        {option.link && (
+        {(!option.link || noLink || disabled) && <styled.ItemTitle>{option.title}</styled.ItemTitle>}
+        {option.link && !noLink && !disabled && (
           <styled.ItemTitle>
-            <Link to={option.link} target="_blank">
-              {option.title}
-            </Link>
+            {!disabled && (
+              <Link to={option.link} target="_blank">
+                {option.title}
+              </Link>
+            )}
+            {disabled && option.title}
           </styled.ItemTitle>
         )}
         {option.extra && <styled.ItemExtra>{option.extra}</styled.ItemExtra>}

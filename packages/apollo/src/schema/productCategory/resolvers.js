@@ -1,7 +1,9 @@
 const resolvers = {
   Query: {
-    productCategories: async (parent, args, { models }) => models.productCategory.findAll(),
-    productCategory: async (parent, { id }, { models }) => models.productCategory.findByPk(id),
+    productCategories: async (parent, args, { models }) => models.productCategory.findAll({
+      order: [['id', 'DESC']],
+    }),
+    productCategory: async (parent, { id }, { loaders }) => loaders.productCategory.load(Number(id)),
   },
 
   Mutation: {

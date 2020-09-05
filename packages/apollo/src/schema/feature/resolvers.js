@@ -1,7 +1,9 @@
 const resolvers = {
   Query: {
-    features: async (parent, args, { models }) => models.feature.findAll(),
-    feature: async (parent, { id }, { models }) => models.feature.findByPk(id),
+    features: async (parent, args, { models }) => models.feature.findAll({
+      order: [['id', 'DESC']],
+    }),
+    feature: async (parent, { id }, { loaders }) => loaders.feature.load(Number(id)),
   },
 
   Mutation: {

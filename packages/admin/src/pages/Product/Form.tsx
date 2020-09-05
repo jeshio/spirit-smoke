@@ -11,6 +11,8 @@ import {
 } from '@/gql/__generated__/types'
 import numberToPrice from '@@utils/src/numberToPrice'
 import TextArea from 'antd/lib/input/TextArea'
+import UItemsSelector from '@/ui-components/UItemsSelector'
+import UBlock from '@/ui-components/UBlock'
 
 export interface IProductFormProps {
   loading?: boolean
@@ -32,6 +34,19 @@ const ProductForm: React.FunctionComponent<IProductFormProps> = ({
       ...fields,
       price: numberToPrice(parseFloat(fields.price)),
     })
+  const featureOptions =
+    React.useMemo(
+      () =>
+        product?.productCategory?.features.map((feature) => ({
+          title: feature.name,
+          value: feature.id,
+          iconUrl: feature.imageUrl,
+          link: `/features/${feature.id}`,
+          isDisabled: feature.isDisabled,
+        })) as React.ComponentProps<typeof UItemsSelector>['optionsToAdd'],
+      [product?.productCategory]
+    ) || []
+  const initialSelectedFeatureIds = React.useMemo(() => product?.features.map(({ id }) => id), [product])
 
   return (
     <UForm onFinish={handleSubmit} labelCol={{ span: 6, sm: 6, md: 9, lg: 9, xl: 7, xxl: 7 }}>
@@ -39,6 +54,7 @@ const ProductForm: React.FunctionComponent<IProductFormProps> = ({
         const companyWarning = isUpdate && !product?.company && fields.companyId === product?.companyId
         const productCategoryWarning =
           isUpdate && !product?.productCategory && fields.productCategoryId === product?.productCategoryId
+        const featuresSelectorIsDisabled = product?.productCategoryId !== fields.productCategoryId
         return (
           <Card loading={categoriesRequest.loading || companyRequest.loading}>
             <URow>
@@ -68,6 +84,21 @@ const ProductForm: React.FunctionComponent<IProductFormProps> = ({
                 <UForm.Item label="Slug" required name="slug" initialValue={product?.slug}>
                   <Input disabled={isUpdate} />
                 </UForm.Item>
+                <UForm.Item
+                  label="Особенности"
+                  name="features"
+                  initialValue={initialSelectedFeatureIds}
+                  help={featuresSelectorIsDisabled && 'При смене категории все особенности продукта будут убраны'}
+                  validateStatus={(featuresSelectorIsDisabled && 'warning') || undefined}
+                >
+                  <UItemsSelector
+                    optionsToAdd={featureOptions}
+                    loading={loading}
+                    enableToSelectDisabledItems
+                    disabled={featuresSelectorIsDisabled}
+                    value={featuresSelectorIsDisabled ? [] : undefined}
+                  />
+                </UForm.Item>
               </UCol>
               <UCol md={12} xxl={8}>
                 <UForm.Item
@@ -92,40 +123,36 @@ const ProductForm: React.FunctionComponent<IProductFormProps> = ({
                 <UForm.Item label="Цена (₽)" required name="price" initialValue={product?.price}>
                   <InputNumber min={0} />
                 </UForm.Item>
-              </UCol>
-            </URow>
-
-            <URow>
-              <UCol md={24} xl={18} xxl={12}>
                 <UForm.Item
                   label="Описание"
                   name="description"
                   initialValue={product?.description}
-                  labelCol={{ sm: 6, md: 4, xl: 4, xxl: 5 }}
                   wrapperCol={{
                     span: 0,
                   }}
                   required
                 >
-                  <TextArea />
+                  <TextArea rows={5} />
                 </UForm.Item>
               </UCol>
             </URow>
 
-            <UForm.Item wrapperCol={{ md: { offset: 2 } }}>
-              <UButton htmlType="submit" type="primary" loading={loading}>
-                {isUpdate ? 'Применить изменения' : 'Добавить'}
-              </UButton>
-              {isUpdate && product ? (
-                <UButton href={`/products/${product.id}`} type="link">
-                  Вернуться к продукту
+            <UBlock pt={2}>
+              <UForm.Item wrapperCol={{ md: { offset: 2 } }}>
+                <UButton htmlType="submit" type="primary" loading={loading}>
+                  {isUpdate ? 'Применить изменения' : 'Добавить'}
                 </UButton>
-              ) : (
-                <UButton href="/products" type="link">
-                  Вернуться к списку
-                </UButton>
-              )}
-            </UForm.Item>
+                {isUpdate && product ? (
+                  <UButton href={`/products/${product.id}`} type="link">
+                    Вернуться к продукту
+                  </UButton>
+                ) : (
+                  <UButton href="/products" type="link">
+                    Вернуться к списку
+                  </UButton>
+                )}
+              </UForm.Item>
+            </UBlock>
           </Card>
         )
       }}

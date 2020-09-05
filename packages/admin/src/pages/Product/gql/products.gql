@@ -1,5 +1,6 @@
 #import "@/gql/fragments/productCategory/minimum.gql"
 #import "@/gql/fragments/company/minimum.gql"
+#import "@/gql/fragments/feature/minimum.gql"
 #import "@/gql/fragments/product/minimum.gql"
 
 fragment ProductsListPage on Product {
@@ -15,6 +16,9 @@ fragment ProductsListPage on Product {
   }
   company {
     ...CompanyMinimum
+  }
+  features {
+    ...FeatureMinimum
   }
 }
 

@@ -5,6 +5,7 @@ export const batchFeatures = async (keys, models) => {
     where: {
       id: keys,
     },
+    order: [['id', 'DESC']],
   })
 
   return keys.map((key) => features.find((feature) => feature.id === key))

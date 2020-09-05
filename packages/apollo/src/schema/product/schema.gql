@@ -17,6 +17,7 @@ input ProductInput {
   price: Float!
   productCategoryId: ID!
   companyId: ID!
+  features: [ID!]
 }
 
 interface IProduct {
@@ -61,8 +62,8 @@ type Product implements IProduct {
   updatedAt: String!
   company: Company
   productCategory: ProductCategory
-  features: [Feature]!
-  discounts: [Discount]!
-  orderProducts: [OrderProduct]!
-  productProcurements: [ProductProcurement]!
+  features: [Feature!]!
+  discounts: [Discount!]!
+  orderProducts: [OrderProduct!]!
+  productProcurements: [ProductProcurement!]!
 }

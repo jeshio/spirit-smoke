@@ -6,7 +6,7 @@ import schema from './schema'
 import * as loadersCreator from './loaders'
 import models from './db/models'
 
-const loaders = Object.keys(loadersCreator).reduce(
+const createLoaders = () => Object.keys(loadersCreator).reduce(
   (base, key) => ({
     ...base,
     /* eslint-disable-next-line import/namespace */
@@ -31,7 +31,7 @@ const server = new ApolloServer({
   },
   context: async () => ({
     models,
-    loaders,
+    loaders: createLoaders(),
     sequelize: models.sequelize,
   }),
 })

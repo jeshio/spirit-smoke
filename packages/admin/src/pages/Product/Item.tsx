@@ -11,6 +11,7 @@ import URow from '@/ui-components/URow'
 import UCol from '@/ui-components/UCol'
 
 import useStableQuery from '@/hooks/gql/useStableQuery'
+import UFeaturesList from '@/ui-components/UFeaturesList'
 import { ItemImage, ItemImageWrapper } from './styles/item.styled'
 
 interface IProductItemPageProps
@@ -103,6 +104,9 @@ const ProductItemPage: React.FunctionComponent<IProductItemPageProps> = (props) 
               <UDescriptions.Item label="Slug">{product.slug}</UDescriptions.Item>
               <UDescriptions.Item label="Добавлен">{product.createdAt}</UDescriptions.Item>
               <UDescriptions.Item label="Обновлён">{product.updatedAt}</UDescriptions.Item>
+              <UDescriptions.Item label="Особенности">
+                <UFeaturesList features={product.features} />
+              </UDescriptions.Item>
             </UDescriptions>
             <Divider />
             <p>{product.description}</p>

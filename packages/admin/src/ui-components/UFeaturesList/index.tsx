@@ -34,7 +34,12 @@ const UFeaturesList: React.FunctionComponent<IUFeaturesListProps> = ({ features,
       )),
     [features, isMini]
   )
-  return <styled.Root>{items}</styled.Root>
+  return (
+    <styled.Root>
+      {items}
+      {items.length === 0 && <div>Без особенностей</div>}
+    </styled.Root>
+  )
 }
 
 export default UFeaturesList

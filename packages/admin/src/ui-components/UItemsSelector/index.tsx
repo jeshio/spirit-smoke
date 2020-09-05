@@ -15,10 +15,11 @@ interface IUItemsSelectorProps {
   loading?: boolean
   onChange?: (value: string[]) => void
   enableToSelectDisabledItems?: boolean
+  disabled?: boolean
 }
 
 const UItemsSelector: React.FunctionComponent<IUItemsSelectorProps> = (props) => {
-  const { placeholder, optionsToAdd } = props
+  const { placeholder, optionsToAdd, disabled, enableToSelectDisabledItems } = props
   const [selectedValues, setSelectedValues] = React.useState(props.value || [])
   const optionsToAddByValue = keyBy(optionsToAdd, 'value')
   const options = React.useMemo(
@@ -28,12 +29,12 @@ const UItemsSelector: React.FunctionComponent<IUItemsSelectorProps> = (props) =>
           value={option.value}
           key={option.value}
           label={option.title}
-          disabled={props.enableToSelectDisabledItems ? false : option.isDisabled}
+          disabled={enableToSelectDisabledItems ? disabled : option.isDisabled}
         >
-          <Item option={option} />
+          <Item option={option} disabled={disabled} noLink />
         </Select.Option>
       )),
-    [optionsToAdd, selectedValues]
+    [optionsToAdd, selectedValues, enableToSelectDisabledItems]
   )
   const renderListItem = (value: string) => {
     const option = optionsToAddByValue[value]
@@ -43,12 +44,13 @@ const UItemsSelector: React.FunctionComponent<IUItemsSelectorProps> = (props) =>
     return (
       <styled.ListItem>
         <UBlock py="8px" display="flex" justifyContent="space-between" alignItems="center">
-          <Item option={option} />
+          <Item option={option} disabled={disabled} />
           <UButton
             icon={<CloseOutlined />}
             type="link"
             size="small"
             onClick={() => setSelectedValues(selectedValues.filter((selectedValue) => selectedValue !== value))}
+            disabled={disabled}
           />
         </UBlock>
       </styled.ListItem>
@@ -81,6 +83,7 @@ const UItemsSelector: React.FunctionComponent<IUItemsSelectorProps> = (props) =>
           option?.label ? String(option.label).toLocaleLowerCase().startsWith(value.toLocaleLowerCase()) : false
         }
         listHeight={208}
+        disabled={disabled}
       >
         {options}
       </Select>

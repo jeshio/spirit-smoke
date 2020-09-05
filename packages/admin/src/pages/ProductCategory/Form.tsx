@@ -32,7 +32,6 @@ const ProductCategoryForm: React.FunctionComponent<IProductCategoryFormProps> = 
           title: feature.name,
           value: feature.id,
           iconUrl: feature.imageUrl,
-          extra: Math.random() > 0.5 && 'something info',
           link: `/features/${feature.id}`,
           isDisabled: feature.isDisabled,
         })) as React.ComponentProps<typeof UItemsSelector>['optionsToAdd'],

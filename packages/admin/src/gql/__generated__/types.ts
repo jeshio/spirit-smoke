@@ -454,6 +454,7 @@ export type ProductInput = {
   price: Scalars['Float']
   productCategoryId: Scalars['ID']
   companyId: Scalars['ID']
+  features?: Maybe<Array<Scalars['ID']>>
 }
 
 export type IProduct = {
@@ -500,10 +501,10 @@ export type Product = IProduct & {
   updatedAt: Scalars['String']
   company?: Maybe<Company>
   productCategory?: Maybe<ProductCategory>
-  features: Array<Maybe<Feature>>
-  discounts: Array<Maybe<Discount>>
-  orderProducts: Array<Maybe<OrderProduct>>
-  productProcurements: Array<Maybe<ProductProcurement>>
+  features: Array<Feature>
+  discounts: Array<Discount>
+  orderProducts: Array<OrderProduct>
+  productProcurements: Array<ProductProcurement>
 }
 
 export type ProductCategoryInput = {
@@ -855,8 +856,13 @@ export type FeatureListPageQuery = { __typename?: 'Query' } & {
 }
 
 export type ProductItemPageFragment = { __typename?: 'Product' } & {
-  productCategory?: Maybe<{ __typename?: 'ProductCategory' } & ProductCategoryMinimum_ProductCategory_Fragment>
+  productCategory?: Maybe<
+    { __typename?: 'ProductCategory' } & {
+      features: Array<{ __typename?: 'Feature' } & FeatureMinimum_Feature_Fragment>
+    } & ProductCategoryMinimum_ProductCategory_Fragment
+  >
   company?: Maybe<{ __typename?: 'Company' } & CompanyMinimum_Company_Fragment>
+  features: Array<{ __typename?: 'Feature' } & FeatureMinimum_Feature_Fragment>
 } & ProductSimple_Product_Fragment
 
 export type ProductItemPageQueryVariables = Exact<{
@@ -873,6 +879,7 @@ export type ProductsListPageFragment = { __typename?: 'Product' } & Pick<
 > & {
     productCategory?: Maybe<{ __typename?: 'ProductCategory' } & ProductCategoryMinimum_ProductCategory_Fragment>
     company?: Maybe<{ __typename?: 'Company' } & CompanyMinimum_Company_Fragment>
+    features: Array<{ __typename?: 'Feature' } & FeatureMinimum_Feature_Fragment>
   } & ProductMinimum_Product_Fragment
 
 export type ProductsListPageQueryVariables = Exact<{ [key: string]: never }>
@@ -1526,10 +1533,10 @@ export type ProductResolvers<
   updatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>
   company?: Resolver<Maybe<ResolversTypes['Company']>, ParentType, ContextType>
   productCategory?: Resolver<Maybe<ResolversTypes['ProductCategory']>, ParentType, ContextType>
-  features?: Resolver<Array<Maybe<ResolversTypes['Feature']>>, ParentType, ContextType>
-  discounts?: Resolver<Array<Maybe<ResolversTypes['Discount']>>, ParentType, ContextType>
-  orderProducts?: Resolver<Array<Maybe<ResolversTypes['OrderProduct']>>, ParentType, ContextType>
-  productProcurements?: Resolver<Array<Maybe<ResolversTypes['ProductProcurement']>>, ParentType, ContextType>
+  features?: Resolver<Array<ResolversTypes['Feature']>, ParentType, ContextType>
+  discounts?: Resolver<Array<ResolversTypes['Discount']>, ParentType, ContextType>
+  orderProducts?: Resolver<Array<ResolversTypes['OrderProduct']>, ParentType, ContextType>
+  productProcurements?: Resolver<Array<ResolversTypes['ProductProcurement']>, ParentType, ContextType>
   __isTypeOf?: IsTypeOfResolverFn<ParentType>
 }
 
@@ -1714,18 +1721,33 @@ export const ProductCategoryMinimumFragmentDoc = gql`
     name
   }
 `
+export const FeatureMinimumFragmentDoc = gql`
+  fragment FeatureMinimum on IFeature {
+    id
+    name
+    imageUrl
+    isDisabled
+  }
+`
 export const ProductItemPageFragmentDoc = gql`
   fragment ProductItemPage on Product {
     ...ProductSimple
     productCategory {
       ...ProductCategoryMinimum
+      features {
+        ...FeatureMinimum
+      }
     }
     company {
       ...CompanyMinimum
     }
+    features {
+      ...FeatureMinimum
+    }
   }
   ${ProductSimpleFragmentDoc}
   ${ProductCategoryMinimumFragmentDoc}
+  ${FeatureMinimumFragmentDoc}
   ${CompanyMinimumFragmentDoc}
 `
 export const ProductsListPageFragmentDoc = gql`
@@ -1743,18 +1765,14 @@ export const ProductsListPageFragmentDoc = gql`
     company {
       ...CompanyMinimum
     }
+    features {
+      ...FeatureMinimum
+    }
   }
   ${ProductMinimumFragmentDoc}
   ${ProductCategoryMinimumFragmentDoc}
   ${CompanyMinimumFragmentDoc}
-`
-export const FeatureMinimumFragmentDoc = gql`
-  fragment FeatureMinimum on IFeature {
-    id
-    name
-    imageUrl
-    isDisabled
-  }
+  ${FeatureMinimumFragmentDoc}
 `
 export const ProductCategoryListPageFragmentDoc = gql`
   fragment ProductCategoryListPage on ProductCategory {

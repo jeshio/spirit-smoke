@@ -56,6 +56,7 @@ export const ItemImage = styled.div`
 
 export const ItemTitle = styled.strong`
   display: block;
+  font-weight: 500;
 `
 
 export const ItemExtra = styled.small`

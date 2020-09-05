@@ -4,8 +4,8 @@ export const batchProductCategories = async (keys, models) => {
   const productCategories = await models.productCategory.findAll({
     where: {
       id: keys,
-      deletedAt: null,
     },
+    order: [['id', 'DESC']],
   })
 
   return keys.map((key) => productCategories.find((productCategory) => productCategory.id === key))
