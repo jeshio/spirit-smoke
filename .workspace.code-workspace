@@ -11,6 +11,10 @@
 		{
 			"name": "Apollo-Server",
 			"path": "./packages/apollo"
+		},
+		{
+			"name": "Portal",
+			"path": "./packages/portal"
 		}
     ],
 		"settings": {
