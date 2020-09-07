@@ -20,10 +20,11 @@
     "esModuleInterop": true,
     "paths": {
       "@/*": ["./src/*"],
+      "@@gql/*": ["../gql/*"],
       "@@types/*": ["../types/*"],
       "@@utils/*": ["../utils/*"]
     }
   },
-  "include": [".", "./.eslintrc.js", "../types/.", "../utils/."],
+  "include": [".", "./.eslintrc.js", "../types/.", "../gql/.", "../utils/."],
   "exclude": ["node_modules", "build", "dist", "scripts", "src/.umi/*", "webpack", "jest"]
 }

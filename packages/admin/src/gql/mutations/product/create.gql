@@ -1,5 +1,5 @@
 
-#import "@/gql/fragments/product/simple.gql"
+#import "@@/gql/fragments/product/simple.gql"
 
 mutation createProduct($input: ProductInput!) {
 	createProduct(input: $input) {

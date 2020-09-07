@@ -1,6 +1,9 @@
 overwrite: true
 schema: http://wsl.ru:4000/graphql
-documents: src/**/*.gql
+documents:
+  - src/**/*.gql
+  - pages/**/*.gql
+  - ../gql/**/*.gql
 generates:
   ./src/gql/__generated__/introspection-result.ts:
     plugins:

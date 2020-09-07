@@ -1,5 +1,5 @@
 
-#import "@/gql/fragments/feature/simple.gql"
+#import "@@/gql/fragments/feature/simple.gql"
 
 mutation createFeature($input: FeatureInput!) {
 	createFeature(input: $input) {

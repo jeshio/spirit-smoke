@@ -1,5 +1,5 @@
 
-#import "@/gql/fragments/company/simple.gql"
+#import "@@/gql/fragments/company/simple.gql"
 
 mutation createCompany($input: CompanyInput!) {
 	createCompany(input: $input) {

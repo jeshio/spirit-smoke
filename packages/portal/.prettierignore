@@ -21,3 +21,4 @@ yarn-error.log
 CNAME
 /build
 *.less.d.ts
+__generated__

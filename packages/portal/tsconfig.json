@@ -20,6 +20,7 @@
     "jsx": "preserve",
     "paths": {
       "@/*": ["./src/*"],
+      "@@gql/*": ["../gql/*"],
       "@@types/*": ["../types/*"],
       "@@utils/*": ["../utils/*"]
     }

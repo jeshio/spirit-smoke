@@ -1,5 +1,5 @@
 
-#import "@/gql/fragments/product/simple.gql"
+#import "@@/gql/fragments/product/simple.gql"
 
 mutation updateProduct($id: ID!, $input: ProductInput!) {
 	updateProduct(id: $id, input: $input) {
