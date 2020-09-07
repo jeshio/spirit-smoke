@@ -1,4 +1,4 @@
-#import "@/gql/fragments/productCategory/minimum.gql"
+#import "../../fragments/productCategory/minimum.gql"
 
 query productCategoryMinimumList {
   productCategories {

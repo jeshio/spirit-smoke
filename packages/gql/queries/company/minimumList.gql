@@ -1,4 +1,4 @@
-#import "@/gql/fragments/company/minimum.gql"
+#import "../../fragments/company/minimum.gql"
 
 query companyMinimumList {
   companies {

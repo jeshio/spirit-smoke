@@ -1,4 +1,4 @@
-#import "@/gql/fragments/product/simple.gql"
+#import "../../fragments/product/simple.gql"
 
 query productSimpleList {
   products {

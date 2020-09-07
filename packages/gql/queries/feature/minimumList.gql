@@ -1,4 +1,4 @@
-#import "@/gql/fragments/feature/minimum.gql"
+#import "../../fragments/feature/minimum.gql"
 
 query featureMinimumList {
   features {
