@@ -1,37 +1,32 @@
 import * as React from 'react'
 import styled from 'styled-components'
-import {
-  layout,
-  space,
-  color,
-  SpaceProps,
-  ColorProps,
-  display,
-  DisplayProps,
-  alignItems,
-  justifyContent,
-  AlignItemsProps,
-  JustifyContentProps,
-} from 'styled-system'
-import { ThemeType } from '@/styles/theme'
+import { layout, space, color, alignItems, justifyContent } from 'styled-system'
+import setProps from '@/wrappers/setProps'
+import { UBlockPropsType, TagType } from './types'
+import displayWithVisibleChecking from '@/helpers/displayWithVisibleChecking'
 
-interface IUBlockProps extends SpaceProps, ColorProps<ThemeType>, DisplayProps, AlignItemsProps, JustifyContentProps {
-  children?: React.ReactNode
-  className?: string
-  style?: React.CSSProperties
-}
-
-const Root = styled(({ children, className }: IUBlockProps) => <div className={className}>{children}</div>)`
+const Root = styled(({ children, className, tag: Tag = 'div', tagComponentProps }: UBlockPropsType<any>) => (
+  <Tag {...tagComponentProps} className={className}>
+    {children}
+  </Tag>
+))`
   ${space}
   ${layout}
   ${color}
-  ${display}
+  ${displayWithVisibleChecking}
   ${alignItems}
   ${justifyContent}
 `
 
-const UBlock: React.FunctionComponent<IUBlockProps> = (props) => {
-  return <Root {...props} />
+function UBlock<T extends TagType>({ tagComponentProps, tag, ...props }: UBlockPropsType<T>): JSX.Element {
+  return <Root tagComponentProps={tagComponentProps} {...props} tag={tag} />
 }
+
+/**
+ * Возвращает UBlock с предустановленными свойствами
+ */
+export const getUBlockWithProps = <T extends TagType>(
+  props: Partial<React.ComponentProps<typeof UBlock>> & { tag?: T }
+) => setProps<UBlockPropsType<T>>(props as any)(UBlock)
 
 export default UBlock

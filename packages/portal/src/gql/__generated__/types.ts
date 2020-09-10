@@ -779,6 +779,23 @@ export type ProductCategoryMinimumListQuery = (
   )> }
 );
 
+export type ProductCategoryMenuListFragment = (
+  { __typename?: 'ProductCategory' }
+  & Pick<ProductCategory, 'slug'>
+  & ProductCategoryMinimum_ProductCategory_Fragment
+);
+
+export type ProductCategoryMenuListQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ProductCategoryMenuListQuery = (
+  { __typename?: 'Query' }
+  & { productCategories: Array<(
+    { __typename?: 'ProductCategory' }
+    & ProductCategoryMenuListFragment
+  )> }
+);
+
 
 
 export type ResolverTypeWrapper<T> = Promise<T> | T;
@@ -1326,12 +1343,6 @@ export const ProductSimpleFragmentDoc = gql`
   updatedAt
 }
     `;
-export const ProductCategoryMinimumFragmentDoc = gql`
-    fragment ProductCategoryMinimum on IProductCategory {
-  id
-  name
-}
-    `;
 export const ProductCategorySimpleFragmentDoc = gql`
     fragment ProductCategorySimple on IProductCategory {
   id
@@ -1342,6 +1353,18 @@ export const ProductCategorySimpleFragmentDoc = gql`
   updatedAt
 }
     `;
+export const ProductCategoryMinimumFragmentDoc = gql`
+    fragment ProductCategoryMinimum on IProductCategory {
+  id
+  name
+}
+    `;
+export const ProductCategoryMenuListFragmentDoc = gql`
+    fragment ProductCategoryMenuList on ProductCategory {
+  ...ProductCategoryMinimum
+  slug
+}
+    ${ProductCategoryMinimumFragmentDoc}`;
 export const CompanyMinimumListDocument = gql`
     query companyMinimumList {
   companies {
@@ -1568,3 +1591,35 @@ export function useProductCategoryMinimumListLazyQuery(baseOptions?: Apollo.Lazy
 export type ProductCategoryMinimumListQueryHookResult = ReturnType<typeof useProductCategoryMinimumListQuery>;
 export type ProductCategoryMinimumListLazyQueryHookResult = ReturnType<typeof useProductCategoryMinimumListLazyQuery>;
 export type ProductCategoryMinimumListQueryResult = Apollo.QueryResult<ProductCategoryMinimumListQuery, ProductCategoryMinimumListQueryVariables>;
+export const ProductCategoryMenuListDocument = gql`
+    query productCategoryMenuList {
+  productCategories {
+    ...ProductCategoryMenuList
+  }
+}
+    ${ProductCategoryMenuListFragmentDoc}`;
+
+/**
+ * __useProductCategoryMenuListQuery__
+ *
+ * To run a query within a React component, call `useProductCategoryMenuListQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProductCategoryMenuListQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProductCategoryMenuListQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useProductCategoryMenuListQuery(baseOptions?: Apollo.QueryHookOptions<ProductCategoryMenuListQuery, ProductCategoryMenuListQueryVariables>) {
+        return Apollo.useQuery<ProductCategoryMenuListQuery, ProductCategoryMenuListQueryVariables>(ProductCategoryMenuListDocument, baseOptions);
+      }
+export function useProductCategoryMenuListLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProductCategoryMenuListQuery, ProductCategoryMenuListQueryVariables>) {
+          return Apollo.useLazyQuery<ProductCategoryMenuListQuery, ProductCategoryMenuListQueryVariables>(ProductCategoryMenuListDocument, baseOptions);
+        }
+export type ProductCategoryMenuListQueryHookResult = ReturnType<typeof useProductCategoryMenuListQuery>;
+export type ProductCategoryMenuListLazyQueryHookResult = ReturnType<typeof useProductCategoryMenuListLazyQuery>;
+export type ProductCategoryMenuListQueryResult = Apollo.QueryResult<ProductCategoryMenuListQuery, ProductCategoryMenuListQueryVariables>;

@@ -1,5 +1,5 @@
 import React, { ComponentType } from 'react'
-import UConditionallyRender from '@/components/UConditionallyRender'
+import UConditionallyRender from '@/ui-components/UConditionallyRender'
 
 /**
  * Рендер только на сервере

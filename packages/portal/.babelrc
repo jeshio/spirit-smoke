@@ -11,7 +11,8 @@
       "plugins": [
         ["styled-components", {
           "ssr": true, "displayName": false, "preprocess": false, "minify": true
-        }]
+        }],
+        "polished"
       ]
     }
   },

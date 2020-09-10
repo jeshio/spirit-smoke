@@ -50,5 +50,7 @@ module.exports = {
     '@typescript-eslint/restrict-template-expressions': [2, { allowAny: true }],
     '@typescript-eslint/restrict-plus-operands': 0,
     'import/no-extraneous-dependencies': 0,
+    'react/prop-types': 0,
+    'no-sparse-arrays': 0
   },
 }

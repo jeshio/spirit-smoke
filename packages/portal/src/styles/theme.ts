@@ -1,4 +1,6 @@
 import { Theme } from 'styled-system'
+import { createObjectWithSequence } from '@/helpers/createObjectWithSequence'
+import { lighten } from 'polished'
 
 export interface IBreakpoints {
   xs?: string
@@ -24,6 +26,10 @@ const theme = {
   breakpoints,
   colors: {
     primaryColor: '#1890ff',
+    linkColor: createObjectWithSequence(
+      () => ({ base: '#77f' }),
+      (prev) => ({ hover: lighten(0.1, prev.base) })
+    ),
   },
   space: [0, 4, 8, 12, 16, 24, 32, 42, 54],
 }
