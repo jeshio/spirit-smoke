@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { useProductCategoryMenuListQuery } from '@/gql/__generated__/types'
 import UList from '@/ui-components/UList'
-import { Item } from './index.styled'
+import { Item, Root, ItemImage, ItemText, Content } from './index.styled'
 
 interface ICProductCategoriesListProps {
   className?: string
@@ -12,16 +12,23 @@ const CProductCategoriesList: React.FunctionComponent<ICProductCategoriesListPro
 
   if (loading || !data) return <span>Загрузка...</span>
 
-  return (
-    <UList
-      className={className}
-      items={data.productCategories.map((productCategory) => (
+  const items = React.useMemo(
+    () =>
+      data.productCategories.map((productCategory) => (
         <Item key={productCategory.id} href={`/${productCategory.slug}`}>
-          {productCategory.name}
+          <ItemImage maskUrl="https://www.svgrepo.com/show/264260/hookah.svg" />
+          <ItemText>{productCategory.name}</ItemText>
         </Item>
-      ))}
-      isHorizontal
-    />
+      )),
+    [data.productCategories]
+  )
+
+  return (
+    <Root>
+      <Content>
+        <UList className={className} items={items} isHorizontal />
+      </Content>
+    </Root>
   )
 }
 

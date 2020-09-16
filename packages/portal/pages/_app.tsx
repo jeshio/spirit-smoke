@@ -10,6 +10,7 @@ import theme from '@/styles/theme'
 import CFooter from '@/containers/CFooter'
 import CHeader from '@/containers/CHeader'
 import UContent from '@/ui-components/UContent'
+import CProductCategoriesList from '@/containers/CProductCategoriesList'
 
 function MyApp({ Component, pageProps, apollo }: AppProps) {
   return (
@@ -33,6 +34,8 @@ function MyApp({ Component, pageProps, apollo }: AppProps) {
             <Component {...pageProps} />
           </UContent>
         </main>
+
+        <CProductCategoriesList />
 
         <CFooter />
       </ThemeProvider>
