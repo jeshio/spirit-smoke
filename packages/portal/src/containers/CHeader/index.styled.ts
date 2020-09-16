@@ -1,9 +1,9 @@
 import styled from 'styled-components'
 import { getUBlockWithProps } from '@/ui-components/UBlock'
 import ULink from '@/ui-components/ULink'
-import CProductCategoriesList from '../CProductCategoriesList'
 import { size } from 'polished'
 import { CartIcon } from '@@icons'
+import UContent from '@/ui-components/UContent'
 
 export const Root = styled.header`
   overflow-x: hidden;
@@ -11,8 +11,8 @@ export const Root = styled.header`
 
 export const TopBar = styled(
   getUBlockWithProps({
+    tag: UContent,
     styleConfig: {
-      px: ['12px'],
       height: ['55px'],
     },
   })
@@ -41,11 +41,15 @@ export const MenuList = styled(
   })
 )`
   display: flex;
+  text-align: right;
 `
 
 export const MenuItem = styled(
   getUBlockWithProps({
     tag: 'li',
+    styleConfig: {
+      marginLeft: ['21px'],
+    },
   })
 )`
   list-style: none;
@@ -54,23 +58,24 @@ export const MenuItem = styled(
 export const MenuItemLink = styled(
   getUBlockWithProps({
     tag: ULink,
+    styleConfig: {},
+  })
+)``
+
+export const SubHeader = styled(
+  getUBlockWithProps({
+    tag: UContent,
     styleConfig: {
-      px: [1, 1, 2, 2, 4],
-      py: [, , , , , 3],
+      py: ['7px'],
     },
   })
 )`
-  text-align: center;
+  background-color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 14px;
 `
-
-export const StyledCProductCategoriesList = styled(
-  getUBlockWithProps({
-    tag: CProductCategoriesList,
-    styleConfig: {
-      display: { span: 'flex !important', xl: 'none !important' },
-    },
-  })
-)``
 
 export const StyledCartIcon = styled(
   getUBlockWithProps({

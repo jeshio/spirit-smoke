@@ -8,7 +8,6 @@ import {
   WidthProps,
 } from 'styled-system'
 import { ThemeType } from '@/styles/theme'
-import { ComponentProps } from 'react'
 import { DisplayWithVisibleCheckingProps } from '@/helpers/displayWithVisibleChecking'
 
 type StyleConfigType =
@@ -29,8 +28,6 @@ export interface IUBlockProps {
 }
 
 export type TagType = 'div' | 'ul' | 'li' | 'a' | 'input' | 'button' | React.ComponentType
-
-type RequiredKeys<T> = { [K in keyof T]-?: Record<any, any> extends Pick<T, K> ? never : K }[keyof T]
 
 export type UBlockPropsType<T extends TagType> = {
   tag?: T
