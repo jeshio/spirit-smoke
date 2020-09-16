@@ -1,4 +1,12 @@
-import { SpaceProps, ColorProps, DisplayProps, AlignItemsProps, JustifyContentProps } from 'styled-system'
+import {
+  SpaceProps,
+  ColorProps,
+  DisplayProps,
+  AlignItemsProps,
+  JustifyContentProps,
+  HeightProps,
+  WidthProps,
+} from 'styled-system'
 import { ThemeType } from '@/styles/theme'
 import { ComponentProps } from 'react'
 import { DisplayWithVisibleCheckingProps } from '@/helpers/displayWithVisibleChecking'
@@ -9,13 +17,15 @@ export interface IUBlockProps
     ColorProps<ThemeType>,
     DisplayProps,
     AlignItemsProps,
-    JustifyContentProps {
+    JustifyContentProps,
+    HeightProps,
+    WidthProps {
   children?: React.ReactNode
   className?: string
   style?: React.CSSProperties
 }
 
-export type TagType = 'div' | 'ul' | 'li' | 'a' | React.ComponentType
+export type TagType = 'div' | 'ul' | 'li' | 'a' | 'input' | 'button' | React.ComponentType
 
 type RequiredKeys<T> = { [K in keyof T]-?: Record<any, any> extends Pick<T, K> ? never : K }[keyof T]
 

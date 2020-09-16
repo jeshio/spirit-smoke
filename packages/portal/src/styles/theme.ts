@@ -25,11 +25,15 @@ breakpoints['xxl'] = breakpoints[5]
 const theme = {
   breakpoints,
   colors: {
-    primaryColor: '#1890ff',
+    primaryColor: '#535353',
+    placeholderColor: '#9F9F9F',
     linkColor: createObjectWithSequence(
       () => ({ base: '#77f' }),
       (prev) => ({ hover: lighten(0.1, prev.base) })
     ),
+  },
+  fonts: {
+    primary: "'Roboto', sans-serif",
   },
   space: [0, 4, 8, 12, 16, 24, 32, 42, 54],
 }

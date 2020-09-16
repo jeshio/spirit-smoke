@@ -1,15 +1,28 @@
 import styled from 'styled-components'
-import UBlock, { getUBlockWithProps } from '@/ui-components/UBlock'
+import { getUBlockWithProps } from '@/ui-components/UBlock'
 import ULink from '@/ui-components/ULink'
 import CProductCategoriesList from '../CProductCategoriesList'
+import { size } from 'polished'
+import { CartIcon } from '@@icons'
 
-export const Root = styled(UBlock)`
+export const Root = styled(
+  getUBlockWithProps({
+    px: ['12px'],
+    height: ['55px'],
+  })
+)`
   display: flex;
+  align-items: center;
+  background-color: ${({ theme }) => theme.colors.primaryColor};
 `
 
 export const StyledLogo = styled.div`
-  font-size: 18px;
   font-weight: 600;
+  overflow: hidden;
+  ${size(32)}
+  background-color: #FFBE3F;
+  border-radius: 50%;
+  font-size: 9px;
 `
 
 export const MenuList = styled(
@@ -43,3 +56,7 @@ export const StyledCProductCategoriesList = styled(
     tag: CProductCategoriesList,
   })
 )``
+
+export const StyledCartIcon = styled(CartIcon)`
+  color: #fff;
+`

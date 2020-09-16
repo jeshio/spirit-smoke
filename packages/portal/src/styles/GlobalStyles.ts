@@ -4,7 +4,18 @@ import { transitions } from 'polished'
 const GlobalStyles = createGlobalStyle`
   html {
     background-color: #F8F8F8;
-    font-family: 'Roboto', sans-serif;
+    font-family: ${({ theme }) => theme.fonts.primary};
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+  }
+
+  *, :after, :before {
+    box-sizing: border-box;
   }
 
   a {

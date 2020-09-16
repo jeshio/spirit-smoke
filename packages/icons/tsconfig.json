@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "outDir": "build/lib",
+    "moduleResolution": "node",
+    "declarationDir": "build/lib",
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true,
+    "module": "esnext",
+    "target": "es5",
+    "jsx": "react",
+    "skipLibCheck": true,
+    "rootDir": "./src",
+    "baseUrl": "./"
+  },
+  "include": ["./src"]
+}

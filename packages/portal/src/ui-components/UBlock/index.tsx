@@ -26,7 +26,7 @@ function UBlock<T extends TagType>({ tagComponentProps, tag, ...props }: UBlockP
  * Возвращает UBlock с предустановленными свойствами
  */
 export const getUBlockWithProps = <T extends TagType>(
-  props: Partial<React.ComponentProps<typeof UBlock>> & { tag?: T }
+  props: Partial<React.ComponentProps<typeof UBlock>> & { tag?: T } = {}
 ) => setProps<UBlockPropsType<T>>(props as any)(UBlock)
 
 export default UBlock
