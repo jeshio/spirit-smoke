@@ -7,14 +7,7 @@ interface IUInputProps {
 }
 
 const UInput: React.FunctionComponent<IUInputProps> = ({ className, placeholder }) => {
-  return (
-    <Root
-      className={className}
-      tagComponentProps={{
-        placeholder,
-      }}
-    />
-  )
+  return <Root className={className} placeholder={placeholder} />
 }
 
 export default UInput

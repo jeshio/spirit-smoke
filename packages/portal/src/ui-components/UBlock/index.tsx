@@ -1,14 +1,13 @@
 import * as React from 'react'
 import styled from 'styled-components'
+import cn from 'classnames'
 import { layout, space, color, alignItems, justifyContent } from 'styled-system'
 import setProps from '@/wrappers/setProps'
 import { UBlockPropsType, TagType } from './types'
 import displayWithVisibleChecking from '@/helpers/displayWithVisibleChecking'
 
-const Root = styled(({ children, className, tag: Tag = 'div', tagComponentProps }: UBlockPropsType<any>) => (
-  <Tag {...tagComponentProps} className={className}>
-    {children}
-  </Tag>
+const Root = styled(({ tag: Tag = 'div', tagComponentProps, className }: UBlockPropsType<any>) => (
+  <Tag {...tagComponentProps} className={cn(className, tagComponentProps.className)} />
 ))`
   ${space}
   ${layout}
@@ -18,8 +17,8 @@ const Root = styled(({ children, className, tag: Tag = 'div', tagComponentProps 
   ${justifyContent}
 `
 
-function UBlock<T extends TagType>({ tagComponentProps, tag, ...props }: UBlockPropsType<T>): JSX.Element {
-  return <Root tagComponentProps={tagComponentProps} {...props} tag={tag} />
+function UBlock<T extends TagType>({ styleConfig, tag, ...props }: UBlockPropsType<T>): JSX.Element {
+  return <Root {...styleConfig} tagComponentProps={props} tag={tag} />
 }
 
 /**

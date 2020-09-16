@@ -6,11 +6,7 @@ interface ISearchInputProps {}
 const SearchInput: React.FunctionComponent<ISearchInputProps> = (props) => {
   return (
     <Root>
-      <StyledInput
-        tagComponentProps={{
-          placeholder: 'Поиск в Spirit Smoke',
-        }}
-      />
+      <StyledInput placeholder="Поиск в Spirit Smoke" />
       <InputSearchIcon />
     </Root>
   )

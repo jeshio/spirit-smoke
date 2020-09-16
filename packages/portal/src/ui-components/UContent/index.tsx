@@ -1,17 +1,18 @@
-import * as React from 'react'
-import { Root } from './index.styled'
-
-interface IUContentProps {}
+import { getUBlockWithProps } from '../UBlock'
+import styled from 'styled-components'
 
 /**
  * Отображает контент с отступами по бокам
  */
-const UContent: React.FunctionComponent<IUContentProps> = (props) => {
-  return (
-    <Root mx="auto" px={[0, 0, 2, 3, 4]}>
-      {props.children}
-    </Root>
-  )
-}
+const UContent = styled(
+  getUBlockWithProps({
+    styleConfig: {
+      mx: 'auto',
+      px: [0, 0, 2, 3, 4],
+    },
+  })
+)`
+  max-width: 1220px;
+`
 
 export default UContent

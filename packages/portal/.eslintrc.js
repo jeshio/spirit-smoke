@@ -51,6 +51,7 @@ module.exports = {
     '@typescript-eslint/restrict-plus-operands': 0,
     'import/no-extraneous-dependencies': 0,
     'react/prop-types': 0,
+    "no-unused-vars": "off",
     'no-sparse-arrays': 0
   },
 }

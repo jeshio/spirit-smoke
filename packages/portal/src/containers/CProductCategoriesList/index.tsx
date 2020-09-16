@@ -16,12 +16,7 @@ const CProductCategoriesList: React.FunctionComponent<ICProductCategoriesListPro
     <UList
       className={className}
       items={data.productCategories.map((productCategory) => (
-        <Item
-          key={productCategory.id}
-          tagComponentProps={{
-            href: `/${productCategory.slug}`,
-          }}
-        >
+        <Item key={productCategory.id} href={`/${productCategory.slug}`}>
           {productCategory.name}
         </Item>
       ))}

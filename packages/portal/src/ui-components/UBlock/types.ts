@@ -11,18 +11,21 @@ import { ThemeType } from '@/styles/theme'
 import { ComponentProps } from 'react'
 import { DisplayWithVisibleCheckingProps } from '@/helpers/displayWithVisibleChecking'
 
-export interface IUBlockProps
-  extends DisplayWithVisibleCheckingProps,
-    SpaceProps,
-    ColorProps<ThemeType>,
-    DisplayProps,
-    AlignItemsProps,
-    JustifyContentProps,
-    HeightProps,
-    WidthProps {
+type StyleConfigType =
+  | DisplayWithVisibleCheckingProps
+  | SpaceProps
+  | ColorProps<ThemeType>
+  | DisplayProps
+  | AlignItemsProps
+  | JustifyContentProps
+  | HeightProps
+  | WidthProps
+
+export interface IUBlockProps {
   children?: React.ReactNode
   className?: string
   style?: React.CSSProperties
+  styleConfig?: StyleConfigType
 }
 
 export type TagType = 'div' | 'ul' | 'li' | 'a' | 'input' | 'button' | React.ComponentType
@@ -32,10 +35,4 @@ type RequiredKeys<T> = { [K in keyof T]-?: Record<any, any> extends Pick<T, K> ?
 export type UBlockPropsType<T extends TagType> = {
   tag?: T
 } & IUBlockProps &
-  (T extends React.ComponentType
-    ? RequiredKeys<ComponentProps<T>> extends keyof T
-      ? {
-          tagComponentProps?: React.ComponentProps<T>
-        }
-      : { tagComponentProps: React.ComponentProps<T> }
-    : { tagComponentProps?: React.ComponentProps<T> })
+  React.ComponentProps<T>

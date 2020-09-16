@@ -2,7 +2,7 @@ import * as React from "react";
 
 function SvgCartIcon(props: React.SVGProps<SVGSVGElement>) {
   return (
-    <svg width={24} height={24} {...props}>
+    <svg width={24} height={24} viewBox="0 0 24 24" {...props}>
       <g fill="none" fillRule="evenodd">
         <path d="M0 0h24v24H0z" />
         <path

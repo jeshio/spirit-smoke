@@ -3,10 +3,11 @@ import {
   StyledLogo,
   MenuItemLink,
   MenuList,
-  Root,
+  TopBar,
   MenuItem,
   StyledCProductCategoriesList,
   StyledCartIcon,
+  Root,
 } from './index.styled'
 import ULink from '@/ui-components/ULink'
 import SearchInput from './components/SearchInput'
@@ -16,36 +17,24 @@ interface ICHeaderProps {}
 
 const CHeader: React.FunctionComponent<ICHeaderProps> = () => {
   return (
-    <header>
-      <Root>
+    <Root>
+      <TopBar>
         <ULink href="/">
           <StyledLogo>Spirit Smoke</StyledLogo>
         </ULink>
         <SearchInput />
-        <UButton icon={<StyledCartIcon />} />
-      </Root>
-      <MenuList m={0} p={0}>
+        <UButton icon={<StyledCartIcon />} type="ghost" noPaddings />
+      </TopBar>
+      <MenuList>
         <MenuItem>
-          <MenuItemLink
-            tagComponentProps={{
-              href: '/test',
-            }}
-          >
-            Контакты
-          </MenuItemLink>
+          <MenuItemLink href="/test">Контакты</MenuItemLink>
         </MenuItem>
         <MenuItem>
-          <MenuItemLink
-            tagComponentProps={{
-              href: '/about',
-            }}
-          >
-            О нас
-          </MenuItemLink>
+          <MenuItemLink href="/about">О нас</MenuItemLink>
         </MenuItem>
       </MenuList>
-      <StyledCProductCategoriesList display={{ span: 'flex !important', xl: 'none !important' }} />
-    </header>
+      <StyledCProductCategoriesList />
+    </Root>
   )
 }
 

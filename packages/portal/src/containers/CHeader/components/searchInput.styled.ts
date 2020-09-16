@@ -6,8 +6,10 @@ import styled from 'styled-components'
 
 export const Root = styled(
   getUBlockWithProps({
-    width: ['100%'],
-    mx: ['12px'],
+    styleConfig: {
+      width: ['100%'],
+      mx: ['12px'],
+    },
   })
 )`
   position: relative;
@@ -16,10 +18,12 @@ export const Root = styled(
 export const StyledInput = styled(
   getUBlockWithProps({
     tag: UInput,
-    height: ['32px'],
-    px: ['18px'],
-    py: ['0'],
-    paddingBottom: ['2px'],
+    styleConfig: {
+      height: ['32px'],
+      px: ['18px'],
+      py: ['0'],
+      paddingBottom: ['2px'],
+    },
   })
 )`
   border: none;
