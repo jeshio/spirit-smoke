@@ -9,7 +9,6 @@ import Head from 'next/head'
 import theme from '@/styles/theme'
 import CFooter from '@/containers/CFooter'
 import CHeader from '@/containers/CHeader'
-import UContent from '@/ui-components/UContent'
 import CProductCategoriesList from '@/containers/CProductCategoriesList'
 
 function MyApp({ Component, pageProps, apollo }: AppProps) {
@@ -30,9 +29,7 @@ function MyApp({ Component, pageProps, apollo }: AppProps) {
         <CHeader />
 
         <main>
-          <UContent>
-            <Component {...pageProps} />
-          </UContent>
+          <Component {...pageProps} />
         </main>
 
         <CProductCategoriesList />

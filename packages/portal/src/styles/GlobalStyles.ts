@@ -16,6 +16,7 @@ const GlobalStyles = createGlobalStyle`
   }
 
   *, :after, :before {
+    font-family: ${({ theme }) => theme.fonts.primary};
     box-sizing: border-box;
   }
 

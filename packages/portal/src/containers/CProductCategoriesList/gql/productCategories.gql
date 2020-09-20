@@ -1,6 +1,4 @@
 #import "@/gql/fragments/productCategory/minimum.gql"
-#import "@/gql/fragments/feature/minimum.gql"
-#import "@/gql/fragments/product/simple.gql"
 
 fragment ProductCategoryMenuList on ProductCategory {
   ...ProductCategoryMinimum

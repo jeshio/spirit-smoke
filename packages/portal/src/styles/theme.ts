@@ -25,7 +25,7 @@ breakpoints['xxl'] = breakpoints[5]
 const theme = {
   breakpoints,
   colors: {
-    primaryColor: '#535353',
+    primaryColor: '#2F3047',
     placeholderColor: '#9F9F9F',
     linkColor: createObjectWithSequence(
       () => ({ base: '#77f' }),

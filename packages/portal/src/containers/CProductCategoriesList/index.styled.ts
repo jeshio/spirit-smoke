@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components'
 import { getUBlockWithProps } from '@/ui-components/UBlock'
 import ULink from '@/ui-components/ULink'
+import createComponentWithPropsOmit from '@/helpers/createComponentWithPropsOmit'
 
 export const Root = styled(
   getUBlockWithProps({
@@ -44,6 +45,7 @@ export const Item = styled(
 
 export const ItemImage = styled<any>(
   getUBlockWithProps({
+    tag: createComponentWithPropsOmit('div', ['maskUrl']),
     styleConfig: {
       height: ['23px'],
       width: ['23px'],

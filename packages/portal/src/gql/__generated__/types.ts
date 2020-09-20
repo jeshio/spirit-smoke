@@ -779,6 +779,22 @@ export type ProductCategoryMinimumListQuery = (
   )> }
 );
 
+export type CompaniesSelectorFragment = (
+  { __typename?: 'Company' }
+  & CompanyMinimum_Company_Fragment
+);
+
+export type CompaniesSelectorQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CompaniesSelectorQuery = (
+  { __typename?: 'Query' }
+  & { companies: Array<(
+    { __typename?: 'Company' }
+    & CompaniesSelectorFragment
+  )> }
+);
+
 export type ProductCategoryMenuListFragment = (
   { __typename?: 'ProductCategory' }
   & Pick<ProductCategory, 'slug'>
@@ -1288,12 +1304,6 @@ export type Resolvers<ContextType = any> = {
  */
 export type IResolvers<ContextType = any> = Resolvers<ContextType>;
 
-export const CompanyMinimumFragmentDoc = gql`
-    fragment CompanyMinimum on ICompany {
-  id
-  name
-}
-    `;
 export const CompanySimpleFragmentDoc = gql`
     fragment CompanySimple on ICompany {
   id
@@ -1353,6 +1363,17 @@ export const ProductCategorySimpleFragmentDoc = gql`
   updatedAt
 }
     `;
+export const CompanyMinimumFragmentDoc = gql`
+    fragment CompanyMinimum on ICompany {
+  id
+  name
+}
+    `;
+export const CompaniesSelectorFragmentDoc = gql`
+    fragment CompaniesSelector on Company {
+  ...CompanyMinimum
+}
+    ${CompanyMinimumFragmentDoc}`;
 export const ProductCategoryMinimumFragmentDoc = gql`
     fragment ProductCategoryMinimum on IProductCategory {
   id
@@ -1591,6 +1612,38 @@ export function useProductCategoryMinimumListLazyQuery(baseOptions?: Apollo.Lazy
 export type ProductCategoryMinimumListQueryHookResult = ReturnType<typeof useProductCategoryMinimumListQuery>;
 export type ProductCategoryMinimumListLazyQueryHookResult = ReturnType<typeof useProductCategoryMinimumListLazyQuery>;
 export type ProductCategoryMinimumListQueryResult = Apollo.QueryResult<ProductCategoryMinimumListQuery, ProductCategoryMinimumListQueryVariables>;
+export const CompaniesSelectorDocument = gql`
+    query companiesSelector {
+  companies {
+    ...CompaniesSelector
+  }
+}
+    ${CompaniesSelectorFragmentDoc}`;
+
+/**
+ * __useCompaniesSelectorQuery__
+ *
+ * To run a query within a React component, call `useCompaniesSelectorQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCompaniesSelectorQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCompaniesSelectorQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useCompaniesSelectorQuery(baseOptions?: Apollo.QueryHookOptions<CompaniesSelectorQuery, CompaniesSelectorQueryVariables>) {
+        return Apollo.useQuery<CompaniesSelectorQuery, CompaniesSelectorQueryVariables>(CompaniesSelectorDocument, baseOptions);
+      }
+export function useCompaniesSelectorLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CompaniesSelectorQuery, CompaniesSelectorQueryVariables>) {
+          return Apollo.useLazyQuery<CompaniesSelectorQuery, CompaniesSelectorQueryVariables>(CompaniesSelectorDocument, baseOptions);
+        }
+export type CompaniesSelectorQueryHookResult = ReturnType<typeof useCompaniesSelectorQuery>;
+export type CompaniesSelectorLazyQueryHookResult = ReturnType<typeof useCompaniesSelectorLazyQuery>;
+export type CompaniesSelectorQueryResult = Apollo.QueryResult<CompaniesSelectorQuery, CompaniesSelectorQueryVariables>;
 export const ProductCategoryMenuListDocument = gql`
     query productCategoryMenuList {
   productCategories {

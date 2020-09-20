@@ -1,0 +1,11 @@
+#import "@/gql/fragments/company/minimum.gql"
+
+fragment CompaniesSelector on Company {
+  ...CompanyMinimum
+}
+
+query companiesSelector {
+  companies {
+    ...CompaniesSelector
+  }
+}

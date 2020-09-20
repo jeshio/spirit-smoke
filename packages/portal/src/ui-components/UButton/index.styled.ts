@@ -11,13 +11,13 @@ export const StyledButton = styled<ComponentType<IUButtonProps>>(
 )`
   display: flex;
   align-items: center;
+  border: unset;
+  outline: unset;
 
   ${({ type }) =>
     type === 'ghost' &&
     css`
       background: unset;
-      border: unset;
-      outline: unset;
     `}
   ${({ noPaddings }) =>
     noPaddings &&
