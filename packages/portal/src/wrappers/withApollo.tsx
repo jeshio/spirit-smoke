@@ -4,11 +4,13 @@ import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client'
 import introspectionResult from '@/gql/__generated__/introspection-result'
 import { AppProps } from 'next/dist/next-server/lib/router/router'
 
+const { APOLLO_URL } = process.env
+
 /* eslint-disable react/display-name, @typescript-eslint/ban-ts-comment */
 export default withApollo(
   ({ initialState, ctx }) =>
     new ApolloClient({
-      uri: 'http://wsl.ru:4000/graphql',
+      uri: APOLLO_URL,
       ssrMode: Boolean(ctx),
       cache: new InMemoryCache({
         possibleTypes: introspectionResult.possibleTypes,
