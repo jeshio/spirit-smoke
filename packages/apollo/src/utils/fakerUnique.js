@@ -13,7 +13,11 @@ const startTime = new Date().getTime()
 // current iteration or retries of unique.exec ( current loop depth )
 let currentIterations = 0
 
-const fakerUnique = function (method, args, opts) {
+const fakerUnique = function (method, args, opts, isFirstTime = true) {
+  if (isFirstTime) {
+    currentIterations = 0
+  }
+
   /* eslint-disable no-param-reassign */
   const now = new Date().getTime()
 
@@ -46,7 +50,7 @@ const fakerUnique = function (method, args, opts) {
   }
   // console.log('conflict', result);
   currentIterations += 1
-  return fakerUnique(method, args, opts)
+  return fakerUnique(method, args, opts, false)
 }
 
 // common error handler for messages

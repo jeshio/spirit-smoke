@@ -14,15 +14,23 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Product.belongsTo(models.productCategory)
       Product.belongsTo(models.company)
-      Product.belongsToMany(models.feature, { through: 'productFeatures', timestamps: false })
+      Product.belongsToMany(models.feature, { through: models.productFeature, timestamps: false })
       Product.belongsToMany(models.discount, { through: 'productDiscounts', timestamps: false })
       Product.belongsToMany(models.order, { through: models.orderProduct, timestamps: false })
       Product.belongsToMany(models.procurement, { through: models.productProcurement, timestamps: false })
+      Product.hasMany(models.productFeature)
       Product.hasMany(models.productProcurement)
       Product.hasMany(models.orderProduct)
     }
   }
   Product.init({
+    barcode: {
+      type: DataTypes.STRING,
+      unique: true,
+      validate: {
+        len: [0, 48],
+      },
+    },
     name: {
       type: DataTypes.STRING,
       validate: {
@@ -48,6 +56,14 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: true,
         is: /^[a-z-\d]+$/,
       },
+    },
+    weight: {
+      type: DataTypes.INTEGER,
+      validate: {
+        isInt: true,
+        min: 0,
+      },
+      defaultValue: 0,
     },
     price: {
       type: DataTypes.FLOAT,

@@ -8,12 +8,16 @@ const getDevRows = ({
   companyIds,
 }) => [...Array(500)].map((v, i) => (
   {
+    barcode: fakerUnique(faker.finance.bic, [Math.random() * 5], {
+      maxRetries: 1000,
+    }),
     name: faker.commerce.product(),
     slug: fakerUnique(faker.lorem.slug, [Math.random() * 5], {
       maxRetries: 1000,
     }),
     description: faker.lorem.paragraph(Math.round(Math.random() * 2 + 1)).substr(0, 250),
     imageUrl: `https://picsum.photos/id/${i + 1}/512/512`,
+    weight: Math.round(Math.random() * 1000),
     price: parseFloat(Math.max(Math.random() * 25 - 1, 0).toFixed(2)),
     count: Math.floor(Math.random() * 11),
     productCategoryId: getRandomElement(productCategoryIds),

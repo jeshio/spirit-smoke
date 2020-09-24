@@ -32,7 +32,11 @@ const ProductForm: React.FunctionComponent<IProductFormProps> = ({
   const handleSubmit = (fields: any) =>
     onSubmit({
       ...fields,
+      features: fields?.features?.map((featureId: string) => ({
+        featureId,
+      })),
       price: numberToPrice(parseFloat(fields.price)),
+      weight: Number(fields.weight || 0),
     })
   const featureOptions =
     React.useMemo(
@@ -46,7 +50,9 @@ const ProductForm: React.FunctionComponent<IProductFormProps> = ({
         })) as React.ComponentProps<typeof UItemsSelector>['optionsToAdd'],
       [product?.productCategory]
     ) || []
-  const initialSelectedFeatureIds = React.useMemo(() => product?.features.map(({ id }) => id), [product])
+  const initialSelectedFeatureIds = React.useMemo(() => product?.productFeatures.map(({ feature: { id } }) => id), [
+    product,
+  ])
 
   return (
     <UForm onFinish={handleSubmit} labelCol={{ span: 6, sm: 6, md: 9, lg: 9, xl: 7, xxl: 7 }}>
@@ -54,7 +60,7 @@ const ProductForm: React.FunctionComponent<IProductFormProps> = ({
         const companyWarning = isUpdate && !product?.company && fields.companyId === product?.companyId
         const productCategoryWarning =
           isUpdate && !product?.productCategory && fields.productCategoryId === product?.productCategoryId
-        const featuresSelectorIsDisabled = product?.productCategoryId !== fields.productCategoryId
+        const featuresSelectorIsDisabled = isUpdate && product?.productCategoryId !== fields.productCategoryId
         return (
           <Card loading={categoriesRequest.loading || companyRequest.loading}>
             <URow>
@@ -80,6 +86,12 @@ const ProductForm: React.FunctionComponent<IProductFormProps> = ({
                 </UForm.Item>
                 <UForm.Item label="Название" name="name" required initialValue={product?.name}>
                   <Input />
+                </UForm.Item>
+                <UForm.Item label="Штрихкод" name="barcode" initialValue={product?.barcode}>
+                  <Input />
+                </UForm.Item>
+                <UForm.Item label="Вес (г)" name="weight" initialValue={product?.weight || 0}>
+                  <Input type="number" />
                 </UForm.Item>
                 <UForm.Item label="Slug" required name="slug" initialValue={product?.slug}>
                   <Input disabled={isUpdate} />

@@ -28,6 +28,15 @@ const CompanyForm: React.FunctionComponent<ICompanyFormProps> = ({ isUpdate = fa
               <UForm.Item label="Slug" name="slug" required initialValue={company?.slug}>
                 <Input />
               </UForm.Item>
+              <UForm.Item label="Цвет в интерфейсе" name="color" required initialValue={company?.color}>
+                <Input />
+              </UForm.Item>
+              <UForm.Item label="Штрихкод" name="barcode" initialValue={company?.barcode}>
+                <Input />
+              </UForm.Item>
+              <UForm.Item label="Страна" name="country" initialValue={company?.country}>
+                <Input />
+              </UForm.Item>
 
               <UForm.Item wrapperCol={{ md: { offset: 2 } }}>
                 <UButton htmlType="submit" type="primary" loading={loading}>

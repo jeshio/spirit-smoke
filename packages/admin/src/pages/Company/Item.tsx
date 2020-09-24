@@ -63,6 +63,9 @@ const CompanyItemPage: React.FunctionComponent<CompanyItemPageProps> = (props) =
       <Card title={`Информация о производителе (ID ${company.id})`}>
         <UDescriptions>
           <UDescriptions.Item label="Название">{company.name}</UDescriptions.Item>
+          <UDescriptions.Item label="Штрихкод">{company.barcode}</UDescriptions.Item>
+          <UDescriptions.Item label="Страна">{company.country}</UDescriptions.Item>
+          <UDescriptions.Item label="Цвет в интерфейсе">{company.color}</UDescriptions.Item>
           <UDescriptions.Item label="slug">{company.slug}</UDescriptions.Item>
         </UDescriptions>
       </Card>

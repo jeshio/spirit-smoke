@@ -9,18 +9,20 @@ const resolvers = {
   Mutation: {
     createProduct: (parent, {
       input: {
-        name, slug,
+        barcode, name, slug,
         description,
-        imageUrl, price, count, productCategoryId, companyId,
+        imageUrl, weight, price, count, productCategoryId, companyId,
         features,
       },
     }, { models, sequelize }) =>
       sequelize.transaction(async (transaction) => {
         const createdProduct = await models.product.create({
+          barcode,
           name,
           slug,
           description,
           imageUrl,
+          weight,
           price,
           count,
           productCategoryId,
@@ -28,7 +30,14 @@ const resolvers = {
         }, { transaction })
 
         if (features) {
-          await createdProduct.setFeatures(features, { transaction })
+          const featurePromises = features.map(({ featureId, endTime }) => createdProduct.addFeature(featureId, {
+            transaction,
+            through: {
+              endTime,
+            },
+          }))
+
+          await Promise.all(featurePromises)
         }
 
         return createdProduct
@@ -36,19 +45,21 @@ const resolvers = {
     updateProduct: (parent, {
       id,
       input: {
-        name, slug,
+        barcode, name, slug,
         description,
-        imageUrl, price, count, productCategoryId, companyId,
+        imageUrl, weight, price, count, productCategoryId, companyId,
         features,
       },
     }, { models, sequelize }) =>
       sequelize.transaction(async (transaction) => {
         const sourceProduct = await models.product.findByPk(id)
         const updatedProduct = await models.product.update({
+          barcode,
           name,
           slug,
           description,
           imageUrl,
+          weight,
           price,
           count,
           productCategoryId,
@@ -58,7 +69,15 @@ const resolvers = {
         if (Number(sourceProduct?.dataValues.productCategoryId) !== Number(productCategoryId)) {
           await updatedProduct.setFeatures(null, { transaction })
         } else if (features) {
-          await updatedProduct.setFeatures(features, { transaction })
+          await updatedProduct.setFeatures(null, { transaction })
+          const featurePromises = features.map(({ featureId, endTime }) => updatedProduct.addFeature(featureId, {
+            transaction,
+            through: {
+              endTime,
+            },
+          }))
+
+          await Promise.all(featurePromises)
         }
 
         return updatedProduct
@@ -83,6 +102,7 @@ const resolvers = {
     discounts: async (product) => product.getDiscounts(),
     orderProducts: async (product) => product.getOrderProducts(),
     productProcurements: async (product) => product.getProductProcurements(),
+    productFeatures: async (product) => product.getProductFeatures(),
   },
 }
 

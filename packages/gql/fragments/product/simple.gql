@@ -1,11 +1,13 @@
 fragment ProductSimple on IProduct {
   id
+  barcode
   name
   slug
   description
   imageUrl
   productCategoryId
   companyId
+  weight
   price
   count
   createdAt

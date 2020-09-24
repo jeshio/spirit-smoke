@@ -12,6 +12,8 @@ extend type Mutation {
 input ProductCategoryInput {
   name: String!
   slug: String!
+  priority: Int
+  iconUrl: String!
   description: String!
   features: [ID!]
 }
@@ -20,6 +22,8 @@ interface IProductCategory {
   id: ID!
   name: String!
   slug: String!
+  priority: Int
+  iconUrl: String!
   description: String!
   createdAt: String!
   updatedAt: String!
@@ -29,6 +33,8 @@ type ProductCategorySimple implements IProductCategory {
   id: ID!
   name: String!
   slug: String!
+  priority: Int
+  iconUrl: String!
   description: String!
   createdAt: String!
   updatedAt: String!
@@ -38,6 +44,8 @@ type ProductCategory implements IProductCategory {
   id: ID!
   name: String!
   slug: String!
+  priority: Int
+  iconUrl: String!
   description: String!
   createdAt: String!
   updatedAt: String!

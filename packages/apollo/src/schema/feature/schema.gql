@@ -7,7 +7,7 @@ extend type Mutation {
   createFeature(input: FeatureInput!): FeatureSimple!
   updateFeature(id: ID!, input: FeatureInput!): FeatureSimple!
   addProductCategoryFeature(featureId: ID!, productCategoryId: ID!): FeatureSimple!
-  addProductFeature(featureId: ID!, productId: ID!): FeatureSimple!
+  addProductFeature(featureId: ID!, productId: ID!, endTime: String): FeatureSimple!
   deleteFeature(id: ID!): ID!
 }
 
@@ -48,5 +48,12 @@ type Feature implements IFeature {
   updatedAt: String!
   productCategories: [ProductCategory!]!
   products: [Product!]!
+  productFeatures: [ProductFeature!]!
   discounts: [Discount!]!
 } 
+
+type ProductFeature {
+  product: Product!
+  feature: Feature!
+  endTime: String
+}

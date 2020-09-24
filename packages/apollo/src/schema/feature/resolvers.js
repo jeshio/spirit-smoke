@@ -29,11 +29,16 @@ const resolvers = {
         await feature.addProductCategory(productCategoryId, { transaction })
         return feature
       }),
-    addProductFeature: (parent, { featureId, productId }, { sequelize, models }) =>
+    addProductFeature: (parent, { featureId, productId, endTime }, { sequelize, models }) =>
       sequelize.transaction(async (transaction) => {
         const feature = await models.feature.findByPk(featureId, { transaction })
         // TODO добавить проверку, что у категории этого продукта есть эта особенность
-        await feature.addProduct(productId, { transaction })
+        await feature.addProduct(productId, {
+          transaction,
+          through: {
+            endTime,
+          },
+        })
         return feature
       }),
     deleteFeature: (parent, { id }, { models }) => models.feature.destroy({
@@ -46,7 +51,13 @@ const resolvers = {
   Feature: {
     productCategories: async (feature) => feature.getProductCategories(),
     products: async (feature) => feature.getProducts(),
+    productFeatures: async (feature) => feature.getProductFeatures(),
     discounts: async (feature) => feature.getDiscounts(),
+  },
+
+  ProductFeature: {
+    product: async (productFeature) => productFeature.getProduct(),
+    feature: async (productFeature) => productFeature.getFeature(),
   },
 }
 

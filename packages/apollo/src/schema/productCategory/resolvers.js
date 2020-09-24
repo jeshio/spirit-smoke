@@ -1,7 +1,7 @@
 const resolvers = {
   Query: {
     productCategories: async (parent, args, { models }) => models.productCategory.findAll({
-      order: [['id', 'DESC']],
+      order: [['priority', 'DESC'], ['id', 'DESC']],
     }),
     productCategory: async (parent, { id }, { loaders }) => loaders.productCategory.load(Number(id)),
   },
@@ -9,12 +9,12 @@ const resolvers = {
   Mutation: {
     createProductCategory: async (parent, {
       input: {
-        name, description, slug, features,
+        name, priority, iconUrl, description, slug, features,
       },
     }, { models, sequelize }) =>
       sequelize.transaction(async (transaction) => {
         const createdProductCategory = await models.productCategory.create({
-          name, description, slug,
+          name, priority, iconUrl, description, slug,
         }, { transaction })
 
         if (features) {
@@ -26,7 +26,7 @@ const resolvers = {
     updateProductCategory: (parent, {
       id,
       input: {
-        name, slug,
+        name, priority, iconUrl, slug,
         description,
         features,
       },
@@ -34,6 +34,8 @@ const resolvers = {
       sequelize.transaction(async (transaction) => {
         const updatedProductCategory = await models.productCategory.update({
           name,
+          priority,
+          iconUrl,
           slug,
           description,
         }, { where: { id }, returning: true, transaction }).then(([, [productCategory]]) => productCategory)

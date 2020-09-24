@@ -14,6 +14,7 @@ import UPopconfirm from '@/ui-components/UPopconfirm'
 import ListPageBuilder, { ListColumnsType } from '@/builders/ListPage'
 import { Badge, Tooltip } from 'antd'
 import UFeaturesList from '@/ui-components/UFeaturesList'
+import productFeaturesToFlatFeature from './helpers/productFeaturesToFlatFeatures'
 
 const columns: ListColumnsType = ({ deleteItem }): IColumn<ProductsListPageFragment>[] => [
   {
@@ -48,6 +49,14 @@ const columns: ListColumnsType = ({ deleteItem }): IColumn<ProductsListPageFragm
     responsive: ['xl'],
   },
   {
+    title: 'Вес (г)',
+    field: 'weight',
+  },
+  {
+    title: 'Штрихкод',
+    field: 'barcode',
+  },
+  {
     title: 'Количество',
     field: 'count',
   },
@@ -73,8 +82,10 @@ const columns: ListColumnsType = ({ deleteItem }): IColumn<ProductsListPageFragm
   },
   {
     title: 'Особенности',
-    field: ['features'],
-    render: (features) => <UFeaturesList features={features} isMini />,
+    field: ['productFeatures'],
+    render: (_, { productFeatures }) => (
+      <UFeaturesList features={productFeaturesToFlatFeature(productFeatures)} isMini />
+    ),
     responsive: ['sm'],
   },
   {

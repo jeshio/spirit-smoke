@@ -28,6 +28,21 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: true,
       },
     },
+    iconUrl: {
+      type: DataTypes.STRING,
+      validate: {
+        notEmpty: true,
+        isUrl: true,
+      },
+    },
+    priority: {
+      type: DataTypes.STRING,
+      validate: {
+        isInt: true,
+        min: 0,
+      },
+      defaultValue: 0,
+    },
     slug: {
       type: DataTypes.STRING,
       validate: {

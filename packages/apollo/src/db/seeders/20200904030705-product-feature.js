@@ -1,4 +1,4 @@
-import getTableIds from '../helpers/getTableIds'
+import faker from 'faker'
 
 const PRODUCT_MAX_FEATURES_COUNT = 7
 const PRODUCT_MIN_FEATURES_COUNT = 0
@@ -16,6 +16,7 @@ const getDevRows = ({
       .map((productCategoryFeature) => ({
         productId: product.id,
         featureId: productCategoryFeature.featureId,
+        endTime: Math.random() > 0.75 ? faker.date.future() : undefined,
       })),
   ], [])
 

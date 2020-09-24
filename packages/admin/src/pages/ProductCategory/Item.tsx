@@ -65,6 +65,8 @@ const ProductCategoryItemPage: React.FunctionComponent<IProductCategoryItemPageP
         <UDescriptions column={{ xs: 1, sm: 2 }}>
           <UDescriptions.Item label="Название">{productCategory.name}</UDescriptions.Item>
           <UDescriptions.Item label="Slug">{productCategory.slug}</UDescriptions.Item>
+          <UDescriptions.Item label="Иконка">{productCategory.iconUrl}</UDescriptions.Item>
+          <UDescriptions.Item label="Приоритет">{productCategory.priority}</UDescriptions.Item>
           <UDescriptions.Item label="Особенности">
             <UFeaturesList features={productCategory.features} />
           </UDescriptions.Item>

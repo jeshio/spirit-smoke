@@ -16,6 +16,18 @@ module.exports = {
         allowNull: false,
         unique: true,
       },
+      barcode: {
+        allowNull: true,
+        type: Sequelize.STRING(48),
+      },
+      country: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      color: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

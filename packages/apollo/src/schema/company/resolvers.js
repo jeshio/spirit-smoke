@@ -8,14 +8,18 @@ const resolvers = {
 
   Mutation: {
     createCompany: (parent, {
-      input: { name, slug },
+      input: {
+        name, country, barcode, color, slug,
+      },
     }, { models }) => models.company.create({
-      name, slug,
+      name, country, barcode, color, slug,
     }),
     updateCompany: (parent, {
-      id, input: { name, slug },
+      id, input: {
+        name, country, barcode, color, slug,
+      },
     }, { models }) => models.company.update({
-      name, slug,
+      name, country, barcode, color, slug,
     }, {
       where: { id }, returning: true,
     }).then(([, [company]]) => company),

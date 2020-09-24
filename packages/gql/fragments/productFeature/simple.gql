@@ -1,0 +1,3 @@
+fragment ProductFeatureSimple on ProductFeature {
+  endTime
+}

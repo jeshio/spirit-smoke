@@ -9,7 +9,13 @@ extend type Mutation {
   deleteProduct(id: ID!): ID!
 }
 
+input ProductFeatureInput {
+  featureId: ID!
+  endTime: String
+}
+
 input ProductInput {
+  barcode: String
   name: String!
   slug: String!
   description: String!
@@ -17,15 +23,18 @@ input ProductInput {
   price: Float!
   productCategoryId: ID!
   companyId: ID!
-  features: [ID!]
+  weight: Int!
+  features: [ProductFeatureInput!]
 }
 
 interface IProduct {
   id: ID!
+  barcode: String
   name: String!
   slug: String!
   description: String!
   imageUrl: String!
+  weight: Int!
   price: Float!
   count: Int!
   productCategoryId: ID!
@@ -36,10 +45,12 @@ interface IProduct {
 
 type ProductSimple implements IProduct {
   id: ID!
+  barcode: String
   name: String!
   slug: String!
   description: String!
   imageUrl: String!
+  weight: Int!
   price: Float!
   count: Int!
   productCategoryId: ID!
@@ -50,10 +61,12 @@ type ProductSimple implements IProduct {
 
 type Product implements IProduct {
   id: ID!
+  barcode: String
   name: String!
   slug: String!
   description: String!
   imageUrl: String!
+  weight: Int!
   price: Float!
   count: Int!
   productCategoryId: ID!
@@ -66,4 +79,5 @@ type Product implements IProduct {
   discounts: [Discount!]!
   orderProducts: [OrderProduct!]!
   productProcurements: [ProductProcurement!]!
+  productFeatures: [ProductFeature!]!
 }

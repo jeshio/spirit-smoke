@@ -25,6 +25,15 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      iconUrl: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      priority: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+      },
       slug: {
         type: Sequelize.STRING,
         allowNull: false,

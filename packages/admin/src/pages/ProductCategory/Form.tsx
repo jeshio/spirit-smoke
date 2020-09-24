@@ -40,9 +40,14 @@ const ProductCategoryForm: React.FunctionComponent<IProductCategoryFormProps> = 
   const initialSelectedFeatureIds = React.useMemo(() => productCategory?.features.map(({ id }) => id), [
     productCategory,
   ])
+  const handleSubmit = (fields: any) =>
+    onSubmit({
+      ...fields,
+      priority: Number(fields.priority || 0),
+    })
 
   return (
-    <UForm labelCol={{ span: 6, sm: 6, md: 9, lg: 9, xl: 7, xxl: 7 }} onFinish={onSubmit}>
+    <UForm labelCol={{ span: 6, sm: 6, md: 9, lg: 9, xl: 7, xxl: 7 }} onFinish={handleSubmit}>
       <Card>
         <URow>
           <UCol md={20} lg={18} xl={10} xxl={8}>
@@ -51,6 +56,12 @@ const ProductCategoryForm: React.FunctionComponent<IProductCategoryFormProps> = 
                 <Input />
               </UForm.Item>
               <UForm.Item label="Slug" name="slug" required initialValue={productCategory?.slug}>
+                <Input />
+              </UForm.Item>
+              <UForm.Item label="Иконка" name="iconUrl" required initialValue={productCategory?.iconUrl}>
+                <Input />
+              </UForm.Item>
+              <UForm.Item label="Приоритет" name="priority" initialValue={productCategory?.priority || 0}>
                 <Input />
               </UForm.Item>
               <UForm.Item label="Описание" name="description" required initialValue={productCategory?.description}>

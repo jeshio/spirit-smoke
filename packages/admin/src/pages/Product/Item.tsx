@@ -13,6 +13,7 @@ import UCol from '@/ui-components/UCol'
 import useStableQuery from '@/hooks/gql/useStableQuery'
 import UFeaturesList from '@/ui-components/UFeaturesList'
 import { ItemImage, ItemImageWrapper } from './styles/item.styled'
+import productFeaturesToFlatFeature from './helpers/productFeaturesToFlatFeatures'
 
 interface IProductItemPageProps
   extends RouteComponentProps<{
@@ -81,6 +82,7 @@ const ProductItemPage: React.FunctionComponent<IProductItemPageProps> = (props) 
               <UDescriptions.Item label="Осталось штук">{product.count}</UDescriptions.Item>
               <UDescriptions.Item label="Текущая цена">{product.price} ₽</UDescriptions.Item>
               <UDescriptions.Item label="Название">{product.name}</UDescriptions.Item>
+              <UDescriptions.Item label="Вес (г)">{product.weight}</UDescriptions.Item>
               <UDescriptions.Item label="Производитель">
                 {product.company && (
                   <UButton href={`/companies/${product.company.id}`} type="link" icon={<ImportOutlined />} />
@@ -102,10 +104,11 @@ const ProductItemPage: React.FunctionComponent<IProductItemPageProps> = (props) 
                 )}
               </UDescriptions.Item>
               <UDescriptions.Item label="Slug">{product.slug}</UDescriptions.Item>
+              <UDescriptions.Item label="Штрихкод">{product.barcode}</UDescriptions.Item>
               <UDescriptions.Item label="Добавлен">{product.createdAt}</UDescriptions.Item>
               <UDescriptions.Item label="Обновлён">{product.updatedAt}</UDescriptions.Item>
               <UDescriptions.Item label="Особенности">
-                <UFeaturesList features={product.features} />
+                <UFeaturesList features={productFeaturesToFlatFeature(product.productFeatures)} />
               </UDescriptions.Item>
             </UDescriptions>
             <Divider />

@@ -17,6 +17,10 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
+      barcode: {
+        allowNull: true,
+        type: Sequelize.STRING(48),
+      },
       name: {
         type: Sequelize.STRING,
         allowNull: false,
@@ -37,6 +41,11 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
         unique: true,
+      },
+      weight: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
       },
       count: {
         type: Sequelize.INTEGER,

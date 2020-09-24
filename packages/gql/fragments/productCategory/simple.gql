@@ -1,6 +1,8 @@
 fragment ProductCategorySimple on IProductCategory {
   id
   name
+  iconUrl
+  priority
   slug
   description
   createdAt

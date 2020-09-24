@@ -37,6 +37,10 @@ const columns: ListColumnsType = ({ deleteItem }): IColumn<ProductCategoryListPa
     responsive: ['sm'],
   },
   {
+    title: 'Иконка',
+    field: 'iconUrl',
+  },
+  {
     title: 'Создан',
     field: 'createdAt',
   },

@@ -10,12 +10,18 @@ extend type Mutation {
 }
 
 input CompanyInput {
+  country: String
+  color: String!
+  barcode: String
   name: String!
   slug: String!
 }
 
 interface ICompany {
   id: ID!
+  country: String
+  color: String!
+  barcode: String
   name: String!
   slug: String!
   createdAt: String!
@@ -24,6 +30,9 @@ interface ICompany {
 
 type CompanySimple implements ICompany {
   id: ID!
+  country: String
+  color: String!
+  barcode: String
   name: String!
   slug: String!
   createdAt: String!
@@ -32,6 +41,9 @@ type CompanySimple implements ICompany {
 
 type Company implements ICompany {
   id: ID!
+  country: String
+  color: String!
+  barcode: String
   name: String!
   slug: String!
   products: [Product!]!

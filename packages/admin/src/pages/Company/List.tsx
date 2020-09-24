@@ -30,6 +30,18 @@ const columns: ListColumnsType = ({ deleteItem }): IColumn<CompanyListPageFragme
     responsive: ['xl'],
   },
   {
+    title: 'Штрихкод',
+    field: 'barcode',
+  },
+  {
+    title: 'Цвет',
+    field: 'color',
+  },
+  {
+    title: 'Страна',
+    field: 'country',
+  },
+  {
     title: 'Создан',
     field: 'createdAt',
   },

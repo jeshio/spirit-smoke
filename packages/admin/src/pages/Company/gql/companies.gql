@@ -4,6 +4,9 @@
 fragment CompanyListPage on Company {
   ...CompanyMinimum
   slug
+  country
+  color
+  barcode
   createdAt
   products {
     ...ProductMinimum

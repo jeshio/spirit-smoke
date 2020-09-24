@@ -1,4 +1,5 @@
 fragment ProductCategoryMinimum on IProductCategory {
   id
   name
+  iconUrl
 }

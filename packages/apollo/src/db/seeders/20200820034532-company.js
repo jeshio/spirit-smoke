@@ -4,6 +4,11 @@ import fakerUnique from '../../utils/fakerUnique'
 const devRows = [...Array(21)].map(() => (
   {
     name: faker.company.companyName(),
+    barcode: fakerUnique(faker.finance.bic, [Math.random() * 5], {
+      maxRetries: 1000,
+    }),
+    color: faker.internet.color(),
+    country: faker.address.country(),
     slug: fakerUnique(faker.lorem.slug, [Math.random() * 3]),
     createdAt: new Date(),
     updatedAt: new Date(),
