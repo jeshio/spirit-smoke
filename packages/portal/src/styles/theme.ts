@@ -25,8 +25,10 @@ breakpoints['xxl'] = breakpoints[5]
 const theme = {
   breakpoints,
   colors: {
-    primaryColor: '#2F3047',
+    primaryColor: '#2D2C2E',
     placeholderColor: '#9F9F9F',
+    black: '#2D2C2E',
+    blue: '#0F5CFE',
     linkColor: createObjectWithSequence(
       () => ({ base: '#77f' }),
       (prev) => ({ hover: lighten(0.1, prev.base) })

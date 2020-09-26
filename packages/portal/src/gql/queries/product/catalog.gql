@@ -1,0 +1,20 @@
+query productsCatalog($categoryId: ID!) {
+  productsByCategory(categoryId: $categoryId) {
+    id
+    name
+    description
+    imageUrl
+    weight
+    price
+    features {
+      id
+      imageUrl
+      name
+    }
+    company {
+      id
+      name
+      color
+    }
+  }
+}

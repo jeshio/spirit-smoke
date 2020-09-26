@@ -66,13 +66,10 @@ module.exports = (sequelize, DataTypes) => {
       defaultValue: 0,
     },
     price: {
-      type: DataTypes.FLOAT,
-      set(val) {
-        this.setDataValue('price', numberToPrice(val))
-      },
+      type: DataTypes.INTEGER,
       validate: {
         notEmpty: true,
-        isFloat: true,
+        isInt: true,
         min: 0,
       },
     },

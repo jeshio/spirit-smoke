@@ -25,11 +25,6 @@ const fakerUnique = function (method, args, opts, isFirstTime = true) {
   opts.maxTime = opts.maxTime || maxTime
   opts.maxRetries = opts.maxRetries || maxRetries
 
-  if (currentIterations > 0) {
-    // console.log('iterating', currentIterations)
-  }
-
-  // console.log(now - startTime)
   if (now - startTime >= opts.maxTime) {
     return fakerUnique.errorMessage(now, 'exceeded maxTime')
   }
@@ -39,16 +34,13 @@ const fakerUnique = function (method, args, opts, isFirstTime = true) {
   }
 
   // execute the provided method to find a potential satifised value
-  // console.log(args)
   const result = method.apply(this, args)
   // if the result has not been previously found, add it to the found array and return the value as it's unique
   if (typeof found[result] === 'undefined') {
-    // console.log('set email', email)
     found[result] = result
     currentIterations = 0
     return result
   }
-  // console.log('conflict', result);
   currentIterations += 1
   return fakerUnique(method, args, opts, false)
 }

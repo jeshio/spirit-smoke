@@ -2,6 +2,7 @@
 
 fragment CompaniesSelector on Company {
   ...CompanyMinimum
+  color
 }
 
 query companiesSelector {

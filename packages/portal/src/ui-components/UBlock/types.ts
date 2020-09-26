@@ -5,7 +5,12 @@ import {
   AlignItemsProps,
   JustifyContentProps,
   HeightProps,
-  WidthProps,, TopProps, BottomProps, LeftProps, RightProps
+  WidthProps,
+  TopProps,
+  BottomProps,
+  LeftProps,
+  RightProps,
+  FontSizeProps,
 } from 'styled-system'
 import { ThemeType } from '@/styles/theme'
 import { DisplayWithVisibleCheckingProps } from '@/helpers/displayWithVisibleChecking'
@@ -23,6 +28,7 @@ type StyleConfigType =
   | BottomProps
   | LeftProps
   | RightProps
+  | FontSizeProps
 
 export interface IUBlockProps {
   children?: React.ReactNode
@@ -31,7 +37,7 @@ export interface IUBlockProps {
   styleConfig?: StyleConfigType
 }
 
-export type TagType = 'div' | 'ul' | 'li' | 'a' | 'input' | 'button' | 'img' | React.ComponentType
+export type TagType = 'div' | 'ul' | 'li' | 'a' | 'input' | 'button' | 'img' | 'h4' | React.ComponentType
 
 export type UBlockPropsType<T extends TagType> = {
   tag?: T

@@ -18,7 +18,7 @@ const getDevRows = ({
     description: faker.lorem.paragraph(Math.round(Math.random() * 2 + 1)).substr(0, 250),
     imageUrl: `https://picsum.photos/id/${i + 1}/512/512`,
     weight: Math.round(Math.random() * 1000),
-    price: parseFloat(Math.max(Math.random() * 25 - 1, 0).toFixed(2)),
+    price: Math.round(Math.max(Math.random() * 25 - 1, 0)),
     count: Math.floor(Math.random() * 11),
     productCategoryId: getRandomElement(productCategoryIds),
     companyId: getRandomElement(companyIds),

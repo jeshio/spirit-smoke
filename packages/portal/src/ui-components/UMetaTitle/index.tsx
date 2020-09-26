@@ -5,7 +5,7 @@ interface IUTitleProps {
   title: string
 }
 
-const UTitle: React.FunctionComponent<IUTitleProps> = (props) => {
+const UMetaTitle: React.FunctionComponent<IUTitleProps> = (props) => {
   return (
     <Head>
       <title>{props.title}, Spirit Smoke</title>
@@ -13,4 +13,4 @@ const UTitle: React.FunctionComponent<IUTitleProps> = (props) => {
   )
 }
 
-export default UTitle
+export default UMetaTitle

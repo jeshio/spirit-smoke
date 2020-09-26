@@ -31,6 +31,7 @@ export type Query = {
   procurements: Array<Maybe<Procurement>>;
   procurement?: Maybe<Procurement>;
   products: Array<Product>;
+  productsByCategory: Array<Product>;
   product?: Maybe<Product>;
   productCategories: Array<ProductCategory>;
   productCategory?: Maybe<ProductCategory>;
@@ -71,6 +72,11 @@ export type QueryParamArgs = {
 
 export type QueryProcurementArgs = {
   id: Scalars['ID'];
+};
+
+
+export type QueryProductsByCategoryArgs = {
+  categoryId: Scalars['ID'];
 };
 
 
@@ -203,6 +209,7 @@ export type MutationAddProductCategoryFeatureArgs = {
 export type MutationAddProductFeatureArgs = {
   featureId: Scalars['ID'];
   productId: Scalars['ID'];
+  endTime?: Maybe<Scalars['String']>;
 };
 
 
@@ -291,12 +298,18 @@ export type Bonus = {
 };
 
 export type CompanyInput = {
+  country?: Maybe<Scalars['String']>;
+  color: Scalars['String'];
+  barcode?: Maybe<Scalars['String']>;
   name: Scalars['String'];
   slug: Scalars['String'];
 };
 
 export type ICompany = {
   id: Scalars['ID'];
+  country?: Maybe<Scalars['String']>;
+  color: Scalars['String'];
+  barcode?: Maybe<Scalars['String']>;
   name: Scalars['String'];
   slug: Scalars['String'];
   createdAt: Scalars['String'];
@@ -306,6 +319,9 @@ export type ICompany = {
 export type CompanySimple = ICompany & {
   __typename?: 'CompanySimple';
   id: Scalars['ID'];
+  country?: Maybe<Scalars['String']>;
+  color: Scalars['String'];
+  barcode?: Maybe<Scalars['String']>;
   name: Scalars['String'];
   slug: Scalars['String'];
   createdAt: Scalars['String'];
@@ -315,6 +331,9 @@ export type CompanySimple = ICompany & {
 export type Company = ICompany & {
   __typename?: 'Company';
   id: Scalars['ID'];
+  country?: Maybe<Scalars['String']>;
+  color: Scalars['String'];
+  barcode?: Maybe<Scalars['String']>;
   name: Scalars['String'];
   slug: Scalars['String'];
   products: Array<Product>;
@@ -388,7 +407,15 @@ export type Feature = IFeature & {
   updatedAt: Scalars['String'];
   productCategories: Array<ProductCategory>;
   products: Array<Product>;
+  productFeatures: Array<ProductFeature>;
   discounts: Array<Discount>;
+};
+
+export type ProductFeature = {
+  __typename?: 'ProductFeature';
+  product: Product;
+  feature: Feature;
+  endTime?: Maybe<Scalars['String']>;
 };
 
 export type OrderInput = {
@@ -482,7 +509,13 @@ export type Procurement = {
   productProcurements: Array<Maybe<ProductProcurement>>;
 };
 
+export type ProductFeatureInput = {
+  featureId: Scalars['ID'];
+  endTime?: Maybe<Scalars['String']>;
+};
+
 export type ProductInput = {
+  barcode?: Maybe<Scalars['String']>;
   name: Scalars['String'];
   slug: Scalars['String'];
   description: Scalars['String'];
@@ -490,15 +523,18 @@ export type ProductInput = {
   price: Scalars['Float'];
   productCategoryId: Scalars['ID'];
   companyId: Scalars['ID'];
-  features?: Maybe<Array<Scalars['ID']>>;
+  weight: Scalars['Int'];
+  features?: Maybe<Array<ProductFeatureInput>>;
 };
 
 export type IProduct = {
   id: Scalars['ID'];
+  barcode?: Maybe<Scalars['String']>;
   name: Scalars['String'];
   slug: Scalars['String'];
   description: Scalars['String'];
   imageUrl: Scalars['String'];
+  weight: Scalars['Int'];
   price: Scalars['Float'];
   count: Scalars['Int'];
   productCategoryId: Scalars['ID'];
@@ -510,10 +546,12 @@ export type IProduct = {
 export type ProductSimple = IProduct & {
   __typename?: 'ProductSimple';
   id: Scalars['ID'];
+  barcode?: Maybe<Scalars['String']>;
   name: Scalars['String'];
   slug: Scalars['String'];
   description: Scalars['String'];
   imageUrl: Scalars['String'];
+  weight: Scalars['Int'];
   price: Scalars['Float'];
   count: Scalars['Int'];
   productCategoryId: Scalars['ID'];
@@ -525,10 +563,12 @@ export type ProductSimple = IProduct & {
 export type Product = IProduct & {
   __typename?: 'Product';
   id: Scalars['ID'];
+  barcode?: Maybe<Scalars['String']>;
   name: Scalars['String'];
   slug: Scalars['String'];
   description: Scalars['String'];
   imageUrl: Scalars['String'];
+  weight: Scalars['Int'];
   price: Scalars['Float'];
   count: Scalars['Int'];
   productCategoryId: Scalars['ID'];
@@ -541,11 +581,14 @@ export type Product = IProduct & {
   discounts: Array<Discount>;
   orderProducts: Array<OrderProduct>;
   productProcurements: Array<ProductProcurement>;
+  productFeatures: Array<ProductFeature>;
 };
 
 export type ProductCategoryInput = {
   name: Scalars['String'];
   slug: Scalars['String'];
+  priority?: Maybe<Scalars['Int']>;
+  iconUrl: Scalars['String'];
   description: Scalars['String'];
   features?: Maybe<Array<Scalars['ID']>>;
 };
@@ -554,6 +597,8 @@ export type IProductCategory = {
   id: Scalars['ID'];
   name: Scalars['String'];
   slug: Scalars['String'];
+  priority?: Maybe<Scalars['Int']>;
+  iconUrl: Scalars['String'];
   description: Scalars['String'];
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
@@ -564,6 +609,8 @@ export type ProductCategorySimple = IProductCategory & {
   id: Scalars['ID'];
   name: Scalars['String'];
   slug: Scalars['String'];
+  priority?: Maybe<Scalars['Int']>;
+  iconUrl: Scalars['String'];
   description: Scalars['String'];
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
@@ -574,6 +621,8 @@ export type ProductCategory = IProductCategory & {
   id: Scalars['ID'];
   name: Scalars['String'];
   slug: Scalars['String'];
+  priority?: Maybe<Scalars['Int']>;
+  iconUrl: Scalars['String'];
   description: Scalars['String'];
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
@@ -616,12 +665,12 @@ export type CompanyMinimumFragment = CompanyMinimum_CompanySimple_Fragment | Com
 
 type CompanySimple_CompanySimple_Fragment = (
   { __typename?: 'CompanySimple' }
-  & Pick<CompanySimple, 'id' | 'name' | 'slug' | 'createdAt' | 'updatedAt'>
+  & Pick<CompanySimple, 'id' | 'name' | 'slug' | 'country' | 'color' | 'barcode' | 'createdAt' | 'updatedAt'>
 );
 
 type CompanySimple_Company_Fragment = (
   { __typename?: 'Company' }
-  & Pick<Company, 'id' | 'name' | 'slug' | 'createdAt' | 'updatedAt'>
+  & Pick<Company, 'id' | 'name' | 'slug' | 'country' | 'color' | 'barcode' | 'createdAt' | 'updatedAt'>
 );
 
 export type CompanySimpleFragment = CompanySimple_CompanySimple_Fragment | CompanySimple_Company_Fragment;
@@ -664,39 +713,44 @@ export type ProductMinimumFragment = ProductMinimum_ProductSimple_Fragment | Pro
 
 type ProductSimple_ProductSimple_Fragment = (
   { __typename?: 'ProductSimple' }
-  & Pick<ProductSimple, 'id' | 'name' | 'slug' | 'description' | 'imageUrl' | 'productCategoryId' | 'companyId' | 'price' | 'count' | 'createdAt' | 'updatedAt'>
+  & Pick<ProductSimple, 'id' | 'barcode' | 'name' | 'slug' | 'description' | 'imageUrl' | 'productCategoryId' | 'companyId' | 'weight' | 'price' | 'count' | 'createdAt' | 'updatedAt'>
 );
 
 type ProductSimple_Product_Fragment = (
   { __typename?: 'Product' }
-  & Pick<Product, 'id' | 'name' | 'slug' | 'description' | 'imageUrl' | 'productCategoryId' | 'companyId' | 'price' | 'count' | 'createdAt' | 'updatedAt'>
+  & Pick<Product, 'id' | 'barcode' | 'name' | 'slug' | 'description' | 'imageUrl' | 'productCategoryId' | 'companyId' | 'weight' | 'price' | 'count' | 'createdAt' | 'updatedAt'>
 );
 
 export type ProductSimpleFragment = ProductSimple_ProductSimple_Fragment | ProductSimple_Product_Fragment;
 
 type ProductCategoryMinimum_ProductCategorySimple_Fragment = (
   { __typename?: 'ProductCategorySimple' }
-  & Pick<ProductCategorySimple, 'id' | 'name'>
+  & Pick<ProductCategorySimple, 'id' | 'name' | 'iconUrl'>
 );
 
 type ProductCategoryMinimum_ProductCategory_Fragment = (
   { __typename?: 'ProductCategory' }
-  & Pick<ProductCategory, 'id' | 'name'>
+  & Pick<ProductCategory, 'id' | 'name' | 'iconUrl'>
 );
 
 export type ProductCategoryMinimumFragment = ProductCategoryMinimum_ProductCategorySimple_Fragment | ProductCategoryMinimum_ProductCategory_Fragment;
 
 type ProductCategorySimple_ProductCategorySimple_Fragment = (
   { __typename?: 'ProductCategorySimple' }
-  & Pick<ProductCategorySimple, 'id' | 'name' | 'slug' | 'description' | 'createdAt' | 'updatedAt'>
+  & Pick<ProductCategorySimple, 'id' | 'name' | 'iconUrl' | 'priority' | 'slug' | 'description' | 'createdAt' | 'updatedAt'>
 );
 
 type ProductCategorySimple_ProductCategory_Fragment = (
   { __typename?: 'ProductCategory' }
-  & Pick<ProductCategory, 'id' | 'name' | 'slug' | 'description' | 'createdAt' | 'updatedAt'>
+  & Pick<ProductCategory, 'id' | 'name' | 'iconUrl' | 'priority' | 'slug' | 'description' | 'createdAt' | 'updatedAt'>
 );
 
 export type ProductCategorySimpleFragment = ProductCategorySimple_ProductCategorySimple_Fragment | ProductCategorySimple_ProductCategory_Fragment;
+
+export type ProductFeatureSimpleFragment = (
+  { __typename?: 'ProductFeature' }
+  & Pick<ProductFeature, 'endTime'>
+);
 
 export type CompanyMinimumListQueryVariables = Exact<{ [key: string]: never; }>;
 
@@ -781,6 +835,7 @@ export type ProductCategoryMinimumListQuery = (
 
 export type CompaniesSelectorFragment = (
   { __typename?: 'Company' }
+  & Pick<Company, 'color'>
   & CompanyMinimum_Company_Fragment
 );
 
@@ -809,6 +864,26 @@ export type ProductCategoryMenuListQuery = (
   & { productCategories: Array<(
     { __typename?: 'ProductCategory' }
     & ProductCategoryMenuListFragment
+  )> }
+);
+
+export type ProductsCatalogQueryVariables = Exact<{
+  categoryId: Scalars['ID'];
+}>;
+
+
+export type ProductsCatalogQuery = (
+  { __typename?: 'Query' }
+  & { productsByCategory: Array<(
+    { __typename?: 'Product' }
+    & Pick<Product, 'id' | 'name' | 'description' | 'imageUrl' | 'weight' | 'price'>
+    & { features: Array<(
+      { __typename?: 'Feature' }
+      & Pick<Feature, 'id' | 'imageUrl' | 'name'>
+    )>, company?: Maybe<(
+      { __typename?: 'Company' }
+      & Pick<Company, 'id' | 'name' | 'color'>
+    )> }
   )> }
 );
 
@@ -894,9 +969,9 @@ export type ResolversTypes = {
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
   Mutation: ResolverTypeWrapper<{}>;
+  String: ResolverTypeWrapper<Scalars['String']>;
   Subscription: ResolverTypeWrapper<{}>;
   BonusInput: BonusInput;
-  String: ResolverTypeWrapper<Scalars['String']>;
   Bonus: ResolverTypeWrapper<Bonus>;
   CompanyInput: CompanyInput;
   ICompany: ResolversTypes['CompanySimple'] | ResolversTypes['Company'];
@@ -909,6 +984,7 @@ export type ResolversTypes = {
   IFeature: ResolversTypes['FeatureSimple'] | ResolversTypes['Feature'];
   FeatureSimple: ResolverTypeWrapper<FeatureSimple>;
   Feature: ResolverTypeWrapper<Feature>;
+  ProductFeature: ResolverTypeWrapper<ProductFeature>;
   OrderInput: OrderInput;
   Int: ResolverTypeWrapper<Scalars['Int']>;
   OrderStatus: OrderStatus;
@@ -921,6 +997,7 @@ export type ResolversTypes = {
   ProcurementInput: ProcurementInput;
   ProductProcurement: ResolverTypeWrapper<ProductProcurement>;
   Procurement: ResolverTypeWrapper<Procurement>;
+  ProductFeatureInput: ProductFeatureInput;
   ProductInput: ProductInput;
   IProduct: ResolversTypes['ProductSimple'] | ResolversTypes['Product'];
   ProductSimple: ResolverTypeWrapper<ProductSimple>;
@@ -939,9 +1016,9 @@ export type ResolversParentTypes = {
   Boolean: Scalars['Boolean'];
   ID: Scalars['ID'];
   Mutation: {};
+  String: Scalars['String'];
   Subscription: {};
   BonusInput: BonusInput;
-  String: Scalars['String'];
   Bonus: Bonus;
   CompanyInput: CompanyInput;
   ICompany: ResolversParentTypes['CompanySimple'] | ResolversParentTypes['Company'];
@@ -954,6 +1031,7 @@ export type ResolversParentTypes = {
   IFeature: ResolversParentTypes['FeatureSimple'] | ResolversParentTypes['Feature'];
   FeatureSimple: FeatureSimple;
   Feature: Feature;
+  ProductFeature: ProductFeature;
   OrderInput: OrderInput;
   Int: Scalars['Int'];
   OrderProductInput: OrderProductInput;
@@ -965,6 +1043,7 @@ export type ResolversParentTypes = {
   ProcurementInput: ProcurementInput;
   ProductProcurement: ProductProcurement;
   Procurement: Procurement;
+  ProductFeatureInput: ProductFeatureInput;
   ProductInput: ProductInput;
   IProduct: ResolversParentTypes['ProductSimple'] | ResolversParentTypes['Product'];
   ProductSimple: ProductSimple;
@@ -994,6 +1073,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   procurements?: Resolver<Array<Maybe<ResolversTypes['Procurement']>>, ParentType, ContextType>;
   procurement?: Resolver<Maybe<ResolversTypes['Procurement']>, ParentType, ContextType, RequireFields<QueryProcurementArgs, 'id'>>;
   products?: Resolver<Array<ResolversTypes['Product']>, ParentType, ContextType>;
+  productsByCategory?: Resolver<Array<ResolversTypes['Product']>, ParentType, ContextType, RequireFields<QueryProductsByCategoryArgs, 'categoryId'>>;
   product?: Resolver<Maybe<ResolversTypes['Product']>, ParentType, ContextType, RequireFields<QueryProductArgs, 'id'>>;
   productCategories?: Resolver<Array<ResolversTypes['ProductCategory']>, ParentType, ContextType>;
   productCategory?: Resolver<Maybe<ResolversTypes['ProductCategory']>, ParentType, ContextType, RequireFields<QueryProductCategoryArgs, 'id'>>;
@@ -1050,6 +1130,9 @@ export type BonusResolvers<ContextType = any, ParentType extends ResolversParent
 export type ICompanyResolvers<ContextType = any, ParentType extends ResolversParentTypes['ICompany'] = ResolversParentTypes['ICompany']> = {
   __resolveType: TypeResolveFn<'CompanySimple' | 'Company', ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  country?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  color?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  barcode?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -1058,6 +1141,9 @@ export type ICompanyResolvers<ContextType = any, ParentType extends ResolversPar
 
 export type CompanySimpleResolvers<ContextType = any, ParentType extends ResolversParentTypes['CompanySimple'] = ResolversParentTypes['CompanySimple']> = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  country?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  color?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  barcode?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -1067,6 +1153,9 @@ export type CompanySimpleResolvers<ContextType = any, ParentType extends Resolve
 
 export type CompanyResolvers<ContextType = any, ParentType extends ResolversParentTypes['Company'] = ResolversParentTypes['Company']> = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  country?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  color?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  barcode?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   products?: Resolver<Array<ResolversTypes['Product']>, ParentType, ContextType>;
@@ -1124,7 +1213,15 @@ export type FeatureResolvers<ContextType = any, ParentType extends ResolversPare
   updatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   productCategories?: Resolver<Array<ResolversTypes['ProductCategory']>, ParentType, ContextType>;
   products?: Resolver<Array<ResolversTypes['Product']>, ParentType, ContextType>;
+  productFeatures?: Resolver<Array<ResolversTypes['ProductFeature']>, ParentType, ContextType>;
   discounts?: Resolver<Array<ResolversTypes['Discount']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType>;
+};
+
+export type ProductFeatureResolvers<ContextType = any, ParentType extends ResolversParentTypes['ProductFeature'] = ResolversParentTypes['ProductFeature']> = {
+  product?: Resolver<ResolversTypes['Product'], ParentType, ContextType>;
+  feature?: Resolver<ResolversTypes['Feature'], ParentType, ContextType>;
+  endTime?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 };
 
@@ -1179,10 +1276,12 @@ export type ProcurementResolvers<ContextType = any, ParentType extends Resolvers
 export type IProductResolvers<ContextType = any, ParentType extends ResolversParentTypes['IProduct'] = ResolversParentTypes['IProduct']> = {
   __resolveType: TypeResolveFn<'ProductSimple' | 'Product', ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  barcode?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   imageUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  weight?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   price?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   productCategoryId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
@@ -1193,10 +1292,12 @@ export type IProductResolvers<ContextType = any, ParentType extends ResolversPar
 
 export type ProductSimpleResolvers<ContextType = any, ParentType extends ResolversParentTypes['ProductSimple'] = ResolversParentTypes['ProductSimple']> = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  barcode?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   imageUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  weight?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   price?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   productCategoryId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
@@ -1208,10 +1309,12 @@ export type ProductSimpleResolvers<ContextType = any, ParentType extends Resolve
 
 export type ProductResolvers<ContextType = any, ParentType extends ResolversParentTypes['Product'] = ResolversParentTypes['Product']> = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  barcode?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   imageUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  weight?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   price?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   productCategoryId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
@@ -1224,6 +1327,7 @@ export type ProductResolvers<ContextType = any, ParentType extends ResolversPare
   discounts?: Resolver<Array<ResolversTypes['Discount']>, ParentType, ContextType>;
   orderProducts?: Resolver<Array<ResolversTypes['OrderProduct']>, ParentType, ContextType>;
   productProcurements?: Resolver<Array<ResolversTypes['ProductProcurement']>, ParentType, ContextType>;
+  productFeatures?: Resolver<Array<ResolversTypes['ProductFeature']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 };
 
@@ -1232,6 +1336,8 @@ export type IProductCategoryResolvers<ContextType = any, ParentType extends Reso
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  priority?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  iconUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -1241,6 +1347,8 @@ export type ProductCategorySimpleResolvers<ContextType = any, ParentType extends
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  priority?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  iconUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -1251,6 +1359,8 @@ export type ProductCategoryResolvers<ContextType = any, ParentType extends Resol
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  priority?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  iconUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -1283,6 +1393,7 @@ export type Resolvers<ContextType = any> = {
   IFeature?: IFeatureResolvers<ContextType>;
   FeatureSimple?: FeatureSimpleResolvers<ContextType>;
   Feature?: FeatureResolvers<ContextType>;
+  ProductFeature?: ProductFeatureResolvers<ContextType>;
   OrderProduct?: OrderProductResolvers<ContextType>;
   Order?: OrderResolvers<ContextType>;
   Param?: ParamResolvers<ContextType>;
@@ -1309,6 +1420,9 @@ export const CompanySimpleFragmentDoc = gql`
   id
   name
   slug
+  country
+  color
+  barcode
   createdAt
   updatedAt
 }
@@ -1341,12 +1455,14 @@ export const ProductMinimumFragmentDoc = gql`
 export const ProductSimpleFragmentDoc = gql`
     fragment ProductSimple on IProduct {
   id
+  barcode
   name
   slug
   description
   imageUrl
   productCategoryId
   companyId
+  weight
   price
   count
   createdAt
@@ -1357,10 +1473,17 @@ export const ProductCategorySimpleFragmentDoc = gql`
     fragment ProductCategorySimple on IProductCategory {
   id
   name
+  iconUrl
+  priority
   slug
   description
   createdAt
   updatedAt
+}
+    `;
+export const ProductFeatureSimpleFragmentDoc = gql`
+    fragment ProductFeatureSimple on ProductFeature {
+  endTime
 }
     `;
 export const CompanyMinimumFragmentDoc = gql`
@@ -1372,12 +1495,14 @@ export const CompanyMinimumFragmentDoc = gql`
 export const CompaniesSelectorFragmentDoc = gql`
     fragment CompaniesSelector on Company {
   ...CompanyMinimum
+  color
 }
     ${CompanyMinimumFragmentDoc}`;
 export const ProductCategoryMinimumFragmentDoc = gql`
     fragment ProductCategoryMinimum on IProductCategory {
   id
   name
+  iconUrl
 }
     `;
 export const ProductCategoryMenuListFragmentDoc = gql`
@@ -1676,3 +1801,51 @@ export function useProductCategoryMenuListLazyQuery(baseOptions?: Apollo.LazyQue
 export type ProductCategoryMenuListQueryHookResult = ReturnType<typeof useProductCategoryMenuListQuery>;
 export type ProductCategoryMenuListLazyQueryHookResult = ReturnType<typeof useProductCategoryMenuListLazyQuery>;
 export type ProductCategoryMenuListQueryResult = Apollo.QueryResult<ProductCategoryMenuListQuery, ProductCategoryMenuListQueryVariables>;
+export const ProductsCatalogDocument = gql`
+    query productsCatalog($categoryId: ID!) {
+  productsByCategory(categoryId: $categoryId) {
+    id
+    name
+    description
+    imageUrl
+    weight
+    price
+    features {
+      id
+      imageUrl
+      name
+    }
+    company {
+      id
+      name
+      color
+    }
+  }
+}
+    `;
+
+/**
+ * __useProductsCatalogQuery__
+ *
+ * To run a query within a React component, call `useProductsCatalogQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProductsCatalogQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProductsCatalogQuery({
+ *   variables: {
+ *      categoryId: // value for 'categoryId'
+ *   },
+ * });
+ */
+export function useProductsCatalogQuery(baseOptions?: Apollo.QueryHookOptions<ProductsCatalogQuery, ProductsCatalogQueryVariables>) {
+        return Apollo.useQuery<ProductsCatalogQuery, ProductsCatalogQueryVariables>(ProductsCatalogDocument, baseOptions);
+      }
+export function useProductsCatalogLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProductsCatalogQuery, ProductsCatalogQueryVariables>) {
+          return Apollo.useLazyQuery<ProductsCatalogQuery, ProductsCatalogQueryVariables>(ProductsCatalogDocument, baseOptions);
+        }
+export type ProductsCatalogQueryHookResult = ReturnType<typeof useProductsCatalogQuery>;
+export type ProductsCatalogLazyQueryHookResult = ReturnType<typeof useProductsCatalogLazyQuery>;
+export type ProductsCatalogQueryResult = Apollo.QueryResult<ProductsCatalogQuery, ProductsCatalogQueryVariables>;

@@ -3,6 +3,13 @@ const resolvers = {
     products: async (parent, args, { models }) => models.product.findAll({
       order: [['id', 'DESC']],
     }),
+    productsByCategory: async (parent, { categoryId: productCategoryId }, { models }) => models.product.findAll({
+      order: [[models.company, 'name'], ['name']],
+      include: [{ model: models.company, attributes: ['name'] }],
+      where: {
+        productCategoryId,
+      },
+    }),
     product: async (parent, { id }, { models }) => models.product.findByPk(id),
   },
 

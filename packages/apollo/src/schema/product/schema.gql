@@ -1,5 +1,6 @@
 extend type Query {
   products: [Product!]!
+  productsByCategory(categoryId: ID!): [Product!]!
   product(id: ID!): Product
 }
 
@@ -20,7 +21,7 @@ input ProductInput {
   slug: String!
   description: String!
   imageUrl: String!
-  price: Float!
+  price: Int!
   productCategoryId: ID!
   companyId: ID!
   weight: Int!
@@ -35,7 +36,7 @@ interface IProduct {
   description: String!
   imageUrl: String!
   weight: Int!
-  price: Float!
+  price: Int!
   count: Int!
   productCategoryId: ID!
   companyId: ID!
@@ -51,7 +52,7 @@ type ProductSimple implements IProduct {
   description: String!
   imageUrl: String!
   weight: Int!
-  price: Float!
+  price: Int!
   count: Int!
   productCategoryId: ID!
   companyId: ID!
@@ -67,7 +68,7 @@ type Product implements IProduct {
   description: String!
   imageUrl: String!
   weight: Int!
-  price: Float!
+  price: Int!
   count: Int!
   productCategoryId: ID!
   companyId: ID!
