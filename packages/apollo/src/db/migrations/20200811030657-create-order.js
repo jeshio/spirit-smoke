@@ -28,11 +28,15 @@ module.exports = {
         type: Sequelize.STRING,
       },
       deliveryTime: {
-        type: Sequelize.STRING,
+        type: Sequelize.DATE,
         allowNull: false,
       },
       phoneNumber: {
         type: Sequelize.STRING,
+        allowNull: false,
+      },
+      totalPrice: {
+        type: Sequelize.INTEGER,
         allowNull: false,
       },
       createdAt: {

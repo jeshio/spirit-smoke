@@ -1,6 +1,10 @@
 import { PossiblePaths } from '@@types/utils/PossiblePaths'
 import { ColumnProps } from 'antd/lib/table'
 
+export interface IColumnSorter {
+  (a: any, b: any, aFields?: any, bFields?: any): number
+}
+
 export interface IColumn<RecordType> {
   /** Заголовок колонки */
   title: string
@@ -14,6 +18,10 @@ export interface IColumn<RecordType> {
   responsive?: ColumnProps<RecordType>['responsive']
   /** Отключить сортировку для колонки */
   disableSort?: boolean
+  /** Сортировать это поле автоматически при загрузке страницы */
+  defaultSortOrder?: ColumnProps<RecordType>['defaultSortOrder']
+  /** Функция сортировки */
+  sorter?: IColumnSorter
   /** Ширина колонки */
   width?: number
 }

@@ -24,13 +24,14 @@ export type Query = {
   discount?: Maybe<Discount>;
   features: Array<Feature>;
   feature?: Maybe<Feature>;
-  orders: Array<Maybe<Order>>;
+  orders: Array<Order>;
   order?: Maybe<Order>;
   params: Array<Maybe<Param>>;
   param?: Maybe<Param>;
   procurements: Array<Maybe<Procurement>>;
   procurement?: Maybe<Procurement>;
   products: Array<Product>;
+  productsByCategory: Array<Product>;
   product?: Maybe<Product>;
   productCategories: Array<ProductCategory>;
   productCategory?: Maybe<ProductCategory>;
@@ -71,6 +72,11 @@ export type QueryParamArgs = {
 
 export type QueryProcurementArgs = {
   id: Scalars['ID'];
+};
+
+
+export type QueryProductsByCategoryArgs = {
+  categoryId: Scalars['ID'];
 };
 
 
@@ -287,7 +293,7 @@ export type Bonus = {
   slug: Scalars['String'];
   conditionsDescription: Scalars['String'];
   iconUrl: Scalars['String'];
-  orders: Array<Maybe<Order>>;
+  orders: Array<Maybe<IOrder>>;
   discounts: Array<Maybe<Discount>>;
 };
 
@@ -358,7 +364,7 @@ export type Discount = {
   productCategories: Array<Maybe<ProductCategory>>;
   products: Array<Maybe<Product>>;
   features: Array<Maybe<Feature>>;
-  orders: Array<Maybe<Order>>;
+  orders: Array<Maybe<IOrder>>;
   bonuses: Array<Maybe<Bonus>>;
 };
 
@@ -420,7 +426,7 @@ export type OrderInput = {
   ourComment?: Maybe<Scalars['String']>;
   deliveryTime: Scalars['String'];
   phoneNumber: Scalars['String'];
-  products: Array<Maybe<OrderProductInput>>;
+  products: Array<OrderProductInput>;
 };
 
 export enum OrderStatus {
@@ -444,7 +450,36 @@ export type OrderProduct = {
   order: Order;
 };
 
-export type Order = {
+export type IOrder = {
+  id: Scalars['ID'];
+  address: Scalars['String'];
+  status: OrderStatus;
+  intercomCode?: Maybe<Scalars['String']>;
+  personsCount?: Maybe<Scalars['Int']>;
+  comment?: Maybe<Scalars['String']>;
+  ourComment?: Maybe<Scalars['String']>;
+  deliveryTime: Scalars['String'];
+  phoneNumber: Scalars['String'];
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+};
+
+export type OrderSimple = IOrder & {
+  __typename?: 'OrderSimple';
+  id: Scalars['ID'];
+  address: Scalars['String'];
+  status: OrderStatus;
+  intercomCode?: Maybe<Scalars['String']>;
+  personsCount?: Maybe<Scalars['Int']>;
+  comment?: Maybe<Scalars['String']>;
+  ourComment?: Maybe<Scalars['String']>;
+  deliveryTime: Scalars['String'];
+  phoneNumber: Scalars['String'];
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+};
+
+export type Order = IOrder & {
   __typename?: 'Order';
   id: Scalars['ID'];
   address: Scalars['String'];
@@ -455,9 +490,11 @@ export type Order = {
   ourComment?: Maybe<Scalars['String']>;
   deliveryTime: Scalars['String'];
   phoneNumber: Scalars['String'];
-  discounts: Array<Maybe<Discount>>;
-  bonuses: Array<Maybe<Bonus>>;
-  orderProducts: Array<Maybe<OrderProduct>>;
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+  discounts: Array<Discount>;
+  bonuses: Array<Bonus>;
+  orderProducts: Array<OrderProduct>;
 };
 
 export type ParamInput = {
@@ -514,7 +551,7 @@ export type ProductInput = {
   slug: Scalars['String'];
   description: Scalars['String'];
   imageUrl: Scalars['String'];
-  price: Scalars['Float'];
+  price: Scalars['Int'];
   productCategoryId: Scalars['ID'];
   companyId: Scalars['ID'];
   weight: Scalars['Int'];
@@ -529,7 +566,7 @@ export type IProduct = {
   description: Scalars['String'];
   imageUrl: Scalars['String'];
   weight: Scalars['Int'];
-  price: Scalars['Float'];
+  price: Scalars['Int'];
   count: Scalars['Int'];
   productCategoryId: Scalars['ID'];
   companyId: Scalars['ID'];
@@ -546,7 +583,7 @@ export type ProductSimple = IProduct & {
   description: Scalars['String'];
   imageUrl: Scalars['String'];
   weight: Scalars['Int'];
-  price: Scalars['Float'];
+  price: Scalars['Int'];
   count: Scalars['Int'];
   productCategoryId: Scalars['ID'];
   companyId: Scalars['ID'];
@@ -563,7 +600,7 @@ export type Product = IProduct & {
   description: Scalars['String'];
   imageUrl: Scalars['String'];
   weight: Scalars['Int'];
-  price: Scalars['Float'];
+  price: Scalars['Int'];
   count: Scalars['Int'];
   productCategoryId: Scalars['ID'];
   companyId: Scalars['ID'];
@@ -871,6 +908,22 @@ export type FeatureListPageQuery = (
   )> }
 );
 
+export type OrdersListPageFragment = (
+  { __typename?: 'Order' }
+  & OrderMinimum_Order_Fragment
+);
+
+export type OrdersListPageQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type OrdersListPageQuery = (
+  { __typename?: 'Query' }
+  & { orders: Array<(
+    { __typename?: 'Order' }
+    & OrdersListPageFragment
+  )> }
+);
+
 export type ProductItemPageFragment = (
   { __typename?: 'Product' }
   & { productCategory?: Maybe<(
@@ -1033,6 +1086,30 @@ type FeatureSimple_Feature_Fragment = (
 
 export type FeatureSimpleFragment = FeatureSimple_FeatureSimple_Fragment | FeatureSimple_Feature_Fragment;
 
+type OrderMinimum_OrderSimple_Fragment = (
+  { __typename?: 'OrderSimple' }
+  & Pick<OrderSimple, 'id' | 'address' | 'deliveryTime' | 'status' | 'phoneNumber'>
+);
+
+type OrderMinimum_Order_Fragment = (
+  { __typename?: 'Order' }
+  & Pick<Order, 'id' | 'address' | 'deliveryTime' | 'status' | 'phoneNumber'>
+);
+
+export type OrderMinimumFragment = OrderMinimum_OrderSimple_Fragment | OrderMinimum_Order_Fragment;
+
+type OrderSimple_OrderSimple_Fragment = (
+  { __typename?: 'OrderSimple' }
+  & Pick<OrderSimple, 'id' | 'address' | 'status' | 'intercomCode' | 'personsCount' | 'comment' | 'ourComment' | 'deliveryTime' | 'phoneNumber' | 'createdAt' | 'updatedAt'>
+);
+
+type OrderSimple_Order_Fragment = (
+  { __typename?: 'Order' }
+  & Pick<Order, 'id' | 'address' | 'status' | 'intercomCode' | 'personsCount' | 'comment' | 'ourComment' | 'deliveryTime' | 'phoneNumber' | 'createdAt' | 'updatedAt'>
+);
+
+export type OrderSimpleFragment = OrderSimple_OrderSimple_Fragment | OrderSimple_Order_Fragment;
+
 type ProductMinimum_ProductSimple_Fragment = (
   { __typename?: 'ProductSimple' }
   & Pick<ProductSimple, 'id' | 'name'>
@@ -1142,6 +1219,30 @@ export type ProductSimpleItemQuery = (
   & { product?: Maybe<(
     { __typename?: 'Product' }
     & ProductSimple_Product_Fragment
+  )> }
+);
+
+export type OrderSimpleListQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type OrderSimpleListQuery = (
+  { __typename?: 'Query' }
+  & { orders: Array<(
+    { __typename?: 'Order' }
+    & OrderMinimum_Order_Fragment
+  )> }
+);
+
+export type OrderSimpleItemQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type OrderSimpleItemQuery = (
+  { __typename?: 'Query' }
+  & { order?: Maybe<(
+    { __typename?: 'Order' }
+    & OrderSimple_Order_Fragment
   )> }
 );
 
@@ -1270,6 +1371,8 @@ export type ResolversTypes = {
   OrderStatus: OrderStatus;
   OrderProductInput: OrderProductInput;
   OrderProduct: ResolverTypeWrapper<OrderProduct>;
+  IOrder: ResolversTypes['OrderSimple'] | ResolversTypes['Order'];
+  OrderSimple: ResolverTypeWrapper<OrderSimple>;
   Order: ResolverTypeWrapper<Order>;
   ParamInput: ParamInput;
   Param: ResolverTypeWrapper<Param>;
@@ -1316,6 +1419,8 @@ export type ResolversParentTypes = {
   Int: Scalars['Int'];
   OrderProductInput: OrderProductInput;
   OrderProduct: OrderProduct;
+  IOrder: ResolversParentTypes['OrderSimple'] | ResolversParentTypes['Order'];
+  OrderSimple: OrderSimple;
   Order: Order;
   ParamInput: ParamInput;
   Param: Param;
@@ -1346,13 +1451,14 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   discount?: Resolver<Maybe<ResolversTypes['Discount']>, ParentType, ContextType, RequireFields<QueryDiscountArgs, 'id'>>;
   features?: Resolver<Array<ResolversTypes['Feature']>, ParentType, ContextType>;
   feature?: Resolver<Maybe<ResolversTypes['Feature']>, ParentType, ContextType, RequireFields<QueryFeatureArgs, 'id'>>;
-  orders?: Resolver<Array<Maybe<ResolversTypes['Order']>>, ParentType, ContextType>;
+  orders?: Resolver<Array<ResolversTypes['Order']>, ParentType, ContextType>;
   order?: Resolver<Maybe<ResolversTypes['Order']>, ParentType, ContextType, RequireFields<QueryOrderArgs, 'id'>>;
   params?: Resolver<Array<Maybe<ResolversTypes['Param']>>, ParentType, ContextType>;
   param?: Resolver<Maybe<ResolversTypes['Param']>, ParentType, ContextType, RequireFields<QueryParamArgs, 'id'>>;
   procurements?: Resolver<Array<Maybe<ResolversTypes['Procurement']>>, ParentType, ContextType>;
   procurement?: Resolver<Maybe<ResolversTypes['Procurement']>, ParentType, ContextType, RequireFields<QueryProcurementArgs, 'id'>>;
   products?: Resolver<Array<ResolversTypes['Product']>, ParentType, ContextType>;
+  productsByCategory?: Resolver<Array<ResolversTypes['Product']>, ParentType, ContextType, RequireFields<QueryProductsByCategoryArgs, 'categoryId'>>;
   product?: Resolver<Maybe<ResolversTypes['Product']>, ParentType, ContextType, RequireFields<QueryProductArgs, 'id'>>;
   productCategories?: Resolver<Array<ResolversTypes['ProductCategory']>, ParentType, ContextType>;
   productCategory?: Resolver<Maybe<ResolversTypes['ProductCategory']>, ParentType, ContextType, RequireFields<QueryProductCategoryArgs, 'id'>>;
@@ -1401,7 +1507,7 @@ export type BonusResolvers<ContextType = any, ParentType extends ResolversParent
   slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   conditionsDescription?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   iconUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  orders?: Resolver<Array<Maybe<ResolversTypes['Order']>>, ParentType, ContextType>;
+  orders?: Resolver<Array<Maybe<ResolversTypes['IOrder']>>, ParentType, ContextType>;
   discounts?: Resolver<Array<Maybe<ResolversTypes['Discount']>>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 };
@@ -1455,7 +1561,7 @@ export type DiscountResolvers<ContextType = any, ParentType extends ResolversPar
   productCategories?: Resolver<Array<Maybe<ResolversTypes['ProductCategory']>>, ParentType, ContextType>;
   products?: Resolver<Array<Maybe<ResolversTypes['Product']>>, ParentType, ContextType>;
   features?: Resolver<Array<Maybe<ResolversTypes['Feature']>>, ParentType, ContextType>;
-  orders?: Resolver<Array<Maybe<ResolversTypes['Order']>>, ParentType, ContextType>;
+  orders?: Resolver<Array<Maybe<ResolversTypes['IOrder']>>, ParentType, ContextType>;
   bonuses?: Resolver<Array<Maybe<ResolversTypes['Bonus']>>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 };
@@ -1511,6 +1617,36 @@ export type OrderProductResolvers<ContextType = any, ParentType extends Resolver
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 };
 
+export type IOrderResolvers<ContextType = any, ParentType extends ResolversParentTypes['IOrder'] = ResolversParentTypes['IOrder']> = {
+  __resolveType: TypeResolveFn<'OrderSimple' | 'Order', ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  address?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  status?: Resolver<ResolversTypes['OrderStatus'], ParentType, ContextType>;
+  intercomCode?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  personsCount?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  comment?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  ourComment?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  deliveryTime?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  phoneNumber?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+};
+
+export type OrderSimpleResolvers<ContextType = any, ParentType extends ResolversParentTypes['OrderSimple'] = ResolversParentTypes['OrderSimple']> = {
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  address?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  status?: Resolver<ResolversTypes['OrderStatus'], ParentType, ContextType>;
+  intercomCode?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  personsCount?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  comment?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  ourComment?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  deliveryTime?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  phoneNumber?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType>;
+};
+
 export type OrderResolvers<ContextType = any, ParentType extends ResolversParentTypes['Order'] = ResolversParentTypes['Order']> = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   address?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -1521,9 +1657,11 @@ export type OrderResolvers<ContextType = any, ParentType extends ResolversParent
   ourComment?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   deliveryTime?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   phoneNumber?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  discounts?: Resolver<Array<Maybe<ResolversTypes['Discount']>>, ParentType, ContextType>;
-  bonuses?: Resolver<Array<Maybe<ResolversTypes['Bonus']>>, ParentType, ContextType>;
-  orderProducts?: Resolver<Array<Maybe<ResolversTypes['OrderProduct']>>, ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  discounts?: Resolver<Array<ResolversTypes['Discount']>, ParentType, ContextType>;
+  bonuses?: Resolver<Array<ResolversTypes['Bonus']>, ParentType, ContextType>;
+  orderProducts?: Resolver<Array<ResolversTypes['OrderProduct']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 };
 
@@ -1561,7 +1699,7 @@ export type IProductResolvers<ContextType = any, ParentType extends ResolversPar
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   imageUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   weight?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  price?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  price?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   productCategoryId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   companyId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
@@ -1577,7 +1715,7 @@ export type ProductSimpleResolvers<ContextType = any, ParentType extends Resolve
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   imageUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   weight?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  price?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  price?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   productCategoryId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   companyId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
@@ -1594,7 +1732,7 @@ export type ProductResolvers<ContextType = any, ParentType extends ResolversPare
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   imageUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   weight?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  price?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  price?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   productCategoryId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   companyId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
@@ -1674,6 +1812,8 @@ export type Resolvers<ContextType = any> = {
   Feature?: FeatureResolvers<ContextType>;
   ProductFeature?: ProductFeatureResolvers<ContextType>;
   OrderProduct?: OrderProductResolvers<ContextType>;
+  IOrder?: IOrderResolvers<ContextType>;
+  OrderSimple?: OrderSimpleResolvers<ContextType>;
   Order?: OrderResolvers<ContextType>;
   Param?: ParamResolvers<ContextType>;
   ProductProcurement?: ProductProcurementResolvers<ContextType>;
@@ -1769,6 +1909,20 @@ export const FeatureListPageFragmentDoc = gql`
   createdAt
 }
     `;
+export const OrderMinimumFragmentDoc = gql`
+    fragment OrderMinimum on IOrder {
+  id
+  address
+  deliveryTime
+  status
+  phoneNumber
+}
+    `;
+export const OrdersListPageFragmentDoc = gql`
+    fragment OrdersListPage on Order {
+  ...OrderMinimum
+}
+    ${OrderMinimumFragmentDoc}`;
 export const ProductSimpleFragmentDoc = gql`
     fragment ProductSimple on IProduct {
   id
@@ -1897,6 +2051,21 @@ export const ProductCategoryItemPageFragmentDoc = gql`
     ${ProductCategorySimpleFragmentDoc}
 ${ProductMinimumFragmentDoc}
 ${FeatureMinimumFragmentDoc}`;
+export const OrderSimpleFragmentDoc = gql`
+    fragment OrderSimple on IOrder {
+  id
+  address
+  status
+  intercomCode
+  personsCount
+  comment
+  ourComment
+  deliveryTime
+  phoneNumber
+  createdAt
+  updatedAt
+}
+    `;
 export const CreateCompanyDocument = gql`
     mutation createCompany($input: CompanyInput!) {
   createCompany(input: $input) {
@@ -2407,6 +2576,38 @@ export function useFeatureListPageLazyQuery(baseOptions?: Apollo.LazyQueryHookOp
 export type FeatureListPageQueryHookResult = ReturnType<typeof useFeatureListPageQuery>;
 export type FeatureListPageLazyQueryHookResult = ReturnType<typeof useFeatureListPageLazyQuery>;
 export type FeatureListPageQueryResult = Apollo.QueryResult<FeatureListPageQuery, FeatureListPageQueryVariables>;
+export const OrdersListPageDocument = gql`
+    query ordersListPage {
+  orders {
+    ...OrdersListPage
+  }
+}
+    ${OrdersListPageFragmentDoc}`;
+
+/**
+ * __useOrdersListPageQuery__
+ *
+ * To run a query within a React component, call `useOrdersListPageQuery` and pass it any options that fit your needs.
+ * When your component renders, `useOrdersListPageQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useOrdersListPageQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useOrdersListPageQuery(baseOptions?: Apollo.QueryHookOptions<OrdersListPageQuery, OrdersListPageQueryVariables>) {
+        return Apollo.useQuery<OrdersListPageQuery, OrdersListPageQueryVariables>(OrdersListPageDocument, baseOptions);
+      }
+export function useOrdersListPageLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<OrdersListPageQuery, OrdersListPageQueryVariables>) {
+          return Apollo.useLazyQuery<OrdersListPageQuery, OrdersListPageQueryVariables>(OrdersListPageDocument, baseOptions);
+        }
+export type OrdersListPageQueryHookResult = ReturnType<typeof useOrdersListPageQuery>;
+export type OrdersListPageLazyQueryHookResult = ReturnType<typeof useOrdersListPageLazyQuery>;
+export type OrdersListPageQueryResult = Apollo.QueryResult<OrdersListPageQuery, OrdersListPageQueryVariables>;
 export const ProductItemPageDocument = gql`
     query productItemPage($id: ID!) {
   product(id: $id) {
@@ -2699,6 +2900,71 @@ export function useProductSimpleItemLazyQuery(baseOptions?: Apollo.LazyQueryHook
 export type ProductSimpleItemQueryHookResult = ReturnType<typeof useProductSimpleItemQuery>;
 export type ProductSimpleItemLazyQueryHookResult = ReturnType<typeof useProductSimpleItemLazyQuery>;
 export type ProductSimpleItemQueryResult = Apollo.QueryResult<ProductSimpleItemQuery, ProductSimpleItemQueryVariables>;
+export const OrderSimpleListDocument = gql`
+    query orderSimpleList {
+  orders {
+    ...OrderMinimum
+  }
+}
+    ${OrderMinimumFragmentDoc}`;
+
+/**
+ * __useOrderSimpleListQuery__
+ *
+ * To run a query within a React component, call `useOrderSimpleListQuery` and pass it any options that fit your needs.
+ * When your component renders, `useOrderSimpleListQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useOrderSimpleListQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useOrderSimpleListQuery(baseOptions?: Apollo.QueryHookOptions<OrderSimpleListQuery, OrderSimpleListQueryVariables>) {
+        return Apollo.useQuery<OrderSimpleListQuery, OrderSimpleListQueryVariables>(OrderSimpleListDocument, baseOptions);
+      }
+export function useOrderSimpleListLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<OrderSimpleListQuery, OrderSimpleListQueryVariables>) {
+          return Apollo.useLazyQuery<OrderSimpleListQuery, OrderSimpleListQueryVariables>(OrderSimpleListDocument, baseOptions);
+        }
+export type OrderSimpleListQueryHookResult = ReturnType<typeof useOrderSimpleListQuery>;
+export type OrderSimpleListLazyQueryHookResult = ReturnType<typeof useOrderSimpleListLazyQuery>;
+export type OrderSimpleListQueryResult = Apollo.QueryResult<OrderSimpleListQuery, OrderSimpleListQueryVariables>;
+export const OrderSimpleItemDocument = gql`
+    query orderSimpleItem($id: ID!) {
+  order(id: $id) {
+    ...OrderSimple
+  }
+}
+    ${OrderSimpleFragmentDoc}`;
+
+/**
+ * __useOrderSimpleItemQuery__
+ *
+ * To run a query within a React component, call `useOrderSimpleItemQuery` and pass it any options that fit your needs.
+ * When your component renders, `useOrderSimpleItemQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useOrderSimpleItemQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useOrderSimpleItemQuery(baseOptions?: Apollo.QueryHookOptions<OrderSimpleItemQuery, OrderSimpleItemQueryVariables>) {
+        return Apollo.useQuery<OrderSimpleItemQuery, OrderSimpleItemQueryVariables>(OrderSimpleItemDocument, baseOptions);
+      }
+export function useOrderSimpleItemLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<OrderSimpleItemQuery, OrderSimpleItemQueryVariables>) {
+          return Apollo.useLazyQuery<OrderSimpleItemQuery, OrderSimpleItemQueryVariables>(OrderSimpleItemDocument, baseOptions);
+        }
+export type OrderSimpleItemQueryHookResult = ReturnType<typeof useOrderSimpleItemQuery>;
+export type OrderSimpleItemLazyQueryHookResult = ReturnType<typeof useOrderSimpleItemLazyQuery>;
+export type OrderSimpleItemQueryResult = Apollo.QueryResult<OrderSimpleItemQuery, OrderSimpleItemQueryVariables>;
 export const ProductSimpleListDocument = gql`
     query productSimpleList {
   products {

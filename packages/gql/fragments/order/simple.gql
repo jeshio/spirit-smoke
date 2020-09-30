@@ -1,0 +1,13 @@
+fragment OrderSimple on IOrder {
+  id
+  address
+  status
+  intercomCode
+  personsCount
+  comment
+  ourComment
+  deliveryTime
+  phoneNumber
+  createdAt
+  updatedAt
+}

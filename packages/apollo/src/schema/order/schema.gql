@@ -1,10 +1,10 @@
 extend type Query {
-  orders: [Order]!
+  orders: [Order!]!
   order(id: ID!): Order
 }
 
 extend type Mutation {
-  createOrder(input: OrderInput!): Order!
+  createOrder(input: OrderInput!): OrderSimple!
 }
 
 input OrderInput {
@@ -15,7 +15,7 @@ input OrderInput {
   ourComment: String
   deliveryTime: String!
   phoneNumber: String!
-  products: [OrderProductInput]!
+  products: [OrderProductInput!]!
 }
 
 enum OrderStatus {
@@ -38,7 +38,7 @@ type OrderProduct {
   order: Order!
 }
 
-type Order {
+interface IOrder {
   id: ID!
   address: String!
   status: OrderStatus!
@@ -48,7 +48,37 @@ type Order {
   ourComment: String
   deliveryTime: String!
   phoneNumber: String!
-  discounts: [Discount]!
-  bonuses: [Bonus]!
-  orderProducts: [OrderProduct]!
-} 
+  createdAt: String!
+  updatedAt: String!
+}
+
+type OrderSimple implements IOrder {
+  id: ID!
+  address: String!
+  status: OrderStatus!
+  intercomCode: String
+  personsCount: Int
+  comment: String
+  ourComment: String
+  deliveryTime: String!
+  phoneNumber: String!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type Order implements IOrder {
+  id: ID!
+  address: String!
+  status: OrderStatus!
+  intercomCode: String
+  personsCount: Int
+  comment: String
+  ourComment: String
+  deliveryTime: String!
+  phoneNumber: String!
+  createdAt: String!
+  updatedAt: String!
+  discounts: [Discount!]!
+  bonuses: [Bonus!]!
+  orderProducts: [OrderProduct!]!
+}

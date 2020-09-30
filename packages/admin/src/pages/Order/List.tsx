@@ -1,0 +1,95 @@
+import * as React from 'react'
+
+import { OrdersListPageFragment, useOrdersListPageQuery, OrderStatus } from '@/gql/__generated__/types'
+import { IColumn } from '@/ui-components/UTable/types'
+import { Link } from 'umi'
+import { EditFilled } from '@ant-design/icons'
+import ListPageBuilder, { ListColumnsType } from '@/builders/ListPage'
+import { generateSorter } from '@/ui-components/UTable/hooks/useOriginalColumns'
+
+/** Статусы, обозначающие, что заказ завершён */
+const READY_ORDER_STATUSES = [OrderStatus.Canceled, OrderStatus.Failure, OrderStatus.Success]
+
+/** При совпадении статусов (готов/не готов) вторая колонка для сортировки */
+const STATUS_SECOND_ORDER_COLUMN_NAME = 'deliveryTime'
+
+const columns: ListColumnsType = (): IColumn<OrdersListPageFragment>[] => [
+  {
+    title: 'ID',
+    field: 'id',
+    width: 50,
+  },
+  {
+    field: 'deliveryTime',
+    title: 'Желаемое время доставки',
+    width: 200,
+  },
+  {
+    field: 'status',
+    title: 'Статус',
+    defaultSortOrder: 'ascend',
+    sorter: (a, b, aFields, bFields) => {
+      if (READY_ORDER_STATUSES.includes(a)) {
+        if (READY_ORDER_STATUSES.includes(b)) {
+          return generateSorter(STATUS_SECOND_ORDER_COLUMN_NAME, undefined, true)(aFields, bFields)
+        }
+
+        return 1
+      }
+      if (!READY_ORDER_STATUSES.includes(b)) {
+        return generateSorter(STATUS_SECOND_ORDER_COLUMN_NAME)(aFields, bFields)
+      }
+
+      return -1
+    },
+  },
+  {
+    field: 'address',
+    title: 'Адрес',
+  },
+  {
+    field: 'phoneNumber',
+    title: 'Телефон',
+  },
+  {
+    title: '',
+    field: 'id',
+    key: 'controls',
+    width: 100,
+    disableSort: true,
+    render: (id) => (
+      <>
+        <Link to={`/orders/${id}/edit`}>
+          <EditFilled />
+        </Link>
+      </>
+    ),
+  },
+]
+
+interface IOrderListPageProps {}
+
+const OrderListPage: React.FunctionComponent<IOrderListPageProps> = () => {
+  return (
+    <ListPageBuilder<OrdersListPageFragment>
+      addItemButton={{
+        link: '/orders/add',
+        name: 'Создать заказ',
+      }}
+      columns={columns}
+      listQuery={{
+        hook: useOrdersListPageQuery,
+        queryName: 'orders',
+      }}
+      loadingTip="Загрузка заказов"
+      title="Список заказов"
+      tableProps={{
+        invalidRowCondition: {
+          status: (READY_ORDER_STATUSES as unknown) as OrderStatus,
+        },
+      }}
+    />
+  )
+}
+
+export default OrderListPage

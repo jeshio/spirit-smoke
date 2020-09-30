@@ -1,0 +1,7 @@
+fragment OrderMinimum on IOrder {
+  id
+  address
+  deliveryTime
+  status
+  phoneNumber
+}

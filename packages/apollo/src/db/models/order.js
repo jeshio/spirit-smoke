@@ -33,6 +33,9 @@ module.exports = (sequelize, DataTypes) => {
     },
     personsCount: {
       type: DataTypes.INTEGER,
+      validate: {
+        isInt: true,
+      },
     },
     comment: {
       type: DataTypes.STRING,
@@ -40,10 +43,18 @@ module.exports = (sequelize, DataTypes) => {
     ourComment: {
       type: DataTypes.STRING,
     },
-    deliveryTime: {
-      type: DataTypes.STRING,
+    totalPrice: {
+      type: DataTypes.INTEGER,
       validate: {
         notEmpty: true,
+        isInt: true,
+      },
+    },
+    deliveryTime: {
+      type: DataTypes.DATE,
+      validate: {
+        notEmpty: true,
+        isDate: true,
       },
     },
     phoneNumber: {

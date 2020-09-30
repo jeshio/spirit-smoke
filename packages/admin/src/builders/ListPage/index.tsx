@@ -21,7 +21,7 @@ interface IListPageBuilderProps<RecordType> {
     queryName: string
     hookOptions?: QueryHookOptions<any, any>
   }
-  deleteItemMutation: {
+  deleteItemMutation?: {
     hook: MutationHookType<any, any>
     listQueryDocument: DocumentNode
     queryName: string
@@ -43,7 +43,7 @@ function ListPageBuilder<RecordType>({
   title,
   addItemButton,
   listQuery,
-  deleteItemMutation,
+  deleteItemMutation = {} as any,
   tableProps,
 }: IListPageBuilderProps<RecordType>) {
   const [query, queryComponent, originalQuery] = useStableQuery(listQuery.hook, {
@@ -53,7 +53,7 @@ function ListPageBuilder<RecordType>({
     fetchPolicy: 'cache-first',
   })
   const [handleDeleteItem] = useDeleteListItemMutation(
-    deleteItemMutation.hook,
+    deleteItemMutation.hook || (() => []),
     deleteItemMutation.listQueryDocument,
     deleteItemMutation.queryName,
     deleteItemMutation.deleteName,

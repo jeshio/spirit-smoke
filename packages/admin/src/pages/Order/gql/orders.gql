@@ -1,0 +1,11 @@
+#import "@/gql/fragments/order/minimum.gql"
+
+fragment OrdersListPage on Order {
+  ...OrderMinimum
+}
+
+query ordersListPage {
+  orders {
+    ...OrdersListPage
+  }
+}

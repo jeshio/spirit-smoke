@@ -1,7 +1,7 @@
 import { ColumnsType } from 'antd/lib/table'
 import { useMemo } from 'react'
 import { get } from 'lodash'
-import { IColumn } from '../types'
+import { IColumn, IColumnSorter } from '../types'
 import { IS_INVALID_ROW_COLUMN } from './useServiceDataWithRows'
 
 const GRAY_COLOR = '#f5f5f5'
@@ -18,17 +18,23 @@ const colRender = (render: IColumn<any>['render']) => (...args: Parameters<Requi
   }
 }
 
-const defaultSorter = (field: any | any[]) => (a: any, b: any) => {
-  const aVal = get(a, field)
-  const bVal = get(b, field)
-
+export const defaultSorter = (a: any, b: any) => {
   // если использовать Number.isNaN, то проверка происходит неверно
   /* eslint-disable-next-line no-restricted-properties */
-  if (!window.isNaN(aVal) && !window.isNaN(bVal)) {
-    return parseFloat(aVal) - parseFloat(bVal)
+  if (!window.isNaN(a) && !window.isNaN(b)) {
+    return parseFloat(a) - parseFloat(b)
   }
 
-  return `${aVal}`.localeCompare(bVal)
+  return `${a}`.localeCompare(b)
+}
+
+export const generateSorter = (field: any | any[], sorter?: IColumnSorter, invert?: boolean) => (a: any, b: any) => {
+  const aVal = get(invert ? b : a, field)
+  const bVal = get(invert ? a : b, field)
+
+  if (sorter) return sorter(aVal, bVal, a, b)
+
+  return defaultSorter(aVal, bVal)
 }
 
 /**
@@ -37,15 +43,18 @@ const defaultSorter = (field: any | any[]) => (a: any, b: any) => {
  */
 export default function useOriginalColumns(columns: IColumn<any>[]): ColumnsType<any> {
   const result = useMemo(() => {
-    const cols = columns.map(({ title, field, key, render, responsive, disableSort, width }) => ({
-      title,
-      dataIndex: field,
-      key: key || field,
-      sorter: disableSort ? undefined : defaultSorter(field),
-      render: colRender(render),
-      responsive,
-      width,
-    })) as ColumnsType<any>
+    const cols = columns.map(
+      ({ title, field, key, render, responsive, disableSort, width, sorter, defaultSortOrder }) => ({
+        title,
+        dataIndex: field,
+        key: key || field,
+        sorter: disableSort ? undefined : generateSorter(field, sorter),
+        defaultSortOrder,
+        render: colRender(render),
+        responsive,
+        width,
+      })
+    ) as ColumnsType<any>
 
     cols.unshift({
       title: '№',

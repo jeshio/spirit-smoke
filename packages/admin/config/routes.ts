@@ -26,6 +26,42 @@ export const baseRoutes = [
   //   ],
   // },
   {
+    path: '/orders',
+    redirect: '/orders/list',
+    exact: true,
+  },
+  {
+    name: 'Заказы',
+    icon: 'CrownOutlined',
+    path: '/orders',
+    routes: [
+      {
+        path: '/orders/list',
+        name: 'Список',
+        component: './Order/List',
+        hideInMenu: true,
+      },
+      // {
+      //   path: '/orders/add',
+      //   name: 'Добавить особенность',
+      //   component: './Order/Add',
+      //   hideInMenu: true,
+      // },
+      // {
+      //   path: '/orders/:id/edit',
+      //   name: 'Редактирование особенности',
+      //   hideInMenu: true,
+      //   component: './Order/Update',
+      // },
+      // {
+      //   path: '/orders/:id',
+      //   name: 'Особенность',
+      //   hideInMenu: true,
+      //   component: './Order/Item',
+      // },
+    ],
+  },
+  {
     path: '/products',
     redirect: '/products/list',
     exact: true,
