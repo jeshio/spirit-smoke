@@ -3,9 +3,10 @@ import * as React from 'react'
 import { OrdersListPageFragment, useOrdersListPageQuery, OrderStatus } from '@/gql/__generated__/types'
 import { IColumn } from '@/ui-components/UTable/types'
 import { Link } from 'umi'
-import { EditFilled } from '@ant-design/icons'
+import { EditFilled, ImportOutlined } from '@ant-design/icons'
 import ListPageBuilder, { ListColumnsType } from '@/builders/ListPage'
 import { generateSorter } from '@/ui-components/UTable/hooks/useOriginalColumns'
+import USpace from '@/ui-components/USpace'
 
 /** Статусы, обозначающие, что заказ завершён */
 const READY_ORDER_STATUSES = [OrderStatus.Canceled, OrderStatus.Failure, OrderStatus.Success]
@@ -52,17 +53,25 @@ const columns: ListColumnsType = (): IColumn<OrdersListPageFragment>[] => [
     title: 'Телефон',
   },
   {
+    field: 'totalPrice',
+    title: 'Сумма',
+    render: (totalPrice) => `${totalPrice} ₽`,
+  },
+  {
     title: '',
     field: 'id',
     key: 'controls',
     width: 100,
     disableSort: true,
     render: (id) => (
-      <>
+      <USpace>
+        <Link to={`/orders/${id}`}>
+          <ImportOutlined />
+        </Link>
         <Link to={`/orders/${id}/edit`}>
           <EditFilled />
         </Link>
-      </>
+      </USpace>
     ),
   },
 ]

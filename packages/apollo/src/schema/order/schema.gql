@@ -78,6 +78,7 @@ type Order implements IOrder {
   phoneNumber: String!
   createdAt: String!
   updatedAt: String!
+  totalPrice: Int!
   discounts: [Discount!]!
   bonuses: [Bonus!]!
   orderProducts: [OrderProduct!]!

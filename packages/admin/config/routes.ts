@@ -53,12 +53,12 @@ export const baseRoutes = [
       //   hideInMenu: true,
       //   component: './Order/Update',
       // },
-      // {
-      //   path: '/orders/:id',
-      //   name: 'Особенность',
-      //   hideInMenu: true,
-      //   component: './Order/Item',
-      // },
+      {
+        path: '/orders/:id',
+        name: 'Заказ',
+        hideInMenu: true,
+        component: './Order/Item',
+      },
     ],
   },
   {

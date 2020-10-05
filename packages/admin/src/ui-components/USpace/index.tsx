@@ -34,10 +34,11 @@ const Root = styled.div`
   }
 `
 
-const USpace: React.FunctionComponent<IUSpaceProps> = ({ direction, size, children }) => {
+const USpace: React.FunctionComponent<IUSpaceProps> = ({ direction = 'horizontal', size = 'middle', children }) => {
   return (
     <Root
       className={cn(
+        direction === 'horizontal' && 'isHorizontal',
         direction === 'vertical' && 'isVertical',
         size === 'middle' && 'isMiddle',
         size === 'large' && 'isLarge'

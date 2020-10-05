@@ -1,7 +1,11 @@
 const resolvers = {
   Query: {
-    orders: async (parent, args, { models }) => models.order.findAll(),
-    order: async (parent, { id }, { models }) => models.order.findByPk(id),
+    orders: async (parent, args, { models }) => models.order.findAll({
+      include: { model: models.orderProduct, include: models.product },
+    }),
+    order: async (parent, { id }, { models }) => models.order.findByPk(id, {
+      include: { model: models.orderProduct, include: models.product },
+    }),
   },
 
   Mutation: {
@@ -42,6 +46,8 @@ const resolvers = {
     discounts: async (order) => order.getDiscounts(),
     bonuses: async (order) => order.getBonuses(),
     orderProducts: async (order) => order.getOrderProducts(),
+    totalPrice: async (order) => order.orderProducts
+      .reduce((base, { product, productsCount }) => base + product.price * productsCount, 0),
   },
 
   OrderProduct: {

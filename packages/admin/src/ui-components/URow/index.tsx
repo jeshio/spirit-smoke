@@ -8,7 +8,10 @@ const URow: React.FunctionComponent<IURowProps> = (props) => {
   return (
     <Row
       style={{
-        margin: '0 0 0 0',
+        marginLeft: '0',
+        marginRight: '0',
+        marginTop: '0',
+        marginBottom: '0',
       }}
       gutter={{
         xs: 4,

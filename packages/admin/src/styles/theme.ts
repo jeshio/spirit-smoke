@@ -7,9 +7,10 @@ export interface IBreakpoints {
   lg?: string
   xl?: string
   xxl?: string
+  xxxl?: string
 }
 
-const breakpoints: Theme['breakpoints'] = ['480px', '576px', '768px', '992px', '1200px', '1600px']
+const breakpoints: Theme['breakpoints'] = ['480px', '576px', '768px', '992px', '1200px', '1600px', '2100px']
 
 /* eslint-disable prefer-destructuring, @typescript-eslint/dot-notation */
 breakpoints['xs'] = breakpoints[0]
@@ -18,6 +19,7 @@ breakpoints['md'] = breakpoints[2]
 breakpoints['lg'] = breakpoints[3]
 breakpoints['xl'] = breakpoints[4]
 breakpoints['xxl'] = breakpoints[5]
+breakpoints['xxxl'] = breakpoints[6]
 /* eslint-enable prefer-destructuring, @typescript-eslint/dot-notation */
 
 const theme = {

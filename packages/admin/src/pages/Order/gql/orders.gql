@@ -2,6 +2,7 @@
 
 fragment OrdersListPage on Order {
   ...OrderMinimum
+  totalPrice
 }
 
 query ordersListPage {

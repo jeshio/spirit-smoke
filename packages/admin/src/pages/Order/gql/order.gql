@@ -1,0 +1,20 @@
+#import "@/gql/fragments/order/simple.gql"
+#import "@/gql/fragments/product/minimum.gql"
+
+fragment OrderItemPage on Order {
+  ...OrderSimple
+  totalPrice
+  orderProducts {
+    productsCount
+    product {
+      ...ProductMinimum
+      price
+    }
+  }
+}
+
+query orderItemPage($id: ID!) {
+  order(id: $id) {
+    ...OrderItemPage
+  }
+}
