@@ -74,9 +74,10 @@ const OrderItemPage: React.FunctionComponent<IOrderItemPageProps> = (props) => {
       <Card title={`Информация о заказе (№${order.id})`}>
         <UDescriptions>
           <UDescriptions.Item label="Адрес">{order.address}</UDescriptions.Item>
-          <UDescriptions.Item label="Время доставки">{order.deliveryTime} ₽</UDescriptions.Item>
+          <UDescriptions.Item label="Время доставки">{order.deliveryTime}</UDescriptions.Item>
           <UDescriptions.Item label="Телефон">{order.phoneNumber}</UDescriptions.Item>
           <UDescriptions.Item label="Комментарий клиента">{order.comment}</UDescriptions.Item>
+          <UDescriptions.Item label="Наш комментарий">{order.ourComment}</UDescriptions.Item>
           <UDescriptions.Item label="Код домофона">{order.intercomCode}</UDescriptions.Item>
           <UDescriptions.Item label="Статус">{order.status}</UDescriptions.Item>
           <UDescriptions.Item label="Итоговая цена">

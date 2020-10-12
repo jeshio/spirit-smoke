@@ -1,0 +1,8 @@
+
+#import "@@/gql/fragments/order/simple.gql"
+
+mutation createOrder($input: OrderInput!) {
+	createOrder(input: $input) {
+		...OrderSimple
+	}
+}

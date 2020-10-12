@@ -1,0 +1,8 @@
+
+#import "@@/gql/fragments/order/simple.gql"
+
+mutation updateOrder($id: ID!, $input: OrderInput!) {
+	updateOrder(id: $id, input: $input) {
+		...OrderSimple
+	}
+}

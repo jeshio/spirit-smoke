@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components'
 import theme from '@/styles/theme'
-import { List as OriginalList } from 'antd'
+import { InputNumber, List as OriginalList } from 'antd'
 import UBlock from '../UBlock'
 
 export const Root = styled(UBlock)`
@@ -79,3 +79,7 @@ export const ListItem = styled.li`
 `
 
 export const ListItemDeleteButton = styled.button``
+
+export const CountInput = styled(InputNumber)`
+  width: 60px !important;
+`

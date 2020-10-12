@@ -5,4 +5,5 @@ export type OptionType = {
   extra?: string
   link?: string
   isDisabled?: boolean
+  count?: number
 }

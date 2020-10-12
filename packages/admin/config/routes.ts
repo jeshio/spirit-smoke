@@ -41,18 +41,18 @@ export const baseRoutes = [
         component: './Order/List',
         hideInMenu: true,
       },
-      // {
-      //   path: '/orders/add',
-      //   name: 'Добавить особенность',
-      //   component: './Order/Add',
-      //   hideInMenu: true,
-      // },
-      // {
-      //   path: '/orders/:id/edit',
-      //   name: 'Редактирование особенности',
-      //   hideInMenu: true,
-      //   component: './Order/Update',
-      // },
+      {
+        path: '/orders/add',
+        name: 'Добавить заказ',
+        component: './Order/Add',
+        hideInMenu: true,
+      },
+      {
+        path: '/orders/:id/edit',
+        name: 'Редактирование заказа',
+        hideInMenu: true,
+        component: './Order/Update',
+      },
       {
         path: '/orders/:id',
         name: 'Заказ',

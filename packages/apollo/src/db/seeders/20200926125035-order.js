@@ -15,7 +15,6 @@ const devRows = [...Array(80)].map(() => (
     personsCount: Math.random() > 0.5 ? Math.round(Math.random() * 10) : undefined,
     comment: Math.random() < 0.3 ? faker.lorem.words(Math.round(Math.random() * 15)) : undefined,
     ourComment: Math.random() < 0.1 ? faker.lorem.words(Math.round(Math.random() * 15)) : undefined,
-    totalPrice: Math.round(Math.random() * 1500),
     deliveryTime: Math.random() > 0.8 ? faker.date.future(0) : faker.date.past(),
     phoneNumber: faker.phone.phoneNumber('+7##########'),
     createdAt: new Date(),

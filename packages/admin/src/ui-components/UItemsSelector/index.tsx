@@ -1,6 +1,6 @@
-import * as React from 'react'
-import { Select } from 'antd'
-import { keyBy, difference, isEqual } from 'lodash'
+import React, { ComponentProps, useCallback, useRef, useState } from 'react'
+import { Select, Skeleton } from 'antd'
+import { keyBy, isEqual, difference, uniq } from 'lodash'
 import { CloseOutlined } from '@ant-design/icons'
 import * as styled from './index.styled'
 import UBlock from '../UBlock'
@@ -8,19 +8,59 @@ import UButton from '../UButton'
 import Item from './Item'
 import { OptionType } from './types'
 
+export type UItemsSelectorValueObjectType = {
+  id: string
+  count: number
+}
+
+type ValueType = string | UItemsSelectorValueObjectType
+
 interface IUItemsSelectorProps {
   placeholder?: string
   optionsToAdd: Array<OptionType>
-  value?: string[]
+  value?: ValueType[]
   loading?: boolean
-  onChange?: (value: string[]) => void
+  onChange?: (value: ValueType[]) => void
   enableToSelectDisabledItems?: boolean
   disabled?: boolean
+  withCount?: boolean
 }
 
-const UItemsSelector: React.FunctionComponent<IUItemsSelectorProps> = (props) => {
-  const { placeholder, optionsToAdd, disabled, enableToSelectDisabledItems } = props
-  const [selectedValues, setSelectedValues] = React.useState(props.value || [])
+const getIdsFromValueTypes = (valueTypes: ValueType[]): string[] =>
+  valueTypes.map((val) => (typeof val === 'string' ? val : val.id))
+
+const getExtraFromValues = (values: ValueType[]) =>
+  values.reduce((base, val) => {
+    const valIsString = typeof val === 'string'
+    const id = valIsString ? (val as string) : (val as UItemsSelectorValueObjectType).id
+    const valObject = (valIsString
+      ? {
+          id: val,
+          count: 1,
+        }
+      : val) as UItemsSelectorValueObjectType
+    return {
+      ...base,
+      [id]: valObject,
+    }
+  }, {})
+
+/**
+ * Компонент с селектом для выбора нескольких опций и их отображения в списке
+ * С возможностью заполнения дополнительных полей в списке
+ */
+const UItemsSelector: React.FunctionComponent<IUItemsSelectorProps> = ({ value = [], loading, ...props }) => {
+  const { placeholder, optionsToAdd, disabled, enableToSelectDisabledItems, withCount } = props
+  const [selectedIds, setSelectedIds] = useState(getIdsFromValueTypes(value))
+  const [selectedValuesExtra, setSelectedValuesExtra] = useState(getExtraFromValues(value))
+  const setSelectedValues = useCallback(
+    (values: ValueType[]) => {
+      setSelectedIds(getIdsFromValueTypes(values))
+      setSelectedValuesExtra(getExtraFromValues(values))
+    },
+    [selectedValuesExtra, setSelectedIds, setSelectedValuesExtra]
+  )
+  const isChanged = useRef(false)
   const optionsToAddByValue = keyBy(optionsToAdd, 'value')
   const options = React.useMemo(
     () =>
@@ -34,38 +74,114 @@ const UItemsSelector: React.FunctionComponent<IUItemsSelectorProps> = (props) =>
           <Item option={option} disabled={disabled} noLink />
         </Select.Option>
       )),
-    [optionsToAdd, selectedValues, enableToSelectDisabledItems]
+    [optionsToAdd, selectedIds, enableToSelectDisabledItems]
   )
-  const renderListItem = (value: string) => {
-    const option = optionsToAddByValue[value]
+  const deleteItemHandlerFn = useCallback(
+    (deletedId: ValueType) => () => {
+      setSelectedIds(selectedIds.filter((selectedValue) => selectedValue !== deletedId))
+      setSelectedValuesExtra(
+        Object.keys(selectedValuesExtra).reduce(
+          (base, id) => ({
+            ...base,
+            ...(id !== deletedId ? { [id]: selectedValuesExtra[id] } : {}),
+          }),
+          {}
+        )
+      )
+    },
+    [selectedIds]
+  )
+  const handleSelectChange = useCallback(
+    (_selectedValues: string[]) => {
+      const newIds = difference(_selectedValues, selectedIds)
+      const currentSelectedIds = uniq([...newIds, ..._selectedValues])
 
-    if (!option) return <styled.ListItem />
+      isChanged.current = true
+      setSelectedIds(currentSelectedIds)
+      setSelectedValuesExtra(
+        currentSelectedIds.reduce(
+          (base, id) => ({
+            ...base,
+            ...(selectedValuesExtra[id]
+              ? { [id]: selectedValuesExtra[id] }
+              : {
+                  [id]: {
+                    id,
+                    count: 1,
+                  },
+                }),
+          }),
+          {}
+        )
+      )
+    },
+    [selectedValuesExtra, selectedIds]
+  )
+  const handleCountChange = useCallback(
+    (id: string) => (count?: string | number) => {
+      isChanged.current = true
+      setSelectedValuesExtra({
+        ...selectedValuesExtra,
+        [id]: {
+          ...selectedValuesExtra[id],
+          count: Number(count) || 1,
+        },
+      })
+    },
+    [setSelectedValuesExtra, selectedValuesExtra]
+  )
+  const renderListItem = useCallback(
+    (id: string) => {
+      const option = optionsToAddByValue[id]
 
-    return (
-      <styled.ListItem>
-        <UBlock py="8px" display="flex" justifyContent="space-between" alignItems="center">
-          <Item option={option} disabled={disabled} />
-          <UButton
-            icon={<CloseOutlined />}
-            type="link"
-            size="small"
-            onClick={() => setSelectedValues(selectedValues.filter((selectedValue) => selectedValue !== value))}
-            disabled={disabled}
-          />
-        </UBlock>
-      </styled.ListItem>
-    )
-  }
-  const handleSelectChange = (_selectedValues: string[]) =>
-    setSelectedValues([...difference(_selectedValues, selectedValues), ...selectedValues])
+      if (!option) return <styled.ListItem />
+
+      return (
+        <styled.ListItem>
+          <UBlock py="8px" display="flex" justifyContent="space-between" alignItems="center">
+            <Item option={option} disabled={disabled} />
+            <UBlock display="flex" alignItems="center">
+              {withCount && selectedValuesExtra[id] && (
+                <styled.CountInput value={selectedValuesExtra[id].count} onChange={handleCountChange(id)} min={1} />
+              )}
+              <UButton
+                icon={<CloseOutlined />}
+                type="link"
+                size="small"
+                onClick={deleteItemHandlerFn(id)}
+                disabled={disabled}
+              />
+            </UBlock>
+          </UBlock>
+        </styled.ListItem>
+      )
+    },
+    [optionsToAddByValue, withCount, selectedValuesExtra, disabled]
+  )
+  const handleFilterOptions: ComponentProps<typeof Select>['filterOption'] = useCallback(
+    (searchValue, option) =>
+      option?.label ? String(option.label).toLocaleLowerCase().includes(searchValue.toLocaleLowerCase()) : false,
+    []
+  )
 
   React.useEffect(() => {
-    setSelectedValues(props.value || [])
-  }, [props.value])
+    if (value.length !== 0) {
+      setSelectedValues(value)
+    }
+  }, [value])
 
   React.useEffect(() => {
-    if (!isEqual(props.value, selectedValues)) props.onChange?.(selectedValues)
-  }, [selectedValues])
+    if (!loading && isChanged.current) {
+      if (withCount) {
+        const valuesWithExtra: UItemsSelectorValueObjectType[] = selectedIds.map((id) => selectedValuesExtra[id])
+        if (!isEqual(value, valuesWithExtra)) {
+          props.onChange?.(valuesWithExtra)
+        }
+      } else if (!isEqual(getIdsFromValueTypes(value), selectedIds)) {
+        props.onChange?.(selectedIds)
+      }
+    }
+  }, [selectedIds, selectedValuesExtra, withCount, props.onChange, loading, isChanged.current])
 
   return (
     <styled.Root>
@@ -73,36 +189,33 @@ const UItemsSelector: React.FunctionComponent<IUItemsSelectorProps> = (props) =>
         placeholder={placeholder}
         mode="multiple"
         optionLabelProp="label"
-        value={selectedValues}
-        loading={props.loading}
+        value={selectedIds}
+        loading={loading}
         onChange={handleSelectChange}
         dropdownRender={(node) => <styled.SelectDropdown>{node}</styled.SelectDropdown>}
         tagRender={() => <></>}
         maxTagCount={0}
-        filterOption={(value, option) =>
-          option?.label ? String(option.label).toLocaleLowerCase().startsWith(value.toLocaleLowerCase()) : false
-        }
+        filterOption={handleFilterOptions}
         listHeight={208}
         disabled={disabled}
       >
         {options}
       </Select>
-      <styled.List
-        dataSource={selectedValues}
-        renderItem={renderListItem as any}
-        pagination={{
-          defaultPageSize: 5,
-          size: 'small',
-          showTotal: (total) => `Всего ${total}`,
-          hideOnSinglePage: true,
-        }}
-      />
+      <Skeleton active loading={loading} />
+      {!loading && (
+        <styled.List
+          dataSource={selectedIds}
+          renderItem={renderListItem as any}
+          pagination={{
+            defaultPageSize: 5,
+            size: 'small',
+            showTotal: (total) => `Всего ${total}`,
+            hideOnSinglePage: true,
+          }}
+        />
+      )}
     </styled.Root>
   )
-}
-
-UItemsSelector.defaultProps = {
-  value: [],
 }
 
 export default UItemsSelector

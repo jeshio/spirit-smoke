@@ -16,7 +16,7 @@ const resolvers = {
         personsCount,
         comment,
         ourComment,
-        deliveryTime,
+        // TODO: deliveryTime,
         phoneNumber,
         products,
       },
@@ -27,7 +27,7 @@ const resolvers = {
         personsCount,
         comment,
         ourComment,
-        deliveryTime,
+        deliveryTime: 10000,
         phoneNumber,
       }, { transaction })
       const promises = products.map(({ id: productId, productsCount }) =>
@@ -40,6 +40,42 @@ const resolvers = {
       await Promise.all(promises)
       return order
     }),
+    updateOrder: (parent, {
+      id,
+      input: {
+        address,
+        intercomCode,
+        personsCount,
+        comment,
+        ourComment,
+        // TODO: deliveryTime,
+        phoneNumber,
+        products,
+      },
+    }, { models, sequelize }) =>
+      sequelize.transaction(async (transaction) => {
+        const updatedOrder = await models.order.update({
+          address,
+          intercomCode,
+          personsCount,
+          comment,
+          ourComment,
+          deliveryTime: 50000,
+          phoneNumber,
+        }, { where: { id }, returning: true, transaction }).then(([, [order]]) => order)
+        await updatedOrder.setProducts(null, { transaction })
+        const promises = products.map(({ id: productId, productsCount }) =>
+          updatedOrder.addProduct(productId, {
+            transaction,
+            through: {
+              productsCount,
+            },
+          }))
+
+        await Promise.all(promises)
+
+        return updatedOrder
+      }),
   },
 
   Order: {

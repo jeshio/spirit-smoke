@@ -1,0 +1,23 @@
+#import "@/gql/fragments/productFeature/simple.gql"
+#import "@/gql/fragments/productCategory/minimum.gql"
+#import "@/gql/fragments/company/minimum.gql"
+#import "@/gql/fragments/feature/minimum.gql"
+#import "@/gql/fragments/product/minimum.gql"
+
+fragment OrderFormProduct on Product {
+  ...ProductMinimum
+  price
+  count
+  productCategory {
+    ...ProductCategoryMinimum
+  }
+  company {
+    ...CompanyMinimum
+  }
+}
+
+query OrderFormProduct {
+  products {
+    ...OrderFormProduct
+  }
+}

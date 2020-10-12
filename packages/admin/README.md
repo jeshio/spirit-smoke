@@ -6,6 +6,8 @@
 
 Для работы с бэкэндом и [https://www.apollographql.com/docs/react/local-state/local-state-management/](локальным стейтом) используется [https://www.apollographql.com/docs/react/](Apollo Client).
 
+[https://ant.design/components/overview/](Спецификация компонентов)
+
 ## Запуск и разработка
 
 Перед началом работы нужно создать файл `./config/config.local.ts` (`./config/config.prod.ts` для прода) со следующим содержимым (актуальная версия находится в `./config/config.example.ts`):

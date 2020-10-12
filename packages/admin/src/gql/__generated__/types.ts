@@ -114,6 +114,7 @@ export type Mutation = {
   addProductFeature: FeatureSimple;
   deleteFeature: Scalars['ID'];
   createOrder: OrderSimple;
+  updateOrder: OrderSimple;
   createParam: Param;
   createProcurement: Procurement;
   addProductProcurement: Procurement;
@@ -219,6 +220,12 @@ export type MutationDeleteFeatureArgs = {
 
 
 export type MutationCreateOrderArgs = {
+  input: OrderInput;
+};
+
+
+export type MutationUpdateOrderArgs = {
+  id: Scalars['ID'];
   input: OrderInput;
 };
 
@@ -427,6 +434,7 @@ export type OrderInput = {
   deliveryTime: Scalars['String'];
   phoneNumber: Scalars['String'];
   products: Array<OrderProductInput>;
+  status: OrderStatus;
 };
 
 export enum OrderStatus {
@@ -757,6 +765,33 @@ export type UpdateFeatureMutation = (
   ) }
 );
 
+export type CreateOrderMutationVariables = Exact<{
+  input: OrderInput;
+}>;
+
+
+export type CreateOrderMutation = (
+  { __typename?: 'Mutation' }
+  & { createOrder: (
+    { __typename?: 'OrderSimple' }
+    & OrderSimple_OrderSimple_Fragment
+  ) }
+);
+
+export type UpdateOrderMutationVariables = Exact<{
+  id: Scalars['ID'];
+  input: OrderInput;
+}>;
+
+
+export type UpdateOrderMutation = (
+  { __typename?: 'Mutation' }
+  & { updateOrder: (
+    { __typename?: 'OrderSimple' }
+    & OrderSimple_OrderSimple_Fragment
+  ) }
+);
+
 export type CreateProductMutationVariables = Exact<{
   input: ProductInput;
 }>;
@@ -951,6 +986,30 @@ export type OrdersListPageQuery = (
   & { orders: Array<(
     { __typename?: 'Order' }
     & OrdersListPageFragment
+  )> }
+);
+
+export type OrderFormProductsFragment = (
+  { __typename?: 'Product' }
+  & Pick<Product, 'price' | 'count'>
+  & { productCategory?: Maybe<(
+    { __typename?: 'ProductCategory' }
+    & ProductCategoryMinimum_ProductCategory_Fragment
+  )>, company?: Maybe<(
+    { __typename?: 'Company' }
+    & CompanyMinimum_Company_Fragment
+  )> }
+  & ProductMinimum_Product_Fragment
+);
+
+export type OrderFormProductsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type OrderFormProductsQuery = (
+  { __typename?: 'Query' }
+  & { products: Array<(
+    { __typename?: 'Product' }
+    & OrderFormProductsFragment
   )> }
 );
 
@@ -1515,6 +1574,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   addProductFeature?: Resolver<ResolversTypes['FeatureSimple'], ParentType, ContextType, RequireFields<MutationAddProductFeatureArgs, 'featureId' | 'productId'>>;
   deleteFeature?: Resolver<ResolversTypes['ID'], ParentType, ContextType, RequireFields<MutationDeleteFeatureArgs, 'id'>>;
   createOrder?: Resolver<ResolversTypes['OrderSimple'], ParentType, ContextType, RequireFields<MutationCreateOrderArgs, 'input'>>;
+  updateOrder?: Resolver<ResolversTypes['OrderSimple'], ParentType, ContextType, RequireFields<MutationUpdateOrderArgs, 'id' | 'input'>>;
   createParam?: Resolver<ResolversTypes['Param'], ParentType, ContextType, RequireFields<MutationCreateParamArgs, 'input'>>;
   createProcurement?: Resolver<ResolversTypes['Procurement'], ParentType, ContextType, RequireFields<MutationCreateProcurementArgs, 'input'>>;
   addProductProcurement?: Resolver<ResolversTypes['Procurement'], ParentType, ContextType, RequireFields<MutationAddProductProcurementArgs, never>>;
@@ -1984,6 +2044,28 @@ export const OrdersListPageFragmentDoc = gql`
   totalPrice
 }
     ${OrderMinimumFragmentDoc}`;
+export const ProductCategoryMinimumFragmentDoc = gql`
+    fragment ProductCategoryMinimum on IProductCategory {
+  id
+  name
+  iconUrl
+}
+    `;
+export const OrderFormProductsFragmentDoc = gql`
+    fragment OrderFormProducts on Product {
+  ...ProductMinimum
+  price
+  count
+  productCategory {
+    ...ProductCategoryMinimum
+  }
+  company {
+    ...CompanyMinimum
+  }
+}
+    ${ProductMinimumFragmentDoc}
+${ProductCategoryMinimumFragmentDoc}
+${CompanyMinimumFragmentDoc}`;
 export const ProductSimpleFragmentDoc = gql`
     fragment ProductSimple on IProduct {
   id
@@ -1999,13 +2081,6 @@ export const ProductSimpleFragmentDoc = gql`
   count
   createdAt
   updatedAt
-}
-    `;
-export const ProductCategoryMinimumFragmentDoc = gql`
-    fragment ProductCategoryMinimum on IProductCategory {
-  id
-  name
-  iconUrl
 }
     `;
 export const FeatureMinimumFragmentDoc = gql`
@@ -2302,6 +2377,71 @@ export function useUpdateFeatureMutation(baseOptions?: Apollo.MutationHookOption
 export type UpdateFeatureMutationHookResult = ReturnType<typeof useUpdateFeatureMutation>;
 export type UpdateFeatureMutationResult = Apollo.MutationResult<UpdateFeatureMutation>;
 export type UpdateFeatureMutationOptions = Apollo.BaseMutationOptions<UpdateFeatureMutation, UpdateFeatureMutationVariables>;
+export const CreateOrderDocument = gql`
+    mutation createOrder($input: OrderInput!) {
+  createOrder(input: $input) {
+    ...OrderSimple
+  }
+}
+    ${OrderSimpleFragmentDoc}`;
+export type CreateOrderMutationFn = Apollo.MutationFunction<CreateOrderMutation, CreateOrderMutationVariables>;
+
+/**
+ * __useCreateOrderMutation__
+ *
+ * To run a mutation, you first call `useCreateOrderMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateOrderMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createOrderMutation, { data, loading, error }] = useCreateOrderMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateOrderMutation(baseOptions?: Apollo.MutationHookOptions<CreateOrderMutation, CreateOrderMutationVariables>) {
+        return Apollo.useMutation<CreateOrderMutation, CreateOrderMutationVariables>(CreateOrderDocument, baseOptions);
+      }
+export type CreateOrderMutationHookResult = ReturnType<typeof useCreateOrderMutation>;
+export type CreateOrderMutationResult = Apollo.MutationResult<CreateOrderMutation>;
+export type CreateOrderMutationOptions = Apollo.BaseMutationOptions<CreateOrderMutation, CreateOrderMutationVariables>;
+export const UpdateOrderDocument = gql`
+    mutation updateOrder($id: ID!, $input: OrderInput!) {
+  updateOrder(id: $id, input: $input) {
+    ...OrderSimple
+  }
+}
+    ${OrderSimpleFragmentDoc}`;
+export type UpdateOrderMutationFn = Apollo.MutationFunction<UpdateOrderMutation, UpdateOrderMutationVariables>;
+
+/**
+ * __useUpdateOrderMutation__
+ *
+ * To run a mutation, you first call `useUpdateOrderMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateOrderMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateOrderMutation, { data, loading, error }] = useUpdateOrderMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateOrderMutation(baseOptions?: Apollo.MutationHookOptions<UpdateOrderMutation, UpdateOrderMutationVariables>) {
+        return Apollo.useMutation<UpdateOrderMutation, UpdateOrderMutationVariables>(UpdateOrderDocument, baseOptions);
+      }
+export type UpdateOrderMutationHookResult = ReturnType<typeof useUpdateOrderMutation>;
+export type UpdateOrderMutationResult = Apollo.MutationResult<UpdateOrderMutation>;
+export type UpdateOrderMutationOptions = Apollo.BaseMutationOptions<UpdateOrderMutation, UpdateOrderMutationVariables>;
 export const CreateProductDocument = gql`
     mutation createProduct($input: ProductInput!) {
   createProduct(input: $input) {
@@ -2687,6 +2827,38 @@ export function useOrdersListPageLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
 export type OrdersListPageQueryHookResult = ReturnType<typeof useOrdersListPageQuery>;
 export type OrdersListPageLazyQueryHookResult = ReturnType<typeof useOrdersListPageLazyQuery>;
 export type OrdersListPageQueryResult = Apollo.QueryResult<OrdersListPageQuery, OrdersListPageQueryVariables>;
+export const OrderFormProductsDocument = gql`
+    query OrderFormProducts {
+  products {
+    ...OrderFormProducts
+  }
+}
+    ${OrderFormProductsFragmentDoc}`;
+
+/**
+ * __useOrderFormProductsQuery__
+ *
+ * To run a query within a React component, call `useOrderFormProductsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useOrderFormProductsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useOrderFormProductsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useOrderFormProductsQuery(baseOptions?: Apollo.QueryHookOptions<OrderFormProductsQuery, OrderFormProductsQueryVariables>) {
+        return Apollo.useQuery<OrderFormProductsQuery, OrderFormProductsQueryVariables>(OrderFormProductsDocument, baseOptions);
+      }
+export function useOrderFormProductsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<OrderFormProductsQuery, OrderFormProductsQueryVariables>) {
+          return Apollo.useLazyQuery<OrderFormProductsQuery, OrderFormProductsQueryVariables>(OrderFormProductsDocument, baseOptions);
+        }
+export type OrderFormProductsQueryHookResult = ReturnType<typeof useOrderFormProductsQuery>;
+export type OrderFormProductsLazyQueryHookResult = ReturnType<typeof useOrderFormProductsLazyQuery>;
+export type OrderFormProductsQueryResult = Apollo.QueryResult<OrderFormProductsQuery, OrderFormProductsQueryVariables>;
 export const ProductItemPageDocument = gql`
     query productItemPage($id: ID!) {
   product(id: $id) {

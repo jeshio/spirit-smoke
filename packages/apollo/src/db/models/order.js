@@ -43,18 +43,11 @@ module.exports = (sequelize, DataTypes) => {
     ourComment: {
       type: DataTypes.STRING,
     },
-    totalPrice: {
-      type: DataTypes.INTEGER,
-      validate: {
-        notEmpty: true,
-        isInt: true,
-      },
-    },
     deliveryTime: {
       type: DataTypes.DATE,
       validate: {
         notEmpty: true,
-        isDate: true,
+        // isDate: true,
       },
     },
     phoneNumber: {
