@@ -1,0 +1,7 @@
+#import "../../fragments/productCategory/minimum.gql"
+
+query productCategoryMinimumItem($idSlug: ID!) {
+  productCategory(idSlug: $idSlug) {
+    ...ProductCategoryMinimum
+  }
+}

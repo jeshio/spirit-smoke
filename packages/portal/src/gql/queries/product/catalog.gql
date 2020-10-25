@@ -1,5 +1,5 @@
-query productsCatalog($categoryId: ID!) {
-  productsByCategory(categoryId: $categoryId) {
+query productsCatalog($categoryIdSlug: ID!) {
+  productsByCategory(categoryIdSlug: $categoryIdSlug) {
     id
     name
     description

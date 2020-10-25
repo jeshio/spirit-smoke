@@ -8,7 +8,7 @@ const UContent = styled(
   getUBlockWithProps({
     styleConfig: {
       mx: 'auto',
-      px: ['14px'],
+      px: [3],
     },
   })
 )`

@@ -1,0 +1,7 @@
+#import "../../fragments/productCategory/simple.gql"
+
+query productCategorySimpleItem($idSlug: ID!) {
+  productCategory(idSlug: $idSlug) {
+    ...ProductCategorySimple
+  }
+}

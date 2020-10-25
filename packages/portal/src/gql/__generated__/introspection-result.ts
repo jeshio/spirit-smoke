@@ -9,6 +9,10 @@
       "FeatureSimple",
       "Feature"
     ],
+    "IOrder": [
+      "OrderSimple",
+      "Order"
+    ],
     "IProduct": [
       "ProductSimple",
       "Product"
@@ -28,6 +32,10 @@
     "IFeature": [
       "FeatureSimple",
       "Feature"
+    ],
+    "IOrder": [
+      "OrderSimple",
+      "Order"
     ],
     "IProduct": [
       "ProductSimple",

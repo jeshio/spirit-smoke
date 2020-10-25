@@ -10,3 +10,4 @@ service-worker.js
 /dist
 __generated__
 *.less.d.ts
+/next.config.js

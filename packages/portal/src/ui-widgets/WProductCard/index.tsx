@@ -13,7 +13,7 @@ import {
   ImageWrapper,
   InfoButton,
   Price,
-  Root,
+  ProductCard,
   TagsRow,
   Title,
 } from './index.styled'
@@ -25,7 +25,7 @@ interface IWProductCardProps {
 const WProductCard: React.FunctionComponent<IWProductCardProps> = ({ product }) => {
   const featureListItems = product.features?.map((feature) => <FeatureItem feature={feature} key={feature.id} />)
   return (
-    <Root>
+    <ProductCard>
       <Header>
         <ImageWrapper>
           <Image src={product.imageUrl} alt={`Купить ${product.company.name}, ${product.name}`} />
@@ -48,7 +48,7 @@ const WProductCard: React.FunctionComponent<IWProductCardProps> = ({ product }) 
           <UButton icon={<BuyButtonIcon />} type="primary" />
         </ButtonsBlock>
       </Footer>
-    </Root>
+    </ProductCard>
   )
 }
 

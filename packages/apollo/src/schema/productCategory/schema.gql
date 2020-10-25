@@ -1,6 +1,6 @@
 extend type Query {
   productCategories: [ProductCategory!]!
-  productCategory(id: ID!): ProductCategory
+  productCategory(idSlug: ID!): ProductCategory
 }
 
 extend type Mutation {

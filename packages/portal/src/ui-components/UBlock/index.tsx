@@ -6,9 +6,12 @@ import setProps from '@/wrappers/setProps'
 import { UBlockPropsType, TagType } from './types'
 import displayWithVisibleChecking from '@/helpers/displayWithVisibleChecking'
 
-const Root = styled(({ tag: Tag = 'div', tagComponentProps, className }: UBlockPropsType<any>) => (
-  <Tag {...tagComponentProps} className={cn(className, tagComponentProps.className)} />
-))`
+export const UBlockRefContext = React.createContext(null)
+
+const Root = styled(({ tag: Tag = 'div', tagComponentProps, className }: UBlockPropsType<any>) => {
+  const ref = React.useContext(UBlockRefContext)
+  return <Tag {...tagComponentProps} className={cn(className, tagComponentProps.className)} ref={ref} />
+})`
   ${space}
   ${layout}
   ${color}

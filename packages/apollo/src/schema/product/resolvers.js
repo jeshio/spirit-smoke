@@ -1,15 +1,28 @@
+import isNumberString from '@/utils/isNumberString'
+
 const resolvers = {
   Query: {
     products: async (parent, args, { models }) => models.product.findAll({
       order: [['id', 'DESC']],
     }),
-    productsByCategory: async (parent, { categoryId: productCategoryId }, { models }) => models.product.findAll({
-      order: [[models.company, 'name'], ['name']],
-      include: [{ model: models.company, attributes: ['name'] }],
-      where: {
-        productCategoryId,
-      },
-    }),
+    productsByCategory: async (parent, { categoryIdSlug }, { models }) => {
+      const productCategory = await models.productCategory.findOne({
+        include: [
+          {
+            model: models.product,
+            order: [[models.company, 'name'], ['name']],
+            include: [{ model: models.company, attributes: ['name'] }],
+          },
+        ],
+        where: isNumberString(categoryIdSlug) ? {
+          id: categoryIdSlug,
+        }
+          : {
+            slug: categoryIdSlug,
+          },
+      })
+      return productCategory.products || []
+    },
     product: async (parent, { id }, { models }) => models.product.findByPk(id),
   },
 

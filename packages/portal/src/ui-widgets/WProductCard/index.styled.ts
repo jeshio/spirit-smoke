@@ -4,7 +4,7 @@ import UButton from '@/ui-components/UButton'
 import UList from '@/ui-components/UList'
 import styled, { css } from 'styled-components'
 
-export const Root = styled(
+export const ProductCard = styled(
   getUBlockWithProps({
     styleConfig: {
       width: ['140px'],

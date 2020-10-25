@@ -4,21 +4,21 @@ import UButton from '@/ui-components/UButton'
 import UList from '@/ui-components/UList'
 import { size } from 'polished'
 import styled from 'styled-components'
+import { space } from 'styled-system'
 
 export const Root = styled(
   getUBlockWithProps({
     tag: UList,
     styleConfig: {
-      px: ['14px'],
-      py: ['20px'],
+      p: [3],
     },
   })
 )`
   max-width: 100%;
   overflow-x: scroll;
 
-  > * {
-    margin-right: 19px;
+  > * + * {
+    ${space({ ml: [2] })}
   }
 `
 

@@ -11,6 +11,8 @@ import {
   LeftProps,
   RightProps,
   FontSizeProps,
+  MinWidthProps,
+  MinHeightProps,
 } from 'styled-system'
 import { ThemeType } from '@/styles/theme'
 import { DisplayWithVisibleCheckingProps } from '@/helpers/displayWithVisibleChecking'
@@ -29,6 +31,8 @@ type StyleConfigType =
   | LeftProps
   | RightProps
   | FontSizeProps
+  | MinWidthProps
+  | MinHeightProps
 
 export interface IUBlockProps {
   children?: React.ReactNode

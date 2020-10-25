@@ -27,6 +27,7 @@ const theme = {
   colors: {
     primaryColor: '#2D2C2E',
     placeholderColor: '#9F9F9F',
+    inactive: { background: '#D8D8D8', color: '#8F90A6' },
     black: '#2D2C2E',
     blue: '#0F5CFE',
     linkColor: createObjectWithSequence(
@@ -37,7 +38,7 @@ const theme = {
   fonts: {
     primary: "'Roboto', sans-serif",
   },
-  space: [0, 4, 8, 12, 16, 24, 32, 42, 54],
+  space: [0, 5, 10, 15, 20, 25, 30, 35, 40],
 }
 
 export type ThemeType = typeof theme

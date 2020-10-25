@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { Root, StyledItem } from './index.styled'
+import { Slider, StyledItem } from './index.styled'
 import { IUSlider } from './types'
 
 const USlider: IUSlider = ({ children: _children, items = [], ...props }) => {
@@ -8,7 +8,7 @@ const USlider: IUSlider = ({ children: _children, items = [], ...props }) => {
     [_children, items]
   )
 
-  return <Root {...props}>{children}</Root>
+  return <Slider {...props}>{children}</Slider>
 }
 
 USlider.Item = StyledItem

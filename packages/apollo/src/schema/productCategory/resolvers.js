@@ -1,9 +1,19 @@
+import isNumberString from '@/utils/isNumberString'
+
 const resolvers = {
   Query: {
     productCategories: async (parent, args, { models }) => models.productCategory.findAll({
       order: [['priority', 'DESC'], ['id', 'DESC']],
     }),
-    productCategory: async (parent, { id }, { loaders }) => loaders.productCategory.load(Number(id)),
+    productCategory: async (parent, { idSlug }, { models }) => models.productCategory.findOne({
+      where: isNumberString(idSlug) ? {
+        id: idSlug,
+      }
+        : {
+          slug: idSlug,
+        },
+      order: [['id', 'DESC']],
+    }),
   },
 
   Mutation: {
