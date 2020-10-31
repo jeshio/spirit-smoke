@@ -1,11 +1,12 @@
 import { ProductsCatalogQuery } from '@/gql/__generated__/types'
-import UButton from '@/ui-components/UButton'
-import { BuyButtonIcon } from '@@icons'
-import * as React from 'react'
+import { CartIcon } from '@@icons'
+import React, { useCallback, useState } from 'react'
 import FeatureItem from './components/FeatureItem'
 import {
   ButtonsBlock,
+  BuyButton,
   CompanyName,
+  Description,
   FeatureList,
   Footer,
   Header,
@@ -24,6 +25,10 @@ interface IWProductCardProps {
 
 const WProductCard: React.FunctionComponent<IWProductCardProps> = ({ product }) => {
   const featureListItems = product.features?.map((feature) => <FeatureItem feature={feature} key={feature.id} />)
+  const [descIsVisible, setDescIsVisible] = useState(false)
+  const switchDescVisible = useCallback(() => setDescIsVisible(!descIsVisible), [descIsVisible])
+  const infoButtonFocusoutHandler = useCallback(() => setDescIsVisible(false), [])
+
   return (
     <ProductCard>
       <Header>
@@ -32,6 +37,12 @@ const WProductCard: React.FunctionComponent<IWProductCardProps> = ({ product }) 
         </ImageWrapper>
         <div>
           <TagsRow />
+          {product.description && (
+            <InfoButton onClick={switchDescVisible} onBlur={infoButtonFocusoutHandler}>
+              i
+            </InfoButton>
+          )}
+          <Description isVisible={descIsVisible}>{product.description}</Description>
           <CompanyName title={product.company.name} color={product.company.color}>
             {product.company.name}
           </CompanyName>
@@ -44,8 +55,7 @@ const WProductCard: React.FunctionComponent<IWProductCardProps> = ({ product }) 
       <Footer>
         <Price>{product.price} ₽</Price>
         <ButtonsBlock>
-          <InfoButton>i</InfoButton>
-          <UButton icon={<BuyButtonIcon />} type="primary" />
+          <BuyButton icon={<CartIcon />} type="primary" />
         </ButtonsBlock>
       </Footer>
     </ProductCard>

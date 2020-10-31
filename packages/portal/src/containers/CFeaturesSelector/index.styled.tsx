@@ -4,21 +4,27 @@ import { getUBlockWithProps } from '@/ui-components/UBlock'
 import styled from 'styled-components'
 import { left, space } from 'styled-system'
 
-export const RootWrapper = styled(getUBlockWithProps())`
+const list = { span: { padding: theme.space[3] } }
+const item = { span: { width: 46, height: 46, margin: theme.space[2] } }
+
+export const RootWrapper = styled(
+  getUBlockWithProps({
+    styleConfig: {
+      mt: theme.blocksSpace,
+      mb: [`-${item.span.margin}px`],
+    },
+  })
+)`
   max-width: 100%;
   overflow-x: scroll;
   overflow-y: hidden;
 `
-
-const list = { span: { padding: theme.space[3] } }
-const item = { span: { width: 46, height: 46, margin: theme.space[2] } }
 
 export const Root = styled(
   getUBlockWithProps({
     tag: createComponentWithPropsOmit('div', ['itemsCount']),
     styleConfig: {
       px: [`${list.span.padding}px`],
-      mb: [-2],
     },
   })
 )<{

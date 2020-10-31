@@ -1,3 +1,4 @@
+import theme from '@/styles/theme'
 import React, { useMemo } from 'react'
 import { getUBlockWithProps } from '../UBlock'
 
@@ -21,7 +22,12 @@ const UTitle: React.FunctionComponent<IUTitleProps> = ({ level, children }) => {
     () =>
       getUBlockWithProps({
         tag: Tag as any,
-        styleConfig,
+        styleConfig: {
+          my: [0],
+          mt: theme.blocksSpace.map((n) => n - 1),
+          mb: theme.blocksSpace.map((n) => -(n - 4)),
+          ...styleConfig,
+        },
       }),
     [level]
   )

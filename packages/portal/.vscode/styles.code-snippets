@@ -16,7 +16,7 @@
 	// 	"description": "Log output to console"
 	// }
 	"Default styled.index": {
-		"scope": "typescript",
+		"scope": "typescript,typescriptreact",
 		"prefix": "stcomp",
 		"body": [
 			"import { getUBlockWithProps } from '@/ui-components/UBlock'",
@@ -27,7 +27,7 @@
 		"description": "Заполнить styled.index для стандартного компонента"
 	},
 	"Styled UBlock": {
-		"scope": "typescript",
+		"scope": "typescript,typescriptreact",
 		"prefix": "stublock",
 		"body": "export const $1 = styled(getUBlockWithProps($2))`$0`",
 		"description": "Создать styled UBlock"

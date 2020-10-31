@@ -9,6 +9,7 @@ export const Root = styled(
     styleConfig: {
       width: ['100%'],
       mx: ['12px'],
+      paddingRight: ['15px'],
     },
   })
 )`
@@ -19,7 +20,7 @@ export const StyledInput = styled(
   getUBlockWithProps({
     tag: UInput,
     styleConfig: {
-      height: ['32px'],
+      height: ['29px'],
       px: ['18px'],
       py: ['0'],
       paddingBottom: ['2px'],
@@ -40,9 +41,10 @@ export const StyledInput = styled(
 export const InputSearchIcon = styled(SearchIcon)`
   position: absolute;
   color: ${({ theme }) => theme.colors.placeholderColor};
-  right: 14px;
+  right: 29px;
   top: 50%;
   margin-top: -6px;
+  fill: transparent;
 
   ${size(12)}
 `

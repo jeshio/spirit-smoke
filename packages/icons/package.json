@@ -4,7 +4,7 @@
   "main": "build/lib/components/index.js",
   "private": true,
   "scripts": {
-    "build": "yarn svgr && yarn tsc",
+    "build": "rm -r ./src/components && yarn svgr && yarn tsc",
     "svgr": "svgr --typescript -d ./src/components ./src/icons",
     "tsc": "tsc -p tsconfig.json"
   },

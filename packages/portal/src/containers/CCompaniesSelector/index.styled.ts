@@ -1,4 +1,5 @@
 import createComponentWithPropsOmit from '@/helpers/createComponentWithPropsOmit'
+import theme from '@/styles/theme'
 import { getUBlockWithProps } from '@/ui-components/UBlock'
 import UButton from '@/ui-components/UButton'
 import UList from '@/ui-components/UList'
@@ -10,7 +11,10 @@ export const Root = styled(
   getUBlockWithProps({
     tag: UList,
     styleConfig: {
-      p: [3],
+      px: [3],
+      mt: theme.blocksSpace,
+      pb: [2],
+      mb: [-2],
     },
   })
 )`
@@ -18,7 +22,7 @@ export const Root = styled(
   overflow-x: scroll;
 
   > * + * {
-    ${space({ ml: [2] })}
+    ${space({ ml: [3] })}
   }
 `
 
@@ -39,7 +43,7 @@ export const CompanyItem = styled(
   background-color: ${({ theme }) => theme.colors.primaryColor};
   color: #fff;
   position: relative;
-  font-weight: 300;
+  font-weight: 100;
   align-items: center;
   justify-content: center;
   padding: 0 0 3px 0;

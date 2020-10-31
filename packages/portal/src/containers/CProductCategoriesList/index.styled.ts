@@ -16,6 +16,7 @@ export const Root = styled(
   bottom: 0;
   left: 0;
   overflow-y: hidden;
+  box-shadow: 0px 0px 2px rgba(154, 154, 154, 0.5);
 `
 
 export const Content = styled(
