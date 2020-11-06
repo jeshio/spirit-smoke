@@ -6,6 +6,10 @@ query productsCatalog($categoryIdSlug: ID!) {
     imageUrl
     weight
     price
+    isInCart @client
+    cartItem @client {
+      count
+    }
     features {
       id
       imageUrl

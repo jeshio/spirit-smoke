@@ -70,6 +70,12 @@ const GlobalStyles = createGlobalStyle`
   svg {
     fill: #000;
   }
+
+  /* TODO: @media (prefers-reduced-motion) {
+    * {
+      transition: none !important;
+    }
+  } */
 `
 
 export default GlobalStyles

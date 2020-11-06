@@ -1,0 +1,16 @@
+# import CartItem from "../Query/Cart/schema.gql"
+
+interface IProduct {
+  isInCart: Boolean
+  cartItem: CartItem
+}
+
+type ProductSimple {
+  isInCart: Boolean
+  cartItem: CartItem
+}
+
+type Product {
+  isInCart: Boolean
+  cartItem: CartItem
+}

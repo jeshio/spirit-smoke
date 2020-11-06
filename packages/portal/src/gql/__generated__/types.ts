@@ -16,27 +16,28 @@ export type Scalars = {
 export type Query = {
   __typename?: 'Query';
   _?: Maybe<Scalars['Boolean']>;
-  bonuses: Array<Maybe<Bonus>>;
   bonus?: Maybe<Bonus>;
+  bonuses: Array<Maybe<Bonus>>;
+  cartItems: Array<CartItem>;
   companies: Array<Company>;
   company?: Maybe<Company>;
-  discounts: Array<Maybe<Discount>>;
   discount?: Maybe<Discount>;
-  features: Array<Feature>;
+  discounts: Array<Maybe<Discount>>;
   feature?: Maybe<Feature>;
-  orders: Array<Order>;
+  features: Array<Feature>;
   order?: Maybe<Order>;
-  params: Array<Maybe<Param>>;
+  orders: Array<Order>;
   param?: Maybe<Param>;
-  procurements: Array<Maybe<Procurement>>;
+  params: Array<Maybe<Param>>;
   procurement?: Maybe<Procurement>;
-  products: Array<Product>;
-  productsByCategory: Array<Product>;
+  procurements: Array<Maybe<Procurement>>;
   product?: Maybe<Product>;
   productCategories: Array<ProductCategory>;
   productCategory?: Maybe<ProductCategory>;
-  promotions: Array<Maybe<Promotion>>;
+  products: Array<Product>;
+  productsByCategory: Array<Product>;
   promotion?: Maybe<Promotion>;
+  promotions: Array<Maybe<Promotion>>;
 };
 
 
@@ -75,11 +76,6 @@ export type QueryProcurementArgs = {
 };
 
 
-export type QueryProductsByCategoryArgs = {
-  categoryIdSlug: Scalars['ID'];
-};
-
-
 export type QueryProductArgs = {
   id: Scalars['ID'];
 };
@@ -87,6 +83,11 @@ export type QueryProductArgs = {
 
 export type QueryProductCategoryArgs = {
   idSlug: Scalars['ID'];
+};
+
+
+export type QueryProductsByCategoryArgs = {
+  categoryIdSlug: Scalars['ID'];
 };
 
 
@@ -568,60 +569,66 @@ export type ProductInput = {
 };
 
 export type IProduct = {
-  id: Scalars['ID'];
   barcode?: Maybe<Scalars['String']>;
-  name: Scalars['String'];
-  slug: Scalars['String'];
-  description: Scalars['String'];
-  imageUrl: Scalars['String'];
-  weight: Scalars['Int'];
-  price: Scalars['Int'];
-  count: Scalars['Int'];
-  productCategoryId: Scalars['ID'];
+  cartItem?: Maybe<CartItem>;
   companyId: Scalars['ID'];
+  count: Scalars['Int'];
   createdAt: Scalars['String'];
+  description: Scalars['String'];
+  id: Scalars['ID'];
+  imageUrl: Scalars['String'];
+  isInCart?: Maybe<Scalars['Boolean']>;
+  name: Scalars['String'];
+  price: Scalars['Int'];
+  productCategoryId: Scalars['ID'];
+  slug: Scalars['String'];
   updatedAt: Scalars['String'];
+  weight: Scalars['Int'];
 };
 
 export type ProductSimple = IProduct & {
   __typename?: 'ProductSimple';
-  id: Scalars['ID'];
   barcode?: Maybe<Scalars['String']>;
-  name: Scalars['String'];
-  slug: Scalars['String'];
-  description: Scalars['String'];
-  imageUrl: Scalars['String'];
-  weight: Scalars['Int'];
-  price: Scalars['Int'];
-  count: Scalars['Int'];
-  productCategoryId: Scalars['ID'];
+  cartItem?: Maybe<CartItem>;
   companyId: Scalars['ID'];
+  count: Scalars['Int'];
   createdAt: Scalars['String'];
+  description: Scalars['String'];
+  id: Scalars['ID'];
+  imageUrl: Scalars['String'];
+  isInCart?: Maybe<Scalars['Boolean']>;
+  name: Scalars['String'];
+  price: Scalars['Int'];
+  productCategoryId: Scalars['ID'];
+  slug: Scalars['String'];
   updatedAt: Scalars['String'];
+  weight: Scalars['Int'];
 };
 
 export type Product = IProduct & {
   __typename?: 'Product';
-  id: Scalars['ID'];
   barcode?: Maybe<Scalars['String']>;
-  name: Scalars['String'];
-  slug: Scalars['String'];
-  description: Scalars['String'];
-  imageUrl: Scalars['String'];
-  weight: Scalars['Int'];
-  price: Scalars['Int'];
-  count: Scalars['Int'];
-  productCategoryId: Scalars['ID'];
-  companyId: Scalars['ID'];
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
+  cartItem?: Maybe<CartItem>;
   company?: Maybe<Company>;
-  productCategory?: Maybe<ProductCategory>;
-  features: Array<Feature>;
+  companyId: Scalars['ID'];
+  count: Scalars['Int'];
+  createdAt: Scalars['String'];
+  description: Scalars['String'];
   discounts: Array<Discount>;
+  features: Array<Feature>;
+  id: Scalars['ID'];
+  imageUrl: Scalars['String'];
+  isInCart?: Maybe<Scalars['Boolean']>;
+  name: Scalars['String'];
   orderProducts: Array<OrderProduct>;
-  productProcurements: Array<ProductProcurement>;
+  price: Scalars['Int'];
+  productCategory?: Maybe<ProductCategory>;
+  productCategoryId: Scalars['ID'];
   productFeatures: Array<ProductFeature>;
+  productProcurements: Array<ProductProcurement>;
+  slug: Scalars['String'];
+  updatedAt: Scalars['String'];
+  weight: Scalars['Int'];
 };
 
 export type ProductCategoryInput = {
@@ -689,6 +696,12 @@ export type Promotion = {
   startDate: Scalars['String'];
   endDate: Scalars['String'];
   priority: Scalars['Int'];
+};
+
+export type CartItem = {
+  __typename?: 'CartItem';
+  id: Scalars['String'];
+  count: Scalars['Int'];
 };
 
 type CompanyMinimum_CompanySimple_Fragment = (
@@ -990,8 +1003,11 @@ export type ProductsCatalogQuery = (
   { __typename?: 'Query' }
   & { productsByCategory: Array<(
     { __typename?: 'Product' }
-    & Pick<Product, 'id' | 'name' | 'description' | 'imageUrl' | 'weight' | 'price'>
-    & { features: Array<(
+    & Pick<Product, 'id' | 'name' | 'description' | 'imageUrl' | 'weight' | 'price' | 'isInCart'>
+    & { cartItem?: Maybe<(
+      { __typename?: 'CartItem' }
+      & Pick<CartItem, 'count'>
+    )>, features: Array<(
       { __typename?: 'Feature' }
       & Pick<Feature, 'id' | 'imageUrl' | 'name'>
     )>, company?: Maybe<(
@@ -1124,6 +1140,7 @@ export type ResolversTypes = {
   ProductCategory: ResolverTypeWrapper<ProductCategory>;
   PromotionInput: PromotionInput;
   Promotion: ResolverTypeWrapper<Promotion>;
+  CartItem: ResolverTypeWrapper<CartItem>;
 };
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -1172,31 +1189,33 @@ export type ResolversParentTypes = {
   ProductCategory: ProductCategory;
   PromotionInput: PromotionInput;
   Promotion: Promotion;
+  CartItem: CartItem;
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   _?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
-  bonuses?: Resolver<Array<Maybe<ResolversTypes['Bonus']>>, ParentType, ContextType>;
   bonus?: Resolver<Maybe<ResolversTypes['Bonus']>, ParentType, ContextType, RequireFields<QueryBonusArgs, 'id'>>;
+  bonuses?: Resolver<Array<Maybe<ResolversTypes['Bonus']>>, ParentType, ContextType>;
+  cartItems?: Resolver<Array<ResolversTypes['CartItem']>, ParentType, ContextType>;
   companies?: Resolver<Array<ResolversTypes['Company']>, ParentType, ContextType>;
   company?: Resolver<Maybe<ResolversTypes['Company']>, ParentType, ContextType, RequireFields<QueryCompanyArgs, 'id'>>;
-  discounts?: Resolver<Array<Maybe<ResolversTypes['Discount']>>, ParentType, ContextType>;
   discount?: Resolver<Maybe<ResolversTypes['Discount']>, ParentType, ContextType, RequireFields<QueryDiscountArgs, 'id'>>;
-  features?: Resolver<Array<ResolversTypes['Feature']>, ParentType, ContextType>;
+  discounts?: Resolver<Array<Maybe<ResolversTypes['Discount']>>, ParentType, ContextType>;
   feature?: Resolver<Maybe<ResolversTypes['Feature']>, ParentType, ContextType, RequireFields<QueryFeatureArgs, 'id'>>;
-  orders?: Resolver<Array<ResolversTypes['Order']>, ParentType, ContextType>;
+  features?: Resolver<Array<ResolversTypes['Feature']>, ParentType, ContextType>;
   order?: Resolver<Maybe<ResolversTypes['Order']>, ParentType, ContextType, RequireFields<QueryOrderArgs, 'id'>>;
-  params?: Resolver<Array<Maybe<ResolversTypes['Param']>>, ParentType, ContextType>;
+  orders?: Resolver<Array<ResolversTypes['Order']>, ParentType, ContextType>;
   param?: Resolver<Maybe<ResolversTypes['Param']>, ParentType, ContextType, RequireFields<QueryParamArgs, 'id'>>;
-  procurements?: Resolver<Array<Maybe<ResolversTypes['Procurement']>>, ParentType, ContextType>;
+  params?: Resolver<Array<Maybe<ResolversTypes['Param']>>, ParentType, ContextType>;
   procurement?: Resolver<Maybe<ResolversTypes['Procurement']>, ParentType, ContextType, RequireFields<QueryProcurementArgs, 'id'>>;
-  products?: Resolver<Array<ResolversTypes['Product']>, ParentType, ContextType>;
-  productsByCategory?: Resolver<Array<ResolversTypes['Product']>, ParentType, ContextType, RequireFields<QueryProductsByCategoryArgs, 'categoryIdSlug'>>;
+  procurements?: Resolver<Array<Maybe<ResolversTypes['Procurement']>>, ParentType, ContextType>;
   product?: Resolver<Maybe<ResolversTypes['Product']>, ParentType, ContextType, RequireFields<QueryProductArgs, 'id'>>;
   productCategories?: Resolver<Array<ResolversTypes['ProductCategory']>, ParentType, ContextType>;
   productCategory?: Resolver<Maybe<ResolversTypes['ProductCategory']>, ParentType, ContextType, RequireFields<QueryProductCategoryArgs, 'idSlug'>>;
-  promotions?: Resolver<Array<Maybe<ResolversTypes['Promotion']>>, ParentType, ContextType>;
+  products?: Resolver<Array<ResolversTypes['Product']>, ParentType, ContextType>;
+  productsByCategory?: Resolver<Array<ResolversTypes['Product']>, ParentType, ContextType, RequireFields<QueryProductsByCategoryArgs, 'categoryIdSlug'>>;
   promotion?: Resolver<Maybe<ResolversTypes['Promotion']>, ParentType, ContextType, RequireFields<QueryPromotionArgs, 'id'>>;
+  promotions?: Resolver<Array<Maybe<ResolversTypes['Promotion']>>, ParentType, ContextType>;
 };
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
@@ -1427,59 +1446,65 @@ export type ProcurementResolvers<ContextType = any, ParentType extends Resolvers
 
 export type IProductResolvers<ContextType = any, ParentType extends ResolversParentTypes['IProduct'] = ResolversParentTypes['IProduct']> = {
   __resolveType: TypeResolveFn<'ProductSimple' | 'Product', ParentType, ContextType>;
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   barcode?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  imageUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  weight?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  price?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  productCategoryId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  cartItem?: Resolver<Maybe<ResolversTypes['CartItem']>, ParentType, ContextType>;
   companyId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  imageUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  isInCart?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  price?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  productCategoryId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  weight?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
 };
 
 export type ProductSimpleResolvers<ContextType = any, ParentType extends ResolversParentTypes['ProductSimple'] = ResolversParentTypes['ProductSimple']> = {
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   barcode?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  imageUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  weight?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  price?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  productCategoryId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  cartItem?: Resolver<Maybe<ResolversTypes['CartItem']>, ParentType, ContextType>;
   companyId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  imageUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  isInCart?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  price?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  productCategoryId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  weight?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 };
 
 export type ProductResolvers<ContextType = any, ParentType extends ResolversParentTypes['Product'] = ResolversParentTypes['Product']> = {
-  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   barcode?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  imageUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  weight?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  price?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  productCategoryId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  companyId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  updatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  cartItem?: Resolver<Maybe<ResolversTypes['CartItem']>, ParentType, ContextType>;
   company?: Resolver<Maybe<ResolversTypes['Company']>, ParentType, ContextType>;
-  productCategory?: Resolver<Maybe<ResolversTypes['ProductCategory']>, ParentType, ContextType>;
-  features?: Resolver<Array<ResolversTypes['Feature']>, ParentType, ContextType>;
+  companyId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   discounts?: Resolver<Array<ResolversTypes['Discount']>, ParentType, ContextType>;
+  features?: Resolver<Array<ResolversTypes['Feature']>, ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  imageUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  isInCart?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   orderProducts?: Resolver<Array<ResolversTypes['OrderProduct']>, ParentType, ContextType>;
-  productProcurements?: Resolver<Array<ResolversTypes['ProductProcurement']>, ParentType, ContextType>;
+  price?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  productCategory?: Resolver<Maybe<ResolversTypes['ProductCategory']>, ParentType, ContextType>;
+  productCategoryId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   productFeatures?: Resolver<Array<ResolversTypes['ProductFeature']>, ParentType, ContextType>;
+  productProcurements?: Resolver<Array<ResolversTypes['ProductProcurement']>, ParentType, ContextType>;
+  slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  weight?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 };
 
@@ -1533,6 +1558,12 @@ export type PromotionResolvers<ContextType = any, ParentType extends ResolversPa
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 };
 
+export type CartItemResolvers<ContextType = any, ParentType extends ResolversParentTypes['CartItem'] = ResolversParentTypes['CartItem']> = {
+  id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType>;
+};
+
 export type Resolvers<ContextType = any> = {
   Query?: QueryResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
@@ -1560,6 +1591,7 @@ export type Resolvers<ContextType = any> = {
   ProductCategorySimple?: ProductCategorySimpleResolvers<ContextType>;
   ProductCategory?: ProductCategoryResolvers<ContextType>;
   Promotion?: PromotionResolvers<ContextType>;
+  CartItem?: CartItemResolvers<ContextType>;
 };
 
 
@@ -2119,6 +2151,10 @@ export const ProductsCatalogDocument = gql`
     imageUrl
     weight
     price
+    isInCart @client
+    cartItem @client {
+      count
+    }
     features {
       id
       imageUrl

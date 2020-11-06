@@ -1,5 +1,7 @@
 overwrite: true
-schema: http://wsl.ru:4000/graphql
+schema:
+  - http://wsl.ru:4000/graphql
+  - src/gql/cache/client-schema.gql
 documents:
   - src/**/*.gql
   - pages/**/*.gql
@@ -20,3 +22,7 @@ generates:
   ./src/gql/__generated__/graphql.schema.json:
     plugins:
       - introspection
+  ./src/gql/__generated__/apollo-helpers.ts:
+    plugins:
+      - typescript-apollo-client-helpers
+    
