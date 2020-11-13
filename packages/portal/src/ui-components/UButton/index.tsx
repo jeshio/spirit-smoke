@@ -6,7 +6,12 @@ const UButton: React.FunctionComponent<IUButtonProps> = (props) => {
   let child = props.children
 
   if (props.icon) {
-    child = props.icon
+    child = (
+      <>
+        {props.icon}
+        {child}
+      </>
+    )
   }
 
   return <StyledButton {...props}>{child}</StyledButton>

@@ -342,10 +342,10 @@ export type PromotionFieldPolicy = {
 	endDate?: FieldPolicy<any> | FieldReadFunction<any>,
 	priority?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type CartItemKeySpecifier = ('id' | 'count' | CartItemKeySpecifier)[];
+export type CartItemKeySpecifier = ('id' | 'productsCount' | CartItemKeySpecifier)[];
 export type CartItemFieldPolicy = {
 	id?: FieldPolicy<any> | FieldReadFunction<any>,
-	count?: FieldPolicy<any> | FieldReadFunction<any>
+	productsCount?: FieldPolicy<any> | FieldReadFunction<any>
 };
 export type TypedTypePolicies = TypePolicies & {
 	Query?: {

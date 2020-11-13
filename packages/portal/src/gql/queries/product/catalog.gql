@@ -8,7 +8,7 @@ query productsCatalog($categoryIdSlug: ID!) {
     price
     isInCart @client
     cartItem @client {
-      count
+      productsCount
     }
     features {
       id

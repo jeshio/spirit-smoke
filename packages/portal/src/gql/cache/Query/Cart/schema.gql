@@ -4,5 +4,5 @@ extend type Query {
 
 type CartItem {
   id: String!
-  count: Int!
+  productsCount: Int!
 }

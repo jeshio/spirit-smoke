@@ -22,7 +22,7 @@ export const changeCartItemCount = (cartItemId: string, newCount: number) => {
     if (cartItemIndex < 0) return
 
     result = cloneDeep(currentCartItems)
-    result[cartItemIndex].count = newCount
+    result[cartItemIndex].productsCount = newCount
   }
 
   cartItemsVar(result)

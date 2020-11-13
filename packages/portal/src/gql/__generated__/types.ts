@@ -701,7 +701,7 @@ export type Promotion = {
 export type CartItem = {
   __typename?: 'CartItem';
   id: Scalars['String'];
-  count: Scalars['Int'];
+  productsCount: Scalars['Int'];
 };
 
 type CompanyMinimum_CompanySimple_Fragment = (
@@ -1006,7 +1006,7 @@ export type ProductsCatalogQuery = (
     & Pick<Product, 'id' | 'name' | 'description' | 'imageUrl' | 'weight' | 'price' | 'isInCart'>
     & { cartItem?: Maybe<(
       { __typename?: 'CartItem' }
-      & Pick<CartItem, 'count'>
+      & Pick<CartItem, 'productsCount'>
     )>, features: Array<(
       { __typename?: 'Feature' }
       & Pick<Feature, 'id' | 'imageUrl' | 'name'>
@@ -1560,7 +1560,7 @@ export type PromotionResolvers<ContextType = any, ParentType extends ResolversPa
 
 export type CartItemResolvers<ContextType = any, ParentType extends ResolversParentTypes['CartItem'] = ResolversParentTypes['CartItem']> = {
   id?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  productsCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 };
 
@@ -2153,7 +2153,7 @@ export const ProductsCatalogDocument = gql`
     price
     isInCart @client
     cartItem @client {
-      count
+      productsCount
     }
     features {
       id

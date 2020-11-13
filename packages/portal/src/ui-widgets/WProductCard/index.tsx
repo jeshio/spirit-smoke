@@ -35,7 +35,7 @@ const debouncedChangeCartItemCount = debounce(changeCartItemCount, 500)
 
 const WProductCard: React.FunctionComponent<IWProductCardProps> = ({ product }) => {
   const [countChangedAnimationIsActive, setCountChangedAnimationIsActive] = useState(false)
-  const [currentCartItemCount, setCurrentCartItemCount] = useState(product.cartItem?.count)
+  const [currentCartItemCount, setCurrentCartItemCount] = useState(product.cartItem?.productsCount)
   const featureListItems = product.features?.map((feature) => <FeatureItem feature={feature} key={feature.id} />)
   const [descIsVisible, setDescIsVisible] = useState(false)
   const switchDescVisible = useCallback(() => setDescIsVisible(!descIsVisible), [descIsVisible])
@@ -45,14 +45,20 @@ const WProductCard: React.FunctionComponent<IWProductCardProps> = ({ product }) 
     setCurrentCartItemCount(1)
     addCartItem({
       id: product.id,
-      count: 1,
+      productsCount: 1,
     })
   }, [product, cartItems])
   const makeHandleCartItemCountChange = useCallback(
     (newCount: number) => () => {
       setCountChangedAnimationIsActive(newCount !== 0)
       setCurrentCartItemCount(newCount)
-      debouncedChangeCartItemCount(product.id, newCount)
+
+      if (newCount === 0) {
+        // чтобы количество позиций в корзине обновлялось сразу
+        changeCartItemCount(product.id, newCount)
+      } else {
+        debouncedChangeCartItemCount(product.id, newCount)
+      }
     },
     [product, cartItems, currentCartItemCount]
   )

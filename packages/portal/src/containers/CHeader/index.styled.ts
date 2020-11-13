@@ -1,10 +1,12 @@
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { getUBlockWithProps } from '@/ui-components/UBlock'
 import ULink from '@/ui-components/ULink'
 import { size } from 'polished'
 import { CartIcon } from '@@icons'
 import UContent from '@/ui-components/UContent'
 import theme from '@/styles/theme'
+import UButton from '@/ui-components/UButton'
+import createComponentWithPropsOmit from '@/helpers/createComponentWithPropsOmit'
 
 export const Root = styled.header``
 
@@ -118,4 +120,27 @@ export const StyledCartIcon = styled(
   })
 )`
   fill: ${({ theme }) => theme.colors.secondColor};
+`
+
+export const StyledCartButton = styled(UButton)`
+  position: relative;
+`
+
+export const CartButtonCount = styled(
+  getUBlockWithProps({
+    styleConfig: {
+      width: ['15px'],
+      height: ['15px'],
+    },
+  })
+)`
+  position: absolute;
+  right: -1px;
+  top: -1px;
+  width: 15px;
+  height: 15px;
+  background-color: ${theme.colors.blue};
+  color: #fff;
+  border-radius: 50%;
+  font-size: 10px;
 `

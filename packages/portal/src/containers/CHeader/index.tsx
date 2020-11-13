@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
   StyledLogo,
   PhoneNumberLink,
@@ -9,15 +9,26 @@ import {
   StyledCartIcon,
   Root,
   SubHeader,
+  StyledCartButton,
+  CartButtonCount,
 } from './index.styled'
 import ULink from '@/ui-components/ULink'
 import SearchInput from './components/SearchInput'
-import UButton from '@/ui-components/UButton'
 import { CallIcon } from '@@icons'
+import { useReactiveVar } from '@apollo/client'
+import { cartItemsVar } from '@/gql/cache/vars/Cart'
 
 interface ICHeaderProps {}
 
 const CHeader: React.FunctionComponent<ICHeaderProps> = () => {
+  const [cartItemsCountIsVisible, setCartItemsCountIsVisible] = useState(false)
+  const cartItems = useReactiveVar(cartItemsVar)
+
+  useEffect(() => {
+    // фикс, чтобы на сервере и клиенте совпадал контент при первом рендре
+    setCartItemsCountIsVisible(true)
+  }, [])
+
   return (
     <Root>
       <TopBar>
@@ -25,7 +36,9 @@ const CHeader: React.FunctionComponent<ICHeaderProps> = () => {
           <StyledLogo>Spirit Smoke</StyledLogo>
         </ULink>
         <SearchInput />
-        <UButton icon={<StyledCartIcon />} type="ghost" noPaddings />
+        <StyledCartButton icon={<StyledCartIcon />} type="ghost" noPaddings>
+          {cartItemsCountIsVisible && cartItems.length > 0 && <CartButtonCount>{cartItems.length}</CartButtonCount>}
+        </StyledCartButton>
       </TopBar>
       <SubHeader>
         <PhoneNumberLink href="tel:+79527777777">
