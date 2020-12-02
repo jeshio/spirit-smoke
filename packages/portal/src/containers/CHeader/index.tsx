@@ -36,9 +36,11 @@ const CHeader: React.FunctionComponent<ICHeaderProps> = () => {
           <StyledLogo>Spirit Smoke</StyledLogo>
         </ULink>
         <SearchInput />
-        <StyledCartButton icon={<StyledCartIcon />} type="ghost" noPaddings>
-          {cartItemsCountIsVisible && cartItems.length > 0 && <CartButtonCount>{cartItems.length}</CartButtonCount>}
-        </StyledCartButton>
+        <ULink href="/cart">
+          <StyledCartButton icon={<StyledCartIcon />} type="ghost" noPaddings>
+            {cartItemsCountIsVisible && cartItems.length > 0 && <CartButtonCount>{cartItems.length}</CartButtonCount>}
+          </StyledCartButton>
+        </ULink>
       </TopBar>
       <SubHeader>
         <PhoneNumberLink href="tel:+79527777777">

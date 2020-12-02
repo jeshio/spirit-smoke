@@ -1,5 +1,6 @@
 extend type Query {
   products: [Product!]!
+  productsByIds(productIds: [ID!]!): [Product]!
   productsByCategory(categoryIdSlug: ID!): [Product!]!
   product(id: ID!): Product
 }

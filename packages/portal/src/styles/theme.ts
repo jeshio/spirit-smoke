@@ -31,6 +31,7 @@ const theme = {
     inactive: { background: '#D8D8D8', color: '#8F90A6' },
     black: '#2D2C2E',
     blue: '#0F5CFE',
+    green: '#7BDE62',
     white: '#fff',
     linkColor: createObjectWithSequence(
       () => ({ base: '#77f' }),
@@ -42,6 +43,14 @@ const theme = {
   },
   space: [0, 5, 10, 15, 20, 25, 30, 35, 40],
   blocksSpace: [6],
+  card: {
+    borderRadius: ['5px'],
+    boxShadow: '8px 8px 40px rgba(218, 220, 228, 0.5)',
+  },
+  bottomBar: {
+    height: ['55px', '60px'],
+    boxShadow: '0px 0px 2px rgba(154, 154, 154, 0.5)',
+  },
 }
 
 export type ThemeType = typeof theme

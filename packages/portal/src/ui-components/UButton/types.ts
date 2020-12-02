@@ -1,6 +1,7 @@
 export interface IUButtonProps {
   icon?: React.ReactNode
-  type?: 'primary' | 'ghost'
+  type?: 'primary' | 'ghost' | 'green'
+  fill?: boolean
   noPaddings?: boolean
   onClick?: () => void
   onBlur?: () => void

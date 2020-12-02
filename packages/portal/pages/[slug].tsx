@@ -1,6 +1,6 @@
-import ProductCategoryPageContainer from '@/pageContainers/ProductsCategoryPage'
-import { useRouter } from 'next/dist/client/router'
 import * as React from 'react'
+import ProductCategoryPageContainer from '@/pageContainers/ProductCategoryPage'
+import { useRouter } from 'next/dist/client/router'
 
 interface IProductCategoryPageProps {}
 

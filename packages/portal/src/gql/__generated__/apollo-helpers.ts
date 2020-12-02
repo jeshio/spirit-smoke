@@ -1,5 +1,5 @@
 import { FieldPolicy, FieldReadFunction, TypePolicies } from '@apollo/client/cache';
-export type QueryKeySpecifier = ('_' | 'bonus' | 'bonuses' | 'cartItems' | 'companies' | 'company' | 'discount' | 'discounts' | 'feature' | 'features' | 'order' | 'orders' | 'param' | 'params' | 'procurement' | 'procurements' | 'product' | 'productCategories' | 'productCategory' | 'products' | 'productsByCategory' | 'promotion' | 'promotions' | QueryKeySpecifier)[];
+export type QueryKeySpecifier = ('_' | 'bonus' | 'bonuses' | 'cartItems' | 'companies' | 'company' | 'discount' | 'discounts' | 'feature' | 'features' | 'order' | 'orders' | 'param' | 'params' | 'procurement' | 'procurements' | 'product' | 'productCategories' | 'productCategory' | 'products' | 'productsByCategory' | 'productsByIds' | 'promotion' | 'promotions' | QueryKeySpecifier)[];
 export type QueryFieldPolicy = {
 	_?: FieldPolicy<any> | FieldReadFunction<any>,
 	bonus?: FieldPolicy<any> | FieldReadFunction<any>,
@@ -22,6 +22,7 @@ export type QueryFieldPolicy = {
 	productCategory?: FieldPolicy<any> | FieldReadFunction<any>,
 	products?: FieldPolicy<any> | FieldReadFunction<any>,
 	productsByCategory?: FieldPolicy<any> | FieldReadFunction<any>,
+	productsByIds?: FieldPolicy<any> | FieldReadFunction<any>,
 	promotion?: FieldPolicy<any> | FieldReadFunction<any>,
 	promotions?: FieldPolicy<any> | FieldReadFunction<any>
 };

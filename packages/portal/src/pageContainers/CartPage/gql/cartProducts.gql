@@ -1,0 +1,21 @@
+query cartProducts($productIds: [ID!]!) {
+  productsByIds(productIds: $productIds) {
+    id
+    name
+    imageUrl
+    weight
+    price
+    isInCart @client
+    cartItem @client {
+      productsCount
+    }
+    company {
+      id
+      name
+      color
+    }
+    productCategory {
+      id
+    }
+  }
+}

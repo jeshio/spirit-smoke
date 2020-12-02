@@ -5,6 +5,8 @@ const resolvers = {
     products: async (parent, args, { models }) => models.product.findAll({
       order: [['id', 'DESC']],
     }),
+    productsByIds: async (parent, { productIds }, { loaders }) =>
+      loaders.product.loadMany(productIds.map((id) => Number(id))),
     productsByCategory: async (parent, { categoryIdSlug }, { models }) => {
       const productCategory = await models.productCategory.findOne({
         include: [

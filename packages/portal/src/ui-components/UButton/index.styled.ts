@@ -8,7 +8,9 @@ export const StyledButton = styled<ComponentType<IUButtonProps>>(
   getUBlockWithProps({
     tag: createComponentWithPropsOmit<IUButtonProps>('button', ['type', 'icon', 'noPaddings']),
     styleConfig: {
-      px: ['9px'],
+      px: [4],
+      py: ['7px'],
+      pb: ['9px'],
     },
   })
 )`
@@ -19,7 +21,6 @@ export const StyledButton = styled<ComponentType<IUButtonProps>>(
   outline: unset;
   background: unset;
   border-radius: 100px;
-  height: 21px;
 
   ${({ type }) =>
     type === 'ghost' &&
@@ -27,10 +28,28 @@ export const StyledButton = styled<ComponentType<IUButtonProps>>(
       background: unset;
     `}
 
-  ${({ type, theme }) =>
+  ${({ type, theme, fill }) =>
     type === 'primary' &&
     css`
-      border: 1px solid ${theme.colors.blue};
+      color: ${fill ? theme.colors.white : theme.colors.blue};
+      border: 1px solid ${fill ? 'transparent' : theme.colors.blue};
+      background-color: ${fill ? theme.colors.blue : 'transparent'};
+
+      svg {
+        fill: ${theme.colors.blue};
+      }
+    `}
+
+  ${({ type, theme, fill }) =>
+    type === 'green' &&
+    css`
+      color: ${fill ? theme.colors.white : theme.colors.green};
+      border: 1px solid ${fill ? 'transparent' : theme.colors.green};
+      background-color: ${fill ? theme.colors.green : 'transparent'};
+
+      svg {
+        fill: ${theme.colors.green};
+      }
     `}
 
   ${({ noPaddings }) =>

@@ -25,7 +25,7 @@ const UTitle: React.FunctionComponent<IUTitleProps> = ({ level, children }) => {
         styleConfig: {
           my: [0],
           mt: theme.blocksSpace.map((n) => n - 1),
-          mb: theme.blocksSpace.map((n) => -(n - 4)),
+          mb: theme.blocksSpace.map((n) => -(n - 5)),
           ...styleConfig,
         },
       }),

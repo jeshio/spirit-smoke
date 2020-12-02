@@ -1,17 +1,26 @@
 import * as React from 'react'
 import styled from 'styled-components'
 import cn from 'classnames'
-import { layout, space, color, alignItems, justifyContent, top, bottom, left, right, fontSize } from 'styled-system'
+import {
+  layout,
+  space,
+  color,
+  alignItems,
+  justifyContent,
+  top,
+  bottom,
+  left,
+  right,
+  fontSize,
+  borderRadius,
+} from 'styled-system'
 import setProps from '@/wrappers/setProps'
 import { UBlockPropsType, TagType } from './types'
 import displayWithVisibleChecking from '@/helpers/displayWithVisibleChecking'
 
-export const UBlockRefContext = React.createContext(null)
-
-const Root = styled(({ tag: Tag = 'div', tagComponentProps, className }: UBlockPropsType<any>) => {
-  const ref = React.useContext(UBlockRefContext)
-  return <Tag {...tagComponentProps} className={cn(className, tagComponentProps.className)} ref={ref} />
-})`
+const Root = styled(({ tag: Tag = 'div', tagComponentProps, className }: UBlockPropsType<any>) => (
+  <Tag {...tagComponentProps} className={cn(className, tagComponentProps.className)} />
+))`
   ${space}
   ${layout}
   ${color}
@@ -23,6 +32,7 @@ const Root = styled(({ tag: Tag = 'div', tagComponentProps, className }: UBlockP
   ${left}
   ${right}
   ${fontSize}
+  ${borderRadius}
 `
 
 function UBlock<T extends TagType>({ styleConfig, tag, ...props }: UBlockPropsType<T>): JSX.Element {

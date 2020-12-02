@@ -1,39 +1,47 @@
 import * as React from 'react'
 import { useProductCategoryMenuListQuery } from '@/gql/__generated__/types'
 import UList from '@/ui-components/UList'
-import { Item, Root, ItemImage, ItemText, Content } from './index.styled'
+import { Item, ItemImage, ItemText, Content } from './index.styled'
 import { useRouter } from 'next/dist/client/router'
+import UBottomBar from '@/ui-components/UBottomBar'
+
+const { NEXT_PUBLIC_TOBACCO_PRODUCT_CATEGORY_SLUG } = process.env
 
 interface ICProductCategoriesListProps {
   className?: string
 }
 
+const ROUTES_WITH_HIDDEN_COMPONENT = ['/cart']
+
 const CProductCategoriesList: React.FunctionComponent<ICProductCategoriesListProps> = ({ className }) => {
   const router = useRouter()
+  const isVisible = !ROUTES_WITH_HIDDEN_COMPONENT.includes(router.pathname)
   const { loading, data } = useProductCategoryMenuListQuery()
-
-  if (loading || !data) return <span>Загрузка...</span>
 
   const items = React.useMemo(
     () =>
-      data.productCategories.map((productCategory, index) => {
-        const isActive = router.asPath.includes(productCategory.slug) || (router.asPath === '/' && index === 0)
+      data?.productCategories.map((productCategory) => {
+        const isActive =
+          router.asPath.includes(productCategory.slug) ||
+          (router.asPath === '/' && productCategory.slug === NEXT_PUBLIC_TOBACCO_PRODUCT_CATEGORY_SLUG)
         return (
           <Item key={productCategory.id} href={`/${productCategory.slug}`} isActive={isActive}>
             <ItemImage maskUrl="https://www.svgrepo.com/show/264260/hookah.svg" isActive={isActive} />
             <ItemText>{productCategory.name}</ItemText>
           </Item>
         )
-      }),
-    [data.productCategories, router.asPath]
+      }) || [],
+    [data?.productCategories, router.asPath]
   )
 
+  if (loading || !data) return <span>Загрузка...</span>
+
   return (
-    <Root>
+    <UBottomBar isVisible={isVisible}>
       <Content>
         <UList className={className} items={items} isHorizontal />
       </Content>
-    </Root>
+    </UBottomBar>
   )
 }
 

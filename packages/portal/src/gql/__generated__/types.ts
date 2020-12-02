@@ -36,6 +36,7 @@ export type Query = {
   productCategory?: Maybe<ProductCategory>;
   products: Array<Product>;
   productsByCategory: Array<Product>;
+  productsByIds: Array<Maybe<Product>>;
   promotion?: Maybe<Promotion>;
   promotions: Array<Maybe<Promotion>>;
 };
@@ -88,6 +89,11 @@ export type QueryProductCategoryArgs = {
 
 export type QueryProductsByCategoryArgs = {
   categoryIdSlug: Scalars['ID'];
+};
+
+
+export type QueryProductsByIdsArgs = {
+  productIds: Array<Scalars['ID']>;
 };
 
 
@@ -802,12 +808,12 @@ export type ProductSimpleFragment = ProductSimple_ProductSimple_Fragment | Produ
 
 type ProductCategoryMinimum_ProductCategorySimple_Fragment = (
   { __typename?: 'ProductCategorySimple' }
-  & Pick<ProductCategorySimple, 'id' | 'name' | 'iconUrl'>
+  & Pick<ProductCategorySimple, 'id' | 'name' | 'iconUrl' | 'slug'>
 );
 
 type ProductCategoryMinimum_ProductCategory_Fragment = (
   { __typename?: 'ProductCategory' }
-  & Pick<ProductCategory, 'id' | 'name' | 'iconUrl'>
+  & Pick<ProductCategory, 'id' | 'name' | 'iconUrl' | 'slug'>
 );
 
 export type ProductCategoryMinimumFragment = ProductCategoryMinimum_ProductCategorySimple_Fragment | ProductCategoryMinimum_ProductCategory_Fragment;
@@ -1017,6 +1023,29 @@ export type ProductsCatalogQuery = (
   )> }
 );
 
+export type CartProductsQueryVariables = Exact<{
+  productIds: Array<Scalars['ID']>;
+}>;
+
+
+export type CartProductsQuery = (
+  { __typename?: 'Query' }
+  & { productsByIds: Array<Maybe<(
+    { __typename?: 'Product' }
+    & Pick<Product, 'id' | 'name' | 'imageUrl' | 'weight' | 'price' | 'isInCart'>
+    & { cartItem?: Maybe<(
+      { __typename?: 'CartItem' }
+      & Pick<CartItem, 'productsCount'>
+    )>, company?: Maybe<(
+      { __typename?: 'Company' }
+      & Pick<Company, 'id' | 'name' | 'color'>
+    )>, productCategory?: Maybe<(
+      { __typename?: 'ProductCategory' }
+      & Pick<ProductCategory, 'id'>
+    )> }
+  )>> }
+);
+
 
 
 export type ResolverTypeWrapper<T> = Promise<T> | T;
@@ -1214,6 +1243,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   productCategory?: Resolver<Maybe<ResolversTypes['ProductCategory']>, ParentType, ContextType, RequireFields<QueryProductCategoryArgs, 'idSlug'>>;
   products?: Resolver<Array<ResolversTypes['Product']>, ParentType, ContextType>;
   productsByCategory?: Resolver<Array<ResolversTypes['Product']>, ParentType, ContextType, RequireFields<QueryProductsByCategoryArgs, 'categoryIdSlug'>>;
+  productsByIds?: Resolver<Array<Maybe<ResolversTypes['Product']>>, ParentType, ContextType, RequireFields<QueryProductsByIdsArgs, 'productIds'>>;
   promotion?: Resolver<Maybe<ResolversTypes['Promotion']>, ParentType, ContextType, RequireFields<QueryPromotionArgs, 'id'>>;
   promotions?: Resolver<Array<Maybe<ResolversTypes['Promotion']>>, ParentType, ContextType>;
 };
@@ -1713,6 +1743,7 @@ export const ProductCategoryMinimumFragmentDoc = gql`
   id
   name
   iconUrl
+  slug
 }
     `;
 export const ProductCategoryMenuListFragmentDoc = gql`
@@ -2194,3 +2225,52 @@ export function useProductsCatalogLazyQuery(baseOptions?: Apollo.LazyQueryHookOp
 export type ProductsCatalogQueryHookResult = ReturnType<typeof useProductsCatalogQuery>;
 export type ProductsCatalogLazyQueryHookResult = ReturnType<typeof useProductsCatalogLazyQuery>;
 export type ProductsCatalogQueryResult = Apollo.QueryResult<ProductsCatalogQuery, ProductsCatalogQueryVariables>;
+export const CartProductsDocument = gql`
+    query cartProducts($productIds: [ID!]!) {
+  productsByIds(productIds: $productIds) {
+    id
+    name
+    imageUrl
+    weight
+    price
+    isInCart @client
+    cartItem @client {
+      productsCount
+    }
+    company {
+      id
+      name
+      color
+    }
+    productCategory {
+      id
+    }
+  }
+}
+    `;
+
+/**
+ * __useCartProductsQuery__
+ *
+ * To run a query within a React component, call `useCartProductsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCartProductsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCartProductsQuery({
+ *   variables: {
+ *      productIds: // value for 'productIds'
+ *   },
+ * });
+ */
+export function useCartProductsQuery(baseOptions?: Apollo.QueryHookOptions<CartProductsQuery, CartProductsQueryVariables>) {
+        return Apollo.useQuery<CartProductsQuery, CartProductsQueryVariables>(CartProductsDocument, baseOptions);
+      }
+export function useCartProductsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CartProductsQuery, CartProductsQueryVariables>) {
+          return Apollo.useLazyQuery<CartProductsQuery, CartProductsQueryVariables>(CartProductsDocument, baseOptions);
+        }
+export type CartProductsQueryHookResult = ReturnType<typeof useCartProductsQuery>;
+export type CartProductsLazyQueryHookResult = ReturnType<typeof useCartProductsLazyQuery>;
+export type CartProductsQueryResult = Apollo.QueryResult<CartProductsQuery, CartProductsQueryVariables>;

@@ -13,6 +13,7 @@ import {
   FontSizeProps,
   MinWidthProps,
   MinHeightProps,
+  BorderRadiusProps,
 } from 'styled-system'
 import { ThemeType } from '@/styles/theme'
 import { DisplayWithVisibleCheckingProps } from '@/helpers/displayWithVisibleChecking'
@@ -33,6 +34,7 @@ type StyleConfigType =
   | FontSizeProps
   | MinWidthProps
   | MinHeightProps
+  | BorderRadiusProps
 
 export interface IUBlockProps {
   children?: React.ReactNode

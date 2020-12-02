@@ -1,21 +1,23 @@
 import createComponentWithPropsOmit from '@/helpers/createComponentWithPropsOmit'
+import theme from '@/styles/theme'
 import { getUBlockWithProps } from '@/ui-components/UBlock'
 import UButton from '@/ui-components/UButton'
 import UList from '@/ui-components/UList'
 import styled, { css } from 'styled-components'
 import { space } from 'styled-system'
+import WCartItemCounter from '../WCartItemCounter'
 
 export const ProductCard = styled(
   getUBlockWithProps({
     styleConfig: {
       width: ['180px'],
       height: ['168px'],
+      borderRadius: theme.card.borderRadius,
     },
   })
 )`
   background-color: #fff;
-  border-radius: 5px;
-  box-shadow: 8px 8px 40px rgba(218, 220, 228, 0.5);
+  box-shadow: ${({ theme }) => theme.card.boxShadow};
   display: flex;
   flex-direction: column;
 
@@ -183,23 +185,13 @@ export const Footer = styled(
   flex: 1;
 `
 
-export const Price = styled(
-  getUBlockWithProps({
-    styleConfig: {
-      fontSize: ['18px'],
-    },
-  })
-)`
-  font-weight: 600;
-`
-
 export const FeatureList = styled(
   getUBlockWithProps({
     tag: UList,
   })
 )`
   > * + * {
-    ${space({ ml: [2] })};
+    ${({ theme }) => space({ ml: [2], theme })};
   }
 `
 
@@ -207,24 +199,26 @@ export const ButtonsBlock = styled(getUBlockWithProps())`
   display: flex;
 
   > * + * {
-    ${space({ ml: [2] })};
+    ${({ theme }) => space({ ml: [2], theme })};
   }
 `
 
 export const InfoButton = styled(
   getUBlockWithProps({
-    tag: UButton,
+    tag: 'button',
     styleConfig: {
       width: ['24px'],
-      height: ['24px !important'],
+      height: ['24px'],
       fontSize: ['16px'],
-      paddingLeft: ['7px'],
+      pr: ['8px'],
     },
   })
 )`
   font-style: italic;
   border-radius: 50%;
   position: absolute;
+  border: unset;
+  outline: unset;
 
   ${({ theme }) => css`
     color: ${theme.colors.white};
@@ -263,12 +257,10 @@ export const BuyButton = styled(
   `
 )
 
-export const CartItemCountWrapper = styled(
+export const StyledWCartItemCounter = styled(
   getUBlockWithProps({
-    tag: createComponentWithPropsOmit('div', ['isVisible']),
+    tag: createComponentWithPropsOmit(WCartItemCounter, ['isVisible']),
     styleConfig: {
-      width: ['98px'],
-      height: ['32px'],
       right: [2],
     },
   })
@@ -279,75 +271,9 @@ export const CartItemCountWrapper = styled(
     position: absolute;
     opacity: ${isVisible ? 1 : 0};
     pointer-events: ${isVisible ? 'auto' : 'none'};
-    top: 50%;
     transform: translateX(${isVisible ? 0 : '-10px'});
     transform-origin: top right;
+    transform-origin: center right;
     transition: opacity 0.25s, transform 0.25s;
   `
 )
-
-export const CartItemCount = styled(
-  getUBlockWithProps({
-    styleConfig: {
-      width: '100%',
-      height: '100%',
-    },
-  })
-)(
-  ({ theme }) => css`
-    position: absolute;
-    border: 1px solid ${theme.colors.black};
-    border-radius: 100px;
-    text-align: center;
-    top: -50%;
-    right: 0;
-  `
-)
-
-export const CartItemCountValue = styled(
-  getUBlockWithProps({
-    tag: createComponentWithPropsOmit('div', ['isChanged']),
-    styleConfig: {
-      fontSize: ['16px'],
-      pt: ['5px'],
-    },
-  })
-)<{
-  isChanged: boolean
-}>(
-  ({ isChanged }) => css`
-    transform: scale(${isChanged ? 1.15 : 1});
-    transition: transform 0.08s;
-    transform-origin: bottom;
-  `
-)
-
-export const CountChangeButton = styled(
-  getUBlockWithProps({
-    tag: 'button',
-    styleConfig: {
-      width: ['45%'],
-      height: ['100%'],
-    },
-  })
-)`
-  position: absolute;
-  border: unset;
-  outline: unset;
-  background: unset;
-  color: ${({ theme }) => theme.colors.black};
-  top: 0;
-  font-weight: 300;
-  cursor: pointer;
-  user-select: none;
-`
-
-export const DecrementButton = styled(CountChangeButton)`
-  left: 0;
-  font-size: 16px;
-`
-
-export const IncrementButton = styled(CountChangeButton)`
-  right: 0;
-  font-size: 23px;
-`

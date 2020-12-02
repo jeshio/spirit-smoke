@@ -3,22 +3,6 @@ import { getUBlockWithProps } from '@/ui-components/UBlock'
 import ULink from '@/ui-components/ULink'
 import createComponentWithPropsOmit from '@/helpers/createComponentWithPropsOmit'
 
-export const Root = styled(
-  getUBlockWithProps({
-    styleConfig: {
-      width: ['100%'],
-      height: ['55px'],
-    },
-  })
-)`
-  background-color: #fff;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  overflow-y: hidden;
-  box-shadow: 0px 0px 2px rgba(154, 154, 154, 0.5);
-`
-
 export const Content = styled(
   getUBlockWithProps({
     styleConfig: {

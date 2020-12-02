@@ -6,7 +6,7 @@ const fields: TypedTypePolicies['Product']['fields'] = {
     read(_, { readField }) {
       const id = readField<string>('id')
       const item = cartItemsVar().find((cartItem) => cartItem.id === id)
-      return id ? item?.count > 0 : null
+      return id ? item?.productsCount > 0 : null
     },
   },
   cartItem: {

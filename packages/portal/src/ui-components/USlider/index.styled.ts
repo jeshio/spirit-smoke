@@ -10,6 +10,6 @@ export const Slider = styled(getUBlockWithProps())`
 
 export const StyledItem = styled(getUBlockWithProps())`
   & + & {
-    ${({ theme }) => space({ ml: [theme.space[2]] })};
+    ${({ theme }) => space({ ml: [2], theme })};
   }
 `

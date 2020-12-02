@@ -22,7 +22,7 @@ export const Root = styled(
   overflow-x: scroll;
 
   > * + * {
-    ${space({ ml: [3] })}
+    ${({ theme }) => space({ ml: [3], theme })}
   }
 `
 
