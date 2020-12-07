@@ -97,7 +97,7 @@ export const SubHeader = styled(
     styleConfig: {
       py: [2],
       pt: [`${theme.space[2] + 55}px`],
-      mb: theme.blocksSpace.map((n) => -(n - 4)),
+      mb: theme.blocksSpace.map((n) => n - 2),
     },
   })
 )`

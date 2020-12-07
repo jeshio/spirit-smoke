@@ -2,11 +2,12 @@ import createComponentWithPropsOmit from '@/helpers/createComponentWithPropsOmit
 import { ComponentType } from 'react'
 import styled, { css } from 'styled-components'
 import { getUBlockWithProps } from '../UBlock'
+import ButtonWithHref from './components/ButtonWithHref'
 import { IUButtonProps } from './types'
 
 export const StyledButton = styled<ComponentType<IUButtonProps>>(
   getUBlockWithProps({
-    tag: createComponentWithPropsOmit<IUButtonProps>('button', ['type', 'icon', 'noPaddings']),
+    tag: createComponentWithPropsOmit<IUButtonProps>(ButtonWithHref, ['type', 'icon', 'noPaddings']),
     styleConfig: {
       px: [4],
       py: ['7px'],
@@ -21,6 +22,13 @@ export const StyledButton = styled<ComponentType<IUButtonProps>>(
   outline: unset;
   background: unset;
   border-radius: 100px;
+  font-size: 14px;
+  cursor: pointer;
+  font-weight: 300;
+
+  &:hover {
+    color: currentColor;
+  }
 
   ${({ type }) =>
     type === 'ghost' &&
@@ -38,6 +46,10 @@ export const StyledButton = styled<ComponentType<IUButtonProps>>(
       svg {
         fill: ${theme.colors.blue};
       }
+
+      &:hover {
+        color: ${fill ? theme.colors.white : theme.colors.blue};
+      }
     `}
 
   ${({ type, theme, fill }) =>
@@ -49,6 +61,10 @@ export const StyledButton = styled<ComponentType<IUButtonProps>>(
 
       svg {
         fill: ${theme.colors.green};
+      }
+
+      &:hover {
+        color: ${fill ? theme.colors.white : theme.colors.green};
       }
     `}
 

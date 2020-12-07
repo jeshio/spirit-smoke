@@ -13,14 +13,24 @@ import {
   right,
   fontSize,
   borderRadius,
+  lineHeight,
+  fontWeight,
 } from 'styled-system'
 import setProps from '@/wrappers/setProps'
 import { UBlockPropsType, TagType } from './types'
 import displayWithVisibleChecking from '@/helpers/displayWithVisibleChecking'
 
-const Root = styled(({ tag: Tag = 'div', tagComponentProps, className }: UBlockPropsType<any>) => (
-  <Tag {...tagComponentProps} className={cn(className, tagComponentProps.className)} />
-))`
+const Root = styled(({ tag: Tag = 'div', tagComponentProps, className }: UBlockPropsType<any>) => {
+  const { forwardStyleConfig, ...componentProps } = tagComponentProps
+
+  return (
+    <Tag
+      {...componentProps}
+      {...(forwardStyleConfig && { styleConfig: forwardStyleConfig })}
+      className={cn(className, componentProps.className)}
+    />
+  )
+})`
   ${space}
   ${layout}
   ${color}
@@ -33,6 +43,8 @@ const Root = styled(({ tag: Tag = 'div', tagComponentProps, className }: UBlockP
   ${right}
   ${fontSize}
   ${borderRadius}
+  ${lineHeight}
+  ${fontWeight}
 `
 
 function UBlock<T extends TagType>({ styleConfig, tag, ...props }: UBlockPropsType<T>): JSX.Element {

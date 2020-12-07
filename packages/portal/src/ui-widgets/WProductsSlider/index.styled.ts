@@ -8,7 +8,7 @@ export const ProductsSlider = styled(
     tag: USlider,
     styleConfig: {
       px: [3],
-      mt: theme.blocksSpace,
+      mt: theme.blocksSpace.map((n) => n - 1),
       pb: [`100px`],
       mb: ['-100px'],
     },

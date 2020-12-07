@@ -5,4 +5,5 @@ export interface IUButtonProps {
   noPaddings?: boolean
   onClick?: () => void
   onBlur?: () => void
+  href?: string
 }

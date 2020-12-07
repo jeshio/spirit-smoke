@@ -67,14 +67,14 @@ const ProductCategoryPageContainer: React.FunctionComponent<IProductCategoryPage
 
       <CCompaniesSelector />
 
-      <UContent>
+      <UContent forwardStyleConfig={{ mt: [5] }}>
         <UTitle level={2}>Новые поступления</UTitle>
       </UContent>
 
       <WProductsSlider items={productsCatalogItems.slice(0, 12)} />
 
       {featuresVisible && (
-        <UContent>
+        <UContent forwardStyleConfig={{ mt: [5] }}>
           <UTitle level={2}>Предпочтения</UTitle>
         </UContent>
       )}

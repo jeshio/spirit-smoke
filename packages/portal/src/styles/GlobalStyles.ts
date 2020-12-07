@@ -42,6 +42,7 @@ const GlobalStyles = createGlobalStyle`
   html {
     background-color: #F8F8F8;
     font-family: ${({ theme }) => theme.fonts.primary};
+    letter-spacing: 0.02em;
     margin: 0;
     padding: 0;
   }

@@ -31,6 +31,7 @@ const theme = {
     inactive: { background: '#D8D8D8', color: '#8F90A6' },
     black: '#2D2C2E',
     blue: '#0F5CFE',
+    gray: '#717171',
     green: '#7BDE62',
     white: '#fff',
     linkColor: createObjectWithSequence(

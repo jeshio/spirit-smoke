@@ -11,7 +11,7 @@ interface ICProductCategoriesListProps {
   className?: string
 }
 
-const ROUTES_WITH_HIDDEN_COMPONENT = ['/cart']
+const ROUTES_WITH_HIDDEN_COMPONENT = ['/cart', '/checkout']
 
 const CProductCategoriesList: React.FunctionComponent<ICProductCategoriesListProps> = ({ className }) => {
   const router = useRouter()

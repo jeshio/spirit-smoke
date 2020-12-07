@@ -1,4 +1,4 @@
-import { getUBlockWithProps } from '../UBlock'
+import UBlock, { getUBlockWithProps } from '../UBlock'
 import styled from 'styled-components'
 
 /**
@@ -6,6 +6,7 @@ import styled from 'styled-components'
  */
 const UContent = styled(
   getUBlockWithProps({
+    tag: UBlock,
     styleConfig: {
       mx: 'auto',
       px: [3],

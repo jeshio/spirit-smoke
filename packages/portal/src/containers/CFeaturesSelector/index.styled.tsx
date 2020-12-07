@@ -10,7 +10,7 @@ const item = { span: { width: 46, height: 46, margin: theme.space[2] } }
 export const RootWrapper = styled(
   getUBlockWithProps({
     styleConfig: {
-      mt: theme.blocksSpace,
+      mt: theme.blocksSpace.map((n) => n - 1),
       mb: [`-${item.span.margin}px`],
     },
   })

@@ -28,3 +28,8 @@ export const changeCartItemCount = (cartItemId: string, newCount: number) => {
   cartItemsVar(result)
   saveCartItems(result)
 }
+
+export const clearCart = () => {
+  cartItemsVar([])
+  saveCartItems([])
+}

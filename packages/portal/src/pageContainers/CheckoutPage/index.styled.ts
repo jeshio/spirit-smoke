@@ -1,8 +1,14 @@
 import theme from '@/styles/theme'
 import { getUBlockWithProps } from '@/ui-components/UBlock'
+import UContent from '@/ui-components/UContent'
 import styled from 'styled-components'
 import { space } from 'styled-system'
-import CartItem from './components/CartItem'
+
+export const Root = styled(
+  getUBlockWithProps({
+    tag: UContent,
+  })
+)``
 
 export const TitleWrapper = styled(
   getUBlockWithProps({
@@ -12,7 +18,7 @@ export const TitleWrapper = styled(
   })
 )``
 
-export const ProductCategoryTitleWrapper = styled(
+export const DeliveryTextWrapper = styled(
   getUBlockWithProps({
     styleConfig: {
       mb: theme.blocksSpace.map((i) => i - 2),
@@ -20,20 +26,19 @@ export const ProductCategoryTitleWrapper = styled(
   })
 )``
 
-export const ProductsList = styled(getUBlockWithProps())`
-  > ${CartItem} + ${CartItem} {
-    ${({ theme }) =>
-      space({
-        mt: [2],
-        theme,
-      })}
+export const ExtraInputsWrapper = styled(getUBlockWithProps())`
+  display: flex;
 
-    & + ${ProductCategoryTitleWrapper} {
-      ${({ theme }) =>
-        space({
-          mt: theme.blocksSpace,
-          theme,
-        })}
+  > * {
+    flex: 4;
+    ${({ theme }) => space({ ml: [1], theme })}
+
+    &:nth-child(3) {
+      flex: 8;
+    }
+
+    &:first-child {
+      margin-left: 0;
     }
   }
 `

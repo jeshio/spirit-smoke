@@ -51,7 +51,7 @@ const CartPage: React.FunctionComponent<ICartPageProps> = () => {
           (base, productCategoryId) => [
             ...base,
             <ProductCategoryTitleWrapper key={`productCategory_${productCategoryId}`}>
-              <UTitle level={2}>{productCategoriesById[productCategoryId]?.name}</UTitle>
+              <UTitle level={3}>{productCategoriesById[productCategoryId]?.name}</UTitle>
             </ProductCategoryTitleWrapper>,
             makeProductsList(productCategoryId),
           ],
@@ -61,16 +61,14 @@ const CartPage: React.FunctionComponent<ICartPageProps> = () => {
   )
 
   return (
-    <>
+    <UContent>
       <UMetaTitle title="Корзина" />
-      <UContent>
-        <TitleWrapper>
-          <UTitle level={1}>Корзина</UTitle>
-        </TitleWrapper>
+      <TitleWrapper>
+        <UTitle level={1}>Корзина</UTitle>
+      </TitleWrapper>
 
-        <ProductsList>{productsList}</ProductsList>
-      </UContent>
-    </>
+      <ProductsList>{productsList}</ProductsList>
+    </UContent>
   )
 }
 

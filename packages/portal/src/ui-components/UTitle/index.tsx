@@ -11,10 +11,20 @@ const UTitle: React.FunctionComponent<IUTitleProps> = ({ level, children }) => {
   let styleConfig: Parameters<typeof getUBlockWithProps>[0]['styleConfig'] = {}
   switch (level) {
     case 1:
-      styleConfig = {}
+      styleConfig = {
+        fontSize: ['28px'],
+      }
       break
     case 2:
-      styleConfig = {}
+      styleConfig = {
+        fontSize: ['21px'],
+      }
+      break
+    case 3:
+      styleConfig = {
+        fontSize: ['21px'],
+        fontWeight: [500],
+      }
       break
   }
 
@@ -24,8 +34,7 @@ const UTitle: React.FunctionComponent<IUTitleProps> = ({ level, children }) => {
         tag: Tag as any,
         styleConfig: {
           my: [0],
-          mt: theme.blocksSpace.map((n) => n - 1),
-          mb: theme.blocksSpace.map((n) => -(n - 5)),
+          mb: theme.blocksSpace.map((n) => n - 3),
           ...styleConfig,
         },
       }),

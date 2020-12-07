@@ -3,7 +3,7 @@ import { InputSearchIcon, Root, StyledInput } from './searchInput.styled'
 
 interface ISearchInputProps {}
 
-const SearchInput: React.FunctionComponent<ISearchInputProps> = (props) => {
+const SearchInput: React.FunctionComponent<ISearchInputProps> = () => {
   return (
     <Root>
       <StyledInput placeholder="Поиск в Spirit Smoke" />

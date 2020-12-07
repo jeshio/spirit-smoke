@@ -21,8 +21,10 @@ export const StyledInput = styled(
     tag: UInput,
     styleConfig: {
       height: ['29px'],
-      px: ['18px'],
-      py: ['0'],
+      p: [0],
+      m: [0],
+      my: [0],
+      px: [4],
       paddingBottom: ['2px'],
     },
   })
@@ -31,6 +33,7 @@ export const StyledInput = styled(
   outline: none;
   border-radius: 20px !important;
   width: 100%;
+  box-shadow: unset;
 
   &::placeholder {
     font-weight: 200;
