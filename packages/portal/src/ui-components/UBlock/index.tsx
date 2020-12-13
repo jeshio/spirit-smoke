@@ -21,13 +21,14 @@ import { UBlockPropsType, TagType } from './types'
 import displayWithVisibleChecking from '@/helpers/displayWithVisibleChecking'
 
 const Root = styled(({ tag: Tag = 'div', tagComponentProps, className }: UBlockPropsType<any>) => {
-  const { forwardStyleConfig, ...componentProps } = tagComponentProps
+  const { forwardStyleConfig, forwardRef, ...componentProps } = tagComponentProps
 
   return (
     <Tag
       {...componentProps}
       {...(forwardStyleConfig && { styleConfig: forwardStyleConfig })}
       className={cn(className, componentProps.className)}
+      ref={forwardRef}
     />
   )
 })`

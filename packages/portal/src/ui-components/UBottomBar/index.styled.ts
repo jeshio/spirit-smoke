@@ -19,7 +19,6 @@ export const Root = styled(
     background-color: #fff;
     position: fixed;
     ${isVisible ? 'bottom: 0;' : ''}
-    transition: bottom 0.5s;
     left: 0;
     overflow-y: hidden;
     box-shadow: ${theme.bottomBar.boxShadow};

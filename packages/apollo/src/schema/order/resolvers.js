@@ -9,6 +9,7 @@ const resolvers = {
   },
 
   Mutation: {
+    // TODO: простановка статуса, переход на следующий
     createOrder: async (parent, {
       input: {
         address,

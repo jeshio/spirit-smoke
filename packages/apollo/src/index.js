@@ -20,9 +20,13 @@ const server = new ApolloServer({
   formatError: (error) => {
     // remove the internal sequelize error message
     // leave only the important validation error
-    const message = error.message
+    let message = error.message
       .replace('SequelizeValidationError: ', '')
-      .replace('Validation error: ', '')
+
+    if (message.includes('Validation error: ')) {
+      const [, fieldName] = new RegExp(/is on ([^\s]+) failed/).exec(error.message)
+      message = `Некорректно заполнено поле ${fieldName}`
+    }
 
     return {
       ...error,

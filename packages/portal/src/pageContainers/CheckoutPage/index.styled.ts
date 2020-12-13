@@ -30,8 +30,12 @@ export const ExtraInputsWrapper = styled(getUBlockWithProps())`
   display: flex;
 
   > * {
-    flex: 4;
+    flex: 5;
     ${({ theme }) => space({ ml: [1], theme })}
+
+    &:nth-child(2) {
+      flex: 4;
+    }
 
     &:nth-child(3) {
       flex: 8;

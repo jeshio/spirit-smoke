@@ -19,6 +19,7 @@ import {
 } from 'styled-system'
 import { ThemeType } from '@/styles/theme'
 import { DisplayWithVisibleCheckingProps } from '@/helpers/displayWithVisibleChecking'
+import { Ref } from 'react'
 
 type StyleConfigType =
   | DisplayWithVisibleCheckingProps
@@ -43,6 +44,7 @@ type StyleConfigType =
 export interface IUBlockProps {
   children?: React.ReactNode
   className?: string
+  forwardRef?: Ref<any>
   style?: React.CSSProperties
   styleConfig?: StyleConfigType
   /** Для случаев, когда tag === UBlock */

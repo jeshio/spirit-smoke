@@ -8,6 +8,7 @@ import WProductsSlider from '@/ui-widgets/WProductsSlider'
 import CFeaturesSelector from '@/containers/CFeaturesSelector'
 import UTitle from '@/ui-components/UTitle'
 import isServer from '@/helpers/isServer'
+import CFooter from '@/containers/CFooter'
 
 interface IProductCategoryPageContainerProps {
   title?: string
@@ -80,6 +81,8 @@ const ProductCategoryPageContainer: React.FunctionComponent<IProductCategoryPage
       )}
 
       <CFeaturesSelector setVisible={setFeaturesVisible} />
+
+      <CFooter />
     </>
   )
 }

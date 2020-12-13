@@ -17,7 +17,7 @@ input OrderInput {
   deliveryTime: String!
   phoneNumber: String!
   products: [OrderProductInput!]!
-  status: OrderStatus!
+  status: OrderStatus
 }
 
 enum OrderStatus {

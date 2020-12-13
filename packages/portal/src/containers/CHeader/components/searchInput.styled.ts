@@ -10,6 +10,7 @@ export const Root = styled(
       width: ['100%'],
       mx: ['12px'],
       paddingRight: ['15px'],
+      my: [0],
     },
   })
 )`
@@ -21,9 +22,7 @@ export const StyledInput = styled(
     tag: UInput,
     styleConfig: {
       height: ['29px'],
-      p: [0],
-      m: [0],
-      my: [0],
+      py: [0],
       px: [4],
       paddingBottom: ['2px'],
     },
@@ -34,6 +33,7 @@ export const StyledInput = styled(
   border-radius: 20px !important;
   width: 100%;
   box-shadow: unset;
+  margin: 0;
 
   &::placeholder {
     font-weight: 200;

@@ -2,7 +2,7 @@ import * as React from 'react'
 import { StyledButton } from './index.styled'
 import { IUButtonProps } from './types'
 
-const UButton: React.FunctionComponent<IUButtonProps> = (props) => {
+const UButton: React.FunctionComponent<IUButtonProps> = ({ isSubmit, type, ...props }) => {
   let child = props.children
 
   if (props.icon) {
@@ -14,7 +14,11 @@ const UButton: React.FunctionComponent<IUButtonProps> = (props) => {
     )
   }
 
-  return <StyledButton {...props}>{child}</StyledButton>
+  return (
+    <StyledButton {...props} colorType={type} type={isSubmit ? 'submit' : 'button'}>
+      {child}
+    </StyledButton>
+  )
 }
 
 UButton.defaultProps = {

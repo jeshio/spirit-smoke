@@ -5,9 +5,16 @@ import { getUBlockWithProps } from '../UBlock'
 import ButtonWithHref from './components/ButtonWithHref'
 import { IUButtonProps } from './types'
 
-export const StyledButton = styled<ComponentType<IUButtonProps>>(
+export const StyledButton = styled<
+  ComponentType<Omit<IUButtonProps, 'type'> & { colorType: IUButtonProps['type']; type: 'submit' | 'button' }>
+>(
   getUBlockWithProps({
-    tag: createComponentWithPropsOmit<IUButtonProps>(ButtonWithHref, ['type', 'icon', 'noPaddings']),
+    tag: createComponentWithPropsOmit<IUButtonProps & { colorType: IUButtonProps['type'] }>(ButtonWithHref, [
+      'colorType',
+      'icon',
+      'noPaddings',
+      'fill',
+    ]),
     styleConfig: {
       px: [4],
       py: ['7px'],
@@ -25,19 +32,20 @@ export const StyledButton = styled<ComponentType<IUButtonProps>>(
   font-size: 14px;
   cursor: pointer;
   font-weight: 300;
+  appearance: none;
 
   &:hover {
     color: currentColor;
   }
 
-  ${({ type }) =>
-    type === 'ghost' &&
+  ${({ colorType }) =>
+    colorType === 'ghost' &&
     css`
       background: unset;
     `}
 
-  ${({ type, theme, fill }) =>
-    type === 'primary' &&
+  ${({ colorType, theme, fill }) =>
+    colorType === 'primary' &&
     css`
       color: ${fill ? theme.colors.white : theme.colors.blue};
       border: 1px solid ${fill ? 'transparent' : theme.colors.blue};
@@ -52,8 +60,8 @@ export const StyledButton = styled<ComponentType<IUButtonProps>>(
       }
     `}
 
-  ${({ type, theme, fill }) =>
-    type === 'green' &&
+  ${({ colorType, theme, fill }) =>
+    colorType === 'green' &&
     css`
       color: ${fill ? theme.colors.white : theme.colors.green};
       border: 1px solid ${fill ? 'transparent' : theme.colors.green};
@@ -65,6 +73,19 @@ export const StyledButton = styled<ComponentType<IUButtonProps>>(
 
       &:hover {
         color: ${fill ? theme.colors.white : theme.colors.green};
+      }
+    `}
+  
+  ${({ theme, disabled, fill }) =>
+    disabled &&
+    fill &&
+    css`
+      &,
+      &:hover,
+      &:focus {
+        background-color: ${theme.colors.gray};
+        color: ${theme.colors.placeholderColor};
+        cursor: auto;
       }
     `}
 

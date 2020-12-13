@@ -34,7 +34,9 @@
     "@graphql-codegen/typescript-operations": "1.17.8",
     "@graphql-codegen/typescript-react-apollo": "2.0.6",
     "@graphql-codegen/typescript-resolvers": "1.17.8",
+    "@hookform/resolvers": "^1.1.2",
     "@types/dotenv": "8.2.0",
+    "@types/react-input-mask": "^3.0.0",
     "babel-plugin-polished": "1.1.0",
     "babel-plugin-styled-components": "1.11.1",
     "dotenv": "8.2.0",
@@ -45,8 +47,11 @@
     "polished": "3.6.6",
     "react": "16.13.1",
     "react-dom": "16.13.1",
+    "react-hook-form": "^6.12.2",
+    "react-input-mask": "^2.0.4",
     "styled-components": "5.2.0",
-    "styled-system": "5.1.5"
+    "styled-system": "5.1.5",
+    "zod": "^1.11.11"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.161",

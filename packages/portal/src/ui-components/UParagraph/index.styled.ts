@@ -11,7 +11,7 @@ export const Root = styled(
     },
   })
 )`
-  color: ${({ theme }) => theme.colors.gray};
+  color: ${({ theme }) => theme.colors.placeholderColor};
   font-weight: 500;
   letter-spacing: 0.01em;
 `

@@ -441,7 +441,7 @@ export type OrderInput = {
   deliveryTime: Scalars['String'];
   phoneNumber: Scalars['String'];
   products: Array<OrderProductInput>;
-  status: OrderStatus;
+  status?: Maybe<OrderStatus>;
 };
 
 export enum OrderStatus {
@@ -1044,6 +1044,23 @@ export type CartProductsQuery = (
       & Pick<ProductCategory, 'id'>
     )> }
   )>> }
+);
+
+export type CreateCheckoutOrderMutationVariables = Exact<{
+  phoneNumber: Scalars['String'];
+  address: Scalars['String'];
+  deliveryTime: Scalars['String'];
+  intercomCode?: Maybe<Scalars['String']>;
+  products: Array<OrderProductInput>;
+}>;
+
+
+export type CreateCheckoutOrderMutation = (
+  { __typename?: 'Mutation' }
+  & { createOrder: (
+    { __typename?: 'OrderSimple' }
+    & Pick<OrderSimple, 'id'>
+  ) }
 );
 
 
@@ -2274,3 +2291,39 @@ export function useCartProductsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptio
 export type CartProductsQueryHookResult = ReturnType<typeof useCartProductsQuery>;
 export type CartProductsLazyQueryHookResult = ReturnType<typeof useCartProductsLazyQuery>;
 export type CartProductsQueryResult = Apollo.QueryResult<CartProductsQuery, CartProductsQueryVariables>;
+export const CreateCheckoutOrderDocument = gql`
+    mutation createCheckoutOrder($phoneNumber: String!, $address: String!, $deliveryTime: String!, $intercomCode: String, $products: [OrderProductInput!]!) {
+  createOrder(input: {address: $address, intercomCode: $intercomCode, deliveryTime: $deliveryTime, phoneNumber: $phoneNumber, products: $products}) {
+    id
+  }
+}
+    `;
+export type CreateCheckoutOrderMutationFn = Apollo.MutationFunction<CreateCheckoutOrderMutation, CreateCheckoutOrderMutationVariables>;
+
+/**
+ * __useCreateCheckoutOrderMutation__
+ *
+ * To run a mutation, you first call `useCreateCheckoutOrderMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateCheckoutOrderMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createCheckoutOrderMutation, { data, loading, error }] = useCreateCheckoutOrderMutation({
+ *   variables: {
+ *      phoneNumber: // value for 'phoneNumber'
+ *      address: // value for 'address'
+ *      deliveryTime: // value for 'deliveryTime'
+ *      intercomCode: // value for 'intercomCode'
+ *      products: // value for 'products'
+ *   },
+ * });
+ */
+export function useCreateCheckoutOrderMutation(baseOptions?: Apollo.MutationHookOptions<CreateCheckoutOrderMutation, CreateCheckoutOrderMutationVariables>) {
+        return Apollo.useMutation<CreateCheckoutOrderMutation, CreateCheckoutOrderMutationVariables>(CreateCheckoutOrderDocument, baseOptions);
+      }
+export type CreateCheckoutOrderMutationHookResult = ReturnType<typeof useCreateCheckoutOrderMutation>;
+export type CreateCheckoutOrderMutationResult = Apollo.MutationResult<CreateCheckoutOrderMutation>;
+export type CreateCheckoutOrderMutationOptions = Apollo.BaseMutationOptions<CreateCheckoutOrderMutation, CreateCheckoutOrderMutationVariables>;

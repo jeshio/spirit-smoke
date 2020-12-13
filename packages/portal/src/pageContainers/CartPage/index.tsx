@@ -3,8 +3,10 @@ import { useCartProductsQuery, useProductCategoryMinimumListQuery } from '@/gql/
 import UContent from '@/ui-components/UContent'
 import UMetaTitle from '@/ui-components/UMetaTitle'
 import UTitle from '@/ui-components/UTitle'
+import WCartTotalBar from '@/ui-widgets/WCartTotalBar'
 import { useReactiveVar } from '@apollo/client'
 import { groupBy, keyBy, sortBy } from 'lodash'
+import Link from 'next/link'
 import React, { useCallback, useMemo } from 'react'
 import CartItem from './components/CartItem'
 import { ProductCategoryTitleWrapper, ProductsList, TitleWrapper } from './index.styled'
@@ -35,6 +37,7 @@ const CartPage: React.FunctionComponent<ICartPageProps> = () => {
       )) || [],
     [productsByCategory]
   )
+  const cartIsEmpty = Object.keys(productsByCategory).length === 0
   const productsList = useMemo(
     () =>
       Object.keys(productsByCategory)
@@ -61,14 +64,23 @@ const CartPage: React.FunctionComponent<ICartPageProps> = () => {
   )
 
   return (
-    <UContent>
-      <UMetaTitle title="Корзина" />
-      <TitleWrapper>
-        <UTitle level={1}>Корзина</UTitle>
-      </TitleWrapper>
+    <>
+      <UContent>
+        <UMetaTitle title="Корзина" />
+        <TitleWrapper>
+          <UTitle level={1}>Корзина</UTitle>
+        </TitleWrapper>
 
-      <ProductsList>{productsList}</ProductsList>
-    </UContent>
+        <ProductsList>{productsList}</ProductsList>
+
+        {cartIsEmpty && (
+          <div>
+            Корзина пуста. <Link href="/">Посмотреть товары</Link>
+          </div>
+        )}
+      </UContent>
+      <WCartTotalBar isDisabled={cartItems.length === 0} />
+    </>
   )
 }
 

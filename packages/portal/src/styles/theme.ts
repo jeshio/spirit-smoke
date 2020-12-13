@@ -27,11 +27,12 @@ const theme = {
   colors: {
     primaryColor: '#2D2C2E',
     secondColor: '#FEF900',
-    placeholderColor: '#9F9F9F',
+    placeholderColor: '#9a9a9a',
     inactive: { background: '#D8D8D8', color: '#8F90A6' },
+    red: '#f66',
     black: '#2D2C2E',
     blue: '#0F5CFE',
-    gray: '#717171',
+    gray: '#e9e9e9',
     green: '#7BDE62',
     white: '#fff',
     linkColor: createObjectWithSequence(

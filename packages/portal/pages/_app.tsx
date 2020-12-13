@@ -7,10 +7,8 @@ import GlobalStyles from '@/styles/GlobalStyles'
 import { ThemeProvider } from 'styled-components'
 import Head from 'next/head'
 import theme from '@/styles/theme'
-import CFooter from '@/containers/CFooter'
 import CHeader from '@/containers/CHeader'
 import CProductCategoriesList from '@/containers/CProductCategoriesList'
-import WCartTotalBar from '@/ui-widgets/WCartTotalBar'
 
 function MyApp({ Component, pageProps, apollo }: AppProps) {
   return (
@@ -31,8 +29,6 @@ function MyApp({ Component, pageProps, apollo }: AppProps) {
           <Component {...pageProps} />
         </main>
         <CProductCategoriesList />
-        <WCartTotalBar /> {/* TODO: перенести в портал */}
-        <CFooter />
       </ThemeProvider>
     </ApolloProvider>
   )

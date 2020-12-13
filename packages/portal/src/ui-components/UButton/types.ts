@@ -6,4 +6,6 @@ export interface IUButtonProps {
   onClick?: () => void
   onBlur?: () => void
   href?: string
+  isSubmit?: boolean
+  disabled?: boolean
 }
