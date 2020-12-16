@@ -80,6 +80,8 @@ export const ListItem = styled.li`
 
 export const ListItemDeleteButton = styled.button``
 
-export const CountInput = styled(InputNumber)`
-  width: 60px !important;
+export const ProductNumberFieldInput = styled(InputNumber)`
+  & + & {
+    margin-left: 5px;
+  }
 `

@@ -1,12 +1,13 @@
-import { OrderItemPageFragment, useOrderFormProductsQuery } from '@/gql/__generated__/types'
+import { OrderItemPageFragment } from '@/gql/__generated__/types'
 import UBlock from '@/ui-components/UBlock'
 import UButton from '@/ui-components/UButton'
 import UCol from '@/ui-components/UCol'
 import UForm from '@/ui-components/UForm'
-import UItemsSelector, { UItemsSelectorValueObjectType } from '@/ui-components/UItemsSelector'
+import { UItemsSelectorValueObjectType } from '@/ui-components/UItemsSelector'
 import URow from '@/ui-components/URow'
+import UWProductsSelector from '@/ui-widgets/UWProductsSelector'
 import { Card, Input, InputNumber, Select } from 'antd'
-import React, { ComponentProps, useCallback, useMemo } from 'react'
+import React, { useCallback, useMemo } from 'react'
 import { ORDER_STATUSES } from './constants'
 
 export interface IOrderFormProps {
@@ -17,17 +18,6 @@ export interface IOrderFormProps {
 }
 
 const OrderForm: React.FunctionComponent<IOrderFormProps> = ({ order, loading, isUpdate, onSubmit }) => {
-  const productsRequest = useOrderFormProductsQuery()
-  const productItems = useMemo(
-    (): ComponentProps<typeof UItemsSelector>['optionsToAdd'] =>
-      productsRequest.data?.products.map((product) => ({
-        title: `${product.company?.name || ''}, ${product.name}`,
-        value: product.id,
-        link: `/products/${product.id}`,
-        extra: `${product.price} ₽`,
-      })) || [],
-    [productsRequest.data]
-  )
   const selectedProductIds = useMemo(
     () => order?.orderProducts?.map(({ product, productsCount }) => ({ id: product.id, count: productsCount })) || [],
     [order]
@@ -99,7 +89,7 @@ const OrderForm: React.FunctionComponent<IOrderFormProps> = ({ order, loading, i
                   xxl: 6,
                 }}
               >
-                <UItemsSelector optionsToAdd={productItems} loading={productsRequest.loading} withCount />
+                <UWProductsSelector withCount />
               </UForm.Item>
             </UCol>
           </URow>

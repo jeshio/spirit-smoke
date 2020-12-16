@@ -1,0 +1,4 @@
+fragment ProcurementMinimum on IProcurement {
+  id
+  status
+}

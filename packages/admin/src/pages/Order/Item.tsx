@@ -29,7 +29,7 @@ const OrderItemPage: React.FunctionComponent<IOrderItemPageProps> = (props) => {
     variables: {
       id,
     },
-    loadingTip: 'Загрузка продукта',
+    loadingTip: 'Загрузка заказа',
     queryName: 'order',
   })
 

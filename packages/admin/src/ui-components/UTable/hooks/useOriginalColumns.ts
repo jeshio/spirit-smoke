@@ -28,6 +28,12 @@ export const defaultSorter = (a: any, b: any) => {
   return `${a}`.localeCompare(b)
 }
 
+/**
+ * Генерирует сортировщика для его дальнейшего использования
+ * @param field Поле для сортировки
+ * @param sorter Кастомный сортировщик
+ * @param invert Обратная сортировка
+ */
 export const generateSorter = (field: any | any[], sorter?: IColumnSorter, invert?: boolean) => (a: any, b: any) => {
   const aVal = get(invert ? b : a, field)
   const bVal = get(invert ? a : b, field)

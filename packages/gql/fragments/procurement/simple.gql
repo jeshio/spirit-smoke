@@ -1,0 +1,6 @@
+fragment ProcurementSimple on IProcurement {
+  id
+  status
+  nextStatusDate
+  deliveryCost
+}

@@ -15,7 +15,7 @@ fragment ProductCategoryItemPage on ProductCategory {
 }
 
 query productCategoryItemPage($id: ID!) {
-  productCategory(id: $id) {
+  productCategory(idSlug: $id) {
     ...ProductCategoryItemPage
   }
 }

@@ -26,6 +26,42 @@ export const baseRoutes = [
   //   ],
   // },
   {
+    path: '/procurements',
+    redirect: '/procurements/list',
+    exact: true,
+  },
+  {
+    name: 'Поставки',
+    icon: 'CrownOutlined',
+    path: '/procurements',
+    routes: [
+      {
+        path: '/procurements/list',
+        name: 'Список',
+        component: './Procurement/List',
+        hideInMenu: true,
+      },
+      {
+        path: '/procurements/add',
+        name: 'Добавить поставку',
+        component: './Procurement/Add',
+        hideInMenu: true,
+      },
+      {
+        path: '/procurements/:id/edit',
+        name: 'Редактирование поставки',
+        hideInMenu: true,
+        component: './Procurement/Update',
+      },
+      {
+        path: '/procurements/:id',
+        name: 'Поставка',
+        hideInMenu: true,
+        component: './Procurement/Item',
+      },
+    ],
+  },
+  {
     path: '/orders',
     redirect: '/orders/list',
     exact: true,

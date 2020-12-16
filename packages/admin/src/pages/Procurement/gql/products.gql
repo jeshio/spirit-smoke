@@ -4,7 +4,7 @@
 #import "@/gql/fragments/feature/minimum.gql"
 #import "@/gql/fragments/product/minimum.gql"
 
-fragment OrderFormProduct on Product {
+fragment ProcurementFormProduct on Product {
   ...ProductMinimum
   price
   count
@@ -16,8 +16,8 @@ fragment OrderFormProduct on Product {
   }
 }
 
-query OrderFormProducts {
+query ProcurementFormProducts {
   products {
-    ...OrderFormProduct
+    ...ProcurementFormProduct
   }
 }

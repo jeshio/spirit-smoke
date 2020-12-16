@@ -6,25 +6,7 @@ import * as styled from './index.styled'
 import UBlock from '../UBlock'
 import UButton from '../UButton'
 import Item from './Item'
-import { OptionType } from './types'
-
-export type UItemsSelectorValueObjectType = {
-  id: string
-  count: number
-}
-
-type ValueType = string | UItemsSelectorValueObjectType
-
-interface IUItemsSelectorProps {
-  placeholder?: string
-  optionsToAdd: Array<OptionType>
-  value?: ValueType[]
-  loading?: boolean
-  onChange?: (value: ValueType[]) => void
-  enableToSelectDisabledItems?: boolean
-  disabled?: boolean
-  withCount?: boolean
-}
+import { ValueType, UItemsSelectorValueObjectType, IUItemsSelectorProps } from './types'
 
 const getIdsFromValueTypes = (valueTypes: ValueType[]): string[] =>
   valueTypes.map((val) => (typeof val === 'string' ? val : val.id))
@@ -49,8 +31,17 @@ const getExtraFromValues = (values: ValueType[]) =>
  * Компонент с селектом для выбора нескольких опций и их отображения в списке
  * С возможностью заполнения дополнительных полей в списке
  */
-const UItemsSelector: React.FunctionComponent<IUItemsSelectorProps> = ({ value = [], loading, ...props }) => {
-  const { placeholder, optionsToAdd, disabled, enableToSelectDisabledItems, withCount } = props
+const UItemsSelector: React.FunctionComponent<IUItemsSelectorProps> = ({
+  value = [],
+  loading,
+  placeholder,
+  optionsToAdd,
+  disabled,
+  enableToSelectDisabledItems,
+  withCount,
+  onChange,
+  withPriceSetter,
+}) => {
   const [selectedIds, setSelectedIds] = useState(getIdsFromValueTypes(value))
   const [selectedValuesExtra, setSelectedValuesExtra] = useState(getExtraFromValues(value))
   const setSelectedValues = useCallback(
@@ -108,6 +99,7 @@ const UItemsSelector: React.FunctionComponent<IUItemsSelectorProps> = ({ value =
                   [id]: {
                     id,
                     count: 1,
+                    price: 0,
                   },
                 }),
           }),
@@ -117,14 +109,16 @@ const UItemsSelector: React.FunctionComponent<IUItemsSelectorProps> = ({ value =
     },
     [selectedValuesExtra, selectedIds]
   )
-  const handleCountChange = useCallback(
-    (id: string) => (count?: string | number) => {
+  const makeProductChangeHandler = useCallback(
+    (id: string, field: keyof UItemsSelectorValueObjectType, valueHandler: (value?: string) => any) => (
+      v: string | number | undefined
+    ) => {
       isChanged.current = true
       setSelectedValuesExtra({
         ...selectedValuesExtra,
         [id]: {
           ...selectedValuesExtra[id],
-          count: Number(count) || 1,
+          [field]: valueHandler(String(v)),
         },
       })
     },
@@ -142,7 +136,21 @@ const UItemsSelector: React.FunctionComponent<IUItemsSelectorProps> = ({ value =
             <Item option={option} disabled={disabled} />
             <UBlock display="flex" alignItems="center">
               {withCount && selectedValuesExtra[id] && (
-                <styled.CountInput value={selectedValuesExtra[id].count} onChange={handleCountChange(id)} min={1} />
+                <styled.ProductNumberFieldInput
+                  value={selectedValuesExtra[id].count}
+                  onChange={makeProductChangeHandler(id, 'count', (count) => Number(count) || 1)}
+                  min={1}
+                  style={{ width: '60px' }}
+                  placeholder="Количество"
+                />
+              )}
+              {withPriceSetter && selectedValuesExtra[id] && (
+                <styled.ProductNumberFieldInput
+                  value={selectedValuesExtra[id].price}
+                  onChange={makeProductChangeHandler(id, 'price', (price) => Number(price) || 0)}
+                  min={0}
+                  placeholder="Цена"
+                />
               )}
               <UButton
                 icon={<CloseOutlined />}
@@ -175,13 +183,13 @@ const UItemsSelector: React.FunctionComponent<IUItemsSelectorProps> = ({ value =
       if (withCount) {
         const valuesWithExtra: UItemsSelectorValueObjectType[] = selectedIds.map((id) => selectedValuesExtra[id])
         if (!isEqual(value, valuesWithExtra)) {
-          props.onChange?.(valuesWithExtra)
+          onChange?.(valuesWithExtra)
         }
       } else if (!isEqual(getIdsFromValueTypes(value), selectedIds)) {
-        props.onChange?.(selectedIds)
+        onChange?.(selectedIds)
       }
     }
-  }, [selectedIds, selectedValuesExtra, withCount, props.onChange, loading, isChanged.current])
+  }, [selectedIds, selectedValuesExtra, withCount, onChange, loading, isChanged.current])
 
   return (
     <styled.Root>
@@ -217,5 +225,7 @@ const UItemsSelector: React.FunctionComponent<IUItemsSelectorProps> = ({ value =
     </styled.Root>
   )
 }
+
+export * from './types'
 
 export default UItemsSelector

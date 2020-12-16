@@ -1,0 +1,8 @@
+
+#import "@@/gql/fragments/procurement/simple.gql"
+
+mutation createProcurement($input: ProcurementInput!) {
+	createProcurement(input: $input) {
+		...ProcurementSimple
+	}
+}

@@ -5,13 +5,53 @@ const resolvers = {
   },
 
   Mutation: {
-    createProcurement: (parent, {
+    createProcurement: async (parent, {
       input: {
         nextStatusDate,
         deliveryCost,
+        status,
+        products,
       },
-    }, { models }) => models.procurement.create({
-      nextStatusDate, deliveryCost,
+    }, { sequelize, models }) => sequelize.transaction(async (transaction) => {
+      const procurement = await models.procurement.create({
+        nextStatusDate, deliveryCost, status,
+      }, { transaction })
+      const promises = products.map(({ id: productId, count, costs }) =>
+        procurement.addProduct(productId, {
+          transaction,
+          through: {
+            count, costs,
+          },
+        }))
+      await Promise.all(promises)
+      return procurement
+    }),
+    updateProcurement: (parent, {
+      id, input: {
+        nextStatusDate,
+        deliveryCost,
+        status,
+        products,
+      },
+    }, { sequelize, models }) => sequelize.transaction(async (transaction) => {
+      const updatedProcurement = await models.procurement.update({
+        nextStatusDate, deliveryCost, status,
+      }, {
+        where: { id }, returning: true, transaction,
+      }).then(([, [procurement]]) => procurement)
+
+      await updatedProcurement.setProducts(null, { transaction })
+      const promises = products.map(({ id: productId, count, costs }) =>
+        updatedProcurement.addProduct(productId, {
+          transaction,
+          through: {
+            count, costs,
+          },
+        }))
+
+      await Promise.all(promises)
+
+      return updatedProcurement
     }),
     addProductProcurement: async (parent, {
       input: {
