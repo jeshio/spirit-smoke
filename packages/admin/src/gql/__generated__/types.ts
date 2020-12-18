@@ -71,6 +71,11 @@ export type QueryParamArgs = {
 };
 
 
+export type QueryProcurementsArgs = {
+  status?: Maybe<ProcurementStatus>;
+};
+
+
 export type QueryProcurementArgs = {
   id: Scalars['ID'];
 };
@@ -124,7 +129,7 @@ export type Mutation = {
   createParam: Param;
   createProcurement: ProcurementSimple;
   updateProcurement: ProcurementSimple;
-  addProductProcurement: ProcurementSimple;
+  addProcurementProduct: ProcurementSimple;
   createProduct: ProductSimple;
   updateProduct: ProductSimple;
   deleteProduct: Scalars['ID'];
@@ -253,8 +258,9 @@ export type MutationUpdateProcurementArgs = {
 };
 
 
-export type MutationAddProductProcurementArgs = {
-  input?: Maybe<ProductProcurementInput>;
+export type MutationAddProcurementProductArgs = {
+  procurementId: Scalars['ID'];
+  input: AddProcurementProductInput;
 };
 
 
@@ -533,16 +539,26 @@ export type Param = {
   value: Scalars['String'];
 };
 
-export type ProductProcurementInput = {
-  productId: Scalars['ID'];
-  procurementId: Scalars['ID'];
-  count: Scalars['Int'];
-  costs: Scalars['Float'];
-};
-
 export type ProcurementInput = {
   nextStatusDate?: Maybe<Scalars['String']>;
-  deliveryCost?: Maybe<Scalars['Float']>;
+  deliveryCost: Scalars['Float'];
+  status: ProcurementStatus;
+  name: Scalars['String'];
+  comment?: Maybe<Scalars['String']>;
+  providerInfo: Scalars['String'];
+  products: Array<ProcurementProductInput>;
+};
+
+export type ProcurementProductInput = {
+  id: Scalars['ID'];
+  count: Scalars['Int'];
+  costs: Scalars['Int'];
+};
+
+export type AddProcurementProductInput = {
+  id: Scalars['ID'];
+  count: Scalars['Int'];
+  costs?: Maybe<Scalars['Int']>;
 };
 
 export enum ProcurementStatus {
@@ -565,6 +581,9 @@ export type ProductProcurement = {
 
 export type IProcurement = {
   id: Scalars['ID'];
+  name: Scalars['String'];
+  comment?: Maybe<Scalars['String']>;
+  providerInfo: Scalars['String'];
   status: ProcurementStatus;
   nextStatusDate?: Maybe<Scalars['String']>;
   deliveryCost?: Maybe<Scalars['Float']>;
@@ -573,6 +592,9 @@ export type IProcurement = {
 export type ProcurementSimple = IProcurement & {
   __typename?: 'ProcurementSimple';
   id: Scalars['ID'];
+  name: Scalars['String'];
+  comment?: Maybe<Scalars['String']>;
+  providerInfo: Scalars['String'];
   status: ProcurementStatus;
   nextStatusDate?: Maybe<Scalars['String']>;
   deliveryCost?: Maybe<Scalars['Float']>;
@@ -581,8 +603,13 @@ export type ProcurementSimple = IProcurement & {
 export type Procurement = IProcurement & {
   __typename?: 'Procurement';
   id: Scalars['ID'];
+  name: Scalars['String'];
+  comment?: Maybe<Scalars['String']>;
+  providerInfo: Scalars['String'];
   status: ProcurementStatus;
   nextStatusDate?: Maybe<Scalars['String']>;
+  productsPrice: Scalars['Float'];
+  totalPrice: Scalars['Float'];
   deliveryCost?: Maybe<Scalars['Float']>;
   productProcurements: Array<ProductProcurement>;
 };
@@ -653,6 +680,7 @@ export type Product = IProduct & {
   companyId: Scalars['ID'];
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
+  waitingCount: Scalars['Int'];
   company?: Maybe<Company>;
   productCategory?: Maybe<ProductCategory>;
   features: Array<Feature>;
@@ -827,6 +855,20 @@ export type UpdateOrderMutation = (
   & { updateOrder: (
     { __typename?: 'OrderSimple' }
     & OrderSimple_OrderSimple_Fragment
+  ) }
+);
+
+export type AddProcurementProductMutationVariables = Exact<{
+  procurementId: Scalars['ID'];
+  input: AddProcurementProductInput;
+}>;
+
+
+export type AddProcurementProductMutation = (
+  { __typename?: 'Mutation' }
+  & { addProcurementProduct: (
+    { __typename?: 'ProcurementSimple' }
+    & ProcurementSimple_ProcurementSimple_Fragment
   ) }
 );
 
@@ -1080,6 +1122,7 @@ export type OrdersListPageQuery = (
 
 export type ProcurementItemPageFragment = (
   { __typename?: 'Procurement' }
+  & Pick<Procurement, 'productsPrice' | 'totalPrice'>
   & { productProcurements: Array<(
     { __typename?: 'ProductProcurement' }
     & Pick<ProductProcurement, 'count' | 'costs'>
@@ -1106,6 +1149,7 @@ export type ProcurementItemPageQuery = (
 
 export type ProcurementsListPageFragment = (
   { __typename?: 'Procurement' }
+  & Pick<Procurement, 'productsPrice' | 'totalPrice'>
   & ProcurementSimple_Procurement_Fragment
 );
 
@@ -1163,6 +1207,13 @@ export type ProductItemPageFragment = (
       & FeatureMinimum_Feature_Fragment
     ) }
     & ProductFeatureSimpleFragment
+  )>, productProcurements: Array<(
+    { __typename?: 'ProductProcurement' }
+    & Pick<ProductProcurement, 'count' | 'costs'>
+    & { procurement: (
+      { __typename?: 'Procurement' }
+      & Pick<Procurement, 'id' | 'name' | 'status' | 'nextStatusDate'>
+    ) }
   )> }
   & ProductSimple_Product_Fragment
 );
@@ -1182,7 +1233,7 @@ export type ProductItemPageQuery = (
 
 export type ProductsListPageFragment = (
   { __typename?: 'Product' }
-  & Pick<Product, 'slug' | 'barcode' | 'productCategoryId' | 'companyId' | 'price' | 'count' | 'weight' | 'createdAt'>
+  & Pick<Product, 'slug' | 'barcode' | 'productCategoryId' | 'companyId' | 'price' | 'count' | 'weight' | 'waitingCount' | 'createdAt'>
   & { productCategory?: Maybe<(
     { __typename?: 'ProductCategory' }
     & ProductCategoryMinimum_ProductCategory_Fragment
@@ -1255,6 +1306,22 @@ export type ProductCategoryItemPageQuery = (
   & { productCategory?: Maybe<(
     { __typename?: 'ProductCategory' }
     & ProductCategoryItemPageFragment
+  )> }
+);
+
+export type AddProductModalProcurementsFragment = (
+  { __typename?: 'Procurement' }
+  & ProcurementSimple_Procurement_Fragment
+);
+
+export type AddProductModalProcurementsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type AddProductModalProcurementsQuery = (
+  { __typename?: 'Query' }
+  & { procurements: Array<(
+    { __typename?: 'Procurement' }
+    & AddProductModalProcurementsFragment
   )> }
 );
 
@@ -1356,24 +1423,24 @@ export type OrderSimpleFragment = OrderSimple_OrderSimple_Fragment | OrderSimple
 
 type ProcurementMinimum_ProcurementSimple_Fragment = (
   { __typename?: 'ProcurementSimple' }
-  & Pick<ProcurementSimple, 'id' | 'status'>
+  & Pick<ProcurementSimple, 'id' | 'name' | 'comment' | 'status'>
 );
 
 type ProcurementMinimum_Procurement_Fragment = (
   { __typename?: 'Procurement' }
-  & Pick<Procurement, 'id' | 'status'>
+  & Pick<Procurement, 'id' | 'name' | 'comment' | 'status'>
 );
 
 export type ProcurementMinimumFragment = ProcurementMinimum_ProcurementSimple_Fragment | ProcurementMinimum_Procurement_Fragment;
 
 type ProcurementSimple_ProcurementSimple_Fragment = (
   { __typename?: 'ProcurementSimple' }
-  & Pick<ProcurementSimple, 'id' | 'status' | 'nextStatusDate' | 'deliveryCost'>
+  & Pick<ProcurementSimple, 'id' | 'status' | 'nextStatusDate' | 'deliveryCost' | 'name' | 'comment' | 'providerInfo'>
 );
 
 type ProcurementSimple_Procurement_Fragment = (
   { __typename?: 'Procurement' }
-  & Pick<Procurement, 'id' | 'status' | 'nextStatusDate' | 'deliveryCost'>
+  & Pick<Procurement, 'id' | 'status' | 'nextStatusDate' | 'deliveryCost' | 'name' | 'comment' | 'providerInfo'>
 );
 
 export type ProcurementSimpleFragment = ProcurementSimple_ProcurementSimple_Fragment | ProcurementSimple_Procurement_Fragment;
@@ -1670,8 +1737,9 @@ export type ResolversTypes = {
   Order: ResolverTypeWrapper<Order>;
   ParamInput: ParamInput;
   Param: ResolverTypeWrapper<Param>;
-  ProductProcurementInput: ProductProcurementInput;
   ProcurementInput: ProcurementInput;
+  ProcurementProductInput: ProcurementProductInput;
+  AddProcurementProductInput: AddProcurementProductInput;
   ProcurementStatus: ProcurementStatus;
   ProductProcurement: ResolverTypeWrapper<ProductProcurement>;
   IProcurement: ResolversTypes['ProcurementSimple'] | ResolversTypes['Procurement'];
@@ -1721,8 +1789,9 @@ export type ResolversParentTypes = {
   Order: Order;
   ParamInput: ParamInput;
   Param: Param;
-  ProductProcurementInput: ProductProcurementInput;
   ProcurementInput: ProcurementInput;
+  ProcurementProductInput: ProcurementProductInput;
+  AddProcurementProductInput: AddProcurementProductInput;
   ProductProcurement: ProductProcurement;
   IProcurement: ResolversParentTypes['ProcurementSimple'] | ResolversParentTypes['Procurement'];
   ProcurementSimple: ProcurementSimple;
@@ -1754,7 +1823,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   order?: Resolver<Maybe<ResolversTypes['Order']>, ParentType, ContextType, RequireFields<QueryOrderArgs, 'id'>>;
   params?: Resolver<Array<Maybe<ResolversTypes['Param']>>, ParentType, ContextType>;
   param?: Resolver<Maybe<ResolversTypes['Param']>, ParentType, ContextType, RequireFields<QueryParamArgs, 'id'>>;
-  procurements?: Resolver<Array<ResolversTypes['Procurement']>, ParentType, ContextType>;
+  procurements?: Resolver<Array<ResolversTypes['Procurement']>, ParentType, ContextType, RequireFields<QueryProcurementsArgs, never>>;
   procurement?: Resolver<Maybe<ResolversTypes['Procurement']>, ParentType, ContextType, RequireFields<QueryProcurementArgs, 'id'>>;
   products?: Resolver<Array<ResolversTypes['Product']>, ParentType, ContextType>;
   productsByIds?: Resolver<Array<Maybe<ResolversTypes['Product']>>, ParentType, ContextType, RequireFields<QueryProductsByIdsArgs, 'productIds'>>;
@@ -1789,7 +1858,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   createParam?: Resolver<ResolversTypes['Param'], ParentType, ContextType, RequireFields<MutationCreateParamArgs, 'input'>>;
   createProcurement?: Resolver<ResolversTypes['ProcurementSimple'], ParentType, ContextType, RequireFields<MutationCreateProcurementArgs, 'input'>>;
   updateProcurement?: Resolver<ResolversTypes['ProcurementSimple'], ParentType, ContextType, RequireFields<MutationUpdateProcurementArgs, 'id' | 'input'>>;
-  addProductProcurement?: Resolver<ResolversTypes['ProcurementSimple'], ParentType, ContextType, RequireFields<MutationAddProductProcurementArgs, never>>;
+  addProcurementProduct?: Resolver<ResolversTypes['ProcurementSimple'], ParentType, ContextType, RequireFields<MutationAddProcurementProductArgs, 'procurementId' | 'input'>>;
   createProduct?: Resolver<ResolversTypes['ProductSimple'], ParentType, ContextType, RequireFields<MutationCreateProductArgs, 'input'>>;
   updateProduct?: Resolver<ResolversTypes['ProductSimple'], ParentType, ContextType, RequireFields<MutationUpdateProductArgs, 'id' | 'input'>>;
   deleteProduct?: Resolver<ResolversTypes['ID'], ParentType, ContextType, RequireFields<MutationDeleteProductArgs, 'id'>>;
@@ -1987,6 +2056,9 @@ export type ProductProcurementResolvers<ContextType = any, ParentType extends Re
 export type IProcurementResolvers<ContextType = any, ParentType extends ResolversParentTypes['IProcurement'] = ResolversParentTypes['IProcurement']> = {
   __resolveType: TypeResolveFn<'ProcurementSimple' | 'Procurement', ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  comment?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  providerInfo?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   status?: Resolver<ResolversTypes['ProcurementStatus'], ParentType, ContextType>;
   nextStatusDate?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   deliveryCost?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
@@ -1994,6 +2066,9 @@ export type IProcurementResolvers<ContextType = any, ParentType extends Resolver
 
 export type ProcurementSimpleResolvers<ContextType = any, ParentType extends ResolversParentTypes['ProcurementSimple'] = ResolversParentTypes['ProcurementSimple']> = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  comment?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  providerInfo?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   status?: Resolver<ResolversTypes['ProcurementStatus'], ParentType, ContextType>;
   nextStatusDate?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   deliveryCost?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
@@ -2002,8 +2077,13 @@ export type ProcurementSimpleResolvers<ContextType = any, ParentType extends Res
 
 export type ProcurementResolvers<ContextType = any, ParentType extends ResolversParentTypes['Procurement'] = ResolversParentTypes['Procurement']> = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  comment?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  providerInfo?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   status?: Resolver<ResolversTypes['ProcurementStatus'], ParentType, ContextType>;
   nextStatusDate?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  productsPrice?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  totalPrice?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   deliveryCost?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
   productProcurements?: Resolver<Array<ResolversTypes['ProductProcurement']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
@@ -2057,6 +2137,7 @@ export type ProductResolvers<ContextType = any, ParentType extends ResolversPare
   companyId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  waitingCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   company?: Resolver<Maybe<ResolversTypes['Company']>, ParentType, ContextType>;
   productCategory?: Resolver<Maybe<ResolversTypes['ProductCategory']>, ParentType, ContextType>;
   features?: Resolver<Array<ResolversTypes['Feature']>, ParentType, ContextType>;
@@ -2303,11 +2384,16 @@ export const ProcurementSimpleFragmentDoc = gql`
   status
   nextStatusDate
   deliveryCost
+  name
+  comment
+  providerInfo
 }
     `;
 export const ProcurementItemPageFragmentDoc = gql`
     fragment ProcurementItemPage on Procurement {
   ...ProcurementSimple
+  productsPrice
+  totalPrice
   productProcurements {
     product {
       id
@@ -2322,6 +2408,8 @@ export const ProcurementItemPageFragmentDoc = gql`
 export const ProcurementsListPageFragmentDoc = gql`
     fragment ProcurementsListPage on Procurement {
   ...ProcurementSimple
+  productsPrice
+  totalPrice
 }
     ${ProcurementSimpleFragmentDoc}`;
 export const ProcurementFormProductFragmentDoc = gql`
@@ -2387,6 +2475,16 @@ export const ProductItemPageFragmentDoc = gql`
       ...FeatureMinimum
     }
   }
+  productProcurements {
+    procurement {
+      id
+      name
+      status
+      nextStatusDate
+    }
+    count
+    costs
+  }
 }
     ${ProductSimpleFragmentDoc}
 ${ProductCategoryMinimumFragmentDoc}
@@ -2403,6 +2501,7 @@ export const ProductsListPageFragmentDoc = gql`
   price
   count
   weight
+  waitingCount
   createdAt
   productCategory {
     ...ProductCategoryMinimum
@@ -2460,6 +2559,11 @@ export const ProductCategoryItemPageFragmentDoc = gql`
     ${ProductCategorySimpleFragmentDoc}
 ${ProductMinimumFragmentDoc}
 ${FeatureMinimumFragmentDoc}`;
+export const AddProductModalProcurementsFragmentDoc = gql`
+    fragment AddProductModalProcurements on Procurement {
+  ...ProcurementSimple
+}
+    ${ProcurementSimpleFragmentDoc}`;
 export const ProductsSelectorFragmentDoc = gql`
     fragment ProductsSelector on Product {
   ...ProductMinimum
@@ -2478,6 +2582,8 @@ ${CompanyMinimumFragmentDoc}`;
 export const ProcurementMinimumFragmentDoc = gql`
     fragment ProcurementMinimum on IProcurement {
   id
+  name
+  comment
   status
 }
     `;
@@ -2736,6 +2842,39 @@ export function useUpdateOrderMutation(baseOptions?: Apollo.MutationHookOptions<
 export type UpdateOrderMutationHookResult = ReturnType<typeof useUpdateOrderMutation>;
 export type UpdateOrderMutationResult = Apollo.MutationResult<UpdateOrderMutation>;
 export type UpdateOrderMutationOptions = Apollo.BaseMutationOptions<UpdateOrderMutation, UpdateOrderMutationVariables>;
+export const AddProcurementProductDocument = gql`
+    mutation addProcurementProduct($procurementId: ID!, $input: AddProcurementProductInput!) {
+  addProcurementProduct(procurementId: $procurementId, input: $input) {
+    ...ProcurementSimple
+  }
+}
+    ${ProcurementSimpleFragmentDoc}`;
+export type AddProcurementProductMutationFn = Apollo.MutationFunction<AddProcurementProductMutation, AddProcurementProductMutationVariables>;
+
+/**
+ * __useAddProcurementProductMutation__
+ *
+ * To run a mutation, you first call `useAddProcurementProductMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddProcurementProductMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addProcurementProductMutation, { data, loading, error }] = useAddProcurementProductMutation({
+ *   variables: {
+ *      procurementId: // value for 'procurementId'
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useAddProcurementProductMutation(baseOptions?: Apollo.MutationHookOptions<AddProcurementProductMutation, AddProcurementProductMutationVariables>) {
+        return Apollo.useMutation<AddProcurementProductMutation, AddProcurementProductMutationVariables>(AddProcurementProductDocument, baseOptions);
+      }
+export type AddProcurementProductMutationHookResult = ReturnType<typeof useAddProcurementProductMutation>;
+export type AddProcurementProductMutationResult = Apollo.MutationResult<AddProcurementProductMutation>;
+export type AddProcurementProductMutationOptions = Apollo.BaseMutationOptions<AddProcurementProductMutation, AddProcurementProductMutationVariables>;
 export const CreateProcurementDocument = gql`
     mutation createProcurement($input: ProcurementInput!) {
   createProcurement(input: $input) {
@@ -3445,6 +3584,38 @@ export function useProductCategoryItemPageLazyQuery(baseOptions?: Apollo.LazyQue
 export type ProductCategoryItemPageQueryHookResult = ReturnType<typeof useProductCategoryItemPageQuery>;
 export type ProductCategoryItemPageLazyQueryHookResult = ReturnType<typeof useProductCategoryItemPageLazyQuery>;
 export type ProductCategoryItemPageQueryResult = Apollo.QueryResult<ProductCategoryItemPageQuery, ProductCategoryItemPageQueryVariables>;
+export const AddProductModalProcurementsDocument = gql`
+    query addProductModalProcurements {
+  procurements(status: BUILDING) {
+    ...AddProductModalProcurements
+  }
+}
+    ${AddProductModalProcurementsFragmentDoc}`;
+
+/**
+ * __useAddProductModalProcurementsQuery__
+ *
+ * To run a query within a React component, call `useAddProductModalProcurementsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAddProductModalProcurementsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAddProductModalProcurementsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useAddProductModalProcurementsQuery(baseOptions?: Apollo.QueryHookOptions<AddProductModalProcurementsQuery, AddProductModalProcurementsQueryVariables>) {
+        return Apollo.useQuery<AddProductModalProcurementsQuery, AddProductModalProcurementsQueryVariables>(AddProductModalProcurementsDocument, baseOptions);
+      }
+export function useAddProductModalProcurementsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AddProductModalProcurementsQuery, AddProductModalProcurementsQueryVariables>) {
+          return Apollo.useLazyQuery<AddProductModalProcurementsQuery, AddProductModalProcurementsQueryVariables>(AddProductModalProcurementsDocument, baseOptions);
+        }
+export type AddProductModalProcurementsQueryHookResult = ReturnType<typeof useAddProductModalProcurementsQuery>;
+export type AddProductModalProcurementsLazyQueryHookResult = ReturnType<typeof useAddProductModalProcurementsLazyQuery>;
+export type AddProductModalProcurementsQueryResult = Apollo.QueryResult<AddProductModalProcurementsQuery, AddProductModalProcurementsQueryVariables>;
 export const ProductsSelectorDocument = gql`
     query ProductsSelector {
   products {

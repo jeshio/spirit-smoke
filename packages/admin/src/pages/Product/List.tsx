@@ -61,6 +61,10 @@ const columns: ListColumnsType = ({ deleteItem }): IColumn<ProductsListPageFragm
     field: 'count',
   },
   {
+    title: 'Ожидается шт.',
+    field: 'waitingCount',
+  },
+  {
     title: 'Текущая цена',
     field: 'price',
     render: (price) => `${price} ₽`,

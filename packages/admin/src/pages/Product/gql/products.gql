@@ -13,6 +13,7 @@ fragment ProductsListPage on Product {
   price
   count
   weight
+  waitingCount
   createdAt
   productCategory {
     ...ProductCategoryMinimum

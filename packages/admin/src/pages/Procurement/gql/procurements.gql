@@ -2,6 +2,8 @@
 
 fragment ProcurementsListPage on Procurement {
   ...ProcurementSimple
+  productsPrice
+  totalPrice
 }
 
 query procurementsListPage {

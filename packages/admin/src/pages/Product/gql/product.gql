@@ -21,6 +21,16 @@ fragment ProductItemPage on Product {
       ...FeatureMinimum
     }
   }
+  productProcurements {
+    procurement {
+      id
+      name
+      status
+      nextStatusDate
+    }
+    count
+    costs
+  }
 }
 
 query productItemPage($id: ID!) {

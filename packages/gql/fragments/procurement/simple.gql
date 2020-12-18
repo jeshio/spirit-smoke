@@ -3,4 +3,7 @@ fragment ProcurementSimple on IProcurement {
   status
   nextStatusDate
   deliveryCost
+  name
+  comment
+  providerInfo
 }

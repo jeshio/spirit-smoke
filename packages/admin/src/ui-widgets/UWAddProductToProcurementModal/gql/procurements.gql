@@ -1,0 +1,11 @@
+#import "@/gql/fragments/procurement/simple.gql"
+
+fragment AddProductModalProcurements on Procurement {
+  ...ProcurementSimple
+}
+
+query addProductModalProcurements {
+  procurements(status: BUILDING) {
+    ...AddProductModalProcurements
+  }
+}

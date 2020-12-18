@@ -75,6 +75,7 @@ type Product implements IProduct {
   companyId: ID!
   createdAt: String!
   updatedAt: String!
+  waitingCount: Int! # количество продукта, ожидаемое от ближайших поставок
   company: Company
   productCategory: ProductCategory
   features: [Feature!]!

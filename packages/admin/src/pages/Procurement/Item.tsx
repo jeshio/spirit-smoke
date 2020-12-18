@@ -9,6 +9,7 @@ import UButton from '@/ui-components/UButton'
 import useStableQuery from '@/hooks/gql/useStableQuery'
 import { EditFilled } from '@ant-design/icons'
 import { Link } from 'umi'
+import UPrice from '@/ui-components/UPrice'
 import {
   Item,
   ItemTitle,
@@ -46,7 +47,9 @@ const ProcurementItemPage: React.FunctionComponent<IProcurementItemPageProps> = 
             {' по '}
             <ItemProductPrice>{costs} ₽</ItemProductPrice>
             {', всего '}
-            <ItemProductTotalPrice>{costs * count} ₽</ItemProductTotalPrice>
+            <ItemProductTotalPrice>
+              <UPrice>{costs * count}</UPrice>
+            </ItemProductTotalPrice>
           </div>
         </Item>
       )) || [],
@@ -57,25 +60,31 @@ const ProcurementItemPage: React.FunctionComponent<IProcurementItemPageProps> = 
 
   return (
     <UPageContainer
-      title={`Поставка #${procurement.id}`}
+      title={`Поставка ${procurement.name}`}
       extra={
         <>
-          {/* <UPopconfirm onConfirm={deleteProduct as any}>
-            <UButton danger icon={<DeleteFilled />}>
-              Закрыть заказ
-            </UButton>
-          </UPopconfirm> */}
           <UButton type="primary" href={`/procurements/${procurement.id}/edit`} icon={<EditFilled />}>
             Редактировать
           </UButton>
         </>
       }
     >
-      <Card title={`Информация о заказе (№${procurement.id})`}>
+      <Card title={`Информация о поставке (#${procurement.id})`}>
         <UDescriptions>
-          <UDescriptions.Item label="Адрес">{procurement.status}</UDescriptions.Item>
-          <UDescriptions.Item label="Время доставки">{procurement.nextStatusDate}</UDescriptions.Item>
-          <UDescriptions.Item label="Стоимость доставки">{procurement.deliveryCost}</UDescriptions.Item>
+          <UDescriptions.Item label="Название">{procurement.name}</UDescriptions.Item>
+          <UDescriptions.Item label="Поставщик">{procurement.providerInfo}</UDescriptions.Item>
+          <UDescriptions.Item label="Комментарий к поставке">{procurement.comment}</UDescriptions.Item>
+          <UDescriptions.Item label="Статус">{procurement.status}</UDescriptions.Item>
+          <UDescriptions.Item label="Время следующего статуса">{procurement.nextStatusDate}</UDescriptions.Item>
+          <UDescriptions.Item label="Стоимость доставки">
+            <UPrice>{procurement.deliveryCost}</UPrice>
+          </UDescriptions.Item>
+          <UDescriptions.Item label="Стоимость продуктов">
+            <UPrice>{procurement.productsPrice}</UPrice>
+          </UDescriptions.Item>
+          <UDescriptions.Item label="Итог">
+            <UPrice>{procurement.totalPrice}</UPrice>
+          </UDescriptions.Item>
         </UDescriptions>
       </Card>
       <Card title="Продукты">

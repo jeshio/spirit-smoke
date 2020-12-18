@@ -57,7 +57,7 @@ const resolvers = {
 
   ProductFeature: {
     product: async (productFeature) => productFeature.getProduct(),
-    feature: async (productFeature) => productFeature.getFeature(),
+    feature: async (productFeature, args, { loaders }) => loaders.feature.load(productFeature.featureId),
   },
 }
 

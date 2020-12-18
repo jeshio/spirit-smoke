@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React, { useState } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { useProductItemPageQuery, useDeleteProductMutation } from '@/gql/__generated__/types'
 import UPageContainer from '@/ui-components/UPageContainer'
@@ -9,11 +9,14 @@ import UPopconfirm from '@/ui-components/UPopconfirm'
 import { DeleteFilled, EditFilled, ImportOutlined } from '@ant-design/icons'
 import URow from '@/ui-components/URow'
 import UCol from '@/ui-components/UCol'
+import UTable from '@/ui-components/UTable'
 
 import useStableQuery from '@/hooks/gql/useStableQuery'
 import UFeaturesList from '@/ui-components/UFeaturesList'
+import UWAddProductToProcurementModal from '@/ui-widgets/UWAddProductToProcurementModal'
 import { ItemImage, ItemImageWrapper } from './styles/item.styled'
 import productFeaturesToFlatFeature from './helpers/productFeaturesToFlatFeatures'
+import ProcurementsList from './components/ProcurementsList'
 
 interface IProductItemPageProps
   extends RouteComponentProps<{
@@ -29,6 +32,8 @@ const ProductItemPage: React.FunctionComponent<IProductItemPageProps> = (props) 
     loadingTip: 'Загрузка продукта',
     queryName: 'product',
   })
+  const [addToProcurementModalVisible, setAddToProcurementModalVisible] = useState(false)
+  const switchAddToProcurementModalVisible = () => setAddToProcurementModalVisible(!addToProcurementModalVisible)
   const [deleteProduct] = useDeleteProductMutation({
     variables: {
       id,
@@ -48,6 +53,9 @@ const ProductItemPage: React.FunctionComponent<IProductItemPageProps> = (props) 
       title={product.company ? `${product.company.name}, ${product.name}` : product.name}
       extra={
         <>
+          <UButton onClick={switchAddToProcurementModalVisible} icon={<EditFilled />}>
+            Добавить в поставку
+          </UButton>
           <UPopconfirm onConfirm={deleteProduct as any}>
             <UButton danger icon={<DeleteFilled />}>
               Удалить
@@ -114,8 +122,18 @@ const ProductItemPage: React.FunctionComponent<IProductItemPageProps> = (props) 
             <Divider />
             <p>{product.description}</p>
           </Card>
+
+          <Card title="Поставки продукта" style={{ marginTop: '5px' }}>
+            <ProcurementsList product={product} />
+          </Card>
         </UCol>
       </URow>
+
+      <UWAddProductToProcurementModal
+        visible={addToProcurementModalVisible}
+        onClose={switchAddToProcurementModalVisible}
+        productId={product.id}
+      />
     </UPageContainer>
   )
 }

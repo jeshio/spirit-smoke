@@ -5,15 +5,16 @@ import {
   ProcurementStatus,
   ProcurementsListPageFragment,
 } from '@/gql/__generated__/types'
-import { IColumn } from '@/ui-components/UTable/types'
+import { IColumn, IColumnSorter } from '@/ui-components/UTable/types'
 import { Link } from 'umi'
 import { EditFilled, ImportOutlined } from '@ant-design/icons'
 import ListPageBuilder, { ListColumnsType } from '@/builders/ListPage'
 import { generateSorter } from '@/ui-components/UTable/hooks/useOriginalColumns'
 import USpace from '@/ui-components/USpace'
+import UPrice from '@/ui-components/UPrice'
 
 /** Статусы, обозначающие, что поставка завершена */
-const READY_ORDER_STATUSES = [ProcurementStatus.Canceled, ProcurementStatus.Success, ProcurementStatus.Failure]
+const READY_ORDER_STATUSES = [ProcurementStatus.Canceled, ProcurementStatus.Success]
 
 const STATUSES_ORDER = [
   ProcurementStatus.Building,
@@ -28,6 +29,16 @@ const STATUSES_ORDER = [
 /** При совпадении статусов (готов/не готов) вторая колонка для сортировки */
 const STATUS_SECOND_ORDER_COLUMN_NAME = 'nextStatusDate'
 
+export const procurementsStatusSorter: IColumnSorter = (a, b, aFields, bFields) => {
+  const aIndex = STATUSES_ORDER.indexOf(a)
+  const bIndex = STATUSES_ORDER.indexOf(b)
+  if (a === b) {
+    return generateSorter(STATUS_SECOND_ORDER_COLUMN_NAME, undefined, true)(aFields, bFields)
+  }
+
+  return aIndex - bIndex
+}
+
 const columns: ListColumnsType = (): IColumn<ProcurementsListPageFragment>[] => [
   {
     title: 'ID',
@@ -35,22 +46,25 @@ const columns: ListColumnsType = (): IColumn<ProcurementsListPageFragment>[] => 
     width: 50,
   },
   {
+    field: 'deliveryCost',
+    title: 'Стоимость доставки',
+    render: (price) => <UPrice>{price}</UPrice>,
+  },
+  {
+    field: 'productsPrice',
+    title: 'Стоимость продуктов',
+    render: (price) => <UPrice>{price}</UPrice>,
+  },
+  {
+    field: 'totalPrice',
+    title: 'Итоговая стоимость',
+    render: (price) => <UPrice>{price}</UPrice>,
+  },
+  {
     field: 'status',
     title: 'Статус',
     defaultSortOrder: 'ascend',
-    sorter: (a, b, aFields, bFields) => {
-      const aIndex = STATUSES_ORDER.indexOf(a)
-      const bIndex = STATUSES_ORDER.indexOf(b)
-      if (a === b) {
-        return generateSorter(STATUS_SECOND_ORDER_COLUMN_NAME, undefined, true)(aFields, bFields)
-      }
-
-      return aIndex - bIndex
-    },
-  },
-  {
-    field: 'deliveryCost',
-    title: 'Стоимость',
+    sorter: procurementsStatusSorter,
   },
   {
     field: 'nextStatusDate',

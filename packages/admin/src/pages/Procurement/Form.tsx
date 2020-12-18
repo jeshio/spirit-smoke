@@ -6,7 +6,7 @@ import UForm from '@/ui-components/UForm'
 import { UItemsSelectorValueObjectType } from '@/ui-components/UItemsSelector'
 import URow from '@/ui-components/URow'
 import UWProductsSelector from '@/ui-widgets/UWProductsSelector'
-import { Card, DatePicker, InputNumber, Select } from 'antd'
+import { Card, DatePicker, Input, InputNumber, Select } from 'antd'
 import React, { useCallback, useMemo } from 'react'
 import { PROCUREMENT_STATUSES } from './constants'
 
@@ -46,7 +46,14 @@ const ProcurementForm: React.FunctionComponent<IProcurementFormProps> = ({
     <UForm labelCol={{ sm: 7, lg: 6, xl: 10 }} onFinish={handleSubmit}>
       <Card>
         <URow>
-          <UCol xl={15} xxl={8}>
+          <UCol xl={8}>
+            <UForm.Item label="Название" name="name" required initialValue={procurement?.name}>
+              <Input />
+            </UForm.Item>
+          </UCol>
+        </URow>
+        <URow>
+          <UCol xl={8}>
             <UForm.Item
               label="Дата следующего статуса"
               name="nextStatusDate"
@@ -58,7 +65,7 @@ const ProcurementForm: React.FunctionComponent<IProcurementFormProps> = ({
               <DatePicker />
             </UForm.Item>
           </UCol>
-          <UCol xl={9} xxl={8}>
+          <UCol xl={5}>
             <UForm.Item label="Статус" name="status" required initialValue={procurement?.status}>
               <Select>
                 {Object.keys(PROCUREMENT_STATUSES).map((status) => (
@@ -69,16 +76,35 @@ const ProcurementForm: React.FunctionComponent<IProcurementFormProps> = ({
               </Select>
             </UForm.Item>
           </UCol>
-        </URow>
-        <URow>
-          <UCol xl={15}>
+          <UCol xl={8}>
             <UForm.Item
               label="Стоимость доставки"
               name="deliveryCost"
               required
-              initialValue={procurement?.deliveryCost}
+              initialValue={procurement?.deliveryCost || 0}
             >
               <InputNumber />
+            </UForm.Item>
+          </UCol>
+        </URow>
+        <URow>
+          <UCol xl={8}>
+            <UForm.Item label="Инфа о поставщике" name="providerInfo" required initialValue={procurement?.providerInfo}>
+              <Input.TextArea rows={4} />
+            </UForm.Item>
+          </UCol>
+          <UCol xl={8}>
+            <UForm.Item
+              label="Комментарий"
+              name="comment"
+              initialValue={procurement?.comment}
+              labelCol={{
+                sm: 7,
+                lg: 6,
+                xl: 6,
+              }}
+            >
+              <Input.TextArea rows={4} />
             </UForm.Item>
           </UCol>
         </URow>

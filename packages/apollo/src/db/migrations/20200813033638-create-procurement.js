@@ -17,6 +17,18 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
+      name: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      comment: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
+      providerInfo: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
       status: {
         type: Sequelize.STRING,
         allowNull: false,

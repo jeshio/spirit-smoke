@@ -1,25 +1,21 @@
 extend type Query {
-  procurements: [Procurement!]!
+  procurements(status: ProcurementStatus): [Procurement!]!
   procurement(id: ID!): Procurement
 }
 
 extend type Mutation {
   createProcurement(input: ProcurementInput!): ProcurementSimple!
   updateProcurement(id: ID!, input: ProcurementInput!): ProcurementSimple!
-  addProductProcurement(input: ProductProcurementInput): ProcurementSimple!
-}
-
-input ProductProcurementInput {
-  productId: ID!
-  procurementId: ID!
-  count: Int!
-  costs: Int!
+  addProcurementProduct(procurementId: ID!, input: AddProcurementProductInput!): ProcurementSimple!
 }
 
 input ProcurementInput {
   nextStatusDate: String
   deliveryCost: Float!
   status: ProcurementStatus!
+  name: String!
+  comment: String
+  providerInfo: String!
   products: [ProcurementProductInput!]!
 }
 
@@ -27,6 +23,12 @@ input ProcurementProductInput {
   id: ID!
   count: Int!
   costs: Int!
+}
+
+input AddProcurementProductInput {
+  id: ID!
+  count: Int!
+  costs: Int
 }
 
 enum ProcurementStatus {
@@ -48,6 +50,9 @@ type ProductProcurement {
 
 interface IProcurement {
   id: ID!
+  name: String!
+  comment: String
+  providerInfo: String!
   status: ProcurementStatus!
   nextStatusDate: String # TODO: доработать дату
   deliveryCost: Float
@@ -55,6 +60,9 @@ interface IProcurement {
 
 type ProcurementSimple implements IProcurement {
   id: ID!
+  name: String!
+  comment: String
+  providerInfo: String!
   status: ProcurementStatus!
   nextStatusDate: String
   deliveryCost: Float
@@ -62,8 +70,13 @@ type ProcurementSimple implements IProcurement {
 
 type Procurement implements IProcurement {
   id: ID!
+  name: String!
+  comment: String
+  providerInfo: String!
   status: ProcurementStatus!
   nextStatusDate: String
+  productsPrice: Float!
+  totalPrice: Float!
   deliveryCost: Float
   productProcurements: [ProductProcurement!]!
 } 

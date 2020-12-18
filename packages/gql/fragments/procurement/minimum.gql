@@ -1,4 +1,6 @@
 fragment ProcurementMinimum on IProcurement {
   id
+  name
+  comment
   status
 }

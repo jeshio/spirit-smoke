@@ -22,6 +22,18 @@ module.exports = (sequelize, DataTypes) => {
         min: 0,
       },
     },
+    name: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    comment: {
+      type: DataTypes.STRING,
+      allowNull: true,
+    },
+    providerInfo: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     status: {
       type: DataTypes.STRING,
       values: ['BUILDING', 'NOT_CONFIRMED', 'CONFIRMED', 'CANCELED', 'SENT', 'FAILURE', 'SUCCESS'],
