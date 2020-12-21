@@ -1,0 +1,11 @@
+interface ICompany {
+  isSelectedForProductCategory(productCategorySlug: ID!): Boolean
+}
+
+type CompanySimple {
+  isSelectedForProductCategory(productCategorySlug: ID!): Boolean
+}
+
+type Company {
+  isSelectedForProductCategory(productCategorySlug: ID!): Boolean
+}

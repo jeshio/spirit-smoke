@@ -24,7 +24,7 @@ const resolvers = {
             slug: categoryIdSlug,
           },
       })
-      return productCategory.products || []
+      return productCategory?.products || []
     },
     product: async (parent, { id }, { models }) => models.product.findByPk(id),
   },

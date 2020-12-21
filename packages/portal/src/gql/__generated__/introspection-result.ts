@@ -13,6 +13,10 @@
       "OrderSimple",
       "Order"
     ],
+    "IProcurement": [
+      "ProcurementSimple",
+      "Procurement"
+    ],
     "IProduct": [
       "ProductSimple",
       "Product"
@@ -36,6 +40,10 @@
     "IOrder": [
       "OrderSimple",
       "Order"
+    ],
+    "IProcurement": [
+      "ProcurementSimple",
+      "Procurement"
     ],
     "IProduct": [
       "ProductSimple",

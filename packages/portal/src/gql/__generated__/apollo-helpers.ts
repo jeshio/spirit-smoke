@@ -26,7 +26,7 @@ export type QueryFieldPolicy = {
 	promotion?: FieldPolicy<any> | FieldReadFunction<any>,
 	promotions?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type MutationKeySpecifier = ('_' | 'createBonus' | 'addOrderBonus' | 'createCompany' | 'updateCompany' | 'deleteCompany' | 'createDiscount' | 'addProductCategoryDiscount' | 'addProductDiscount' | 'addFeatureDiscount' | 'addOrderDiscount' | 'addBonusDiscount' | 'createFeature' | 'updateFeature' | 'addProductCategoryFeature' | 'addProductFeature' | 'deleteFeature' | 'createOrder' | 'updateOrder' | 'createParam' | 'createProcurement' | 'addProductProcurement' | 'createProduct' | 'updateProduct' | 'deleteProduct' | 'createProductCategory' | 'updateProductCategory' | 'deleteProductCategory' | 'createPromotion' | MutationKeySpecifier)[];
+export type MutationKeySpecifier = ('_' | 'createBonus' | 'addOrderBonus' | 'createCompany' | 'updateCompany' | 'deleteCompany' | 'createDiscount' | 'addProductCategoryDiscount' | 'addProductDiscount' | 'addFeatureDiscount' | 'addOrderDiscount' | 'addBonusDiscount' | 'createFeature' | 'updateFeature' | 'addProductCategoryFeature' | 'addProductFeature' | 'deleteFeature' | 'createOrder' | 'updateOrder' | 'createParam' | 'createProcurement' | 'updateProcurement' | 'addProcurementProduct' | 'createProduct' | 'updateProduct' | 'deleteProduct' | 'createProductCategory' | 'updateProductCategory' | 'deleteProductCategory' | 'createPromotion' | MutationKeySpecifier)[];
 export type MutationFieldPolicy = {
 	_?: FieldPolicy<any> | FieldReadFunction<any>,
 	createBonus?: FieldPolicy<any> | FieldReadFunction<any>,
@@ -49,7 +49,8 @@ export type MutationFieldPolicy = {
 	updateOrder?: FieldPolicy<any> | FieldReadFunction<any>,
 	createParam?: FieldPolicy<any> | FieldReadFunction<any>,
 	createProcurement?: FieldPolicy<any> | FieldReadFunction<any>,
-	addProductProcurement?: FieldPolicy<any> | FieldReadFunction<any>,
+	updateProcurement?: FieldPolicy<any> | FieldReadFunction<any>,
+	addProcurementProduct?: FieldPolicy<any> | FieldReadFunction<any>,
 	createProduct?: FieldPolicy<any> | FieldReadFunction<any>,
 	updateProduct?: FieldPolicy<any> | FieldReadFunction<any>,
 	deleteProduct?: FieldPolicy<any> | FieldReadFunction<any>,
@@ -72,38 +73,41 @@ export type BonusFieldPolicy = {
 	orders?: FieldPolicy<any> | FieldReadFunction<any>,
 	discounts?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type ICompanyKeySpecifier = ('id' | 'country' | 'color' | 'barcode' | 'name' | 'slug' | 'createdAt' | 'updatedAt' | ICompanyKeySpecifier)[];
+export type ICompanyKeySpecifier = ('barcode' | 'color' | 'country' | 'createdAt' | 'id' | 'isSelectedForProductCategory' | 'name' | 'slug' | 'updatedAt' | ICompanyKeySpecifier)[];
 export type ICompanyFieldPolicy = {
-	id?: FieldPolicy<any> | FieldReadFunction<any>,
-	country?: FieldPolicy<any> | FieldReadFunction<any>,
-	color?: FieldPolicy<any> | FieldReadFunction<any>,
 	barcode?: FieldPolicy<any> | FieldReadFunction<any>,
+	color?: FieldPolicy<any> | FieldReadFunction<any>,
+	country?: FieldPolicy<any> | FieldReadFunction<any>,
+	createdAt?: FieldPolicy<any> | FieldReadFunction<any>,
+	id?: FieldPolicy<any> | FieldReadFunction<any>,
+	isSelectedForProductCategory?: FieldPolicy<any> | FieldReadFunction<any>,
 	name?: FieldPolicy<any> | FieldReadFunction<any>,
 	slug?: FieldPolicy<any> | FieldReadFunction<any>,
-	createdAt?: FieldPolicy<any> | FieldReadFunction<any>,
 	updatedAt?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type CompanySimpleKeySpecifier = ('id' | 'country' | 'color' | 'barcode' | 'name' | 'slug' | 'createdAt' | 'updatedAt' | CompanySimpleKeySpecifier)[];
+export type CompanySimpleKeySpecifier = ('barcode' | 'color' | 'country' | 'createdAt' | 'id' | 'isSelectedForProductCategory' | 'name' | 'slug' | 'updatedAt' | CompanySimpleKeySpecifier)[];
 export type CompanySimpleFieldPolicy = {
-	id?: FieldPolicy<any> | FieldReadFunction<any>,
-	country?: FieldPolicy<any> | FieldReadFunction<any>,
-	color?: FieldPolicy<any> | FieldReadFunction<any>,
 	barcode?: FieldPolicy<any> | FieldReadFunction<any>,
+	color?: FieldPolicy<any> | FieldReadFunction<any>,
+	country?: FieldPolicy<any> | FieldReadFunction<any>,
+	createdAt?: FieldPolicy<any> | FieldReadFunction<any>,
+	id?: FieldPolicy<any> | FieldReadFunction<any>,
+	isSelectedForProductCategory?: FieldPolicy<any> | FieldReadFunction<any>,
 	name?: FieldPolicy<any> | FieldReadFunction<any>,
 	slug?: FieldPolicy<any> | FieldReadFunction<any>,
-	createdAt?: FieldPolicy<any> | FieldReadFunction<any>,
 	updatedAt?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type CompanyKeySpecifier = ('id' | 'country' | 'color' | 'barcode' | 'name' | 'slug' | 'products' | 'createdAt' | 'updatedAt' | CompanyKeySpecifier)[];
+export type CompanyKeySpecifier = ('barcode' | 'color' | 'country' | 'createdAt' | 'id' | 'isSelectedForProductCategory' | 'name' | 'products' | 'slug' | 'updatedAt' | CompanyKeySpecifier)[];
 export type CompanyFieldPolicy = {
-	id?: FieldPolicy<any> | FieldReadFunction<any>,
-	country?: FieldPolicy<any> | FieldReadFunction<any>,
-	color?: FieldPolicy<any> | FieldReadFunction<any>,
 	barcode?: FieldPolicy<any> | FieldReadFunction<any>,
-	name?: FieldPolicy<any> | FieldReadFunction<any>,
-	slug?: FieldPolicy<any> | FieldReadFunction<any>,
-	products?: FieldPolicy<any> | FieldReadFunction<any>,
+	color?: FieldPolicy<any> | FieldReadFunction<any>,
+	country?: FieldPolicy<any> | FieldReadFunction<any>,
 	createdAt?: FieldPolicy<any> | FieldReadFunction<any>,
+	id?: FieldPolicy<any> | FieldReadFunction<any>,
+	isSelectedForProductCategory?: FieldPolicy<any> | FieldReadFunction<any>,
+	name?: FieldPolicy<any> | FieldReadFunction<any>,
+	products?: FieldPolicy<any> | FieldReadFunction<any>,
+	slug?: FieldPolicy<any> | FieldReadFunction<any>,
 	updatedAt?: FieldPolicy<any> | FieldReadFunction<any>
 };
 export type DiscountKeySpecifier = ('id' | 'name' | 'percent' | 'rub' | 'code' | 'startDate' | 'endDate' | 'isGlobal' | 'productCategories' | 'products' | 'features' | 'orders' | 'bonuses' | DiscountKeySpecifier)[];
@@ -228,11 +232,36 @@ export type ProductProcurementFieldPolicy = {
 	procurement?: FieldPolicy<any> | FieldReadFunction<any>,
 	product?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type ProcurementKeySpecifier = ('id' | 'status' | 'nextStatusDate' | 'deliveryCost' | 'productProcurements' | ProcurementKeySpecifier)[];
-export type ProcurementFieldPolicy = {
+export type IProcurementKeySpecifier = ('id' | 'name' | 'comment' | 'providerInfo' | 'status' | 'nextStatusDate' | 'deliveryCost' | IProcurementKeySpecifier)[];
+export type IProcurementFieldPolicy = {
 	id?: FieldPolicy<any> | FieldReadFunction<any>,
+	name?: FieldPolicy<any> | FieldReadFunction<any>,
+	comment?: FieldPolicy<any> | FieldReadFunction<any>,
+	providerInfo?: FieldPolicy<any> | FieldReadFunction<any>,
 	status?: FieldPolicy<any> | FieldReadFunction<any>,
 	nextStatusDate?: FieldPolicy<any> | FieldReadFunction<any>,
+	deliveryCost?: FieldPolicy<any> | FieldReadFunction<any>
+};
+export type ProcurementSimpleKeySpecifier = ('id' | 'name' | 'comment' | 'providerInfo' | 'status' | 'nextStatusDate' | 'deliveryCost' | ProcurementSimpleKeySpecifier)[];
+export type ProcurementSimpleFieldPolicy = {
+	id?: FieldPolicy<any> | FieldReadFunction<any>,
+	name?: FieldPolicy<any> | FieldReadFunction<any>,
+	comment?: FieldPolicy<any> | FieldReadFunction<any>,
+	providerInfo?: FieldPolicy<any> | FieldReadFunction<any>,
+	status?: FieldPolicy<any> | FieldReadFunction<any>,
+	nextStatusDate?: FieldPolicy<any> | FieldReadFunction<any>,
+	deliveryCost?: FieldPolicy<any> | FieldReadFunction<any>
+};
+export type ProcurementKeySpecifier = ('id' | 'name' | 'comment' | 'providerInfo' | 'status' | 'nextStatusDate' | 'productsPrice' | 'totalPrice' | 'deliveryCost' | 'productProcurements' | ProcurementKeySpecifier)[];
+export type ProcurementFieldPolicy = {
+	id?: FieldPolicy<any> | FieldReadFunction<any>,
+	name?: FieldPolicy<any> | FieldReadFunction<any>,
+	comment?: FieldPolicy<any> | FieldReadFunction<any>,
+	providerInfo?: FieldPolicy<any> | FieldReadFunction<any>,
+	status?: FieldPolicy<any> | FieldReadFunction<any>,
+	nextStatusDate?: FieldPolicy<any> | FieldReadFunction<any>,
+	productsPrice?: FieldPolicy<any> | FieldReadFunction<any>,
+	totalPrice?: FieldPolicy<any> | FieldReadFunction<any>,
 	deliveryCost?: FieldPolicy<any> | FieldReadFunction<any>,
 	productProcurements?: FieldPolicy<any> | FieldReadFunction<any>
 };
@@ -272,7 +301,7 @@ export type ProductSimpleFieldPolicy = {
 	updatedAt?: FieldPolicy<any> | FieldReadFunction<any>,
 	weight?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type ProductKeySpecifier = ('barcode' | 'cartItem' | 'company' | 'companyId' | 'count' | 'createdAt' | 'description' | 'discounts' | 'features' | 'id' | 'imageUrl' | 'isInCart' | 'name' | 'orderProducts' | 'price' | 'productCategory' | 'productCategoryId' | 'productFeatures' | 'productProcurements' | 'slug' | 'updatedAt' | 'weight' | ProductKeySpecifier)[];
+export type ProductKeySpecifier = ('barcode' | 'cartItem' | 'company' | 'companyId' | 'count' | 'createdAt' | 'description' | 'discounts' | 'features' | 'id' | 'imageUrl' | 'isInCart' | 'name' | 'orderProducts' | 'price' | 'productCategory' | 'productCategoryId' | 'productFeatures' | 'productProcurements' | 'slug' | 'updatedAt' | 'waitingCount' | 'weight' | ProductKeySpecifier)[];
 export type ProductFieldPolicy = {
 	barcode?: FieldPolicy<any> | FieldReadFunction<any>,
 	cartItem?: FieldPolicy<any> | FieldReadFunction<any>,
@@ -295,6 +324,7 @@ export type ProductFieldPolicy = {
 	productProcurements?: FieldPolicy<any> | FieldReadFunction<any>,
 	slug?: FieldPolicy<any> | FieldReadFunction<any>,
 	updatedAt?: FieldPolicy<any> | FieldReadFunction<any>,
+	waitingCount?: FieldPolicy<any> | FieldReadFunction<any>,
 	weight?: FieldPolicy<any> | FieldReadFunction<any>
 };
 export type IProductCategoryKeySpecifier = ('id' | 'name' | 'slug' | 'priority' | 'iconUrl' | 'description' | 'createdAt' | 'updatedAt' | IProductCategoryKeySpecifier)[];
@@ -474,6 +504,20 @@ export type TypedTypePolicies = TypePolicies & {
 		mutationType?: true,
 		subscriptionType?: true,
 		fields?: ProductProcurementFieldPolicy,
+	},
+	IProcurement?: {
+		keyFields?: false | IProcurementKeySpecifier | (() => undefined | IProcurementKeySpecifier),
+		queryType?: true,
+		mutationType?: true,
+		subscriptionType?: true,
+		fields?: IProcurementFieldPolicy,
+	},
+	ProcurementSimple?: {
+		keyFields?: false | ProcurementSimpleKeySpecifier | (() => undefined | ProcurementSimpleKeySpecifier),
+		queryType?: true,
+		mutationType?: true,
+		subscriptionType?: true,
+		fields?: ProcurementSimpleFieldPolicy,
 	},
 	Procurement?: {
 		keyFields?: false | ProcurementKeySpecifier | (() => undefined | ProcurementKeySpecifier),

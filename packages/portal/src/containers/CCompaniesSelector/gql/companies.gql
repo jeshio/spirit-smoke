@@ -5,8 +5,9 @@ fragment CompaniesSelector on Company {
   color
 }
 
-query companiesSelector {
+query companiesSelector($productCategorySlug: ID!) {
   companies {
     ...CompaniesSelector
+    isSelectedForProductCategory(productCategorySlug: $productCategorySlug) @client
   }
 }

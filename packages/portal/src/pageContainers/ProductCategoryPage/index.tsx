@@ -9,6 +9,8 @@ import CFeaturesSelector from '@/containers/CFeaturesSelector'
 import UTitle from '@/ui-components/UTitle'
 import isServer from '@/helpers/isServer'
 import CFooter from '@/containers/CFooter'
+import { useReactiveVar } from '@apollo/client'
+import { productCategoriesFiltersVar } from '@/gql/cache/vars/ProductCategoriesFilters'
 
 interface IProductCategoryPageContainerProps {
   title?: string
@@ -22,13 +24,6 @@ const ProductCategoryPageContainer: React.FunctionComponent<IProductCategoryPage
   const [featuresVisible, setFeaturesVisible] = useState(false)
   const [getProductCategory, productCategoryRequest] = useProductCategoryMinimumItemLazyQuery()
   const [getProductsCatalog, productsCatalogRequest] = useProductsCatalogLazyQuery()
-  const productsCatalogItems = useMemo(
-    () =>
-      productsCatalogRequest.data?.productsByCategory.map((product) => (
-        <WProductCard key={product.id} product={product} />
-      )) || [],
-    [productsCatalogRequest]
-  )
   const pageTitle = useMemo(() => title || productCategoryRequest.data?.productCategory.name, [
     title,
     productCategoryRequest,
@@ -43,10 +38,19 @@ const ProductCategoryPageContainer: React.FunctionComponent<IProductCategoryPage
     }
     getProductsCatalog({
       variables: {
-        categoryIdSlug: currentCategorySlug,
+        categorySlug: currentCategorySlug,
       },
     })
   }, [currentCategorySlug, getProductCategory, getProductsCatalog])
+  const filters = useReactiveVar(productCategoriesFiltersVar)
+  const selectedCompanyIds = filters[currentCategorySlug]?.selectedCompanyIds || []
+  const productsCatalogItems = useMemo(
+    () =>
+      productsCatalogRequest.data?.productsByCategory
+        .filter((product) => selectedCompanyIds.length === 0 || selectedCompanyIds.includes(product.company.id))
+        .map((product) => <WProductCard key={product.id} product={product} />) || [],
+    [productsCatalogRequest.data?.productsByCategory, selectedCompanyIds]
+  )
 
   if (isServer() && !productsCatalogRequest.called && !productCategoryRequest.called) {
     fetch()
@@ -64,9 +68,9 @@ const ProductCategoryPageContainer: React.FunctionComponent<IProductCategoryPage
         <UTitle level={2}>Топ-9 за неделю</UTitle>
       </UContent>
 
-      <WProductsSlider items={productsCatalogItems.slice(12, 21)} />
+      <WProductsSlider items={productsCatalogItems.slice(0, 9)} />
 
-      <CCompaniesSelector />
+      <CCompaniesSelector productCategorySlug={currentCategorySlug} />
 
       <UContent forwardStyleConfig={{ mt: [5] }}>
         <UTitle level={2}>Новые поступления</UTitle>

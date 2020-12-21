@@ -1,2 +1,3 @@
+#import "./Company/schema.gql"
 #import "./Product/schema.gql"
 #import "./Query/schema.gql"

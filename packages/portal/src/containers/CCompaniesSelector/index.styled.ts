@@ -4,7 +4,7 @@ import { getUBlockWithProps } from '@/ui-components/UBlock'
 import UButton from '@/ui-components/UButton'
 import UList from '@/ui-components/UList'
 import { size } from 'polished'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import { space } from 'styled-system'
 
 export const Root = styled(
@@ -28,7 +28,7 @@ export const Root = styled(
 
 export const CompanyItem = styled(
   getUBlockWithProps({
-    tag: createComponentWithPropsOmit(UButton, ['color']),
+    tag: createComponentWithPropsOmit(UButton, ['color', 'isActive']),
     styleConfig: {
       height: ['64px !important'],
       width: ['64px'],
@@ -36,12 +36,13 @@ export const CompanyItem = styled(
   })
 )<{
   color?: string
+  isActive?: boolean
 }>`
   border-radius: 50%;
   text-align: center;
   font-size: 12px;
-  background-color: ${({ theme }) => theme.colors.primaryColor};
-  color: #fff;
+  background-color: ${({ theme }) => theme.colors.gray};
+  color: ${({ theme }) => theme.colors.placeholderColor};
   position: relative;
   font-weight: 100;
   align-items: center;
@@ -54,9 +55,20 @@ export const CompanyItem = styled(
     position: absolute;
     ${size(4, 10)};
     border-radius: 4px;
-    background-color: ${({ color = '' }) => color};
+    background-color: #fff;
     bottom: 7px;
     left: 50%;
     margin-left: -5px;
   }
+
+  ${({ isActive, theme, color }) =>
+    isActive &&
+    css`
+      background-color: ${theme.colors.primaryColor};
+      color: #fff;
+
+      &::after {
+        background-color: ${color};
+      }
+    `}
 `
