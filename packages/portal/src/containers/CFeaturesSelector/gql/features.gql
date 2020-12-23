@@ -1,0 +1,12 @@
+#import "@/gql/fragments/feature/minimum.gql"
+
+fragment FeaturesSelector on Feature {
+  ...FeatureMinimum
+}
+
+query featuresSelector($productCategorySlug: ID!) {
+  features {
+    ...FeaturesSelector
+    isSelectedForProductCategory(productCategorySlug: $productCategorySlug) @client
+  }
+}

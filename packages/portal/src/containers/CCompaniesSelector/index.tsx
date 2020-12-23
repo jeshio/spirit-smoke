@@ -3,7 +3,7 @@ import { setSelectedCompanyIds } from '@/gql/cache/vars/ProductCategoriesFilters
 import { useCompaniesSelectorQuery } from '@/gql/__generated__/types'
 import { useReactiveVar } from '@apollo/client'
 import { orderBy } from 'lodash'
-import * as React from 'react'
+import React, { useMemo } from 'react'
 import { CompanyItem, Root } from './index.styled'
 
 interface ICCompaniesSelectorProps {
@@ -17,6 +17,8 @@ const CCompaniesSelector: React.FunctionComponent<ICCompaniesSelectorProps> = ({
     },
   })
   const filters = useReactiveVar(productCategoriesFiltersVar)
+  const noSelectedCompanies =
+    filters[productCategorySlug] === undefined || filters[productCategorySlug]?.selectedCompanyIds.length === 0
 
   const handleItemClick = (companyId: string, currentIsActive: boolean) => () => {
     let newValue = []
@@ -31,18 +33,22 @@ const CCompaniesSelector: React.FunctionComponent<ICCompaniesSelectorProps> = ({
     setSelectedCompanyIds(productCategorySlug, newValue)
   }
 
-  if (loading || !data) return <span>Загрузка...</span>
+  const items = useMemo(
+    () =>
+      orderBy(data?.companies || [], ['isSelectedForProductCategory', 'name'], ['desc', 'asc']).map((company) => (
+        <CompanyItem
+          key={company.id}
+          color={company.color}
+          isActive={noSelectedCompanies || company.isSelectedForProductCategory}
+          onClick={handleItemClick(company.id, company.isSelectedForProductCategory)}
+        >
+          {company.name}
+        </CompanyItem>
+      )),
+    [data, noSelectedCompanies, handleItemClick]
+  )
 
-  const items = orderBy(data.companies, ['isSelectedForProductCategory', 'name'], ['desc', 'asc']).map((company) => (
-    <CompanyItem
-      key={company.id}
-      color={company.color}
-      isActive={company.isSelectedForProductCategory}
-      onClick={handleItemClick(company.id, company.isSelectedForProductCategory)}
-    >
-      {company.name}
-    </CompanyItem>
-  ))
+  if (loading || !data) return <span>Загрузка...</span>
 
   return <Root items={items} isHorizontal />
 }

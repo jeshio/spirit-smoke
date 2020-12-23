@@ -1,0 +1,11 @@
+interface IFeature {
+  isSelectedForProductCategory(productCategorySlug: ID!): Boolean
+}
+
+type FeatureSimple {
+  isSelectedForProductCategory(productCategorySlug: ID!): Boolean
+}
+
+type Feature {
+  isSelectedForProductCategory(productCategorySlug: ID!): Boolean
+}

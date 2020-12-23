@@ -421,39 +421,57 @@ export type FeatureInput = {
 };
 
 export type IFeature = {
+  createdAt: Scalars['String'];
   id: Scalars['ID'];
-  name: Scalars['String'];
-  slug: Scalars['String'];
   imageUrl: Scalars['String'];
   isDisabled: Scalars['Boolean'];
-  createdAt: Scalars['String'];
+  isSelectedForProductCategory?: Maybe<Scalars['Boolean']>;
+  name: Scalars['String'];
+  slug: Scalars['String'];
   updatedAt: Scalars['String'];
+};
+
+
+export type IFeatureIsSelectedForProductCategoryArgs = {
+  productCategorySlug: Scalars['ID'];
 };
 
 export type FeatureSimple = IFeature & {
   __typename?: 'FeatureSimple';
+  createdAt: Scalars['String'];
   id: Scalars['ID'];
-  name: Scalars['String'];
-  slug: Scalars['String'];
   imageUrl: Scalars['String'];
   isDisabled: Scalars['Boolean'];
-  createdAt: Scalars['String'];
+  isSelectedForProductCategory?: Maybe<Scalars['Boolean']>;
+  name: Scalars['String'];
+  slug: Scalars['String'];
   updatedAt: Scalars['String'];
+};
+
+
+export type FeatureSimpleIsSelectedForProductCategoryArgs = {
+  productCategorySlug: Scalars['ID'];
 };
 
 export type Feature = IFeature & {
   __typename?: 'Feature';
+  createdAt: Scalars['String'];
+  discounts: Array<Discount>;
   id: Scalars['ID'];
-  name: Scalars['String'];
-  slug: Scalars['String'];
   imageUrl: Scalars['String'];
   isDisabled: Scalars['Boolean'];
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
+  isSelectedForProductCategory?: Maybe<Scalars['Boolean']>;
+  name: Scalars['String'];
   productCategories: Array<ProductCategory>;
-  products: Array<Product>;
   productFeatures: Array<ProductFeature>;
-  discounts: Array<Discount>;
+  products: Array<Product>;
+  slug: Scalars['String'];
+  updatedAt: Scalars['String'];
+};
+
+
+export type FeatureIsSelectedForProductCategoryArgs = {
+  productCategorySlug: Scalars['ID'];
 };
 
 export type ProductFeature = {
@@ -1088,6 +1106,25 @@ export type CompaniesSelectorQuery = (
   )> }
 );
 
+export type FeaturesSelectorFragment = (
+  { __typename?: 'Feature' }
+  & FeatureMinimum_Feature_Fragment
+);
+
+export type FeaturesSelectorQueryVariables = Exact<{
+  productCategorySlug: Scalars['ID'];
+}>;
+
+
+export type FeaturesSelectorQuery = (
+  { __typename?: 'Query' }
+  & { features: Array<(
+    { __typename?: 'Feature' }
+    & Pick<Feature, 'isSelectedForProductCategory'>
+    & FeaturesSelectorFragment
+  )> }
+);
+
 export type ProductCategoryMenuListFragment = (
   { __typename?: 'ProductCategory' }
   & Pick<ProductCategory, 'slug'>
@@ -1123,7 +1160,7 @@ export type ProductsCatalogQuery = (
       & Pick<Feature, 'id' | 'imageUrl' | 'name'>
     )>, company?: Maybe<(
       { __typename?: 'Company' }
-      & Pick<Company, 'id' | 'name' | 'color' | 'isSelectedForProductCategory'>
+      & Pick<Company, 'id' | 'name' | 'color'>
     )> }
   )> }
 );
@@ -1484,38 +1521,41 @@ export type DiscountResolvers<ContextType = any, ParentType extends ResolversPar
 
 export type IFeatureResolvers<ContextType = any, ParentType extends ResolversParentTypes['IFeature'] = ResolversParentTypes['IFeature']> = {
   __resolveType: TypeResolveFn<'FeatureSimple' | 'Feature', ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   imageUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   isDisabled?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  isSelectedForProductCategory?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<IFeatureIsSelectedForProductCategoryArgs, 'productCategorySlug'>>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
 };
 
 export type FeatureSimpleResolvers<ContextType = any, ParentType extends ResolversParentTypes['FeatureSimple'] = ResolversParentTypes['FeatureSimple']> = {
+  createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   imageUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   isDisabled?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  isSelectedForProductCategory?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<FeatureSimpleIsSelectedForProductCategoryArgs, 'productCategorySlug'>>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 };
 
 export type FeatureResolvers<ContextType = any, ParentType extends ResolversParentTypes['Feature'] = ResolversParentTypes['Feature']> = {
+  createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  discounts?: Resolver<Array<ResolversTypes['Discount']>, ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   imageUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   isDisabled?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  updatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  isSelectedForProductCategory?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType, RequireFields<FeatureIsSelectedForProductCategoryArgs, 'productCategorySlug'>>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   productCategories?: Resolver<Array<ResolversTypes['ProductCategory']>, ParentType, ContextType>;
-  products?: Resolver<Array<ResolversTypes['Product']>, ParentType, ContextType>;
   productFeatures?: Resolver<Array<ResolversTypes['ProductFeature']>, ParentType, ContextType>;
-  discounts?: Resolver<Array<ResolversTypes['Discount']>, ParentType, ContextType>;
+  products?: Resolver<Array<ResolversTypes['Product']>, ParentType, ContextType>;
+  slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 };
 
@@ -1806,14 +1846,6 @@ export const CompanySimpleFragmentDoc = gql`
   updatedAt
 }
     `;
-export const FeatureMinimumFragmentDoc = gql`
-    fragment FeatureMinimum on IFeature {
-  id
-  name
-  imageUrl
-  isDisabled
-}
-    `;
 export const FeatureSimpleFragmentDoc = gql`
     fragment FeatureSimple on IFeature {
   id
@@ -1920,6 +1952,19 @@ export const CompaniesSelectorFragmentDoc = gql`
   color
 }
     ${CompanyMinimumFragmentDoc}`;
+export const FeatureMinimumFragmentDoc = gql`
+    fragment FeatureMinimum on IFeature {
+  id
+  name
+  imageUrl
+  isDisabled
+}
+    `;
+export const FeaturesSelectorFragmentDoc = gql`
+    fragment FeaturesSelector on Feature {
+  ...FeatureMinimum
+}
+    ${FeatureMinimumFragmentDoc}`;
 export const ProductCategoryMinimumFragmentDoc = gql`
     fragment ProductCategoryMinimum on IProductCategory {
   id
@@ -2325,6 +2370,40 @@ export function useCompaniesSelectorLazyQuery(baseOptions?: Apollo.LazyQueryHook
 export type CompaniesSelectorQueryHookResult = ReturnType<typeof useCompaniesSelectorQuery>;
 export type CompaniesSelectorLazyQueryHookResult = ReturnType<typeof useCompaniesSelectorLazyQuery>;
 export type CompaniesSelectorQueryResult = Apollo.QueryResult<CompaniesSelectorQuery, CompaniesSelectorQueryVariables>;
+export const FeaturesSelectorDocument = gql`
+    query featuresSelector($productCategorySlug: ID!) {
+  features {
+    ...FeaturesSelector
+    isSelectedForProductCategory(productCategorySlug: $productCategorySlug) @client
+  }
+}
+    ${FeaturesSelectorFragmentDoc}`;
+
+/**
+ * __useFeaturesSelectorQuery__
+ *
+ * To run a query within a React component, call `useFeaturesSelectorQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFeaturesSelectorQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFeaturesSelectorQuery({
+ *   variables: {
+ *      productCategorySlug: // value for 'productCategorySlug'
+ *   },
+ * });
+ */
+export function useFeaturesSelectorQuery(baseOptions?: Apollo.QueryHookOptions<FeaturesSelectorQuery, FeaturesSelectorQueryVariables>) {
+        return Apollo.useQuery<FeaturesSelectorQuery, FeaturesSelectorQueryVariables>(FeaturesSelectorDocument, baseOptions);
+      }
+export function useFeaturesSelectorLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FeaturesSelectorQuery, FeaturesSelectorQueryVariables>) {
+          return Apollo.useLazyQuery<FeaturesSelectorQuery, FeaturesSelectorQueryVariables>(FeaturesSelectorDocument, baseOptions);
+        }
+export type FeaturesSelectorQueryHookResult = ReturnType<typeof useFeaturesSelectorQuery>;
+export type FeaturesSelectorLazyQueryHookResult = ReturnType<typeof useFeaturesSelectorLazyQuery>;
+export type FeaturesSelectorQueryResult = Apollo.QueryResult<FeaturesSelectorQuery, FeaturesSelectorQueryVariables>;
 export const ProductCategoryMenuListDocument = gql`
     query productCategoryMenuList {
   productCategories {
@@ -2379,7 +2458,6 @@ export const ProductsCatalogDocument = gql`
       id
       name
       color
-      isSelectedForProductCategory(productCategorySlug: $categorySlug) @client
     }
   }
 }

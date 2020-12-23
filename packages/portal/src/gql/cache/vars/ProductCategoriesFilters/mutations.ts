@@ -9,8 +9,24 @@ export const setSelectedCompanyIds = (
   productCategoriesFiltersVar({
     ...currentFilters,
     [productCategorySlug]: {
+      selectedFeatureIds: [],
       ...currentFilters[productCategorySlug],
       selectedCompanyIds,
+    },
+  })
+}
+
+export const setSelectedFeatureIds = (
+  productCategorySlug: string,
+  selectedFeatureIds: IProductCategoriesFilters[0]['selectedFeatureIds']
+) => {
+  const currentFilters = productCategoriesFiltersVar()
+  productCategoriesFiltersVar({
+    ...currentFilters,
+    [productCategorySlug]: {
+      selectedCompanyIds: [],
+      ...currentFilters[productCategorySlug],
+      selectedFeatureIds,
     },
   })
 }

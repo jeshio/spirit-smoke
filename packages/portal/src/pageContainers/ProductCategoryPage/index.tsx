@@ -44,12 +44,19 @@ const ProductCategoryPageContainer: React.FunctionComponent<IProductCategoryPage
   }, [currentCategorySlug, getProductCategory, getProductsCatalog])
   const filters = useReactiveVar(productCategoriesFiltersVar)
   const selectedCompanyIds = filters[currentCategorySlug]?.selectedCompanyIds || []
+  const selectedFeatureIds = filters[currentCategorySlug]?.selectedFeatureIds || []
   const productsCatalogItems = useMemo(
     () =>
       productsCatalogRequest.data?.productsByCategory
-        .filter((product) => selectedCompanyIds.length === 0 || selectedCompanyIds.includes(product.company.id))
+        .filter((product) => {
+          const productFeatureIds = product.features.map(({ id }) => id)
+          return (
+            (selectedCompanyIds.length === 0 || selectedCompanyIds.includes(product.company.id)) &&
+            (selectedFeatureIds.length === 0 || selectedFeatureIds.every((id) => productFeatureIds.includes(id)))
+          )
+        })
         .map((product) => <WProductCard key={product.id} product={product} />) || [],
-    [productsCatalogRequest.data?.productsByCategory, selectedCompanyIds]
+    [productsCatalogRequest.data?.productsByCategory, selectedCompanyIds, selectedFeatureIds]
   )
 
   if (isServer() && !productsCatalogRequest.called && !productCategoryRequest.called) {
@@ -84,7 +91,7 @@ const ProductCategoryPageContainer: React.FunctionComponent<IProductCategoryPage
         </UContent>
       )}
 
-      <CFeaturesSelector setVisible={setFeaturesVisible} />
+      <CFeaturesSelector setVisible={setFeaturesVisible} productCategorySlug={currentCategorySlug} />
 
       <CFooter />
     </>

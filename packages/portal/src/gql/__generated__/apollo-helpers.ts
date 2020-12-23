@@ -126,39 +126,42 @@ export type DiscountFieldPolicy = {
 	orders?: FieldPolicy<any> | FieldReadFunction<any>,
 	bonuses?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type IFeatureKeySpecifier = ('id' | 'name' | 'slug' | 'imageUrl' | 'isDisabled' | 'createdAt' | 'updatedAt' | IFeatureKeySpecifier)[];
+export type IFeatureKeySpecifier = ('createdAt' | 'id' | 'imageUrl' | 'isDisabled' | 'isSelectedForProductCategory' | 'name' | 'slug' | 'updatedAt' | IFeatureKeySpecifier)[];
 export type IFeatureFieldPolicy = {
+	createdAt?: FieldPolicy<any> | FieldReadFunction<any>,
 	id?: FieldPolicy<any> | FieldReadFunction<any>,
-	name?: FieldPolicy<any> | FieldReadFunction<any>,
-	slug?: FieldPolicy<any> | FieldReadFunction<any>,
 	imageUrl?: FieldPolicy<any> | FieldReadFunction<any>,
 	isDisabled?: FieldPolicy<any> | FieldReadFunction<any>,
-	createdAt?: FieldPolicy<any> | FieldReadFunction<any>,
+	isSelectedForProductCategory?: FieldPolicy<any> | FieldReadFunction<any>,
+	name?: FieldPolicy<any> | FieldReadFunction<any>,
+	slug?: FieldPolicy<any> | FieldReadFunction<any>,
 	updatedAt?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type FeatureSimpleKeySpecifier = ('id' | 'name' | 'slug' | 'imageUrl' | 'isDisabled' | 'createdAt' | 'updatedAt' | FeatureSimpleKeySpecifier)[];
+export type FeatureSimpleKeySpecifier = ('createdAt' | 'id' | 'imageUrl' | 'isDisabled' | 'isSelectedForProductCategory' | 'name' | 'slug' | 'updatedAt' | FeatureSimpleKeySpecifier)[];
 export type FeatureSimpleFieldPolicy = {
+	createdAt?: FieldPolicy<any> | FieldReadFunction<any>,
 	id?: FieldPolicy<any> | FieldReadFunction<any>,
-	name?: FieldPolicy<any> | FieldReadFunction<any>,
-	slug?: FieldPolicy<any> | FieldReadFunction<any>,
 	imageUrl?: FieldPolicy<any> | FieldReadFunction<any>,
 	isDisabled?: FieldPolicy<any> | FieldReadFunction<any>,
-	createdAt?: FieldPolicy<any> | FieldReadFunction<any>,
+	isSelectedForProductCategory?: FieldPolicy<any> | FieldReadFunction<any>,
+	name?: FieldPolicy<any> | FieldReadFunction<any>,
+	slug?: FieldPolicy<any> | FieldReadFunction<any>,
 	updatedAt?: FieldPolicy<any> | FieldReadFunction<any>
 };
-export type FeatureKeySpecifier = ('id' | 'name' | 'slug' | 'imageUrl' | 'isDisabled' | 'createdAt' | 'updatedAt' | 'productCategories' | 'products' | 'productFeatures' | 'discounts' | FeatureKeySpecifier)[];
+export type FeatureKeySpecifier = ('createdAt' | 'discounts' | 'id' | 'imageUrl' | 'isDisabled' | 'isSelectedForProductCategory' | 'name' | 'productCategories' | 'productFeatures' | 'products' | 'slug' | 'updatedAt' | FeatureKeySpecifier)[];
 export type FeatureFieldPolicy = {
+	createdAt?: FieldPolicy<any> | FieldReadFunction<any>,
+	discounts?: FieldPolicy<any> | FieldReadFunction<any>,
 	id?: FieldPolicy<any> | FieldReadFunction<any>,
-	name?: FieldPolicy<any> | FieldReadFunction<any>,
-	slug?: FieldPolicy<any> | FieldReadFunction<any>,
 	imageUrl?: FieldPolicy<any> | FieldReadFunction<any>,
 	isDisabled?: FieldPolicy<any> | FieldReadFunction<any>,
-	createdAt?: FieldPolicy<any> | FieldReadFunction<any>,
-	updatedAt?: FieldPolicy<any> | FieldReadFunction<any>,
+	isSelectedForProductCategory?: FieldPolicy<any> | FieldReadFunction<any>,
+	name?: FieldPolicy<any> | FieldReadFunction<any>,
 	productCategories?: FieldPolicy<any> | FieldReadFunction<any>,
-	products?: FieldPolicy<any> | FieldReadFunction<any>,
 	productFeatures?: FieldPolicy<any> | FieldReadFunction<any>,
-	discounts?: FieldPolicy<any> | FieldReadFunction<any>
+	products?: FieldPolicy<any> | FieldReadFunction<any>,
+	slug?: FieldPolicy<any> | FieldReadFunction<any>,
+	updatedAt?: FieldPolicy<any> | FieldReadFunction<any>
 };
 export type ProductFeatureKeySpecifier = ('product' | 'feature' | 'endTime' | ProductFeatureKeySpecifier)[];
 export type ProductFeatureFieldPolicy = {

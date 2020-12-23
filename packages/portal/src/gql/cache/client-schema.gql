@@ -1,3 +1,4 @@
 #import "./Company/schema.gql"
 #import "./Product/schema.gql"
+#import "./Feature/schema.gql"
 #import "./Query/schema.gql"

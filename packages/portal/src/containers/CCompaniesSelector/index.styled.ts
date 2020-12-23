@@ -3,7 +3,7 @@ import theme from '@/styles/theme'
 import { getUBlockWithProps } from '@/ui-components/UBlock'
 import UButton from '@/ui-components/UButton'
 import UList from '@/ui-components/UList'
-import { size } from 'polished'
+import { darken, lighten, rgba, size } from 'polished'
 import styled, { css } from 'styled-components'
 import { space } from 'styled-system'
 
@@ -12,9 +12,10 @@ export const Root = styled(
     tag: UList,
     styleConfig: {
       px: [3],
-      mt: theme.blocksSpace,
-      pb: [2],
-      mb: [-2],
+      mt: theme.blocksSpace.map((n) => n - 2),
+      pt: [2],
+      pb: ['12px'],
+      mb: ['-12px'],
     },
   })
 )`
@@ -41,34 +42,41 @@ export const CompanyItem = styled(
   border-radius: 50%;
   text-align: center;
   font-size: 12px;
-  background-color: ${({ theme }) => theme.colors.gray};
-  color: ${({ theme }) => theme.colors.placeholderColor};
+  background-color: ${({ theme }) => theme.colors.inactive.background};
+  color: ${({ theme }) => theme.colors.inactive.color};
   position: relative;
   font-weight: 100;
   align-items: center;
   justify-content: center;
   padding: 0 0 3px 0;
+  overflow: hidden;
   border: unset;
+  z-index: 1;
+  box-shadow: 4px 2px 10px ${({ theme }) => rgba(theme.colors.inactive.color, 0.5)};
 
-  &::after {
-    content: '';
-    position: absolute;
-    ${size(4, 10)};
-    border-radius: 4px;
-    background-color: #fff;
-    bottom: 7px;
-    left: 50%;
-    margin-left: -5px;
+  &:active,
+  &:hover {
+    color: ${({ theme }) => theme.colors.inactive.color};
+  }
+
+  &:focus {
+    color: ${({ theme }) => darken(0.3, theme.colors.inactive.color)};
   }
 
   ${({ isActive, theme, color }) =>
     isActive &&
     css`
       background-color: ${theme.colors.primaryColor};
+      box-shadow: 4px 2px 10px ${rgba(lighten(0.1, color), 1)};
       color: #fff;
 
-      &::after {
-        background-color: ${color};
+      &:active,
+      &:hover {
+        color: #fff;
+      }
+
+      &:focus {
+        color: #ddd;
       }
     `}
 `

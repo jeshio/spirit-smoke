@@ -1,7 +1,9 @@
 import createComponentWithPropsOmit from '@/helpers/createComponentWithPropsOmit'
 import theme from '@/styles/theme'
 import { getUBlockWithProps } from '@/ui-components/UBlock'
-import styled from 'styled-components'
+import UButton from '@/ui-components/UButton'
+import { darken } from 'polished'
+import styled, { css } from 'styled-components'
 import { left, space } from 'styled-system'
 
 const list = { span: { padding: theme.space[3] } }
@@ -44,6 +46,7 @@ export const Root = styled(
 
 export const Item = styled(
   getUBlockWithProps({
+    tag: createComponentWithPropsOmit(UButton, ['isActive']),
     styleConfig: {
       height: [`${item.span.height}px`],
       width: [`${item.span.width}px`],
@@ -51,7 +54,9 @@ export const Item = styled(
       mb: [`${item.span.margin}px`],
     },
   })
-)`
+)<{
+  isActive?: boolean
+}>`
   border-radius: 50%;
   text-align: center;
   font-size: 9px;
@@ -63,6 +68,31 @@ export const Item = styled(
   justify-content: center;
   padding: 0 0 3px 0;
   border: unset;
+
+  &:active,
+  &:hover {
+    color: ${({ theme }) => theme.colors.inactive.color};
+  }
+
+  &:focus {
+    color: ${({ theme }) => darken(0.3, theme.colors.inactive.color)};
+  }
+
+  ${({ isActive, theme }) =>
+    isActive &&
+    css`
+      background-color: ${theme.colors.primaryColor};
+      color: #fff;
+
+      &:active,
+      &:hover {
+        color: #fff;
+      }
+
+      &:focus {
+        color: #ddd;
+      }
+    `}
 `
 
 export const ItemImage = styled(
