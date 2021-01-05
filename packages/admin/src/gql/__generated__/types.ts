@@ -133,6 +133,7 @@ export type Mutation = {
   createProduct: ProductSimple;
   updateProduct: ProductSimple;
   deleteProduct: Scalars['ID'];
+  syncAllProductsCount: Scalars['Boolean'];
   createProductCategory: ProductCategorySimple;
   updateProductCategory: ProductCategorySimple;
   deleteProductCategory: Scalars['ID'];
@@ -920,6 +921,14 @@ export type DeleteProductMutationVariables = Exact<{
 export type DeleteProductMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'deleteProduct'>
+);
+
+export type SyncAllProductsCountMutationVariables = Exact<{ [key: string]: never; }>;
+
+
+export type SyncAllProductsCountMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'syncAllProductsCount'>
 );
 
 export type UpdateProductMutationVariables = Exact<{
@@ -1862,6 +1871,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   createProduct?: Resolver<ResolversTypes['ProductSimple'], ParentType, ContextType, RequireFields<MutationCreateProductArgs, 'input'>>;
   updateProduct?: Resolver<ResolversTypes['ProductSimple'], ParentType, ContextType, RequireFields<MutationUpdateProductArgs, 'id' | 'input'>>;
   deleteProduct?: Resolver<ResolversTypes['ID'], ParentType, ContextType, RequireFields<MutationDeleteProductArgs, 'id'>>;
+  syncAllProductsCount?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   createProductCategory?: Resolver<ResolversTypes['ProductCategorySimple'], ParentType, ContextType, RequireFields<MutationCreateProductCategoryArgs, 'input'>>;
   updateProductCategory?: Resolver<ResolversTypes['ProductCategorySimple'], ParentType, ContextType, RequireFields<MutationUpdateProductCategoryArgs, 'id' | 'input'>>;
   deleteProductCategory?: Resolver<ResolversTypes['ID'], ParentType, ContextType, RequireFields<MutationDeleteProductCategoryArgs, 'id'>>;
@@ -3002,6 +3012,35 @@ export function useDeleteProductMutation(baseOptions?: Apollo.MutationHookOption
 export type DeleteProductMutationHookResult = ReturnType<typeof useDeleteProductMutation>;
 export type DeleteProductMutationResult = Apollo.MutationResult<DeleteProductMutation>;
 export type DeleteProductMutationOptions = Apollo.BaseMutationOptions<DeleteProductMutation, DeleteProductMutationVariables>;
+export const SyncAllProductsCountDocument = gql`
+    mutation syncAllProductsCount {
+  syncAllProductsCount
+}
+    `;
+export type SyncAllProductsCountMutationFn = Apollo.MutationFunction<SyncAllProductsCountMutation, SyncAllProductsCountMutationVariables>;
+
+/**
+ * __useSyncAllProductsCountMutation__
+ *
+ * To run a mutation, you first call `useSyncAllProductsCountMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSyncAllProductsCountMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [syncAllProductsCountMutation, { data, loading, error }] = useSyncAllProductsCountMutation({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useSyncAllProductsCountMutation(baseOptions?: Apollo.MutationHookOptions<SyncAllProductsCountMutation, SyncAllProductsCountMutationVariables>) {
+        return Apollo.useMutation<SyncAllProductsCountMutation, SyncAllProductsCountMutationVariables>(SyncAllProductsCountDocument, baseOptions);
+      }
+export type SyncAllProductsCountMutationHookResult = ReturnType<typeof useSyncAllProductsCountMutation>;
+export type SyncAllProductsCountMutationResult = Apollo.MutationResult<SyncAllProductsCountMutation>;
+export type SyncAllProductsCountMutationOptions = Apollo.BaseMutationOptions<SyncAllProductsCountMutation, SyncAllProductsCountMutationVariables>;
 export const UpdateProductDocument = gql`
     mutation updateProduct($id: ID!, $input: ProductInput!) {
   updateProduct(id: $id, input: $input) {

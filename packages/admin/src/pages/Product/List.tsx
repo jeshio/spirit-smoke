@@ -5,6 +5,7 @@ import {
   useProductsListPageQuery,
   useDeleteProductMutation,
   ProductsListPageDocument,
+  useSyncAllProductsCountMutation,
 } from '@/gql/__generated__/types'
 import { IColumn } from '@/ui-components/UTable/types'
 import { Link } from 'umi'
@@ -120,12 +121,28 @@ const columns: ListColumnsType = ({ deleteItem }): IColumn<ProductsListPageFragm
 interface IProductListPageProps {}
 
 const ProductListPage: React.FunctionComponent<IProductListPageProps> = () => {
+  const [syncAllProductsCount] = useSyncAllProductsCountMutation({
+    refetchQueries: [
+      {
+        query: ProductsListPageDocument,
+      },
+    ],
+  })
+  const handleSyncCountClick = () => {
+    syncAllProductsCount()
+  }
+
   return (
     <ListPageBuilder<ProductsListPageFragment>
       addItemButton={{
         link: '/products/add',
         name: 'Добавить продукт',
       }}
+      extraButtons={[
+        <UButton key="sync" onClick={handleSyncCountClick}>
+          Синхронизировать количество продуктов
+        </UButton>,
+      ]}
       columns={columns}
       listQuery={{
         hook: useProductsListPageQuery,

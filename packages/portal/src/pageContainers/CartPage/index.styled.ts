@@ -21,12 +21,14 @@ export const ProductCategoryTitleWrapper = styled(
 )``
 
 export const ProductsList = styled(getUBlockWithProps())`
-  > ${CartItem} + ${CartItem} {
-    ${({ theme }) =>
-      space({
-        mt: [2],
-        theme,
-      })}
+  > ${CartItem} {
+    & + ${CartItem} {
+      ${({ theme }) =>
+        space({
+          mt: [2],
+          theme,
+        })}
+    }
 
     & + ${ProductCategoryTitleWrapper} {
       ${({ theme }) =>

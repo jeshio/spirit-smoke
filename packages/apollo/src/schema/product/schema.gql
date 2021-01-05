@@ -9,6 +9,7 @@ extend type Mutation {
   createProduct(input: ProductInput!): ProductSimple!
   updateProduct(id: ID!, input: ProductInput!): ProductSimple!
   deleteProduct(id: ID!): ID!
+  syncAllProductsCount: Boolean
 }
 
 input ProductFeatureInput {

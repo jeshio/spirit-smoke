@@ -29,7 +29,7 @@ const theme = {
     secondColor: '#FEF900',
     placeholderColor: '#9a9a9a',
     inactive: { background: '#e9e9e9', color: '#9a9a9a' },
-    red: '#f66',
+    red: '#FF003C',
     black: '#2D2C2E',
     blue: '#0F5CFE',
     gray: '#e9e9e9',

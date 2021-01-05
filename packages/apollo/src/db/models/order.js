@@ -16,6 +16,16 @@ module.exports = (sequelize, DataTypes) => {
       Order.hasMany(models.orderProduct)
     }
   }
+
+  Order.ORDER_STATUSES = {
+    NOT_CONFIRMED: 'NOT_CONFIRMED',
+    CONFIRMED: 'CONFIRMED',
+    CANCELED: 'CANCELED',
+    SENT: 'SENT',
+    FAILURE: 'FAILURE',
+    SUCCESS: 'SUCCESS',
+  }
+
   Order.init({
     address: {
       type: DataTypes.STRING,
@@ -25,8 +35,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     status: {
       type: DataTypes.STRING,
-      values: ['NOT_CONFIRMED', 'CONFIRMED', 'CANCELED', 'SENT', 'FAILURE', 'SUCCESS'],
-      defaultValue: 'NOT_CONFIRMED',
+      values: Object.values(Order.ORDER_STATUSES),
+      defaultValue: Order.ORDER_STATUSES.NOT_CONFIRMED,
     },
     intercomCode: {
       type: DataTypes.STRING,
@@ -62,5 +72,9 @@ module.exports = (sequelize, DataTypes) => {
     modelName: 'order',
     paranoid: true,
   })
+
+  Order.addHook('afterSave', (...args) => sequelize.models.product.syncAllProductsCountHook(...args))
+  Order.addHook('afterDestroy', (...args) => sequelize.models.product.syncAllProductsCountHook(...args))
+
   return Order
 }

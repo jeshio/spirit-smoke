@@ -19,6 +19,7 @@ const resolvers = {
         ourComment,
         // TODO: deliveryTime,
         phoneNumber,
+        status,
         products,
       },
     }, { sequelize, models }) => sequelize.transaction(async (transaction) => {
@@ -28,9 +29,10 @@ const resolvers = {
         personsCount,
         comment,
         ourComment,
+        status,
         deliveryTime: 10000,
         phoneNumber,
-      }, { transaction })
+      }, { transaction, individualHooks: true })
       const promises = products.map(({ id: productId, productsCount }) =>
         order.addProduct(productId, {
           transaction,
@@ -49,6 +51,7 @@ const resolvers = {
         personsCount,
         comment,
         ourComment,
+        status,
         // TODO: deliveryTime,
         phoneNumber,
         products,
@@ -61,9 +64,12 @@ const resolvers = {
           personsCount,
           comment,
           ourComment,
+          status,
           deliveryTime: 50000,
           phoneNumber,
-        }, { where: { id }, returning: true, transaction }).then(([, [order]]) => order)
+        }, {
+          where: { id }, returning: true, transaction, individualHooks: true,
+        }).then(([, [order]]) => order)
         await updatedOrder.setProducts(null, { transaction })
         const promises = products.map(({ id: productId, productsCount }) =>
           updatedOrder.addProduct(productId, {

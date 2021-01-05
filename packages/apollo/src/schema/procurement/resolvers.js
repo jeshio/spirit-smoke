@@ -24,7 +24,7 @@ const resolvers = {
         nextStatusDate,
         deliveryCost,
         status,
-      }, { transaction })
+      }, { transaction, individualHooks: true })
       const promises = products.map(({ id: productId, count, costs }) =>
         procurement.addProduct(productId, {
           transaction,
@@ -54,7 +54,7 @@ const resolvers = {
         deliveryCost,
         status,
       }, {
-        where: { id }, returning: true, transaction,
+        where: { id }, returning: true, transaction, individualHooks: true,
       }).then(([, [procurement]]) => procurement)
 
       await updatedProcurement.setProducts(null, { transaction })

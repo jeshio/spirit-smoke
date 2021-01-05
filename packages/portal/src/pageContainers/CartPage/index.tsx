@@ -65,7 +65,7 @@ const CartPage: React.FunctionComponent<ICartPageProps> = () => {
 
   return (
     <>
-      <UContent>
+      <UContent forwardStyleConfig={{ mb: [8] }}>
         <UMetaTitle title="Корзина" />
         <TitleWrapper>
           <UTitle level={1}>Корзина</UTitle>

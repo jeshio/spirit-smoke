@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React, { ReactElement } from 'react'
 import UTable, { IUTableProps } from '@/ui-components/UTable'
 
 import { IColumn } from '@/ui-components/UTable/types'
@@ -34,6 +34,7 @@ interface IListPageBuilderProps<RecordType> {
     name: string
     link: string
   }
+  extraButtons?: ReactElement[]
   tableProps?: Partial<IUTableProps<RecordType>>
 }
 
@@ -45,6 +46,7 @@ function ListPageBuilder<RecordType>({
   listQuery,
   deleteItemMutation = {} as any,
   tableProps,
+  extraButtons,
 }: IListPageBuilderProps<RecordType>) {
   const [query, queryComponent, originalQuery] = useStableQuery(listQuery.hook, {
     ...listQuery.hookOptions,
@@ -72,9 +74,12 @@ function ListPageBuilder<RecordType>({
     <UPageContainer
       title={title}
       extra={
-        <UButton href={addItemButton.link} type="primary" icon={<PlusOutlined />}>
-          {addItemButton.name}
-        </UButton>
+        <>
+          {extraButtons}
+          <UButton href={addItemButton.link} type="primary" icon={<PlusOutlined />}>
+            {addItemButton.name}
+          </UButton>
+        </>
       }
     >
       <UTable<any>

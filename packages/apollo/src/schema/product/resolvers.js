@@ -110,6 +110,8 @@ const resolvers = {
         id,
       },
     }).then(() => id),
+
+    syncAllProductsCount: (_, __, { models }) => models.product.syncAllProductsCount(),
   },
 
   Product: {
