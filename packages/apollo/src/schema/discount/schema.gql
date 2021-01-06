@@ -17,8 +17,8 @@ input DiscountInput {
   percent: Float
   rub: Float
   code: String
-  startDate: String!
-  endDate: String!
+  startDate: Date!
+  endDate: Date!
   isGlobal: Boolean
 }
 
@@ -28,8 +28,8 @@ type Discount {
   percent: Float
   rub: Float
   code: String
-  startDate: String!
-  endDate: String!
+  startDate: Date!
+  endDate: Date!
   isGlobal: Boolean!
   productCategories: [ProductCategory]!
   products: [Product]!

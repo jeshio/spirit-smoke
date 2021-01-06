@@ -42,8 +42,8 @@ interface IProduct {
   count: Int!
   productCategoryId: ID!
   companyId: ID!
-  createdAt: String!
-  updatedAt: String!
+  createdAt: Date!
+  updatedAt: Date!
 }
 
 type ProductSimple implements IProduct {
@@ -58,8 +58,8 @@ type ProductSimple implements IProduct {
   count: Int!
   productCategoryId: ID!
   companyId: ID!
-  createdAt: String!
-  updatedAt: String!
+  createdAt: Date!
+  updatedAt: Date!
 }
 
 type Product implements IProduct {
@@ -74,8 +74,8 @@ type Product implements IProduct {
   count: Int!
   productCategoryId: ID!
   companyId: ID!
-  createdAt: String!
-  updatedAt: String!
+  createdAt: Date!
+  updatedAt: Date!
   waitingCount: Int! # количество продукта, ожидаемое от ближайших поставок
   company: Company
   productCategory: ProductCategory

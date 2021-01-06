@@ -24,8 +24,8 @@ interface IFeature {
   slug: String!
   imageUrl: String!
   isDisabled: Boolean!
-  createdAt: String!
-  updatedAt: String!
+  createdAt: Date!
+  updatedAt: Date!
 }
 
 type FeatureSimple implements IFeature {
@@ -34,8 +34,8 @@ type FeatureSimple implements IFeature {
   slug: String!
   imageUrl: String!
   isDisabled: Boolean!
-  createdAt: String!
-  updatedAt: String!
+  createdAt: Date!
+  updatedAt: Date!
 }
 
 type Feature implements IFeature {
@@ -44,8 +44,8 @@ type Feature implements IFeature {
   slug: String!
   imageUrl: String!
   isDisabled: Boolean!
-  createdAt: String!
-  updatedAt: String!
+  createdAt: Date!
+  updatedAt: Date!
   productCategories: [ProductCategory!]!
   products: [Product!]!
   productFeatures: [ProductFeature!]!

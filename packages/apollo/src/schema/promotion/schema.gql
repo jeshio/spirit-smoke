@@ -11,8 +11,8 @@ input PromotionInput {
   name: String!
   description: String!
   imageUrl: String!
-  startDate: String!
-  endDate: String!
+  startDate: Date!
+  endDate: Date!
   priority: Int!
 }
 
@@ -21,7 +21,7 @@ type Promotion {
   name: String!
   description: String!
   imageUrl: String!
-  startDate: String!
-  endDate: String!
+  startDate: Date!
+  endDate: Date!
   priority: Int!
 } 

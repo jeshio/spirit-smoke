@@ -24,8 +24,8 @@ interface ICompany {
   barcode: String
   name: String!
   slug: String!
-  createdAt: String!
-  updatedAt: String!
+  createdAt: Date!
+  updatedAt: Date!
 }
 
 type CompanySimple implements ICompany {
@@ -35,8 +35,8 @@ type CompanySimple implements ICompany {
   barcode: String
   name: String!
   slug: String!
-  createdAt: String!
-  updatedAt: String!
+  createdAt: Date!
+  updatedAt: Date!
 }
 
 type Company implements ICompany {
@@ -47,6 +47,6 @@ type Company implements ICompany {
   name: String!
   slug: String!
   products: [Product!]!
-  createdAt: String!
-  updatedAt: String!
+  createdAt: Date!
+  updatedAt: Date!
 } 

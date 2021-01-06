@@ -7,6 +7,7 @@ import { UItemsSelectorValueObjectType } from '@/ui-components/UItemsSelector'
 import URow from '@/ui-components/URow'
 import UWProductsSelector from '@/ui-widgets/UWProductsSelector'
 import { Card, DatePicker, Input, InputNumber, Select } from 'antd'
+import moment from 'moment'
 import React, { useCallback, useMemo } from 'react'
 import { PROCUREMENT_STATUSES } from './constants'
 
@@ -58,9 +59,7 @@ const ProcurementForm: React.FunctionComponent<IProcurementFormProps> = ({
               label="Дата следующего статуса"
               name="nextStatusDate"
               required
-              initialValue=""
-              // TODO: допилить дату
-              // initialValue={procurement?.nextStatusDate}
+              initialValue={procurement?.nextStatusDate ? moment(procurement?.nextStatusDate) : ''}
             >
               <DatePicker />
             </UForm.Item>

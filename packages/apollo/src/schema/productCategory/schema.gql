@@ -25,8 +25,8 @@ interface IProductCategory {
   priority: Int
   iconUrl: String!
   description: String!
-  createdAt: String!
-  updatedAt: String!
+  createdAt: Date!
+  updatedAt: Date!
 }
 
 type ProductCategorySimple implements IProductCategory {
@@ -36,8 +36,8 @@ type ProductCategorySimple implements IProductCategory {
   priority: Int
   iconUrl: String!
   description: String!
-  createdAt: String!
-  updatedAt: String!
+  createdAt: Date!
+  updatedAt: Date!
 }
 
 type ProductCategory implements IProductCategory {
@@ -47,8 +47,8 @@ type ProductCategory implements IProductCategory {
   priority: Int
   iconUrl: String!
   description: String!
-  createdAt: String!
-  updatedAt: String!
+  createdAt: Date!
+  updatedAt: Date!
   products: [Product!]!
   features: [Feature!]!
   discounts: [Discount!]!
