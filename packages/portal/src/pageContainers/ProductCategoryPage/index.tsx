@@ -11,6 +11,7 @@ import isServer from '@/helpers/isServer'
 import CFooter from '@/containers/CFooter'
 import { useReactiveVar } from '@apollo/client'
 import { productCategoriesFiltersVar } from '@/gql/cache/vars/ProductCategoriesFilters'
+import NotFound404 from '../Errors/NotFound404'
 
 interface IProductCategoryPageContainerProps {
   title?: string
@@ -24,7 +25,7 @@ const ProductCategoryPageContainer: React.FunctionComponent<IProductCategoryPage
   const [featuresVisible, setFeaturesVisible] = useState(false)
   const [getProductCategory, productCategoryRequest] = useProductCategoryMinimumItemLazyQuery()
   const [getProductsCatalog, productsCatalogRequest] = useProductsCatalogLazyQuery()
-  const pageTitle = useMemo(() => title || productCategoryRequest.data?.productCategory.name, [
+  const pageTitle = useMemo(() => title || productCategoryRequest.data?.productCategory?.name, [
     title,
     productCategoryRequest,
   ])
@@ -66,6 +67,10 @@ const ProductCategoryPageContainer: React.FunctionComponent<IProductCategoryPage
   useEffect(() => {
     fetch()
   }, [currentCategorySlug])
+
+  if (productCategoryRequest.data?.productCategory === null) {
+    return <NotFound404 />
+  }
 
   return (
     <>
