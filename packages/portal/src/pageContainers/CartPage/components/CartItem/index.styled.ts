@@ -5,8 +5,8 @@ import styled from 'styled-components'
 export const StyledCartItem = styled(
   getUBlockWithProps({
     styleConfig: {
-      p: [3],
-      px: [4],
+      p: [3, 5],
+      px: [4, 6],
       borderRadius: theme.card.borderRadius,
     },
   })
@@ -20,9 +20,9 @@ export const Title = styled(
   getUBlockWithProps({
     tag: 'h4',
     styleConfig: {
-      fontSize: ['16px'],
+      fontSize: [16, 21],
       m: 0,
-      height: ['38px'],
+      height: [38, 48],
     },
   })
 )``
@@ -30,9 +30,9 @@ export const Title = styled(
 export const CompanyName = styled(
   getUBlockWithProps({
     styleConfig: {
-      fontSize: ['12px'],
+      fontSize: [12, 15],
       m: [0],
-      mb: [1],
+      mb: [1, 2],
     },
   })
 )``
@@ -48,10 +48,10 @@ export const DeleteButton = styled(
     tag: 'button',
     styleConfig: {
       p: 0,
-      right: [4],
-      top: [3],
-      width: ['10px'],
-      height: ['10px'],
+      right: [4, 6],
+      top: [3, 5],
+      width: [10, 14],
+      height: [10, 14],
     },
   })
 )`

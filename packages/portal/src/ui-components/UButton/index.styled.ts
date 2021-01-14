@@ -16,9 +16,10 @@ export const StyledButton = styled<
       'fill',
     ]),
     styleConfig: {
-      px: [4],
-      py: ['7px'],
-      pb: ['9px'],
+      px: [4, 5],
+      py: ['7px', '8px'],
+      pb: ['9px', '10px'],
+      fontSize: [14, 16],
     },
   })
 )`
@@ -29,7 +30,6 @@ export const StyledButton = styled<
   outline: unset;
   background: unset;
   border-radius: 100px;
-  font-size: 14px;
   cursor: pointer;
   font-weight: 300;
   appearance: none;

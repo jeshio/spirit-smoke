@@ -6,7 +6,6 @@ import { CartIcon } from '@@icons'
 import UContent from '@/ui-components/UContent'
 import theme from '@/styles/theme'
 import UButton from '@/ui-components/UButton'
-import createComponentWithPropsOmit from '@/helpers/createComponentWithPropsOmit'
 
 export const Root = styled.header``
 
@@ -14,7 +13,7 @@ export const TopBar = styled(
   getUBlockWithProps({
     tag: UContent,
     styleConfig: {
-      height: ['55px'],
+      height: ['55px', '65px'],
       width: '100%',
     },
   })
@@ -22,16 +21,23 @@ export const TopBar = styled(
   position: fixed;
   display: flex;
   align-items: center;
+  justify-content: space-between;
   background-color: ${({ theme }) => theme.colors.primaryColor};
   box-shadow: 0px 0px 2px rgba(154, 154, 154, 0.5);
   z-index: 100;
 `
 
-export const StyledLogo = styled.div`
+export const StyledLogo = styled(
+  getUBlockWithProps({
+    styleConfig: {
+      height: [32, 38],
+      width: [32, 38],
+    },
+  })
+)`
   font-weight: 600;
   overflow: hidden;
-  ${size(32)}
-  background-color: #FFBE3F;
+  background-color: #ffbe3f;
   border-radius: 50%;
   font-size: 9px;
 `
@@ -53,7 +59,7 @@ export const MenuItem = styled(
   getUBlockWithProps({
     tag: 'li',
     styleConfig: {
-      marginLeft: ['21px'],
+      marginLeft: [21, 28],
     },
   })
 )`
@@ -64,7 +70,7 @@ export const MenuItemLink = styled(
   getUBlockWithProps({
     tag: ULink,
     styleConfig: {
-      fontSize: ['15px'],
+      fontSize: [15, 17],
     },
   })
 )`
@@ -76,7 +82,7 @@ export const PhoneNumberLink = styled(
   getUBlockWithProps({
     tag: ULink,
     styleConfig: {
-      fontSize: ['13px'],
+      fontSize: [13, 14],
     },
   })
 )`
@@ -96,8 +102,9 @@ export const SubHeader = styled(
     tag: UContent,
     styleConfig: {
       py: [2],
-      pt: [`${theme.space[2] + 55}px`],
+      pt: [`${theme.space[2] + 55}px`, `${theme.space[2] + 65}px`],
       mb: theme.blocksSpace.map((n) => n - 2),
+      fontSize: [14, 18],
     },
   })
 )`
@@ -105,7 +112,6 @@ export const SubHeader = styled(
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 14px;
   box-shadow: 0px 4px 5px rgba(201, 201, 231, 0.2);
 `
 
@@ -113,8 +119,8 @@ export const StyledCartIcon = styled(
   getUBlockWithProps({
     tag: CartIcon,
     styleConfig: {
-      width: ['26px'],
-      height: ['26px'],
+      width: ['29px', '34px'],
+      height: ['29px', '34px'],
       marginTop: ['-2px'],
     },
   })
@@ -129,18 +135,17 @@ export const StyledCartButton = styled(UButton)`
 export const CartButtonCount = styled(
   getUBlockWithProps({
     styleConfig: {
-      width: ['15px'],
-      height: ['15px'],
+      width: ['16px', '19px'],
+      height: ['16px', '19px'],
+      fontSize: [11, 14],
+      right: ['-3px', '-5px'],
     },
   })
 )`
   position: absolute;
-  right: -1px;
   top: -1px;
-  width: 15px;
-  height: 15px;
   background-color: ${theme.colors.blue};
   color: #fff;
   border-radius: 50%;
-  font-size: 10px;
+  font-weight: 500;
 `

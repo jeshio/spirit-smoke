@@ -8,9 +8,9 @@ export const Root = styled(
   getUBlockWithProps({
     tag: createComponentWithPropsOmit<IUInputProps>(InputMask, ['error']),
     styleConfig: {
-      px: [3],
-      py: [2],
-      fontSize: ['14px'],
+      px: [3, 4],
+      py: [2, 3],
+      fontSize: [14, 16],
       width: ['100%'],
       mb: [3],
     },

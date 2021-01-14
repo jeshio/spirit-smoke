@@ -7,7 +7,7 @@ export const Root = styled(
   getUBlockWithProps({
     tag: UBottomBar,
     styleConfig: {
-      px: [4],
+      px: [4, 6],
     },
   })
 )`
@@ -16,7 +16,13 @@ export const Root = styled(
   justify-content: space-between;
 `
 
-export const Text = styled(getUBlockWithProps())`
+export const Text = styled(
+  getUBlockWithProps({
+    styleConfig: {
+      fontSize: [16, 18],
+    },
+  })
+)`
   display: flex;
   align-items: center;
 

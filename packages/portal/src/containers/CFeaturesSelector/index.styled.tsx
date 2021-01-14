@@ -4,16 +4,22 @@ import { getUBlockWithProps } from '@/ui-components/UBlock'
 import UButton from '@/ui-components/UButton'
 import { darken } from 'polished'
 import styled, { css } from 'styled-components'
-import { left, space } from 'styled-system'
+import { left, space, layout } from 'styled-system'
 
-const list = { span: { padding: theme.space[3] } }
-const item = { span: { width: 46, height: 46, margin: theme.space[2] } }
+const list = { padding: [theme.space[3], theme.space[5]] }
+const item = { width: [46, 54], height: [46, 54], margin: [theme.space[2], theme.space[3]] }
+
+const getRootWidth = (itemsCount: number, responsiveLevel: number) =>
+  `${
+    Math.floor(((itemsCount + 1) * (item.width[responsiveLevel] + item.margin[responsiveLevel])) / 2) +
+    list.padding[responsiveLevel] * 2
+  }px`
 
 export const RootWrapper = styled(
   getUBlockWithProps({
     styleConfig: {
       mt: theme.blocksSpace.map((n) => n - 1),
-      mb: [`-${item.span.margin}px`],
+      mb: item.margin.map((n) => `-${n}px`),
     },
   })
 )`
@@ -26,7 +32,7 @@ export const Root = styled(
   getUBlockWithProps({
     tag: createComponentWithPropsOmit('div', ['itemsCount']),
     styleConfig: {
-      px: [`${list.span.padding}px`],
+      px: list.padding.map((n) => `${n}px`),
     },
   })
 )<{
@@ -35,12 +41,15 @@ export const Root = styled(
   display: flex;
   flex-wrap: wrap;
   justify-content: left;
-  width: ${({ itemsCount }) =>
-    `${((itemsCount + 1) * (item.span.width + item.span.margin)) / 2 + 2 * list.span.padding}px`};
+  ${({ itemsCount, ...props }) =>
+    layout({
+      ...props,
+      width: [getRootWidth(itemsCount, 0), getRootWidth(itemsCount, 1)],
+    })}
 
   > * {
-    ${space({ ml: [`${item.span.margin}px`] })};
-    ${left({ left: [`-${item.span.margin}px`] })};
+    ${space({ ml: item.margin.map((n) => `${n}px`) })};
+    ${left({ left: item.margin.map((n) => `-${n}px`) })};
   }
 `
 
@@ -48,10 +57,11 @@ export const Item = styled(
   getUBlockWithProps({
     tag: createComponentWithPropsOmit(UButton, ['isActive']),
     styleConfig: {
-      height: [`${item.span.height}px`],
-      width: [`${item.span.width}px`],
-      minWidth: [`${item.span.width}px`],
-      mb: [`${item.span.margin}px`],
+      height: item.height.map((n) => `${n}px`),
+      width: item.width.map((n) => `${n}px`),
+      minWidth: item.width.map((n) => `${n}px`),
+      mb: item.margin.map((n) => `${n}px`),
+      fontSize: [9, 10],
     },
   })
 )<{
@@ -59,7 +69,6 @@ export const Item = styled(
 }>`
   border-radius: 50%;
   text-align: center;
-  font-size: 9px;
   background-color: ${({ theme }) => theme.colors.inactive.background};
   color: ${({ theme }) => theme.colors.inactive.color};
   position: relative;
@@ -99,8 +108,8 @@ export const ItemImage = styled(
   getUBlockWithProps({
     tag: 'img',
     styleConfig: {
-      height: ['16px'],
-      width: ['16px'],
+      height: [16],
+      width: [16],
       top: ['7px'],
       ml: ['-8px'],
     },

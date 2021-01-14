@@ -1,5 +1,6 @@
 import { createGlobalStyle } from 'styled-components'
 import { transitions } from 'polished'
+import { space } from 'styled-system'
 
 const GlobalStyles = createGlobalStyle`
   @font-face {
@@ -49,8 +50,15 @@ const GlobalStyles = createGlobalStyle`
 
   body {
     margin: 0;
-    padding: 0 0 55px;
+    padding: 0 0 95px;
     overflow-x: hidden;
+
+    ${(props) =>
+      space({
+        ...props,
+        pb: props.theme.blocksSpace,
+        mb: props.theme.bottomBar.height,
+      })}
   }
 
   *, :after, :before {

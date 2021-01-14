@@ -9,7 +9,7 @@ export const Root = styled(
     styleConfig: {
       height: theme.bottomBar.height,
       width: ['100%'],
-      bottom: theme.bottomBar.height.map((s) => `-${s}`),
+      bottom: theme.bottomBar.height.map((s) => `-${s}px`),
     },
   })
 )<{

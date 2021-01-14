@@ -9,7 +9,7 @@ const Test: React.FunctionComponent<ITestProps> = () => {
   if (productsRequest.loading || !productsRequest.data) return <div>Загрузка</div>
 
   return (
-    <UBlock my={[1, 1, 3, 3, 5, 5]}>
+    <UBlock styleConfig={{ my: [1, 1, 3, 3, 5, 5] }}>
       {productsRequest.data.products.map((product) => (
         <span key={product.id}>{product.name}&nbsp;</span>
       ))}

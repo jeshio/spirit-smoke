@@ -3,10 +3,10 @@ import UContent from '@/ui-components/UContent'
 
 interface ICFooterProps {}
 
-const CFooter: React.FunctionComponent<ICFooterProps> = (props) => {
+const CFooter: React.FunctionComponent<ICFooterProps> = () => {
   return (
     <footer>
-      <UContent>footer</UContent>
+      <UContent></UContent>
     </footer>
   )
 }

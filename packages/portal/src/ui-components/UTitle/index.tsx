@@ -12,17 +12,17 @@ const UTitle: React.FunctionComponent<IUTitleProps> = ({ level, children }) => {
   switch (level) {
     case 1:
       styleConfig = {
-        fontSize: ['28px'],
+        fontSize: [28, 32],
       }
       break
     case 2:
       styleConfig = {
-        fontSize: ['21px'],
+        fontSize: [21, 25],
       }
       break
     case 3:
       styleConfig = {
-        fontSize: ['21px'],
+        fontSize: [21, 25],
         fontWeight: [500],
       }
       break

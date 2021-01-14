@@ -16,6 +16,8 @@ import {
   BorderRadiusProps,
   LineHeightProps,
   FontWeightProps,
+  MaxHeightProps,
+  MaxWidthProps,
 } from 'styled-system'
 import { ThemeType } from '@/styles/theme'
 import { DisplayWithVisibleCheckingProps } from '@/helpers/displayWithVisibleChecking'
@@ -37,6 +39,8 @@ type StyleConfigType =
   | FontSizeProps
   | MinWidthProps
   | MinHeightProps
+  | MaxHeightProps
+  | MaxWidthProps
   | BorderRadiusProps
   | LineHeightProps
   | FontWeightProps

@@ -7,11 +7,11 @@ export const Root = styled(
     styleConfig: {
       mt: [0],
       mb: [3],
-      fontSize: ['16px'],
+      fontSize: [16, 18],
     },
   })
 )`
-  color: ${({ theme }) => theme.colors.placeholderColor};
-  font-weight: 500;
+  color: ${({ theme }) => theme.colors.textColor};
+  font-weight: 400;
   letter-spacing: 0.01em;
 `

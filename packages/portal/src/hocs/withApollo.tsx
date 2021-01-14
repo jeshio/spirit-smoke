@@ -3,8 +3,8 @@ import withApollo from 'next-with-apollo'
 import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client'
 import introspectionResult from '@/gql/__generated__/introspection-result'
 import { AppProps } from 'next/dist/next-server/lib/router/router'
-import { TypedTypePolicies } from './__generated__/apollo-helpers'
-import { clientSchemaTypePolicies } from './cache'
+import { TypedTypePolicies } from '@/gql/__generated__/apollo-helpers'
+import { clientSchemaTypePolicies } from '@/gql/cache'
 
 const { APOLLO_URL } = process.env
 

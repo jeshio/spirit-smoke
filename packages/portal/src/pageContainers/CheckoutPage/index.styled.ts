@@ -31,7 +31,7 @@ export const ExtraInputsWrapper = styled(getUBlockWithProps())`
 
   > * {
     flex: 5;
-    ${({ theme }) => space({ ml: [1], theme })}
+    ${({ theme }) => space({ ml: [1, 3], theme })}
 
     &:nth-child(2) {
       flex: 4;

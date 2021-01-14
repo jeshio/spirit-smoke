@@ -8,8 +8,8 @@ export const Image = styled(
   getUBlockWithProps({
     tag: createComponentWithPropsOmit('div', ['url']),
     styleConfig: {
-      width: ['14px'],
-      height: ['14px'],
+      width: [14, 18],
+      height: [14, 18],
     },
   })
 )<{

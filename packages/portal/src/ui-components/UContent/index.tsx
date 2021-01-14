@@ -9,7 +9,7 @@ const UContent = styled(
     tag: UBlock,
     styleConfig: {
       mx: 'auto',
-      px: [3],
+      px: [3, 5],
     },
   })
 )`

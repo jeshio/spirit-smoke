@@ -11,19 +11,19 @@ export interface IBreakpoints {
   xxl?: string
 }
 
-const breakpoints: Theme['breakpoints'] = ['480px', '576px', '768px', '992px', '1200px', '1600px']
+const breakpoints: Theme['breakpoints'] = ['768px', '1200px', '1600px']
 
 /* eslint-disable prefer-destructuring, @typescript-eslint/dot-notation */
 breakpoints['xs'] = breakpoints[0]
-breakpoints['sm'] = breakpoints[1]
-breakpoints['md'] = breakpoints[2]
-breakpoints['lg'] = breakpoints[3]
-breakpoints['xl'] = breakpoints[4]
-breakpoints['xxl'] = breakpoints[5]
+breakpoints['sm'] = breakpoints[0]
+breakpoints['md'] = breakpoints[1]
+breakpoints['lg'] = breakpoints[2]
+breakpoints['xl'] = breakpoints[2]
 /* eslint-enable prefer-destructuring, @typescript-eslint/dot-notation */
 
 const theme = {
   breakpoints,
+  disableStyledSystemCache: true,
   colors: {
     primaryColor: '#2D2C2E',
     secondColor: '#FEF900',
@@ -39,18 +39,19 @@ const theme = {
       () => ({ base: '#77f' }),
       (prev) => ({ hover: lighten(0.1, prev.base) })
     ),
+    textColor: '#665',
   },
   fonts: {
     primary: "'Gilroy', sans-serif",
   },
   space: [0, 5, 10, 15, 20, 25, 30, 35, 40],
-  blocksSpace: [6],
+  blocksSpace: [6, 7],
   card: {
     borderRadius: ['5px'],
     boxShadow: '8px 8px 40px rgba(218, 220, 228, 0.5)',
   },
   bottomBar: {
-    height: ['55px', '60px'],
+    height: [60, 65],
     boxShadow: '0px 0px 2px rgba(154, 154, 154, 0.5)',
   },
 }

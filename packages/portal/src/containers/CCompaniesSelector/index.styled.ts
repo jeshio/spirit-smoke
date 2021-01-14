@@ -11,11 +11,11 @@ export const Root = styled(
   getUBlockWithProps({
     tag: UList,
     styleConfig: {
-      px: [3],
+      px: [3, 5],
       mt: theme.blocksSpace.map((n) => n - 2),
       pt: [2],
       pb: ['12px'],
-      mb: ['-12px'],
+      mb: ['-12px', '-8px'],
     },
   })
 )`
@@ -23,7 +23,7 @@ export const Root = styled(
   overflow-x: scroll;
 
   > * + * {
-    ${({ theme }) => space({ ml: [3], theme })}
+    ${({ theme }) => space({ ml: [3, 4], theme })}
   }
 `
 
@@ -31,8 +31,11 @@ export const CompanyItem = styled(
   getUBlockWithProps({
     tag: createComponentWithPropsOmit(UButton, ['color', 'isActive']),
     styleConfig: {
-      height: ['64px !important'],
-      width: ['64px'],
+      height: [64, 78],
+      width: [64, 78],
+      fontSize: [12, 13],
+      py: ['3px'],
+      px: ['5px'],
     },
   })
 )<{
@@ -41,14 +44,12 @@ export const CompanyItem = styled(
 }>`
   border-radius: 50%;
   text-align: center;
-  font-size: 12px;
   background-color: ${({ theme }) => theme.colors.inactive.background};
   color: ${({ theme }) => theme.colors.inactive.color};
   position: relative;
   font-weight: 100;
   align-items: center;
   justify-content: center;
-  padding: 0 0 3px 0;
   overflow: hidden;
   border: unset;
   z-index: 1;

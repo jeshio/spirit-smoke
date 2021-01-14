@@ -8,9 +8,9 @@ export const Root = styled(getUBlockWithProps())`
 export const ErrorMessage = styled(
   getUBlockWithProps({
     styleConfig: {
-      mt: ['-11px'],
-      mb: [3],
-      fontSize: ['14px'],
+      mt: [-11],
+      mb: [3, 5],
+      fontSize: [14, 16],
     },
   })
 )`

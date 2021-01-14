@@ -18,13 +18,14 @@ export const Item = styled(
     styleConfig: {
       px: [2],
       py: [1],
+      fontSize: [11, 13],
+      lineHeight: ['10px', '12px'],
     },
   })
 )<{
   isActive?: boolean
 }>`
   color: ${({ theme }) => theme.colors.placeholderColor};
-  font-size: 11px;
   display: block;
   text-align: center;
   position: relative;
@@ -41,9 +42,9 @@ export const ItemImage = styled<any>(
   getUBlockWithProps({
     tag: createComponentWithPropsOmit('div', ['maskUrl', 'isActive']),
     styleConfig: {
-      height: ['23px'],
-      width: ['23px'],
-      mx: ['18px'],
+      height: [23, 24],
+      width: [23, 24],
+      mx: ['18px', 21],
       marginTop: ['5px'],
       marginBottom: ['23px'],
     },
@@ -71,7 +72,7 @@ export const ItemImage = styled<any>(
 export const ItemText = styled(
   getUBlockWithProps({
     styleConfig: {
-      top: ['36px'],
+      top: [38],
     },
   })
 )`

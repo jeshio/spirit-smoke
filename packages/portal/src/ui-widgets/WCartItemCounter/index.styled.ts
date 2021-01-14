@@ -5,8 +5,8 @@ import styled, { css } from 'styled-components'
 export const CartItemCountWrapper = styled(
   getUBlockWithProps({
     styleConfig: {
-      width: ['98px'],
-      height: ['32px'],
+      width: [98, 101],
+      height: [32, 35],
     },
   })
 )`
@@ -34,8 +34,8 @@ export const CartItemCountValue = styled(
   getUBlockWithProps({
     tag: createComponentWithPropsOmit('div', ['isChanged']),
     styleConfig: {
-      fontSize: ['16px'],
-      pt: ['5px'],
+      fontSize: [16, 17],
+      pt: ['5px', '6px'],
       mt: ['-1px'],
     },
   })

@@ -13,7 +13,6 @@ import {
   CartButtonCount,
 } from './index.styled'
 import ULink from '@/ui-components/ULink'
-import SearchInput from './components/SearchInput'
 import { CallIcon } from '@@icons'
 import { useReactiveVar } from '@apollo/client'
 import { cartItemsVar } from '@/gql/cache/vars/Cart'
@@ -35,7 +34,7 @@ const CHeader: React.FunctionComponent<ICHeaderProps> = () => {
         <ULink href="/">
           <StyledLogo>Spirit Smoke</StyledLogo>
         </ULink>
-        <SearchInput />
+        {/* <SearchInput /> */}
         <ULink href="/cart">
           <StyledCartButton icon={<StyledCartIcon />} type="ghost" noPaddings>
             {cartItemsCountIsVisible && cartItems.length > 0 && <CartButtonCount>{cartItems.length}</CartButtonCount>}
