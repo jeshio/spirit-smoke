@@ -1,13 +1,13 @@
 import { getUBlockWithProps } from '@/ui-components/UBlock'
-import UBottomBar from '@/ui-components/UBottomBar'
+import UContent from '@/ui-components/UContent'
 import UPrice from '@/ui-components/UPrice'
 import styled from 'styled-components'
 
 export const Root = styled(
   getUBlockWithProps({
-    tag: UBottomBar,
+    tag: UContent,
     styleConfig: {
-      px: [4, 6],
+      height: '100%',
     },
   })
 )`

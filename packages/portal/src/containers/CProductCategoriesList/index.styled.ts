@@ -2,15 +2,46 @@ import styled, { css } from 'styled-components'
 import { getUBlockWithProps } from '@/ui-components/UBlock'
 import ULink from '@/ui-components/ULink'
 import createComponentWithPropsOmit from '@/helpers/createComponentWithPropsOmit'
+import UBottomBar from '@/ui-components/UBottomBar'
+import media from '@/styles/media'
+import UList from '@/ui-components/UList'
+
+export const Root = styled(
+  getUBlockWithProps({
+    tag: UBottomBar,
+  })
+)`
+  display: flex;
+  justify-content: center;
+`
 
 export const Content = styled(
   getUBlockWithProps({
+    styleConfig: {},
+  })
+)`
+  overflow-x: scroll;
+
+  ${media.md`
+    scrollbar-width: none;
+    
+    &::-webkit-slider-thumb,
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  `}
+`
+
+export const List = styled(
+  getUBlockWithProps({
+    tag: UList,
     styleConfig: {
-      paddingLeft: ['50%'],
-      marginLeft: ['-32px'],
+      mt: ['-1px'],
     },
   })
-)``
+)`
+  overflow-y: hidden;
+`
 
 export const Item = styled(
   getUBlockWithProps({
@@ -44,7 +75,7 @@ export const ItemImage = styled<any>(
     styleConfig: {
       height: [23, 24],
       width: [23, 24],
-      mx: ['18px', 21],
+      mx: [18, 21, 30],
       marginTop: ['5px'],
       marginBottom: ['23px'],
     },

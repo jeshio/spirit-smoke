@@ -5,6 +5,7 @@ import {
   MenuItemLink,
   MenuList,
   TopBar,
+  TopBarContent,
   MenuItem,
   StyledCartIcon,
   Root,
@@ -31,15 +32,17 @@ const CHeader: React.FunctionComponent<ICHeaderProps> = () => {
   return (
     <Root>
       <TopBar>
-        <ULink href="/">
-          <StyledLogo>Spirit Smoke</StyledLogo>
-        </ULink>
-        {/* <SearchInput /> */}
-        <ULink href="/cart">
-          <StyledCartButton icon={<StyledCartIcon />} type="ghost" noPaddings>
-            {cartItemsCountIsVisible && cartItems.length > 0 && <CartButtonCount>{cartItems.length}</CartButtonCount>}
-          </StyledCartButton>
-        </ULink>
+        <TopBarContent>
+          <ULink href="/">
+            <StyledLogo>Spirit Smoke</StyledLogo>
+          </ULink>
+          {/* <SearchInput /> */}
+          <ULink href="/cart">
+            <StyledCartButton icon={<StyledCartIcon />} type="ghost" noPaddings>
+              {cartItemsCountIsVisible && cartItems.length > 0 && <CartButtonCount>{cartItems.length}</CartButtonCount>}
+            </StyledCartButton>
+          </ULink>
+        </TopBarContent>
       </TopBar>
       <SubHeader>
         <PhoneNumberLink href="tel:+79527777777">

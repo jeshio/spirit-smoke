@@ -1,9 +1,7 @@
 import * as React from 'react'
 import { useProductCategoryMenuListQuery } from '@/gql/__generated__/types'
-import UList from '@/ui-components/UList'
-import { Item, ItemImage, ItemText, Content } from './index.styled'
+import { Item, ItemImage, ItemText, Content, Root, List } from './index.styled'
 import { useRouter } from 'next/dist/client/router'
-import UBottomBar from '@/ui-components/UBottomBar'
 
 const { NEXT_PUBLIC_TOBACCO_PRODUCT_CATEGORY_SLUG } = process.env
 
@@ -36,12 +34,13 @@ const CProductCategoriesList: React.FunctionComponent<ICProductCategoriesListPro
 
   if (loading || !data) return <span>Загрузка...</span>
 
+  // TODO: переделать на слайдер
   return (
-    <UBottomBar isVisible={isVisible}>
+    <Root isVisible={isVisible}>
       <Content>
-        <UList className={className} items={items} isHorizontal />
+        <List className={className} items={items} isHorizontal />
       </Content>
-    </UBottomBar>
+    </Root>
   )
 }
 

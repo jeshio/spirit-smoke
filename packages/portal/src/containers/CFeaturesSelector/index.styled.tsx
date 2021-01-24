@@ -2,54 +2,33 @@ import createComponentWithPropsOmit from '@/helpers/createComponentWithPropsOmit
 import theme from '@/styles/theme'
 import { getUBlockWithProps } from '@/ui-components/UBlock'
 import UButton from '@/ui-components/UButton'
+import UContent from '@/ui-components/UContent'
+import USlider from '@/ui-components/USlider'
 import { darken } from 'polished'
 import styled, { css } from 'styled-components'
-import { left, space, layout } from 'styled-system'
-
-const list = { padding: [theme.space[3], theme.space[5]] }
-const item = { width: [46, 54], height: [46, 54], margin: [theme.space[2], theme.space[3]] }
-
-const getRootWidth = (itemsCount: number, responsiveLevel: number) =>
-  `${
-    Math.floor(((itemsCount + 1) * (item.width[responsiveLevel] + item.margin[responsiveLevel])) / 2) +
-    list.padding[responsiveLevel] * 2
-  }px`
+import { space } from 'styled-system'
 
 export const RootWrapper = styled(
   getUBlockWithProps({
+    tag: UContent,
     styleConfig: {
       mt: theme.blocksSpace.map((n) => n - 1),
-      mb: item.margin.map((n) => `-${n}px`),
+      px: [0],
     },
   })
-)`
-  max-width: 100%;
-  overflow-x: scroll;
-  overflow-y: hidden;
-`
+)``
 
 export const Root = styled(
   getUBlockWithProps({
-    tag: createComponentWithPropsOmit('div', ['itemsCount']),
-    styleConfig: {
-      px: list.padding.map((n) => `${n}px`),
-    },
+    tag: USlider,
   })
-)<{
-  itemsCount: number
-}>`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: left;
-  ${({ itemsCount, ...props }) =>
-    layout({
-      ...props,
-      width: [getRootWidth(itemsCount, 0), getRootWidth(itemsCount, 1)],
-    })}
+)``
 
+export const ItemsPair = styled(getUBlockWithProps())`
   > * {
-    ${space({ ml: item.margin.map((n) => `${n}px`) })};
-    ${left({ left: item.margin.map((n) => `-${n}px`) })};
+    &:first-child {
+      ${({ theme }) => space({ mb: [2], theme })};
+    }
   }
 `
 
@@ -57,10 +36,9 @@ export const Item = styled(
   getUBlockWithProps({
     tag: createComponentWithPropsOmit(UButton, ['isActive']),
     styleConfig: {
-      height: item.height.map((n) => `${n}px`),
-      width: item.width.map((n) => `${n}px`),
-      minWidth: item.width.map((n) => `${n}px`),
-      mb: item.margin.map((n) => `${n}px`),
+      height: [46, 54],
+      width: [46, 54],
+      minWidth: [46, 54],
       fontSize: [9, 10],
     },
   })

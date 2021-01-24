@@ -1,7 +1,9 @@
+import { DefaultTheme } from 'styled-components'
 import { display, DisplayProps } from 'styled-system'
 
 export interface DisplayWithVisibleCheckingProps {
   visible?: boolean | boolean[]
+  theme?: DefaultTheme
 }
 
 export default function displayWithVisibleChecking({

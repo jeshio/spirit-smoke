@@ -1,6 +1,7 @@
 import { cartItemsVar } from '@/gql/cache/vars/Cart'
 import { useCartProductsQuery } from '@/gql/__generated__/types'
 import UButton from '@/ui-components/UButton'
+import UBottomBar from '@/ui-components/UBottomBar'
 import UPrice from '@/ui-components/UPrice'
 import { useReactiveVar } from '@apollo/client'
 import { keyBy } from 'lodash'
@@ -28,21 +29,23 @@ const WCartTotalBar: React.FunctionComponent<IWCartTotalBarProps> = ({ isOrderCr
   )
 
   return (
-    <Root isVisible>
-      <Text>
-        {/* Добавить лоадер цены при изменении количества товаров (реактивная переменная) */}
-        Итого: <UPrice>{totalPrice}</UPrice>
-      </Text>
-      {isOrderCreator ? (
-        <UButton type="primary" isSubmit fill disabled={isLoading || isDisabled}>
-          Завершить
-        </UButton>
-      ) : (
-        <UButton type="green" fill href="/checkout" disabled={isDisabled}>
-          Оформить
-        </UButton>
-      )}
-    </Root>
+    <UBottomBar isVisible>
+      <Root>
+        <Text>
+          {/* Добавить лоадер цены при изменении количества товаров (реактивная переменная) */}
+          Итого: <UPrice>{totalPrice}</UPrice>
+        </Text>
+        {isOrderCreator ? (
+          <UButton type="primary" isSubmit fill disabled={isLoading || isDisabled}>
+            Завершить
+          </UButton>
+        ) : (
+          <UButton type="green" fill href="/checkout" disabled={isDisabled}>
+            Оформить
+          </UButton>
+        )}
+      </Root>
+    </UBottomBar>
   )
 }
 

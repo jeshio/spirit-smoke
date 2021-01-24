@@ -27,6 +27,7 @@ const theme = {
   colors: {
     primaryColor: '#2D2C2E',
     secondColor: '#FEF900',
+    backgroundColor: '#F8F8F8',
     placeholderColor: '#9a9a9a',
     inactive: { background: '#e9e9e9', color: '#9a9a9a' },
     red: '#FF003C',
@@ -45,7 +46,7 @@ const theme = {
     primary: "'Gilroy', sans-serif",
   },
   space: [0, 5, 10, 15, 20, 25, 30, 35, 40],
-  blocksSpace: [6, 7],
+  blocksSpace: [6, 8],
   card: {
     borderRadius: ['5px'],
     boxShadow: '8px 8px 40px rgba(218, 220, 228, 0.5)',

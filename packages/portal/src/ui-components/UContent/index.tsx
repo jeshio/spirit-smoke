@@ -10,10 +10,9 @@ const UContent = styled(
     styleConfig: {
       mx: 'auto',
       px: [3, 5],
+      maxWidth: [1220],
     },
   })
-)`
-  max-width: 1220px;
-`
+)``
 
 export default UContent

@@ -22,5 +22,6 @@ export const Root = styled(
     left: 0;
     overflow-y: hidden;
     box-shadow: ${theme.bottomBar.boxShadow};
+    z-index: 1000;
   `
 )

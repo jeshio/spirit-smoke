@@ -1,17 +1,16 @@
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
 import { getUBlockWithProps } from '@/ui-components/UBlock'
 import ULink from '@/ui-components/ULink'
-import { size } from 'polished'
 import { CartIcon } from '@@icons'
 import UContent from '@/ui-components/UContent'
 import theme from '@/styles/theme'
 import UButton from '@/ui-components/UButton'
+import media from '@/styles/media'
 
 export const Root = styled.header``
 
 export const TopBar = styled(
   getUBlockWithProps({
-    tag: UContent,
     styleConfig: {
       height: ['55px', '65px'],
       width: '100%',
@@ -19,12 +18,26 @@ export const TopBar = styled(
   })
 )`
   position: fixed;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
   background-color: ${({ theme }) => theme.colors.primaryColor};
   box-shadow: 0px 0px 2px rgba(154, 154, 154, 0.5);
   z-index: 100;
+
+  ${media.md`
+    max-width: 100%;
+  `}
+`
+
+export const TopBarContent = styled(
+  getUBlockWithProps({
+    tag: UContent,
+    styleConfig: {
+      height: '100%',
+    },
+  })
+)`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `
 
 export const StyledLogo = styled(

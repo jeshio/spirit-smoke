@@ -161,7 +161,7 @@ export const Description = styled(
     position: absolute;
     background-color: ${theme.colors.black};
     color: ${theme.colors.white};
-    z-index: 10;
+    z-index: 100;
     opacity: ${isVisible ? '1' : '0'};
     border-radius: 5px;
     pointer-events: none;

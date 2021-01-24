@@ -10,6 +10,9 @@ import CHeader from '@/containers/CHeader'
 import CProductCategoriesList from '@/containers/CProductCategoriesList'
 import CMain from '@/containers/CMain'
 
+import 'slick-carousel/slick/slick.css'
+import 'slick-carousel/slick/slick-theme.css'
+
 function App({ Component, pageProps, apollo }: AppProps) {
   return (
     <ApolloProvider client={apollo}>

@@ -4,7 +4,7 @@ import { useCompaniesSelectorQuery } from '@/gql/__generated__/types'
 import { useReactiveVar } from '@apollo/client'
 import { orderBy } from 'lodash'
 import React, { useMemo } from 'react'
-import { CompanyItem, Root } from './index.styled'
+import { CompanyItem, Root, RootWrapper } from './index.styled'
 
 interface ICCompaniesSelectorProps {
   productCategorySlug: string
@@ -50,7 +50,11 @@ const CCompaniesSelector: React.FunctionComponent<ICCompaniesSelectorProps> = ({
 
   if (loading || !data) return <span>Загрузка...</span>
 
-  return <Root items={items} isHorizontal />
+  return (
+    <RootWrapper>
+      <Root items={items} slidesToScroll={[1, 2, 3]} />
+    </RootWrapper>
+  )
 }
 
 export default CCompaniesSelector
