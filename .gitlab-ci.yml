@@ -1,24 +1,39 @@
-build-apollo:
-  stage: build
+stages:
+  - apollo-test
+  - apollo-build
+  - apollo-deploy
+
+apollo-test:
+  stage: apollo-test
   tags:
     - apollo
   script:
-    - echo "Hello, $GITLAB_USER_LOGIN! And $MY_TEST_VAR variable"
+    - echo "Test is good!"
 
-test-job1:
-  stage: test
+apollo-build:
+  stage: apollo-build
+  tags:
+    - apollo
   script:
-    - echo "This job tests something"
+    - echo "Apollo Is Builded"
 
-test-job2:
-  stage: test
+apollo-deploy-uat:
+  stage: apollo-deploy
+  tags:
+    - apollo
+    - uat
   script:
-    - echo "This job tests something, but takes more time than test-job1."
-    - echo "After the echo commands complete, it runs the sleep command for 2 seconds"
-    - echo "which simulates a test that runs 20 seconds longer than test-job1"
-    - sleep 2
+    - echo "Deploy on UAT is finished!"
+  only:
+    - master
 
-deploy-prod:
-  stage: deploy
+apollo-deploy-prod:
+  stage: apollo-deploy
+  when: manual
+  tags:
+    - apollo
+    - prod
   script:
-    - echo "This job deploys something from the $CI_COMMIT_BRANCH branch."
+    - echo "Deploy on PROD is finished!"
+  only:
+    - master
