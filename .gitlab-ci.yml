@@ -43,6 +43,7 @@ apollo-deploy-prod:
     PGADMIN_PASSWORD: $PROD_PGADMIN_PASSWORD
     PGADMIN_PORT: $PROD_PGADMIN_PORT
   script:
-    - echo Deploy $PROD_PG_USERNAME on $PG_USERNAME is finished!
+    - echo Deploy $CI_JOB_STAGE $PROD_PG_USERNAME on $PG_USERNAME is finished!
+    - echo $CI_JOB_STAGE
   only:
     - master
