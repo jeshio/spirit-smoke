@@ -33,15 +33,6 @@ apollo-deploy-prod:
   tags:
     - apollo
     - prod
-  environment:
-    PG_DB: $PROD_PG_DB
-    PG_HOSTNAME: $PROD_PG_HOSTNAME
-    PG_PASSWORD: $PROD_PG_PASSWORD
-    PG_PORT: $PROD_PG_PORT
-    PG_USERNAME: $PROD_PG_USERNAME
-    PGADMIN_EMAIL: $PROD_PGADMIN_EMAIL
-    PGADMIN_PASSWORD: $PROD_PGADMIN_PASSWORD
-    PGADMIN_PORT: $PROD_PGADMIN_PORT
   script:
     - echo "Deploy on $PG_USERNAME is finished!"
   only:
