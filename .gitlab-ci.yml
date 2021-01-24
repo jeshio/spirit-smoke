@@ -1,5 +1,7 @@
-build-job:
+build-apollo:
   stage: build
+  tags:
+    - apollo
   script:
     - echo "Hello, $GITLAB_USER_LOGIN! And $MY_TEST_VAR variable"
 
