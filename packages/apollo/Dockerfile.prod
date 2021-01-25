@@ -9,4 +9,4 @@ RUN yarn install
 
 EXPOSE 4000
 
-CMD ["sh", "-c", "ls; chmod +x ./start.sh; ./start.sh"]
+ENTRYPOINT  ["./start.sh"]
