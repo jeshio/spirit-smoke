@@ -43,7 +43,8 @@ apollo-deploy-prod:
     PGADMIN_PASSWORD: $PROD_PGADMIN_PASSWORD
     PGADMIN_PORT: $PROD_PGADMIN_PORT
   script:
-    - echo Deploy $CI_JOB_STAGE $PROD_PG_USERNAME on $PG_USERNAME is finished!
-    - echo $CI_JOB_STAGE
+    - chmod +x ./packages/apollo/setup.env.sh
+    - ./packages/apollo/setup.env.sh
+    - docker-compose -f docker-compose.apollo.prod.yml up -d --build
   only:
     - master
