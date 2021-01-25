@@ -15,4 +15,4 @@ RUN ls
 
 RUN chmod +x /usr/src/app/packages/apollo/start.sh
 
-CMD /usr/src/app/packages/apollo/start.sh
+RUN /usr/src/app/packages/apollo/start.sh
