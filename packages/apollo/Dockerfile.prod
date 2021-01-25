@@ -13,4 +13,6 @@ COPY . /usr/src/app/packages/apollo
 
 RUN ls
 
-CMD ["sh", "-c", "chmod +x /usr/src/app/packages/apollo/start.sh; /usr/src/app/packages/apollo/start.sh"]
+RUN chmod +x /usr/src/app/packages/apollo/start.sh
+
+CMD /usr/src/app/packages/apollo/start.sh
