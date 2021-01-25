@@ -8,7 +8,7 @@ services:
     container_name: spirit-apollo-dev
     env_file: .env
     environment:
-      NODE_ENV: development
+      NODE_ENV: production
       PG_USERNAME: ${PG_USERNAME}
       PG_PASSWORD: ${PG_PASSWORD}
       PG_HOSTNAME: ${PG_HOSTNAME}
@@ -16,7 +16,6 @@ services:
       PG_DB: ${PG_DB}
     ports:
     - 4000:4000
-    - 9229:9229
     volumes:
       - .:/usr/src/app
       - apollo_node_modules:/node_modules

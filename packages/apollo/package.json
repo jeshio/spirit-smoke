@@ -4,6 +4,7 @@
   "private": true,
   "main": "src/index.js",
   "scripts": {
+    "start": "babel-node ./src/index.js",
     "start:dev": "nodemon --inspect=0.0.0.0:9229 --exec babel-node ./src/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
