@@ -53,6 +53,6 @@ apollo-deploy-prod:
     - chmod +x ./packages/apollo/start.sh
     - ./setup.env.sh
     - docker info
-    - docker-compose -f docker-compose.apollo.prod.yml up -d --build
+    - docker-compose -f docker-compose.apollo.prod.yml up --build
   only:
     - master
