@@ -11,4 +11,6 @@ EXPOSE 4000
 
 COPY . /usr/src/app/packages/apollo
 
+RUN ls
+
 CMD ["sh", "-c", "./start.sh"]
