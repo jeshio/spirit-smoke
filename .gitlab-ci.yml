@@ -1,21 +1,27 @@
+image: tmaier/docker-compose:latest
+
+services:
+  - name: docker:dind
+    alias: docker
+
 stages:
   - test
   - build
   - deploy
 
-apollo-test:
-  stage: test
-  tags:
-    - apollo
-  script:
-    - echo "Test is good!"
+# apollo-test:
+#   stage: test
+#   tags:
+#     - apollo
+#   script:
+#     - echo "Test is good!"
 
-apollo-build:
-  stage: build
-  tags:
-    - apollo
-  script:
-    - echo "Apollo Is Builded"
+# apollo-build:
+#   stage: build
+#   tags:
+#     - apollo
+#   script:
+#     - echo "Apollo Is Builded"
 
 # apollo-deploy-uat:
 #   stage: deploy
@@ -43,8 +49,9 @@ apollo-deploy-prod:
     PGADMIN_PASSWORD: $PROD_PGADMIN_PASSWORD
     PGADMIN_PORT: $PROD_PGADMIN_PORT
   script:
-    - chmod +x ./packages/apollo/setup.env.sh
-    - ./packages/apollo/setup.env.sh
+    - chmod +x ./setup.env.sh
+    - ./setup.env.sh
+    - docker info
     - docker-compose -f docker-compose.apollo.prod.yml up -d --build
   only:
     - master
