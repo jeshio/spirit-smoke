@@ -1,0 +1,49 @@
+stages:
+  - test
+  - build
+  - deploy
+
+apollo-test:
+  stage: test
+  tags:
+    - apollo
+  script:
+    - echo "Test is good!"
+
+apollo-build:
+  stage: build
+  tags:
+    - apollo
+  script:
+    - echo "Apollo Is Builded"
+
+# apollo-deploy-uat:
+#   stage: deploy
+#   tags:
+#     - apollo
+#     - uat
+#   script:
+#     - echo "Deploy on UAT is finished!"
+#   only:
+#     - master
+
+apollo-deploy-prod:
+  stage: deploy
+  # when: manual
+  tags:
+    - apollo
+    - prod
+  variables:
+    PG_DB: $PROD_PG_DB
+    PG_HOSTNAME: $PROD_PG_HOSTNAME
+    PG_PASSWORD: $PROD_PG_PASSWORD
+    PG_PORT: $PROD_PG_PORT
+    PG_USERNAME: $PROD_PG_USERNAME
+    PGADMIN_EMAIL: $PROD_PGADMIN_EMAIL
+    PGADMIN_PASSWORD: $PROD_PGADMIN_PASSWORD
+    PGADMIN_PORT: $PROD_PGADMIN_PORT
+  script:
+    - echo Deploy $CI_JOB_STAGE $PROD_PG_USERNAME on $PG_USERNAME is finished!
+    - echo $CI_JOB_STAGE
+  only:
+    - master
