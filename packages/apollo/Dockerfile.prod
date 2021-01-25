@@ -9,6 +9,6 @@ RUN yarn install
 
 EXPOSE 4000
 
-COPY ./start.sh ./
+COPY . /usr/src/app/packages/apollo
 
 ENTRYPOINT  ["./start.sh"]
