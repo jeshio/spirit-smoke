@@ -1,21 +1,27 @@
+image: tmaier/docker-compose:latest
+
+services:
+  - docker:dind
+
+
 stages:
   - test
   - build
   - deploy
 
-apollo-test:
-  stage: test
-  tags:
-    - apollo
-  script:
-    - echo "Test is good!"
+# apollo-test:
+#   stage: test
+#   tags:
+#     - apollo
+#   script:
+#     - echo "Test is good!"
 
-apollo-build:
-  stage: build
-  tags:
-    - apollo
-  script:
-    - echo "Apollo Is Builded"
+# apollo-build:
+#   stage: build
+#   tags:
+#     - apollo
+#   script:
+#     - echo "Apollo Is Builded"
 
 # apollo-deploy-uat:
 #   stage: deploy
