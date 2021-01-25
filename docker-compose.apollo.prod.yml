@@ -3,9 +3,9 @@ services:
   apollo:
     build:
       context: ./packages/apollo/
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile.prod
     image: spirit-apollo
-    container_name: spirit-apollo-dev
+    container_name: spirit-apollo-prod
     env_file: .env
     environment:
       NODE_ENV: production
@@ -26,7 +26,7 @@ services:
 
   db:
     image: postgres:12.3-alpine
-    container_name: spirit-db-dev
+    container_name: spirit-db-prod
     env_file: .env
     environment:
       POSTGRES_USER: ${PG_USERNAME}
