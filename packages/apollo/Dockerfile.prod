@@ -9,7 +9,7 @@ RUN yarn install
 
 EXPOSE 4000
 
-COPY . /usr/src/app/packages/apollo
+ADD . /usr/src/app/packages/apollo
 
 RUN ls
 
