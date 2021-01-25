@@ -11,4 +11,4 @@ EXPOSE 4000
 
 COPY . /usr/src/app/packages/apollo
 
-ENTRYPOINT  ["./start.sh"]
+CMD ["sh", "-c", "./start.sh"]
