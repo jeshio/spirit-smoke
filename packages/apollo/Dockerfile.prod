@@ -3,9 +3,13 @@ FROM node:12-alpine
 # создание директории приложения
 WORKDIR /usr/src/app/packages/apollo
 
+COPY package*.json ./
+
 RUN yarn install
 # Если вы создаете сборку для продакшн
 # RUN npm ci --only=production
+
+COPY . .
 
 EXPOSE 4000
 
