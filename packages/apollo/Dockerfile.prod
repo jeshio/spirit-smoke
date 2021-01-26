@@ -3,7 +3,8 @@ FROM node:12-alpine
 # создание директории приложения
 WORKDIR /usr/src/app/packages/apollo
 
-COPY package*.json ./
+COPY package.json /usr/src/app/packages/apollo/
+COPY yarn.lock /usr/src/app/packages/apollo/
 
 RUN yarn install
 # Если вы создаете сборку для продакшн
