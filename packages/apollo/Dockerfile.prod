@@ -3,16 +3,12 @@ FROM node:12-alpine
 # создание директории приложения
 WORKDIR /usr/src/app/packages/apollo
 
-COPY . /usr/src/app/packages/apollo
-
+RUN yarn install
 # Если вы создаете сборку для продакшн
 # RUN npm ci --only=production
 
-RUN ls
-
 EXPOSE 4000
 
-RUN sed -i 's/\r$//' /usr/src/app/packages/apollo/start.sh  && \  
-        chmod +x /usr/src/app/packages/apollo/start.sh
+RUN chmod +x /start.sh
 
-ENTRYPOINT /usr/src/app/packages/apollo/start.sh
+CMD ["sh", "-c", "./start.sh"]
