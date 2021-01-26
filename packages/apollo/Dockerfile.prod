@@ -1,20 +1,20 @@
-FROM node:12-alpine
+FROM node:12-alpine AS node_base
 
-# создание директории приложения
-WORKDIR /usr/src/app/packages/apollo
-
-COPY package.json /usr/src/app/packages/apollo/
-COPY yarn.lock /usr/src/app/packages/apollo/
-
+FROM node_base as deps
+WORKDIR /usr/app
+COPY package.json /usr/app/package.json
+COPY yarn.lock /usr/app/yarn.lock
 RUN yarn install
-# Если вы создаете сборку для продакшн
-# RUN npm ci --only=production
 
-COPY . .
+FROM node_base as build
+WORKDIR /usr/app
+COPY --from=deps /usr/app/node_modules /usr/app/node_modules
+COPY . /usr/app
+
+
+# для копированяи sitemap сгенерированного предыдущей командой
+COPY . /usr/app
 
 EXPOSE 4000
 
-# RUN chmod +x ./start.sh
-
-# CMD ["sh", "-c", "cd /usr/src/app/packages/apollo && yarn run start"]
-CMD ["sh", "-c", "ls"]
+CMD ["yarn", "start:prod"]

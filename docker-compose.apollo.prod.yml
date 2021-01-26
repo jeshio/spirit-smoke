@@ -16,9 +16,6 @@ services:
       PG_DB: ${PG_DB}
     ports:
     - 4000:4000
-    volumes:
-      - .:/usr/src/app
-      - apollo_node_modules:/node_modules
     networks:
       - app-network
     depends_on:
@@ -55,8 +52,3 @@ services:
 networks:
   app-network:
     driver: bridge
-
-volumes:
-  dbdata:
-  pgadmin:
-  apollo_node_modules: 
