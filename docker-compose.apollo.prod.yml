@@ -7,6 +7,7 @@ services:
     image: spirit-apollo
     container_name: spirit-apollo-prod
     env_file: .env
+    restart: always
     environment:
       NODE_ENV: production
       PG_USERNAME: ${PG_USERNAME}
