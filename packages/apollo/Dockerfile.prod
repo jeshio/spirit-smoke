@@ -5,7 +5,6 @@ WORKDIR /usr/src/app/packages/apollo
 
 COPY . /usr/src/app/packages/apollo
 
-RUN yarn install
 # Если вы создаете сборку для продакшн
 # RUN npm ci --only=production
 
