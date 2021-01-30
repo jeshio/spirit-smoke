@@ -7,7 +7,7 @@ services:
     image: spirit-apollo
     container_name: spirit-apollo-prod
     env_file: .env
-    restart: always
+    restart: unless-stopped
     environment:
       NODE_ENV: production
       PG_USERNAME: ${PG_USERNAME}
@@ -26,6 +26,7 @@ services:
     image: postgres:12.3-alpine
     container_name: spirit-db-prod
     env_file: .env
+    restart: unless-stopped
     environment:
       POSTGRES_USER: ${PG_USERNAME}
       POSTGRES_PASSWORD: ${PG_PASSWORD}
@@ -39,6 +40,7 @@ services:
 
   pgAdmin:
     image: dpage/pgadmin4
+    restart: unless-stopped
     ports:
       - ${PGADMIN_PORT}:80
     env_file: .env

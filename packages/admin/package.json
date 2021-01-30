@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "analyze": "cross-env ANALYZE=1 umi build",
-    "build": "umi build",
+    "build": "cross-env REACT_APP_ENV=production MOCK=none umi build",
     "dev": "npm run start:dev",
     "fetch:blocks": "pro fetch-blocks && npm run prettier",
     "postinstall": "umi g tmp",

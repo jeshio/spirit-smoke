@@ -4,7 +4,7 @@ import defaultSettings from './defaultSettings'
 import proxy from './proxy'
 import { baseRoutes } from './routes'
 
-const { REACT_APP_ENV } = process.env
+const { REACT_APP_ENV, APOLLO_URI } = process.env
 
 export default defineConfig({
   alias: {
@@ -16,7 +16,7 @@ export default defineConfig({
     hmr: true,
   },
   define: {
-    APOLLO_URI: 'http://localhost:4000/graphql',
+    APOLLO_URI,
   },
   dynamicImport: {
     loading: '@/components/PageLoading/index',

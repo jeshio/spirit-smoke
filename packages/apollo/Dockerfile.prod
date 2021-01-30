@@ -11,10 +11,6 @@ WORKDIR /usr/app
 COPY --from=deps /usr/app/node_modules /usr/app/node_modules
 COPY . /usr/app
 
-
-# для копированяи sitemap сгенерированного предыдущей командой
-COPY . /usr/app
-
 EXPOSE 4000
 
 CMD ["sh", "-c", "./start.sh"]

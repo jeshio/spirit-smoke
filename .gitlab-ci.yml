@@ -55,3 +55,18 @@ apollo-deploy-prod:
     - docker-compose -f docker-compose.apollo.prod.yml up -d --build
   only:
     - master
+
+admin-deploy-prod:
+  stage: deploy
+  # when: manual
+  tags:
+    - admin
+    - prod
+  variables:
+    APOLLO_URI: $APOLLO_SERVER_URL
+  script:
+    - chmod +x ./packages/admin/setup.env.sh
+    - ./packages/admin/setup.env.sh
+    - docker-compose -f docker-compose.admin.prod.yml up -d --build
+  only:
+    - master
