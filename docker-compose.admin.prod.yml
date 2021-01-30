@@ -7,8 +7,10 @@ services:
     image: spirit-admin
     restart: unless-stopped
     container_name: spirit-admin-prod
+    env_file: .env
     ports:
       - 80:80
       - 443:443
     environment:
       NODE_ENV: production
+      APOLLO_URI: ${APOLLO_URI}
