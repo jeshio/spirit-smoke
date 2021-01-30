@@ -43,3 +43,47 @@ ip addr | grep eth0
 ```
 
 * Для разработки с использованием докера в vscode нужно подключать проект через WSL-extension, чтобы не было проблем с чувствительностью к регистру.
+
+## Gitlab CI
+
+### Инициализация сервера
+
+1. Ставим Докер - <https://docs.docker.com/engine/install/ubuntu/>
+
+2. Устанавливаем Runner (<https://docs.gitlab.com/runner/install/docker.html>):
+
+    ```bash
+    docker run -d --name gitlab-runner --restart always \
+        -v /srv/gitlab-runner/config:/etc/gitlab-runner \
+        -v /var/run/docker.sock:/var/run/docker.sock \
+        gitlab/gitlab-runner:latest
+    ```
+
+3. При обновлении конфига раннера (`/srv/gitlab-runner/config`), запускаем команду:
+
+    ```bash
+    docker restart gitlab-runner
+    ```
+
+4. Регистрируем раннер - <https://docs.gitlab.com/runner/register/index.html#docker>:
+
+    ```bash
+    docker run --rm -it -v /srv/gitlab-runner/config:/etc/gitlab-runner gitlab/gitlab-runner register -n \
+      --url https://gitlab.com/ \
+      --registration-token <TOKEN> \
+      --executor docker \
+      --description "[PROD]: Description" \
+      --docker-image "docker:19.03.12" \
+      --docker-privileged \
+      --docker-volumes "/certs/client"
+    ```
+
+5. Дорабатываем конфиг:
+
+    ```bash
+      nano /srv/gitlab-runner/config/config.toml
+    ```
+
+    ```toml
+      volumes = ["/cache", "/var/run/docker.sock:/var/run/docker.sock"]
+    ```
