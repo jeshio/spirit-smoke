@@ -35,7 +35,7 @@ stages:
 
 apollo-deploy-prod:
   stage: deploy
-  # when: manual
+  when: manual
   tags:
     - apollo
     - prod
@@ -67,6 +67,6 @@ admin-deploy-prod:
   script:
     - chmod +x ./packages/admin/setup.env.sh
     - ./packages/admin/setup.env.sh
-    - docker-compose -f docker-compose.admin.prod.yml up -d --build
+    - docker-compose -f docker-compose.admin.prod.yml up --build
   only:
     - master
