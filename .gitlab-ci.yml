@@ -67,6 +67,6 @@ admin-deploy-prod:
   script:
     - chmod +x ./packages/admin/setup.env.sh
     - ./packages/admin/setup.env.sh
-    - docker-compose -f docker-compose.admin.prod.yml up --build
+    - docker-compose -f docker-compose.admin.prod.yml up -d --build
   only:
     - master
