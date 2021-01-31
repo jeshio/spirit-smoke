@@ -4,9 +4,6 @@ FROM node_base as deps
 WORKDIR /usr/app/admin
 COPY admin/package.json /usr/app/admin/package.json
 COPY admin/yarn.lock /usr/app/admin/yarn.lock
-COPY admin/.env /usr/app/admin/.env
-
-# RUN cat /usr/app/admin/.env
 
 RUN yarn cache clean
 
@@ -21,18 +18,14 @@ RUN apk --no-cache --virtual build-dependencies add \
 
 FROM node_base as build
 WORKDIR /usr/app
-# RUN cat /usr/app/admin/.env
 
 COPY --from=deps /usr/app/admin/node_modules /usr/app/admin/node_modules
 COPY utils/ /usr/app/utils
 COPY gql/ /usr/app/gql
 COPY admin/ /usr/app/admin
 
-# RUN cat /usr/app/admin/.env
-
 WORKDIR /usr/app/admin
 
-# RUN cat /usr/app/admin/.env
 COPY admin/.env /usr/app/admin/.env
 
 RUN yarn build

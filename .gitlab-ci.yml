@@ -56,9 +56,23 @@ apollo-deploy-prod:
   only:
     - master
 
+db-setup-prod:
+  stage: deploy
+  when: on_success
+  needs:
+    - apollo-deploy-prod
+  tags:
+    - apollo
+    - prod
+  script:
+    - docker exec spirit-apollo-prod chmod +x ./setup.db.sh
+    - docker exec spirit-apollo-prod ./setup.db.sh
+  only:
+    - master
+
 admin-deploy-prod:
   stage: deploy
-  # when: manual
+  when: manual
   tags:
     - admin
     - prod
