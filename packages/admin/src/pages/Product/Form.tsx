@@ -13,6 +13,7 @@ import numberToPrice from '@@utils/src/numberToPrice'
 import TextArea from 'antd/lib/input/TextArea'
 import UItemsSelector from '@/ui-components/UItemsSelector'
 import UBlock from '@/ui-components/UBlock'
+import updateSlugOnChangeTitle from '@/helpers/updateSlugOnChangeTitle'
 
 export interface IProductFormProps {
   loading?: boolean
@@ -56,7 +57,7 @@ const ProductForm: React.FunctionComponent<IProductFormProps> = ({
 
   return (
     <UForm onFinish={handleSubmit} labelCol={{ span: 6, sm: 6, md: 9, lg: 9, xl: 7, xxl: 7 }}>
-      {(fields) => {
+      {(fields, form) => {
         const companyWarning = isUpdate && !product?.company && fields.companyId === product?.companyId
         const productCategoryWarning =
           isUpdate && !product?.productCategory && fields.productCategoryId === product?.productCategoryId
@@ -81,11 +82,11 @@ const ProductForm: React.FunctionComponent<IProductFormProps> = ({
                     ))}
                   </Select>
                 </UForm.Item>
-                <UForm.Item label="Изображение" name="imageUrl" required initialValue={product?.imageUrl}>
+                <UForm.Item label="Изображение" name="imageUrl" initialValue={product?.imageUrl}>
                   <Input />
                 </UForm.Item>
                 <UForm.Item label="Название" name="name" required initialValue={product?.name}>
-                  <Input />
+                  <Input onChange={(e) => updateSlugOnChangeTitle(e.target.value, form)} />
                 </UForm.Item>
                 <UForm.Item label="Штрихкод" name="barcode" initialValue={product?.barcode}>
                   <Input />

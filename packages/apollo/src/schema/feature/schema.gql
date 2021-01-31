@@ -14,7 +14,7 @@ extend type Mutation {
 input FeatureInput {
   name: String!
   slug: String!
-  imageUrl: String!
+  imageUrl: String
   isDisabled: Boolean
 }
 

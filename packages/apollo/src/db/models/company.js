@@ -43,6 +43,7 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: true,
         is: /^#(([\dabcdef]{3})|([\dabcdef]{6}))$/i,
       },
+      defaultValue: '#000',
     },
   }, {
     sequelize,

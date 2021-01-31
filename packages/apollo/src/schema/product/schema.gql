@@ -22,7 +22,7 @@ input ProductInput {
   name: String!
   slug: String!
   description: String!
-  imageUrl: String!
+  imageUrl: String
   price: Int!
   productCategoryId: ID!
   companyId: ID!

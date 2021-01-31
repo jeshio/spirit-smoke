@@ -88,7 +88,7 @@ const ProcurementForm: React.FunctionComponent<IProcurementFormProps> = ({
         </URow>
         <URow>
           <UCol xl={8}>
-            <UForm.Item label="Инфа о поставщике" name="providerInfo" required initialValue={procurement?.providerInfo}>
+            <UForm.Item label="Инфа о поставщике" name="providerInfo" initialValue={procurement?.providerInfo}>
               <Input.TextArea rows={4} />
             </UForm.Item>
           </UCol>
@@ -114,7 +114,6 @@ const ProcurementForm: React.FunctionComponent<IProcurementFormProps> = ({
               <UForm.Item
                 label="Продукты"
                 name="products"
-                required
                 initialValue={selectedProductIds}
                 labelCol={{
                   sm: 7,

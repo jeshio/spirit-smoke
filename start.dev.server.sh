@@ -12,6 +12,6 @@ printf "$ourip" | /mnt/c/Windows/System32/clip.exe # WSL версия для к�
 
 echo "Запускаем docker-compose..."
 
-docker-compose -f docker-compose.admin.dev.yml -f docker-compose.apollo.dev.yml -f docker-compose.portal.dev.yml up
+docker-compose -f docker-compose.admin.dev.yml -f docker-compose.apollo.dev.yml -f docker-compose.portal.dev.yml up --build
 
 exit 0

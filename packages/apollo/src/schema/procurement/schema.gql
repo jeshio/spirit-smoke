@@ -15,7 +15,7 @@ input ProcurementInput {
   status: ProcurementStatus!
   name: String!
   comment: String
-  providerInfo: String!
+  providerInfo: String
   products: [ProcurementProductInput!]!
 }
 

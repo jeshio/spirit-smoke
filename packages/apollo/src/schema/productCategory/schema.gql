@@ -13,7 +13,7 @@ input ProductCategoryInput {
   name: String!
   slug: String!
   priority: Int
-  iconUrl: String!
+  iconUrl: String
   description: String!
   features: [ID!]
 }

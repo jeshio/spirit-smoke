@@ -130,6 +130,7 @@ module.exports = (sequelize, DataTypes) => {
         notEmpty: true,
         isUrl: true,
       },
+      defaultValue: 'http://example.com/',
     },
     slug: {
       type: DataTypes.STRING,

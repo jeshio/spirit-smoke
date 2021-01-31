@@ -8,6 +8,7 @@ stages:
   - test
   - build
   - deploy
+  - post-deploy
 
 # apollo-test:
 #   stage: test
@@ -57,7 +58,7 @@ apollo-deploy-prod:
     - master
 
 db-setup-prod:
-  stage: deploy
+  stage: post-deploy
   when: on_success
   needs:
     - apollo-deploy-prod

@@ -44,6 +44,7 @@ module.exports = (sequelize, DataTypes) => {
     providerInfo: {
       type: DataTypes.STRING,
       allowNull: false,
+      defaultValue: '-',
     },
     status: {
       type: DataTypes.STRING,
