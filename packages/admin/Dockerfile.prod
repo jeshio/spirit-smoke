@@ -6,6 +6,8 @@ COPY admin/package.json /usr/app/admin/package.json
 COPY admin/yarn.lock /usr/app/admin/yarn.lock
 COPY admin/.env /usr/app/admin/.env
 
+RUN cat /usr/app/admin/.env
+
 RUN yarn cache clean
 
 # --no-cache: download package index on-the-fly, no need to cleanup afterwards
