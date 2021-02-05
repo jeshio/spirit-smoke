@@ -1143,6 +1143,10 @@ export type ProcurementItemPageFragment = (
     & { product: (
       { __typename?: 'Product' }
       & Pick<Product, 'id' | 'name' | 'price'>
+      & { company?: Maybe<(
+        { __typename?: 'Company' }
+        & Pick<Company, 'id' | 'name'>
+      )> }
     ) }
   )> }
   & ProcurementSimple_Procurement_Fragment
@@ -2425,6 +2429,10 @@ export const ProcurementItemPageFragmentDoc = gql`
       id
       name
       price
+      company {
+        id
+        name
+      }
     }
     count
     costs

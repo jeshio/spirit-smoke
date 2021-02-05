@@ -11,6 +11,10 @@ fragment ProcurementItemPage on Procurement {
       id
       name
       price
+      company {
+        id
+        name
+      }
     }
     count
     costs

@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import { RouteComponentProps } from 'react-router'
 import { useProcurementItemPageQuery } from '@/gql/__generated__/types'
 import UPageContainer from '@/ui-components/UPageContainer'
@@ -8,16 +8,8 @@ import UButton from '@/ui-components/UButton'
 
 import useStableQuery from '@/hooks/gql/useStableQuery'
 import { EditFilled } from '@ant-design/icons'
-import { Link } from 'umi'
 import UPrice from '@/ui-components/UPrice'
-import {
-  Item,
-  ItemTitle,
-  ItemProductPrice,
-  ItemProductsCount,
-  ItemProductTotalPrice,
-  ProductsList,
-} from './styles/item.styled'
+import ProductsList from './components/ProductsList'
 
 interface IProcurementItemPageProps
   extends RouteComponentProps<{
@@ -35,26 +27,6 @@ const ProcurementItemPage: React.FunctionComponent<IProcurementItemPageProps> = 
   })
 
   const procurement = query?.data?.procurement
-  const productsList = useMemo(
-    () =>
-      procurement?.productProcurements.map(({ product, costs, count }) => (
-        <Item key={product.id}>
-          <ItemTitle>
-            <Link to={`/products/${product.id}`}>{product.name}</Link>
-          </ItemTitle>
-          <div>
-            <ItemProductsCount>x{count}</ItemProductsCount>
-            {' по '}
-            <ItemProductPrice>{costs} ₽</ItemProductPrice>
-            {', всего '}
-            <ItemProductTotalPrice>
-              <UPrice>{costs * count}</UPrice>
-            </ItemProductTotalPrice>
-          </div>
-        </Item>
-      )) || [],
-    [procurement]
-  )
 
   if (queryComponent || !procurement) return queryComponent as React.ReactElement
 
@@ -95,7 +67,7 @@ const ProcurementItemPage: React.FunctionComponent<IProcurementItemPageProps> = 
         </UDescriptions>
       </Card>
       <Card title="Продукты">
-        <ProductsList>{productsList}</ProductsList>
+        <ProductsList procurement={procurement} />
       </Card>
     </UPageContainer>
   )
