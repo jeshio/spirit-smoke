@@ -100,7 +100,8 @@ const resolvers = {
   },
 
   Procurement: {
-    productProcurements: async (procurement) => procurement.getProductProcurements({
+    productProcurements: async (procurement, params) => procurement.getProductProcurements({
+      ...params,
       order: [['count', 'DESC']],
     }),
   },
@@ -120,6 +121,22 @@ resolvers.Procurement.totalPrice = async (...args) => {
   const [procurement] = args
   const productsPrice = await resolvers.Procurement.productsPrice(...args)
   return procurement.deliveryCost + productsPrice
+}
+
+resolvers.Procurement.saleAmount = async (...args) => {
+  const [procurement,, { models }] = args
+  const productProcurements = await resolvers.Procurement.productProcurements(procurement, {
+    include: [
+      { model: models.product, attributes: ['price'] },
+    ],
+  })
+  return productProcurements.reduce((base, { count, product: { price } }) => base + (price || 0) * count, 0)
+}
+
+resolvers.Procurement.margin = async (...args) => {
+  const totalPrice = await resolvers.Procurement.totalPrice(...args)
+  const saleAmount = await resolvers.Procurement.saleAmount(...args)
+  return Number((saleAmount / totalPrice) * 100 - 100).toFixed(1)
 }
 
 export default resolvers

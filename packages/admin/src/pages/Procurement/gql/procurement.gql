@@ -4,6 +4,8 @@ fragment ProcurementItemPage on Procurement {
   ...ProcurementSimple
   productsPrice
   totalPrice
+  saleAmount
+  margin
   productProcurements {
     product {
       id

@@ -65,7 +65,7 @@ const UItemsSelector: React.FunctionComponent<IUItemsSelectorProps> = ({
           <Item option={option} disabled={disabled} noLink />
         </Select.Option>
       )),
-    [optionsToAdd, selectedIds, enableToSelectDisabledItems]
+    [optionsToAdd, selectedIds, enableToSelectDisabledItems, disabled]
   )
   const deleteItemHandlerFn = useCallback(
     (deletedId: ValueType) => () => {

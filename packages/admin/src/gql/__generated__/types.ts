@@ -1,4 +1,4 @@
-import { GraphQLResolveInfo } from 'graphql';
+import { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';
 import { gql } from '@apollo/client';
 import * as Apollo from '@apollo/client';
 export type Maybe<T> = T | null;
@@ -11,7 +11,10 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  /** A date-time string at UTC, such as 2007-12-03T10:15:30Z, compliant with the `date-time` format outlined in section 5.6 of the RFC 3339 profile of the ISO 8601 standard for representation of dates and times using the Gregorian calendar. */
+  DateTime: any;
 };
+
 
 export type Query = {
   __typename?: 'Query';
@@ -133,7 +136,7 @@ export type Mutation = {
   createProduct: ProductSimple;
   updateProduct: ProductSimple;
   deleteProduct: Scalars['ID'];
-  syncAllProductsCount: Scalars['Boolean'];
+  syncAllProductsCount?: Maybe<Scalars['Boolean']>;
   createProductCategory: ProductCategorySimple;
   updateProductCategory: ProductCategorySimple;
   deleteProductCategory: Scalars['ID'];
@@ -326,7 +329,7 @@ export type Bonus = {
 
 export type CompanyInput = {
   country?: Maybe<Scalars['String']>;
-  color: Scalars['String'];
+  color?: Maybe<Scalars['String']>;
   barcode?: Maybe<Scalars['String']>;
   name: Scalars['String'];
   slug: Scalars['String'];
@@ -339,8 +342,8 @@ export type ICompany = {
   barcode?: Maybe<Scalars['String']>;
   name: Scalars['String'];
   slug: Scalars['String'];
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
 };
 
 export type CompanySimple = ICompany & {
@@ -351,8 +354,8 @@ export type CompanySimple = ICompany & {
   barcode?: Maybe<Scalars['String']>;
   name: Scalars['String'];
   slug: Scalars['String'];
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
 };
 
 export type Company = ICompany & {
@@ -364,8 +367,8 @@ export type Company = ICompany & {
   name: Scalars['String'];
   slug: Scalars['String'];
   products: Array<Product>;
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
 };
 
 export type DiscountInput = {
@@ -373,8 +376,8 @@ export type DiscountInput = {
   percent?: Maybe<Scalars['Float']>;
   rub?: Maybe<Scalars['Float']>;
   code?: Maybe<Scalars['String']>;
-  startDate: Scalars['String'];
-  endDate: Scalars['String'];
+  startDate: Scalars['DateTime'];
+  endDate: Scalars['DateTime'];
   isGlobal?: Maybe<Scalars['Boolean']>;
 };
 
@@ -385,8 +388,8 @@ export type Discount = {
   percent?: Maybe<Scalars['Float']>;
   rub?: Maybe<Scalars['Float']>;
   code?: Maybe<Scalars['String']>;
-  startDate: Scalars['String'];
-  endDate: Scalars['String'];
+  startDate: Scalars['DateTime'];
+  endDate: Scalars['DateTime'];
   isGlobal: Scalars['Boolean'];
   productCategories: Array<Maybe<ProductCategory>>;
   products: Array<Maybe<Product>>;
@@ -398,7 +401,7 @@ export type Discount = {
 export type FeatureInput = {
   name: Scalars['String'];
   slug: Scalars['String'];
-  imageUrl: Scalars['String'];
+  imageUrl?: Maybe<Scalars['String']>;
   isDisabled?: Maybe<Scalars['Boolean']>;
 };
 
@@ -408,8 +411,8 @@ export type IFeature = {
   slug: Scalars['String'];
   imageUrl: Scalars['String'];
   isDisabled: Scalars['Boolean'];
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
 };
 
 export type FeatureSimple = IFeature & {
@@ -419,8 +422,8 @@ export type FeatureSimple = IFeature & {
   slug: Scalars['String'];
   imageUrl: Scalars['String'];
   isDisabled: Scalars['Boolean'];
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
 };
 
 export type Feature = IFeature & {
@@ -430,8 +433,8 @@ export type Feature = IFeature & {
   slug: Scalars['String'];
   imageUrl: Scalars['String'];
   isDisabled: Scalars['Boolean'];
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
   productCategories: Array<ProductCategory>;
   products: Array<Product>;
   productFeatures: Array<ProductFeature>;
@@ -451,7 +454,7 @@ export type OrderInput = {
   personsCount?: Maybe<Scalars['Int']>;
   comment?: Maybe<Scalars['String']>;
   ourComment?: Maybe<Scalars['String']>;
-  deliveryTime: Scalars['String'];
+  deliveryTime: Scalars['DateTime'];
   phoneNumber: Scalars['String'];
   products: Array<OrderProductInput>;
   status?: Maybe<OrderStatus>;
@@ -486,10 +489,10 @@ export type IOrder = {
   personsCount?: Maybe<Scalars['Int']>;
   comment?: Maybe<Scalars['String']>;
   ourComment?: Maybe<Scalars['String']>;
-  deliveryTime: Scalars['String'];
+  deliveryTime: Scalars['DateTime'];
   phoneNumber: Scalars['String'];
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
 };
 
 export type OrderSimple = IOrder & {
@@ -501,10 +504,10 @@ export type OrderSimple = IOrder & {
   personsCount?: Maybe<Scalars['Int']>;
   comment?: Maybe<Scalars['String']>;
   ourComment?: Maybe<Scalars['String']>;
-  deliveryTime: Scalars['String'];
+  deliveryTime: Scalars['DateTime'];
   phoneNumber: Scalars['String'];
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
 };
 
 export type Order = IOrder & {
@@ -516,10 +519,10 @@ export type Order = IOrder & {
   personsCount?: Maybe<Scalars['Int']>;
   comment?: Maybe<Scalars['String']>;
   ourComment?: Maybe<Scalars['String']>;
-  deliveryTime: Scalars['String'];
+  deliveryTime: Scalars['DateTime'];
   phoneNumber: Scalars['String'];
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
   totalPrice: Scalars['Int'];
   discounts: Array<Discount>;
   bonuses: Array<Bonus>;
@@ -541,12 +544,12 @@ export type Param = {
 };
 
 export type ProcurementInput = {
-  nextStatusDate?: Maybe<Scalars['String']>;
+  nextStatusDate?: Maybe<Scalars['DateTime']>;
   deliveryCost: Scalars['Float'];
   status: ProcurementStatus;
   name: Scalars['String'];
   comment?: Maybe<Scalars['String']>;
-  providerInfo: Scalars['String'];
+  providerInfo?: Maybe<Scalars['String']>;
   products: Array<ProcurementProductInput>;
 };
 
@@ -586,7 +589,7 @@ export type IProcurement = {
   comment?: Maybe<Scalars['String']>;
   providerInfo: Scalars['String'];
   status: ProcurementStatus;
-  nextStatusDate?: Maybe<Scalars['String']>;
+  nextStatusDate?: Maybe<Scalars['DateTime']>;
   deliveryCost?: Maybe<Scalars['Float']>;
 };
 
@@ -597,7 +600,7 @@ export type ProcurementSimple = IProcurement & {
   comment?: Maybe<Scalars['String']>;
   providerInfo: Scalars['String'];
   status: ProcurementStatus;
-  nextStatusDate?: Maybe<Scalars['String']>;
+  nextStatusDate?: Maybe<Scalars['DateTime']>;
   deliveryCost?: Maybe<Scalars['Float']>;
 };
 
@@ -608,9 +611,11 @@ export type Procurement = IProcurement & {
   comment?: Maybe<Scalars['String']>;
   providerInfo: Scalars['String'];
   status: ProcurementStatus;
-  nextStatusDate?: Maybe<Scalars['String']>;
+  nextStatusDate?: Maybe<Scalars['DateTime']>;
   productsPrice: Scalars['Float'];
   totalPrice: Scalars['Float'];
+  saleAmount: Scalars['Float'];
+  margin: Scalars['Float'];
   deliveryCost?: Maybe<Scalars['Float']>;
   productProcurements: Array<ProductProcurement>;
 };
@@ -625,7 +630,7 @@ export type ProductInput = {
   name: Scalars['String'];
   slug: Scalars['String'];
   description: Scalars['String'];
-  imageUrl: Scalars['String'];
+  imageUrl?: Maybe<Scalars['String']>;
   price: Scalars['Int'];
   productCategoryId: Scalars['ID'];
   companyId: Scalars['ID'];
@@ -645,8 +650,8 @@ export type IProduct = {
   count: Scalars['Int'];
   productCategoryId: Scalars['ID'];
   companyId: Scalars['ID'];
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
 };
 
 export type ProductSimple = IProduct & {
@@ -662,8 +667,8 @@ export type ProductSimple = IProduct & {
   count: Scalars['Int'];
   productCategoryId: Scalars['ID'];
   companyId: Scalars['ID'];
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
 };
 
 export type Product = IProduct & {
@@ -679,8 +684,8 @@ export type Product = IProduct & {
   count: Scalars['Int'];
   productCategoryId: Scalars['ID'];
   companyId: Scalars['ID'];
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
   waitingCount: Scalars['Int'];
   company?: Maybe<Company>;
   productCategory?: Maybe<ProductCategory>;
@@ -695,7 +700,7 @@ export type ProductCategoryInput = {
   name: Scalars['String'];
   slug: Scalars['String'];
   priority?: Maybe<Scalars['Int']>;
-  iconUrl: Scalars['String'];
+  iconUrl?: Maybe<Scalars['String']>;
   description: Scalars['String'];
   features?: Maybe<Array<Scalars['ID']>>;
 };
@@ -707,8 +712,8 @@ export type IProductCategory = {
   priority?: Maybe<Scalars['Int']>;
   iconUrl: Scalars['String'];
   description: Scalars['String'];
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
 };
 
 export type ProductCategorySimple = IProductCategory & {
@@ -719,8 +724,8 @@ export type ProductCategorySimple = IProductCategory & {
   priority?: Maybe<Scalars['Int']>;
   iconUrl: Scalars['String'];
   description: Scalars['String'];
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
 };
 
 export type ProductCategory = IProductCategory & {
@@ -731,8 +736,8 @@ export type ProductCategory = IProductCategory & {
   priority?: Maybe<Scalars['Int']>;
   iconUrl: Scalars['String'];
   description: Scalars['String'];
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
   products: Array<Product>;
   features: Array<Feature>;
   discounts: Array<Discount>;
@@ -742,8 +747,8 @@ export type PromotionInput = {
   name: Scalars['String'];
   description: Scalars['String'];
   imageUrl: Scalars['String'];
-  startDate: Scalars['String'];
-  endDate: Scalars['String'];
+  startDate: Scalars['DateTime'];
+  endDate: Scalars['DateTime'];
   priority: Scalars['Int'];
 };
 
@@ -753,8 +758,8 @@ export type Promotion = {
   name: Scalars['String'];
   description: Scalars['String'];
   imageUrl: Scalars['String'];
-  startDate: Scalars['String'];
-  endDate: Scalars['String'];
+  startDate: Scalars['DateTime'];
+  endDate: Scalars['DateTime'];
   priority: Scalars['Int'];
 };
 
@@ -1131,7 +1136,7 @@ export type OrdersListPageQuery = (
 
 export type ProcurementItemPageFragment = (
   { __typename?: 'Procurement' }
-  & Pick<Procurement, 'productsPrice' | 'totalPrice'>
+  & Pick<Procurement, 'productsPrice' | 'totalPrice' | 'saleAmount' | 'margin'>
   & { productProcurements: Array<(
     { __typename?: 'ProductProcurement' }
     & Pick<ProductProcurement, 'count' | 'costs'>
@@ -1158,7 +1163,7 @@ export type ProcurementItemPageQuery = (
 
 export type ProcurementsListPageFragment = (
   { __typename?: 'Procurement' }
-  & Pick<Procurement, 'productsPrice' | 'totalPrice'>
+  & Pick<Procurement, 'productsPrice' | 'totalPrice' | 'saleAmount' | 'margin'>
   & ProcurementSimple_Procurement_Fragment
 );
 
@@ -1716,6 +1721,7 @@ export type DirectiveResolverFn<TResult = {}, TParent = {}, TContext = {}, TArgs
 
 /** Mapping between all available schema types and the resolvers types */
 export type ResolversTypes = {
+  DateTime: ResolverTypeWrapper<Scalars['DateTime']>;
   Query: ResolverTypeWrapper<{}>;
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>;
   ID: ResolverTypeWrapper<Scalars['ID']>;
@@ -1769,6 +1775,7 @@ export type ResolversTypes = {
 
 /** Mapping between all available schema types and the resolvers parents */
 export type ResolversParentTypes = {
+  DateTime: Scalars['DateTime'];
   Query: {};
   Boolean: Scalars['Boolean'];
   ID: Scalars['ID'];
@@ -1817,6 +1824,10 @@ export type ResolversParentTypes = {
   PromotionInput: PromotionInput;
   Promotion: Promotion;
 };
+
+export interface DateTimeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['DateTime'], any> {
+  name: 'DateTime';
+}
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   _?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
@@ -1871,7 +1882,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   createProduct?: Resolver<ResolversTypes['ProductSimple'], ParentType, ContextType, RequireFields<MutationCreateProductArgs, 'input'>>;
   updateProduct?: Resolver<ResolversTypes['ProductSimple'], ParentType, ContextType, RequireFields<MutationUpdateProductArgs, 'id' | 'input'>>;
   deleteProduct?: Resolver<ResolversTypes['ID'], ParentType, ContextType, RequireFields<MutationDeleteProductArgs, 'id'>>;
-  syncAllProductsCount?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  syncAllProductsCount?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   createProductCategory?: Resolver<ResolversTypes['ProductCategorySimple'], ParentType, ContextType, RequireFields<MutationCreateProductCategoryArgs, 'input'>>;
   updateProductCategory?: Resolver<ResolversTypes['ProductCategorySimple'], ParentType, ContextType, RequireFields<MutationUpdateProductCategoryArgs, 'id' | 'input'>>;
   deleteProductCategory?: Resolver<ResolversTypes['ID'], ParentType, ContextType, RequireFields<MutationDeleteProductCategoryArgs, 'id'>>;
@@ -1901,8 +1912,8 @@ export type ICompanyResolvers<ContextType = any, ParentType extends ResolversPar
   barcode?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  updatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
 };
 
 export type CompanySimpleResolvers<ContextType = any, ParentType extends ResolversParentTypes['CompanySimple'] = ResolversParentTypes['CompanySimple']> = {
@@ -1912,8 +1923,8 @@ export type CompanySimpleResolvers<ContextType = any, ParentType extends Resolve
   barcode?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  updatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 };
 
@@ -1925,8 +1936,8 @@ export type CompanyResolvers<ContextType = any, ParentType extends ResolversPare
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   products?: Resolver<Array<ResolversTypes['Product']>, ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  updatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 };
 
@@ -1936,8 +1947,8 @@ export type DiscountResolvers<ContextType = any, ParentType extends ResolversPar
   percent?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
   rub?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
   code?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  startDate?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  endDate?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  startDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  endDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   isGlobal?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   productCategories?: Resolver<Array<Maybe<ResolversTypes['ProductCategory']>>, ParentType, ContextType>;
   products?: Resolver<Array<Maybe<ResolversTypes['Product']>>, ParentType, ContextType>;
@@ -1954,8 +1965,8 @@ export type IFeatureResolvers<ContextType = any, ParentType extends ResolversPar
   slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   imageUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   isDisabled?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  updatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
 };
 
 export type FeatureSimpleResolvers<ContextType = any, ParentType extends ResolversParentTypes['FeatureSimple'] = ResolversParentTypes['FeatureSimple']> = {
@@ -1964,8 +1975,8 @@ export type FeatureSimpleResolvers<ContextType = any, ParentType extends Resolve
   slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   imageUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   isDisabled?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  updatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 };
 
@@ -1975,8 +1986,8 @@ export type FeatureResolvers<ContextType = any, ParentType extends ResolversPare
   slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   imageUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   isDisabled?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  updatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   productCategories?: Resolver<Array<ResolversTypes['ProductCategory']>, ParentType, ContextType>;
   products?: Resolver<Array<ResolversTypes['Product']>, ParentType, ContextType>;
   productFeatures?: Resolver<Array<ResolversTypes['ProductFeature']>, ParentType, ContextType>;
@@ -2007,10 +2018,10 @@ export type IOrderResolvers<ContextType = any, ParentType extends ResolversParen
   personsCount?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   comment?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   ourComment?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  deliveryTime?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  deliveryTime?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   phoneNumber?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  updatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
 };
 
 export type OrderSimpleResolvers<ContextType = any, ParentType extends ResolversParentTypes['OrderSimple'] = ResolversParentTypes['OrderSimple']> = {
@@ -2021,10 +2032,10 @@ export type OrderSimpleResolvers<ContextType = any, ParentType extends Resolvers
   personsCount?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   comment?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   ourComment?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  deliveryTime?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  deliveryTime?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   phoneNumber?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  updatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 };
 
@@ -2036,10 +2047,10 @@ export type OrderResolvers<ContextType = any, ParentType extends ResolversParent
   personsCount?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   comment?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   ourComment?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  deliveryTime?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  deliveryTime?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   phoneNumber?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  updatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   totalPrice?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   discounts?: Resolver<Array<ResolversTypes['Discount']>, ParentType, ContextType>;
   bonuses?: Resolver<Array<ResolversTypes['Bonus']>, ParentType, ContextType>;
@@ -2070,7 +2081,7 @@ export type IProcurementResolvers<ContextType = any, ParentType extends Resolver
   comment?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   providerInfo?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   status?: Resolver<ResolversTypes['ProcurementStatus'], ParentType, ContextType>;
-  nextStatusDate?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  nextStatusDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
   deliveryCost?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
 };
 
@@ -2080,7 +2091,7 @@ export type ProcurementSimpleResolvers<ContextType = any, ParentType extends Res
   comment?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   providerInfo?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   status?: Resolver<ResolversTypes['ProcurementStatus'], ParentType, ContextType>;
-  nextStatusDate?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  nextStatusDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
   deliveryCost?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 };
@@ -2091,9 +2102,11 @@ export type ProcurementResolvers<ContextType = any, ParentType extends Resolvers
   comment?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   providerInfo?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   status?: Resolver<ResolversTypes['ProcurementStatus'], ParentType, ContextType>;
-  nextStatusDate?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  nextStatusDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
   productsPrice?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   totalPrice?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  saleAmount?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  margin?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   deliveryCost?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
   productProcurements?: Resolver<Array<ResolversTypes['ProductProcurement']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
@@ -2112,8 +2125,8 @@ export type IProductResolvers<ContextType = any, ParentType extends ResolversPar
   count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   productCategoryId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   companyId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  updatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
 };
 
 export type ProductSimpleResolvers<ContextType = any, ParentType extends ResolversParentTypes['ProductSimple'] = ResolversParentTypes['ProductSimple']> = {
@@ -2128,8 +2141,8 @@ export type ProductSimpleResolvers<ContextType = any, ParentType extends Resolve
   count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   productCategoryId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   companyId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  updatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 };
 
@@ -2145,8 +2158,8 @@ export type ProductResolvers<ContextType = any, ParentType extends ResolversPare
   count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   productCategoryId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   companyId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  updatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   waitingCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   company?: Resolver<Maybe<ResolversTypes['Company']>, ParentType, ContextType>;
   productCategory?: Resolver<Maybe<ResolversTypes['ProductCategory']>, ParentType, ContextType>;
@@ -2166,8 +2179,8 @@ export type IProductCategoryResolvers<ContextType = any, ParentType extends Reso
   priority?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   iconUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  updatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
 };
 
 export type ProductCategorySimpleResolvers<ContextType = any, ParentType extends ResolversParentTypes['ProductCategorySimple'] = ResolversParentTypes['ProductCategorySimple']> = {
@@ -2177,8 +2190,8 @@ export type ProductCategorySimpleResolvers<ContextType = any, ParentType extends
   priority?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   iconUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  updatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 };
 
@@ -2189,8 +2202,8 @@ export type ProductCategoryResolvers<ContextType = any, ParentType extends Resol
   priority?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   iconUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  createdAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  updatedAt?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   products?: Resolver<Array<ResolversTypes['Product']>, ParentType, ContextType>;
   features?: Resolver<Array<ResolversTypes['Feature']>, ParentType, ContextType>;
   discounts?: Resolver<Array<ResolversTypes['Discount']>, ParentType, ContextType>;
@@ -2202,13 +2215,14 @@ export type PromotionResolvers<ContextType = any, ParentType extends ResolversPa
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   imageUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  startDate?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  endDate?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  startDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  endDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   priority?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 };
 
 export type Resolvers<ContextType = any> = {
+  DateTime?: GraphQLScalarType;
   Query?: QueryResolvers<ContextType>;
   Mutation?: MutationResolvers<ContextType>;
   Subscription?: SubscriptionResolvers<ContextType>;
@@ -2404,6 +2418,8 @@ export const ProcurementItemPageFragmentDoc = gql`
   ...ProcurementSimple
   productsPrice
   totalPrice
+  saleAmount
+  margin
   productProcurements {
     product {
       id
@@ -2420,6 +2436,8 @@ export const ProcurementsListPageFragmentDoc = gql`
   ...ProcurementSimple
   productsPrice
   totalPrice
+  saleAmount
+  margin
 }
     ${ProcurementSimpleFragmentDoc}`;
 export const ProcurementFormProductFragmentDoc = gql`

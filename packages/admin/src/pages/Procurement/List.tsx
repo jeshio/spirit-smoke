@@ -61,6 +61,16 @@ const columns: ListColumnsType = (): IColumn<ProcurementsListPageFragment>[] => 
     render: (price) => <UPrice>{price}</UPrice>,
   },
   {
+    field: 'saleAmount',
+    title: 'Сумма продажи',
+    render: (price) => <UPrice>{price}</UPrice>,
+  },
+  {
+    field: 'margin',
+    title: 'Маржа',
+    render: (margin) => `${margin > 0 ? '+' : ''}${margin}%`,
+  },
+  {
     field: 'status',
     title: 'Статус',
     defaultSortOrder: 'ascend',

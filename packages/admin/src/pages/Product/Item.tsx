@@ -9,7 +9,6 @@ import UPopconfirm from '@/ui-components/UPopconfirm'
 import { DeleteFilled, EditFilled, ImportOutlined } from '@ant-design/icons'
 import URow from '@/ui-components/URow'
 import UCol from '@/ui-components/UCol'
-import UTable from '@/ui-components/UTable'
 
 import useStableQuery from '@/hooks/gql/useStableQuery'
 import UFeaturesList from '@/ui-components/UFeaturesList'
@@ -70,11 +69,13 @@ const ProductItemPage: React.FunctionComponent<IProductItemPageProps> = (props) 
       <URow>
         <UCol span={24} md={7} xl={6} xxl={5}>
           <ItemImageWrapper>
-            <ItemImage
-              style={{
-                backgroundImage: `url(${product.imageUrl})`,
-              }}
-            />
+            <a href={product.imageUrl} target="_blank" rel="noreferrer">
+              <ItemImage
+                style={{
+                  backgroundImage: `url(${product.imageUrl})`,
+                }}
+              />
+            </a>
           </ItemImageWrapper>
         </UCol>
         <UCol span={24} md={17} xl={18} xxl={19}>

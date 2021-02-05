@@ -85,6 +85,13 @@ const ProcurementItemPage: React.FunctionComponent<IProcurementItemPageProps> = 
           <UDescriptions.Item label="Итог">
             <UPrice>{procurement.totalPrice}</UPrice>
           </UDescriptions.Item>
+          <UDescriptions.Item label="Сумма продажи">
+            <UPrice>{procurement.saleAmount}</UPrice>
+          </UDescriptions.Item>
+          <UDescriptions.Item label="Маржа">
+            {procurement.margin > 0 && '+'}
+            {procurement.margin}%
+          </UDescriptions.Item>
         </UDescriptions>
       </Card>
       <Card title="Продукты">

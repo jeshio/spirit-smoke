@@ -77,6 +77,8 @@ type Procurement implements IProcurement {
   nextStatusDate: Date
   productsPrice: Float!
   totalPrice: Float!
+  saleAmount: Float!
+  margin: Float!
   deliveryCost: Float
   productProcurements: [ProductProcurement!]!
 } 
