@@ -10,33 +10,8 @@ stages:
   - deploy
   - post-deploy
 
-# apollo-test:
-#   stage: test
-#   tags:
-#     - apollo
-#   script:
-#     - echo "Test is good!"
-
-# apollo-build:
-#   stage: build
-#   tags:
-#     - apollo
-#   script:
-#     - echo "Apollo Is Builded"
-
-# apollo-deploy-uat:
-#   stage: deploy
-#   tags:
-#     - apollo
-#     - uat
-#   script:
-#     - echo "Deploy on UAT is finished!"
-#   only:
-#     - master
-
 apollo-deploy-prod:
   stage: deploy
-  when: manual
   tags:
     - apollo
     - prod
@@ -73,7 +48,6 @@ db-setup-prod:
 
 admin-deploy-prod:
   stage: deploy
-  when: manual
   tags:
     - admin
     - prod
