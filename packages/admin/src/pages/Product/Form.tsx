@@ -14,6 +14,7 @@ import TextArea from 'antd/lib/input/TextArea'
 import UItemsSelector from '@/ui-components/UItemsSelector'
 import UBlock from '@/ui-components/UBlock'
 import updateSlugOnChangeTitle from '@/helpers/updateSlugOnChangeTitle'
+import { FormInstance } from 'rc-field-form/lib/interface'
 
 export interface IProductFormProps {
   loading?: boolean
@@ -54,6 +55,14 @@ const ProductForm: React.FunctionComponent<IProductFormProps> = ({
   const initialSelectedFeatureIds = React.useMemo(() => product?.productFeatures.map(({ feature: { id } }) => id), [
     product,
   ])
+  const changeNameHandler = (fields: any, form: FormInstance) => (e: React.ChangeEvent<HTMLInputElement>) => {
+    const company = companyRequest.data?.companies.find(({ id }) => id === fields.companyId)
+    let name = e.target.value
+    if (company) {
+      name = `${company.name} ${name}`
+    }
+    return updateSlugOnChangeTitle(name, form)
+  }
 
   return (
     <UForm onFinish={handleSubmit} labelCol={{ span: 6, sm: 6, md: 9, lg: 9, xl: 7, xxl: 7 }}>
@@ -66,6 +75,22 @@ const ProductForm: React.FunctionComponent<IProductFormProps> = ({
           <Card loading={categoriesRequest.loading || companyRequest.loading}>
             <URow>
               <UCol md={12} xxl={8}>
+                <UForm.Item
+                  label="Производитель"
+                  name="companyId"
+                  required
+                  initialValue={product?.companyId}
+                  help={companyWarning && 'Этот производитель удалён, продукт невидим'}
+                  validateStatus={(companyWarning && 'warning') || undefined}
+                >
+                  <Select>
+                    {companyRequest.data?.companies.map(({ id, name }) => (
+                      <Select.Option value={id} key={id}>
+                        ({id}) {name}
+                      </Select.Option>
+                    ))}
+                  </Select>
+                </UForm.Item>
                 <UForm.Item
                   label="Категория"
                   name="productCategoryId"
@@ -86,13 +111,10 @@ const ProductForm: React.FunctionComponent<IProductFormProps> = ({
                   <Input />
                 </UForm.Item>
                 <UForm.Item label="Название" name="name" required initialValue={product?.name}>
-                  <Input onChange={(e) => updateSlugOnChangeTitle(e.target.value, form)} />
+                  <Input onChange={changeNameHandler(fields, form)} />
                 </UForm.Item>
                 <UForm.Item label="Штрихкод" name="barcode" initialValue={product?.barcode}>
                   <Input />
-                </UForm.Item>
-                <UForm.Item label="Вес (г)" name="weight" initialValue={product?.weight || 0}>
-                  <Input type="number" />
                 </UForm.Item>
                 <UForm.Item label="Slug" required name="slug" initialValue={product?.slug}>
                   <Input disabled={isUpdate} />
@@ -114,21 +136,8 @@ const ProductForm: React.FunctionComponent<IProductFormProps> = ({
                 </UForm.Item>
               </UCol>
               <UCol md={12} xxl={8}>
-                <UForm.Item
-                  label="Производитель"
-                  name="companyId"
-                  required
-                  initialValue={product?.companyId}
-                  help={companyWarning && 'Этот производитель удалён, продукт невидим'}
-                  validateStatus={(companyWarning && 'warning') || undefined}
-                >
-                  <Select>
-                    {companyRequest.data?.companies.map(({ id, name }) => (
-                      <Select.Option value={id} key={id}>
-                        ({id}) {name}
-                      </Select.Option>
-                    ))}
-                  </Select>
+                <UForm.Item label="Вес (г)" name="weight" initialValue={product?.weight || 0}>
+                  <Input type="number" />
                 </UForm.Item>
                 <UForm.Item label="Количество" help="Добавляется поставками, убавляется заказами и списаниями">
                   <InputNumber name="count" disabled value={isUpdate ? product?.count : 0} />
