@@ -25,6 +25,12 @@ export default defineConfig({
     ie: 11,
   },
   // umi routes: https://umijs.org/docs/routing
+  metas: [
+    {
+      name: 'robots',
+      content: 'noindex,nofollow',
+    },
+  ],
   routes: [
     // {
     //   path: '/user',
