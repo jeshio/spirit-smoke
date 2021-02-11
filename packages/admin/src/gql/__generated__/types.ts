@@ -591,6 +591,7 @@ export type IProcurement = {
   status: ProcurementStatus;
   nextStatusDate?: Maybe<Scalars['DateTime']>;
   deliveryCost?: Maybe<Scalars['Float']>;
+  weight: Scalars['Int'];
 };
 
 export type ProcurementSimple = IProcurement & {
@@ -602,6 +603,7 @@ export type ProcurementSimple = IProcurement & {
   status: ProcurementStatus;
   nextStatusDate?: Maybe<Scalars['DateTime']>;
   deliveryCost?: Maybe<Scalars['Float']>;
+  weight: Scalars['Int'];
 };
 
 export type Procurement = IProcurement & {
@@ -617,6 +619,7 @@ export type Procurement = IProcurement & {
   saleAmount: Scalars['Float'];
   margin: Scalars['Float'];
   deliveryCost?: Maybe<Scalars['Float']>;
+  weight: Scalars['Int'];
   productProcurements: Array<ProductProcurement>;
 };
 
@@ -1136,7 +1139,7 @@ export type OrdersListPageQuery = (
 
 export type ProcurementItemPageFragment = (
   { __typename?: 'Procurement' }
-  & Pick<Procurement, 'productsPrice' | 'totalPrice' | 'saleAmount' | 'margin'>
+  & Pick<Procurement, 'productsPrice' | 'totalPrice' | 'saleAmount' | 'margin' | 'weight'>
   & { productProcurements: Array<(
     { __typename?: 'ProductProcurement' }
     & Pick<ProductProcurement, 'count' | 'costs'>
@@ -1167,7 +1170,7 @@ export type ProcurementItemPageQuery = (
 
 export type ProcurementsListPageFragment = (
   { __typename?: 'Procurement' }
-  & Pick<Procurement, 'productsPrice' | 'totalPrice' | 'saleAmount' | 'margin'>
+  & Pick<Procurement, 'productsPrice' | 'totalPrice' | 'saleAmount' | 'margin' | 'weight'>
   & ProcurementSimple_Procurement_Fragment
 );
 
@@ -2087,6 +2090,7 @@ export type IProcurementResolvers<ContextType = any, ParentType extends Resolver
   status?: Resolver<ResolversTypes['ProcurementStatus'], ParentType, ContextType>;
   nextStatusDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
   deliveryCost?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  weight?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
 };
 
 export type ProcurementSimpleResolvers<ContextType = any, ParentType extends ResolversParentTypes['ProcurementSimple'] = ResolversParentTypes['ProcurementSimple']> = {
@@ -2097,6 +2101,7 @@ export type ProcurementSimpleResolvers<ContextType = any, ParentType extends Res
   status?: Resolver<ResolversTypes['ProcurementStatus'], ParentType, ContextType>;
   nextStatusDate?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
   deliveryCost?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  weight?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 };
 
@@ -2112,6 +2117,7 @@ export type ProcurementResolvers<ContextType = any, ParentType extends Resolvers
   saleAmount?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   margin?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   deliveryCost?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  weight?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   productProcurements?: Resolver<Array<ResolversTypes['ProductProcurement']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 };
@@ -2424,6 +2430,7 @@ export const ProcurementItemPageFragmentDoc = gql`
   totalPrice
   saleAmount
   margin
+  weight
   productProcurements {
     product {
       id
@@ -2446,6 +2453,7 @@ export const ProcurementsListPageFragmentDoc = gql`
   totalPrice
   saleAmount
   margin
+  weight
 }
     ${ProcurementSimpleFragmentDoc}`;
 export const ProcurementFormProductFragmentDoc = gql`

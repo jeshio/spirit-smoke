@@ -6,6 +6,7 @@ fragment ProcurementsListPage on Procurement {
   totalPrice
   saleAmount
   margin
+  weight
 }
 
 query procurementsListPage {

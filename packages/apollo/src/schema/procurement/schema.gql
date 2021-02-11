@@ -56,6 +56,7 @@ interface IProcurement {
   status: ProcurementStatus!
   nextStatusDate: Date
   deliveryCost: Float
+  weight: Int!
 } 
 
 type ProcurementSimple implements IProcurement {
@@ -66,6 +67,7 @@ type ProcurementSimple implements IProcurement {
   status: ProcurementStatus!
   nextStatusDate: Date
   deliveryCost: Float
+  weight: Int!
 } 
 
 type Procurement implements IProcurement {
@@ -80,5 +82,6 @@ type Procurement implements IProcurement {
   saleAmount: Float!
   margin: Float!
   deliveryCost: Float
+  weight: Int!
   productProcurements: [ProductProcurement!]!
 } 

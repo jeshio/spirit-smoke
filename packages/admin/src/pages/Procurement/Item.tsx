@@ -60,6 +60,7 @@ const ProcurementItemPage: React.FunctionComponent<IProcurementItemPageProps> = 
           <UDescriptions.Item label="Сумма продажи">
             <UPrice>{procurement.saleAmount}</UPrice>
           </UDescriptions.Item>
+          <UDescriptions.Item label="Вес (г)">{procurement.weight.toLocaleString()}</UDescriptions.Item>
           <UDescriptions.Item label="Маржа">
             {procurement.margin > 0 && '+'}
             {procurement.margin}%

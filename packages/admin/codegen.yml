@@ -1,5 +1,5 @@
 overwrite: true
-schema: http://wsl.ru:4000/graphql
+schema: http://apollo:4000/graphql
 documents:
   - src/**/*.gql
   - ../gql/**/*.gql

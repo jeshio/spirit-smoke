@@ -61,9 +61,9 @@ const columns: ListColumnsType = (): IColumn<ProcurementsListPageFragment>[] => 
     render: (price) => <UPrice>{price}</UPrice>,
   },
   {
-    field: 'saleAmount',
-    title: 'Сумма продажи',
-    render: (price) => <UPrice>{price}</UPrice>,
+    field: 'weight',
+    title: 'Вес (г)',
+    render: (weight) => weight.toLocaleString(),
   },
   {
     field: 'margin',

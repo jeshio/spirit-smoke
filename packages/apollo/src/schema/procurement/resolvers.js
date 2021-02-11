@@ -139,4 +139,14 @@ resolvers.Procurement.margin = async (...args) => {
   return Number((saleAmount / totalPrice) * 100 - 100).toFixed(1)
 }
 
+resolvers.Procurement.weight = async (...args) => {
+  const [procurement,, { models }] = args
+  const productProcurements = await resolvers.Procurement.productProcurements(procurement, {
+    include: [
+      { model: models.product, attributes: ['weight'] },
+    ],
+  })
+  return productProcurements.reduce((base, { count, product: { weight } }) => base + (weight || 0) * count, 0)
+}
+
 export default resolvers
