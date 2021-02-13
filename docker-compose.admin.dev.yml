@@ -6,6 +6,7 @@ services:
       dockerfile: Dockerfile.dev
     image: spirit-admin
     container_name: spirit-admin-dev
+    env_file: .env
     environment:
       NODE_ENV: development
     ports:

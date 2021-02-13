@@ -1,4 +1,6 @@
-export const baseRoutes = [
+import { IRoute } from 'umi'
+
+export const baseRoutes: IRoute[] = [
   {
     path: '/',
     redirect: '/welcome',
@@ -9,22 +11,13 @@ export const baseRoutes = [
     icon: 'smile',
     component: './Welcome',
   },
-  // {
-  //   path: '/admin',
-  //   name: 'admin',
-  //   icon: 'crown',
-  //   component: './Admin',
-  //   authority: ['admin'],
-  //   routes: [
-  //     {
-  //       path: '/admin/sub-page',
-  //       name: 'sub-page',
-  //       icon: 'smile',
-  //       component: './Welcome',
-  //       authority: ['admin'],
-  //     },
-  //   ],
-  // },
+  {
+    path: '/mashagosha/:pass',
+    name: 'Hey',
+    icon: 'smile',
+    component: './MashaGosha/CookieSetter.tsx',
+    hideInMenu: true,
+  },
   {
     path: '/procurements',
     redirect: '/procurements/list',

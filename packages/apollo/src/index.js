@@ -1,10 +1,12 @@
 import express from 'express'
 import cors from 'cors'
-import { ApolloServer } from 'apollo-server-express'
+import { ApolloServer, AuthenticationError } from 'apollo-server-express'
 
 import schema from './schema'
 import * as loadersCreator from './loaders'
 import models from './db/models'
+
+const { AUTH_TOKEN, CORS_DOMAINS } = process.env
 
 const createLoaders = () => Object.keys(loadersCreator).reduce(
   (base, key) => ({
@@ -33,16 +35,27 @@ const server = new ApolloServer({
       message,
     }
   },
-  context: async () => ({
-    models,
-    loaders: createLoaders(),
-    sequelize: models.sequelize,
-  }),
+  context: async ({ req }) => {
+    const token = req.headers.authorization || ''
+
+    if (token !== `Bearer ${AUTH_TOKEN}`) throw new AuthenticationError('Кто ты?')
+
+    return ({
+      models,
+      loaders: createLoaders(),
+      sequelize: models.sequelize,
+    })
+  },
 })
+
+const corsOptions = {
+  origin: `${CORS_DOMAINS}`.split(','),
+  credentials: true,
+}
 
 const app = express()
 
-app.use(cors())
+app.use(cors(corsOptions))
 
 server.applyMiddleware({ app })
 
