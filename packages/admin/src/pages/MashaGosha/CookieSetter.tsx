@@ -7,7 +7,7 @@ interface ICookieSetterProps
   }> {}
 
 const CookieSetter: React.FunctionComponent<ICookieSetterProps> = (props) => {
-  document.cookie = `token=${props.match.params.pass}`
+  window.localStorage.setItem('token', props.match.params.pass)
 
   return null
 }

@@ -3,14 +3,6 @@ import { setContext } from '@apollo/client/link/context'
 import introspectionResult from '@/gql/__generated__/introspection-result'
 import errorHandler from './errorHandler'
 
-function getCookie(name: string) {
-  const value = `; ${document.cookie}`
-  const parts = value.split(`; ${name}=`)
-  if (parts.length === 2) return parts.pop()?.split(';').shift()
-
-  return undefined
-}
-
 const httpLink = new HttpLink({
   /* eslint-disable-next-line @typescript-eslint/ban-ts-comment */
   // @ts-ignore
@@ -19,7 +11,7 @@ const httpLink = new HttpLink({
 })
 
 const authLink = setContext((_, { headers }) => {
-  const token = getCookie('token')
+  const token = window.localStorage.getItem('token')
   return {
     headers: {
       ...headers,
