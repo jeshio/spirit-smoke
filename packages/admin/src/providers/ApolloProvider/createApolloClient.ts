@@ -11,7 +11,7 @@ const httpLink = new HttpLink({
 })
 
 const authLink = setContext((_, { headers }) => {
-  const token = window.localStorage.getItem('token')
+  const token = window.sessionStorage.getItem('token')
   return {
     headers: {
       ...headers,
@@ -45,19 +45,19 @@ const createApolloClient = () => {
       },
     }),
     link,
-    defaultOptions: {
-      watchQuery: {
-        fetchPolicy: 'cache-and-network',
-        errorPolicy: 'all',
-      },
-      query: {
-        fetchPolicy: 'cache-first',
-        errorPolicy: 'all',
-      },
-      mutate: {
-        errorPolicy: 'all',
-      },
-    },
+    // defaultOptions: {
+    //   watchQuery: {
+    //     fetchPolicy: 'cache-and-network',
+    //     errorPolicy: 'all',
+    //   },
+    //   query: {
+    //     fetchPolicy: 'cache-first',
+    //     errorPolicy: 'all',
+    //   },
+    //   mutate: {
+    //     errorPolicy: 'all',
+    //   },
+    // },
   })
 
   return client

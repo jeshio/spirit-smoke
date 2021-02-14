@@ -55,7 +55,6 @@ admin-deploy-prod:
     APOLLO_URI: $APOLLO_SERVER_URL
   script:
     - echo "APOLLO_URI=$APOLLO_URI" >> ./packages/admin/.env
-    - cat ./packages/admin/.env
     - docker-compose -f docker-compose.admin.prod.yml build
     - docker-compose -f docker-compose.admin.prod.yml up -d
   only:
