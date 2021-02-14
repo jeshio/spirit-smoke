@@ -25,7 +25,13 @@ function useStableQuery<TData, TVariables>(
 ):
   | [RequiredQueryResult<TData, TVariables>, undefined, QueryResult<TData, TVariables>]
   | [undefined, ReactElement, QueryResult<TData, TVariables>] {
-  const query = useQuery(options)
+  const query = useQuery({
+    onCompleted: (...args) => console.log('onCompleted', args),
+    onError: (...args) => console.log('onError', args),
+    ...options,
+  })
+
+  console.log('query', query)
 
   if (query.error) return [undefined, <Exception apolloError={query.error} />, query]
   if (query.loading) return [undefined, <ULoading tip={loadingTip} />, query]

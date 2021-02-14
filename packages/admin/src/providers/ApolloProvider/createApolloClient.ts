@@ -7,7 +7,7 @@ const httpLink = new HttpLink({
   /* eslint-disable-next-line @typescript-eslint/ban-ts-comment */
   // @ts-ignore
   uri: APOLLO_URI,
-  // credentials: 'same-origin',
+  credentials: 'same-origin',
 })
 
 const authLink = setContext((_, { headers }) => {
