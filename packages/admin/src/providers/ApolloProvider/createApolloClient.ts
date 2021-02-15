@@ -12,10 +12,6 @@ const httpLink = new HttpLink({
 
 const authLink = setContext((_, { headers }) => {
   const token = window.sessionStorage.getItem('token')
-  console.log('headers', {
-    ...headers,
-    authorization: token ? `Bearer ${token}` : '',
-  })
   return {
     headers: {
       ...headers,
