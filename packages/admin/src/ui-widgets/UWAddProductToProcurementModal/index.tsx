@@ -1,6 +1,11 @@
 import { InputNumber, Modal, Select } from 'antd'
 import * as React from 'react'
-import { useAddProductModalProcurementsQuery, useAddProcurementProductMutation } from '@/gql/__generated__/types'
+import {
+  useAddProductModalProcurementsQuery,
+  useAddProcurementProductMutation,
+  ProductsListPageDocument,
+  ProductItemPageDocument,
+} from '@/gql/__generated__/types'
 import UForm from '@/ui-components/UForm'
 import { useForm } from 'antd/lib/form/Form'
 
@@ -37,6 +42,17 @@ const UWAddProductToProcurementModal: React.FunctionComponent<IUWAddProductToPro
             id: productId,
           },
         },
+        refetchQueries: [
+          {
+            query: ProductsListPageDocument,
+          },
+          {
+            query: ProductItemPageDocument,
+            variables: {
+              id: productId,
+            },
+          },
+        ],
       })
       onClose()
       form.resetFields()
