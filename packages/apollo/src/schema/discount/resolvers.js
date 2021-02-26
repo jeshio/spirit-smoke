@@ -14,6 +14,7 @@ const resolvers = {
         startDate,
         endDate,
         isGlobal,
+        isDisposable,
       },
     }, { models }) => models.discount.create({
       name,
@@ -23,6 +24,7 @@ const resolvers = {
       startDate,
       endDate,
       isGlobal,
+      isDisposable,
     }),
     addProductCategoryDiscount: async (parent, { discountId, productCategoryId }, { models }) => {
       const discount = await models.discount.findByPk(discountId)

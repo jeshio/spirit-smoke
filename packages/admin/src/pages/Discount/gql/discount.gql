@@ -1,0 +1,11 @@
+#import "@/gql/fragments/discount/simple.gql"
+
+fragment DiscountItemPage on Discount {
+  ...DiscountSimple
+}
+
+query discountItemPage($id: ID!) {
+  discount(id: $id) {
+    ...DiscountItemPage
+  }
+}

@@ -1,0 +1,11 @@
+fragment DiscountSimple on IDiscount {
+  id
+  name
+  percent
+  rub
+  code
+  startDate
+  endDate
+  isGlobal
+  isDisposable
+}

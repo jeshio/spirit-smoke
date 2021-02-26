@@ -235,6 +235,36 @@ export const baseRoutes: IRoute[] = [
     ],
   },
   {
+    path: '/discounts',
+    redirect: '/discounts/list',
+    exact: true,
+  },
+  {
+    name: 'Скидки',
+    icon: 'scissor',
+    path: '/discounts',
+    routes: [
+      {
+        path: '/discounts/list',
+        name: 'Список',
+        component: './Discount/List',
+        hideInMenu: true,
+      },
+      {
+        path: '/discounts/add',
+        name: 'Добавить скидку',
+        component: './Discount/Add',
+        hideInMenu: true,
+      },
+      {
+        path: '/discounts/:id',
+        name: 'Скидка',
+        hideInMenu: true,
+        component: './Discount/Item',
+      },
+    ],
+  },
+  {
     component: './404',
   },
 ]

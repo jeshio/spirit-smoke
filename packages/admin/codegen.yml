@@ -1,5 +1,8 @@
 overwrite: true
-schema: http://apollo:4000/graphql
+schema:
+  - http://apollo:4000/graphql:
+      headers:
+        Authorization: Bearer teStt
 documents:
   - src/**/*.gql
   - ../gql/**/*.gql

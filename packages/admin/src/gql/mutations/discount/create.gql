@@ -1,0 +1,8 @@
+
+#import "@@/gql/fragments/discount/simple.gql"
+
+mutation createDiscount($input: DiscountInput!) {
+	createDiscount(input: $input) {
+		...DiscountSimple
+	}
+}

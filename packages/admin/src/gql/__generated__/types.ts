@@ -379,9 +379,35 @@ export type DiscountInput = {
   startDate: Scalars['DateTime'];
   endDate: Scalars['DateTime'];
   isGlobal?: Maybe<Scalars['Boolean']>;
+  isDisposable?: Maybe<Scalars['Boolean']>;
 };
 
-export type Discount = {
+export type IDiscount = {
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  percent?: Maybe<Scalars['Float']>;
+  rub?: Maybe<Scalars['Float']>;
+  code?: Maybe<Scalars['String']>;
+  startDate: Scalars['DateTime'];
+  endDate: Scalars['DateTime'];
+  isGlobal: Scalars['Boolean'];
+  isDisposable: Scalars['Boolean'];
+};
+
+export type DiscountSimple = IDiscount & {
+  __typename?: 'DiscountSimple';
+  id: Scalars['ID'];
+  name: Scalars['String'];
+  percent?: Maybe<Scalars['Float']>;
+  rub?: Maybe<Scalars['Float']>;
+  code?: Maybe<Scalars['String']>;
+  startDate: Scalars['DateTime'];
+  endDate: Scalars['DateTime'];
+  isGlobal: Scalars['Boolean'];
+  isDisposable: Scalars['Boolean'];
+};
+
+export type Discount = IDiscount & {
   __typename?: 'Discount';
   id: Scalars['ID'];
   name: Scalars['String'];
@@ -391,6 +417,7 @@ export type Discount = {
   startDate: Scalars['DateTime'];
   endDate: Scalars['DateTime'];
   isGlobal: Scalars['Boolean'];
+  isDisposable: Scalars['Boolean'];
   productCategories: Array<Maybe<ProductCategory>>;
   products: Array<Maybe<Product>>;
   features: Array<Maybe<Feature>>;
@@ -803,6 +830,19 @@ export type UpdateCompanyMutation = (
   ) }
 );
 
+export type CreateDiscountMutationVariables = Exact<{
+  input: DiscountInput;
+}>;
+
+
+export type CreateDiscountMutation = (
+  { __typename?: 'Mutation' }
+  & { createDiscount: (
+    { __typename?: 'Discount' }
+    & DiscountSimple_Discount_Fragment
+  ) }
+);
+
 export type CreateFeatureMutationVariables = Exact<{
   input: FeatureInput;
 }>;
@@ -1056,6 +1096,40 @@ export type CompanyItemPageQuery = (
     { __typename?: 'Company' }
     & CompanyItemPageFragment
   )> }
+);
+
+export type DiscountItemPageFragment = (
+  { __typename?: 'Discount' }
+  & DiscountSimple_Discount_Fragment
+);
+
+export type DiscountItemPageQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type DiscountItemPageQuery = (
+  { __typename?: 'Query' }
+  & { discount?: Maybe<(
+    { __typename?: 'Discount' }
+    & DiscountItemPageFragment
+  )> }
+);
+
+export type DiscountListPageFragment = (
+  { __typename?: 'Discount' }
+  & DiscountSimple_Discount_Fragment
+);
+
+export type DiscountListPageQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type DiscountListPageQuery = (
+  { __typename?: 'Query' }
+  & { discounts: Array<Maybe<(
+    { __typename?: 'Discount' }
+    & DiscountListPageFragment
+  )>> }
 );
 
 export type FeatureItemPageFragment = (
@@ -1393,6 +1467,18 @@ type CompanySimple_Company_Fragment = (
 );
 
 export type CompanySimpleFragment = CompanySimple_CompanySimple_Fragment | CompanySimple_Company_Fragment;
+
+type DiscountSimple_DiscountSimple_Fragment = (
+  { __typename?: 'DiscountSimple' }
+  & Pick<DiscountSimple, 'id' | 'name' | 'percent' | 'rub' | 'code' | 'startDate' | 'endDate' | 'isGlobal' | 'isDisposable'>
+);
+
+type DiscountSimple_Discount_Fragment = (
+  { __typename?: 'Discount' }
+  & Pick<Discount, 'id' | 'name' | 'percent' | 'rub' | 'code' | 'startDate' | 'endDate' | 'isGlobal' | 'isDisposable'>
+);
+
+export type DiscountSimpleFragment = DiscountSimple_DiscountSimple_Fragment | DiscountSimple_Discount_Fragment;
 
 type FeatureMinimum_FeatureSimple_Fragment = (
   { __typename?: 'FeatureSimple' }
@@ -1743,6 +1829,8 @@ export type ResolversTypes = {
   Company: ResolverTypeWrapper<Company>;
   DiscountInput: DiscountInput;
   Float: ResolverTypeWrapper<Scalars['Float']>;
+  IDiscount: ResolversTypes['DiscountSimple'] | ResolversTypes['Discount'];
+  DiscountSimple: ResolverTypeWrapper<DiscountSimple>;
   Discount: ResolverTypeWrapper<Discount>;
   FeatureInput: FeatureInput;
   IFeature: ResolversTypes['FeatureSimple'] | ResolversTypes['Feature'];
@@ -1797,6 +1885,8 @@ export type ResolversParentTypes = {
   Company: Company;
   DiscountInput: DiscountInput;
   Float: Scalars['Float'];
+  IDiscount: ResolversParentTypes['DiscountSimple'] | ResolversParentTypes['Discount'];
+  DiscountSimple: DiscountSimple;
   Discount: Discount;
   FeatureInput: FeatureInput;
   IFeature: ResolversParentTypes['FeatureSimple'] | ResolversParentTypes['Feature'];
@@ -1948,6 +2038,32 @@ export type CompanyResolvers<ContextType = any, ParentType extends ResolversPare
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 };
 
+export type IDiscountResolvers<ContextType = any, ParentType extends ResolversParentTypes['IDiscount'] = ResolversParentTypes['IDiscount']> = {
+  __resolveType: TypeResolveFn<'DiscountSimple' | 'Discount', ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  percent?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  rub?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  code?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  startDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  endDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  isGlobal?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  isDisposable?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+};
+
+export type DiscountSimpleResolvers<ContextType = any, ParentType extends ResolversParentTypes['DiscountSimple'] = ResolversParentTypes['DiscountSimple']> = {
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  percent?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  rub?: Resolver<Maybe<ResolversTypes['Float']>, ParentType, ContextType>;
+  code?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  startDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  endDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  isGlobal?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  isDisposable?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType>;
+};
+
 export type DiscountResolvers<ContextType = any, ParentType extends ResolversParentTypes['Discount'] = ResolversParentTypes['Discount']> = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
@@ -1957,6 +2073,7 @@ export type DiscountResolvers<ContextType = any, ParentType extends ResolversPar
   startDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   endDate?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   isGlobal?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  isDisposable?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   productCategories?: Resolver<Array<Maybe<ResolversTypes['ProductCategory']>>, ParentType, ContextType>;
   products?: Resolver<Array<Maybe<ResolversTypes['Product']>>, ParentType, ContextType>;
   features?: Resolver<Array<Maybe<ResolversTypes['Feature']>>, ParentType, ContextType>;
@@ -2240,6 +2357,8 @@ export type Resolvers<ContextType = any> = {
   ICompany?: ICompanyResolvers<ContextType>;
   CompanySimple?: CompanySimpleResolvers<ContextType>;
   Company?: CompanyResolvers<ContextType>;
+  IDiscount?: IDiscountResolvers<ContextType>;
+  DiscountSimple?: DiscountSimpleResolvers<ContextType>;
   Discount?: DiscountResolvers<ContextType>;
   IFeature?: IFeatureResolvers<ContextType>;
   FeatureSimple?: FeatureSimpleResolvers<ContextType>;
@@ -2342,6 +2461,29 @@ export const CompanyItemPageFragmentDoc = gql`
 }
     ${CompanySimpleFragmentDoc}
 ${ProductMinimumFragmentDoc}`;
+export const DiscountSimpleFragmentDoc = gql`
+    fragment DiscountSimple on IDiscount {
+  id
+  name
+  percent
+  rub
+  code
+  startDate
+  endDate
+  isGlobal
+  isDisposable
+}
+    `;
+export const DiscountItemPageFragmentDoc = gql`
+    fragment DiscountItemPage on Discount {
+  ...DiscountSimple
+}
+    ${DiscountSimpleFragmentDoc}`;
+export const DiscountListPageFragmentDoc = gql`
+    fragment DiscountListPage on Discount {
+  ...DiscountSimple
+}
+    ${DiscountSimpleFragmentDoc}`;
 export const FeatureSimpleFragmentDoc = gql`
     fragment FeatureSimple on IFeature {
   id
@@ -2726,6 +2868,38 @@ export function useUpdateCompanyMutation(baseOptions?: Apollo.MutationHookOption
 export type UpdateCompanyMutationHookResult = ReturnType<typeof useUpdateCompanyMutation>;
 export type UpdateCompanyMutationResult = Apollo.MutationResult<UpdateCompanyMutation>;
 export type UpdateCompanyMutationOptions = Apollo.BaseMutationOptions<UpdateCompanyMutation, UpdateCompanyMutationVariables>;
+export const CreateDiscountDocument = gql`
+    mutation createDiscount($input: DiscountInput!) {
+  createDiscount(input: $input) {
+    ...DiscountSimple
+  }
+}
+    ${DiscountSimpleFragmentDoc}`;
+export type CreateDiscountMutationFn = Apollo.MutationFunction<CreateDiscountMutation, CreateDiscountMutationVariables>;
+
+/**
+ * __useCreateDiscountMutation__
+ *
+ * To run a mutation, you first call `useCreateDiscountMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateDiscountMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createDiscountMutation, { data, loading, error }] = useCreateDiscountMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateDiscountMutation(baseOptions?: Apollo.MutationHookOptions<CreateDiscountMutation, CreateDiscountMutationVariables>) {
+        return Apollo.useMutation<CreateDiscountMutation, CreateDiscountMutationVariables>(CreateDiscountDocument, baseOptions);
+      }
+export type CreateDiscountMutationHookResult = ReturnType<typeof useCreateDiscountMutation>;
+export type CreateDiscountMutationResult = Apollo.MutationResult<CreateDiscountMutation>;
+export type CreateDiscountMutationOptions = Apollo.BaseMutationOptions<CreateDiscountMutation, CreateDiscountMutationVariables>;
 export const CreateFeatureDocument = gql`
     mutation createFeature($input: FeatureInput!) {
   createFeature(input: $input) {
@@ -3300,6 +3474,71 @@ export function useCompanyItemPageLazyQuery(baseOptions?: Apollo.LazyQueryHookOp
 export type CompanyItemPageQueryHookResult = ReturnType<typeof useCompanyItemPageQuery>;
 export type CompanyItemPageLazyQueryHookResult = ReturnType<typeof useCompanyItemPageLazyQuery>;
 export type CompanyItemPageQueryResult = Apollo.QueryResult<CompanyItemPageQuery, CompanyItemPageQueryVariables>;
+export const DiscountItemPageDocument = gql`
+    query discountItemPage($id: ID!) {
+  discount(id: $id) {
+    ...DiscountItemPage
+  }
+}
+    ${DiscountItemPageFragmentDoc}`;
+
+/**
+ * __useDiscountItemPageQuery__
+ *
+ * To run a query within a React component, call `useDiscountItemPageQuery` and pass it any options that fit your needs.
+ * When your component renders, `useDiscountItemPageQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useDiscountItemPageQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDiscountItemPageQuery(baseOptions?: Apollo.QueryHookOptions<DiscountItemPageQuery, DiscountItemPageQueryVariables>) {
+        return Apollo.useQuery<DiscountItemPageQuery, DiscountItemPageQueryVariables>(DiscountItemPageDocument, baseOptions);
+      }
+export function useDiscountItemPageLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<DiscountItemPageQuery, DiscountItemPageQueryVariables>) {
+          return Apollo.useLazyQuery<DiscountItemPageQuery, DiscountItemPageQueryVariables>(DiscountItemPageDocument, baseOptions);
+        }
+export type DiscountItemPageQueryHookResult = ReturnType<typeof useDiscountItemPageQuery>;
+export type DiscountItemPageLazyQueryHookResult = ReturnType<typeof useDiscountItemPageLazyQuery>;
+export type DiscountItemPageQueryResult = Apollo.QueryResult<DiscountItemPageQuery, DiscountItemPageQueryVariables>;
+export const DiscountListPageDocument = gql`
+    query discountListPage {
+  discounts {
+    ...DiscountListPage
+  }
+}
+    ${DiscountListPageFragmentDoc}`;
+
+/**
+ * __useDiscountListPageQuery__
+ *
+ * To run a query within a React component, call `useDiscountListPageQuery` and pass it any options that fit your needs.
+ * When your component renders, `useDiscountListPageQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useDiscountListPageQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useDiscountListPageQuery(baseOptions?: Apollo.QueryHookOptions<DiscountListPageQuery, DiscountListPageQueryVariables>) {
+        return Apollo.useQuery<DiscountListPageQuery, DiscountListPageQueryVariables>(DiscountListPageDocument, baseOptions);
+      }
+export function useDiscountListPageLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<DiscountListPageQuery, DiscountListPageQueryVariables>) {
+          return Apollo.useLazyQuery<DiscountListPageQuery, DiscountListPageQueryVariables>(DiscountListPageDocument, baseOptions);
+        }
+export type DiscountListPageQueryHookResult = ReturnType<typeof useDiscountListPageQuery>;
+export type DiscountListPageLazyQueryHookResult = ReturnType<typeof useDiscountListPageLazyQuery>;
+export type DiscountListPageQueryResult = Apollo.QueryResult<DiscountListPageQuery, DiscountListPageQueryVariables>;
 export const FeatureItemPageDocument = gql`
     query featureItemPage($id: ID!) {
   feature(id: $id) {

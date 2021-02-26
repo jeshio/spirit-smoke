@@ -1,0 +1,11 @@
+#import "@/gql/fragments/discount/simple.gql"
+
+fragment DiscountListPage on Discount {
+  ...DiscountSimple
+}
+
+query discountListPage {
+  discounts {
+    ...DiscountListPage
+  }
+}

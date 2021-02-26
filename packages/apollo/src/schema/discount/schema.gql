@@ -20,9 +20,10 @@ input DiscountInput {
   startDate: Date!
   endDate: Date!
   isGlobal: Boolean
+  isDisposable: Boolean
 }
 
-type Discount {
+interface IDiscount {
   id: ID!
   name: String!
   percent: Float
@@ -31,9 +32,34 @@ type Discount {
   startDate: Date!
   endDate: Date!
   isGlobal: Boolean!
+  isDisposable: Boolean!
+}
+
+type DiscountSimple implements IDiscount {
+  id: ID!
+  name: String!
+  percent: Float
+  rub: Float
+  code: String
+  startDate: Date!
+  endDate: Date!
+  isGlobal: Boolean!
+  isDisposable: Boolean!
+}
+
+type Discount implements IDiscount {
+  id: ID!
+  name: String!
+  percent: Float
+  rub: Float
+  code: String
+  startDate: Date!
+  endDate: Date!
+  isGlobal: Boolean!
+  isDisposable: Boolean!
   productCategories: [ProductCategory]!
   products: [Product]!
   features: [Feature]!
   orders: [Order]!
   bonuses: [Bonus]!
-} 
+}

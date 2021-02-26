@@ -26,6 +26,12 @@ http://localhost:8090
 
 * [https://sequelize.org/master/manual/migrations.html](Документация по миграциям)
 
+#### Добавление миграции
+
+```bash
+ npx sequelize migration:generate --name add-discount-disposable-column
+```
+
 ## TODO
 
 * В production нужно будет [https://babeljs.io/docs/en/babel-node](убрать использование babel)

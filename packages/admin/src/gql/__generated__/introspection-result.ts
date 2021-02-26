@@ -5,6 +5,10 @@
       "CompanySimple",
       "Company"
     ],
+    "IDiscount": [
+      "DiscountSimple",
+      "Discount"
+    ],
     "IFeature": [
       "FeatureSimple",
       "Feature"
@@ -32,6 +36,10 @@
     "ICompany": [
       "CompanySimple",
       "Company"
+    ],
+    "IDiscount": [
+      "DiscountSimple",
+      "Discount"
     ],
     "IFeature": [
       "FeatureSimple",

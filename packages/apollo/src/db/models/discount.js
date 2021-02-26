@@ -31,6 +31,7 @@ module.exports = (sequelize, DataTypes) => {
         min: 0,
         max: 100,
       },
+      defaultValue: 0,
     },
     rub: {
       type: DataTypes.FLOAT,
@@ -38,9 +39,11 @@ module.exports = (sequelize, DataTypes) => {
         isFloat: true,
         min: 0,
       },
+      defaultValue: 0,
     },
     code: {
       type: DataTypes.STRING,
+      unique: true,
     },
     startDate: {
       type: DataTypes.DATE,
@@ -59,6 +62,10 @@ module.exports = (sequelize, DataTypes) => {
     isGlobal: {
       type: DataTypes.BOOLEAN,
       defaultValue: true,
+    },
+    isDisposable: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
     },
   }, {
     sequelize,
