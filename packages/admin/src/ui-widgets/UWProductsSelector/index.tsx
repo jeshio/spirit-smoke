@@ -1,8 +1,17 @@
-import { useProductsSelectorQuery } from '@/gql/__generated__/types'
-import UItemsSelector, { IUItemsSelectorProps } from '@/ui-components/UItemsSelector'
-import React, { ComponentProps, useMemo } from 'react'
+import { ProductsSelectorFragment, useProductsSelectorQuery } from '@/gql/__generated__/types'
+import UItemsSelector, { IUItemsSelectorProps, UItemsSelectorValueObjectType } from '@/ui-components/UItemsSelector'
+import { keyBy } from 'lodash'
+import React, { ComponentProps, useCallback, useMemo } from 'react'
 
-interface IUWProductsSelectorProps extends Omit<IUItemsSelectorProps, 'optionsToAdd' | 'loading'> {}
+interface IUWProductsSelectorProps extends Omit<IUItemsSelectorProps, 'onChange' | 'optionsToAdd' | 'loading'> {
+  onChange: (
+    value: Array<
+      UItemsSelectorValueObjectType & {
+        product: ProductsSelectorFragment
+      }
+    >
+  ) => void
+}
 
 const UWProductsSelector: React.FunctionComponent<IUWProductsSelectorProps> = (props) => {
   const productsRequest = useProductsSelectorQuery()
@@ -16,8 +25,21 @@ const UWProductsSelector: React.FunctionComponent<IUWProductsSelectorProps> = (p
       })) || [],
     [productsRequest.data]
   )
+  const productsById = useMemo(() => keyBy(productsRequest.data?.products, 'id'), [productsRequest.data?.products])
+  const handleChange: IUItemsSelectorProps['onChange'] = useCallback(
+    (items) =>
+      props.onChange?.(
+        (items as UItemsSelectorValueObjectType[]).map((item) => ({
+          ...item,
+          product: productsById[item?.id],
+        }))
+      ),
+    [props.onChange, productsById]
+  )
 
-  return <UItemsSelector optionsToAdd={productItems} loading={productsRequest.loading} {...props} />
+  return (
+    <UItemsSelector optionsToAdd={productItems} loading={productsRequest.loading} {...props} onChange={handleChange} />
+  )
 }
 
 export default UWProductsSelector

@@ -1,7 +1,14 @@
+import checkDiscount from './helpers/checkDiscount'
+
 const resolvers = {
   Query: {
     discounts: async (parent, args, { models }) => models.discount.findAll(),
     discount: async (parent, { id }, { models }) => models.discount.findByPk(id),
+    discountByCode: async (parent, { code }, { models }) => models.discount.findOne({
+      where: {
+        code,
+      },
+    }),
   },
 
   Mutation: {
@@ -54,6 +61,16 @@ const resolvers = {
   },
 
   Discount: {
+    status: async (discount) => {
+      const orders = await discount.getOrders({
+        where: {
+          status: 'SUCCESS',
+        },
+      })
+
+      return checkDiscount(discount, orders)
+    },
+
     productCategories: async (discount) => discount.getProductCategories(),
     products: async (discount) => discount.getProducts(),
     features: async (discount) => discount.getFeatures(),

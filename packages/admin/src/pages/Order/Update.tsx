@@ -46,7 +46,7 @@ const UpdateOrderPage: React.FunctionComponent<IUpdateOrderPageProps> = (props) 
   const { order } = orderQuery.data
 
   return (
-    <UPageContainer title={`Редактирование заказа ${order.address}`}>
+    <UPageContainer title={`Редактирование заказа #${order.id}`}>
       <OrderForm onSubmit={handleSubmit} loading={updateOrderRequest.loading} order={order} isUpdate />
     </UPageContainer>
   )

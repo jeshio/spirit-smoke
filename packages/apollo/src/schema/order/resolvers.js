@@ -1,3 +1,47 @@
+import { keyBy } from 'lodash'
+import checkDiscount from '../discount/helpers/checkDiscount'
+
+const getTotalDiscount = ({
+  totalPrice,
+  discount,
+}) => {
+  let totalDiscount = 0
+
+  if (discount) {
+    if (discount.percent) {
+      totalDiscount += Math.ceil(totalPrice * (discount.percent / 100))
+    }
+    if (discount.rub) {
+      totalDiscount += discount.rub
+    }
+  }
+
+  return totalDiscount
+}
+
+const getTotalOrder = async ({
+  products,
+  orderProductsById,
+  discount,
+}) => {
+  // TODO: скидка на все товары или на часть
+  const totalPrice = products.reduce(
+    (base, product) => base + product.price * orderProductsById[product.id].productsCount,
+    0,
+  )
+  const totalDiscount = getTotalDiscount({
+    totalPrice,
+    discount,
+  })
+  const totalPriceWithDiscount = Math.max(totalPrice - totalDiscount, 0)
+
+  return {
+    totalPrice,
+    totalPriceWithDiscount,
+    totalDiscount,
+  }
+}
+
 const resolvers = {
   Query: {
     orders: async (parent, args, { models }) => models.order.findAll({
@@ -6,6 +50,32 @@ const resolvers = {
     order: async (parent, { id }, { models }) => models.order.findByPk(id, {
       include: { model: models.orderProduct, include: models.product },
     }),
+    orderTotal: async (parent, { products: orderProducts, discountCode }, { models, loaders }) => {
+      // TODO: скидка без кода
+      // сделать версию для существующего заказа, где берётся привязанная к нему скидка
+      const discountByCode = await models.discount.findOne({
+        where: {
+          code: discountCode || '',
+        },
+        include: {
+          model: models.order,
+          required: false,
+          where: {
+            status: 'SUCCESS',
+          },
+        },
+      })
+
+      const discountStatus = checkDiscount(discountByCode, discountByCode?.orders)
+      const products = await loaders.product.loadMany(orderProducts.map(({ id }) => Number(id)))
+      const orderProductsById = keyBy(orderProducts, 'id')
+
+      return getTotalOrder({
+        products,
+        orderProductsById,
+        discount: discountStatus.isDisabled ? undefined : discountByCode,
+      })
+    },
   },
 
   Mutation: {
@@ -21,8 +91,22 @@ const resolvers = {
         phoneNumber,
         status,
         products,
+        discountCode,
       },
     }, { sequelize, models }) => sequelize.transaction(async (transaction) => {
+      const discountByCode = await models.discount.findOne({
+        where: {
+          code: discountCode || '',
+        },
+        include: {
+          model: models.order,
+          required: false,
+          where: {
+            status: 'SUCCESS',
+          },
+        },
+      })
+      const discountStatus = checkDiscount(discountByCode, discountByCode?.orders)
       const order = await models.order.create({
         address,
         intercomCode,
@@ -33,6 +117,13 @@ const resolvers = {
         deliveryTime: 10000,
         phoneNumber,
       }, { transaction, individualHooks: true })
+
+      if (!discountStatus.isDisabled) {
+        await order.addDiscount(discountByCode.id, {
+          transaction,
+        })
+      }
+
       const promises = products.map(({ id: productId, productsCount }) =>
         order.addProduct(productId, {
           transaction,
@@ -40,7 +131,9 @@ const resolvers = {
             productsCount,
           },
         }))
+
       await Promise.all(promises)
+
       return order
     }),
     updateOrder: (parent, {
@@ -89,14 +182,26 @@ const resolvers = {
     discounts: async (order) => order.getDiscounts(),
     bonuses: async (order) => order.getBonuses(),
     orderProducts: async (order) => order.getOrderProducts(),
-    totalPrice: async (order) => order.orderProducts
-      .reduce((base, { product, productsCount }) => base + product.price * productsCount, 0),
   },
 
   OrderProduct: {
     product: async (orderProduct) => orderProduct.getProduct(),
     order: async (orderProduct) => orderProduct.getOrder(),
   },
+}
+
+resolvers.Order.orderTotal = async (...args) => {
+  const [,, { loaders }] = args
+  const discounts = await resolvers.Order.discounts(...args)
+  const orderProducts = await resolvers.Order.orderProducts(...args)
+  const products = await loaders.product.loadMany(orderProducts.map(({ productId }) => Number(productId)))
+  const orderProductsById = keyBy(orderProducts, 'productId')
+
+  return getTotalOrder({
+    products,
+    orderProductsById,
+    discount: discounts[0],
+  })
 }
 
 export default resolvers

@@ -8,4 +8,10 @@ fragment DiscountSimple on IDiscount {
   endDate
   isGlobal
   isDisposable
+  status {
+    isDisabled
+    isExists
+    isUsed
+    isOutdated
+  }
 }

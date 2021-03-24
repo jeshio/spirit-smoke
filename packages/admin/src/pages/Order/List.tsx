@@ -7,6 +7,7 @@ import { EditFilled, ImportOutlined } from '@ant-design/icons'
 import ListPageBuilder, { ListColumnsType } from '@/builders/ListPage'
 import { generateSorter } from '@/ui-components/UTable/hooks/useOriginalColumns'
 import USpace from '@/ui-components/USpace'
+import UPrice from '@/ui-components/UPrice'
 
 /** Статусы, обозначающие, что заказ завершён */
 const READY_ORDER_STATUSES = [OrderStatus.Canceled, OrderStatus.Failure, OrderStatus.Success]
@@ -21,8 +22,8 @@ const columns: ListColumnsType = (): IColumn<OrdersListPageFragment>[] => [
     width: 50,
   },
   {
-    field: 'deliveryTime',
-    title: 'Желаемое время доставки',
+    field: 'updatedAt',
+    title: 'Последнее обновление',
     width: 200,
   },
   {
@@ -53,9 +54,14 @@ const columns: ListColumnsType = (): IColumn<OrdersListPageFragment>[] => [
     title: 'Телефон',
   },
   {
-    field: 'totalPrice',
+    field: ['orderTotal', 'totalDiscount'],
+    title: 'Скидка',
+    render: (totalDiscount) => <UPrice>{totalDiscount}</UPrice>,
+  },
+  {
+    field: ['orderTotal', 'totalPriceWithDiscount'],
     title: 'Сумма',
-    render: (totalPrice) => `${totalPrice} ₽`,
+    render: (totalPriceWithDiscount) => <UPrice>{totalPriceWithDiscount}</UPrice>,
   },
   {
     title: '',

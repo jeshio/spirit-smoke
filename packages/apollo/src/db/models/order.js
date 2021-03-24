@@ -29,9 +29,6 @@ module.exports = (sequelize, DataTypes) => {
   Order.init({
     address: {
       type: DataTypes.STRING,
-      validate: {
-        notEmpty: true,
-      },
     },
     status: {
       type: DataTypes.STRING,
@@ -56,14 +53,12 @@ module.exports = (sequelize, DataTypes) => {
     deliveryTime: {
       type: DataTypes.DATE,
       validate: {
-        notEmpty: true,
-        // isDate: true,
+        isDate: true,
       },
     },
     phoneNumber: {
       type: DataTypes.STRING,
       validate: {
-        notEmpty: true,
         is: /^\+7[\d]{10}$/i,
       },
     },

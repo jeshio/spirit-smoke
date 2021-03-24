@@ -68,7 +68,7 @@ const columns: ListColumnsType = (): IColumn<DiscountListPageFragment>[] => [
   },
   {
     title: 'Срок окончания',
-    field: 'startDate',
+    field: 'endDate',
   },
 ]
 

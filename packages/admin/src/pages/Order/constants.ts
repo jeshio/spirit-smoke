@@ -1,8 +1,8 @@
 export const ORDER_STATUSES = {
-  NOT_CONFIRMED: 'Не подтверждён',
-  CONFIRMED: 'Подтверждён',
+  // NOT_CONFIRMED: 'Не подтверждён',
+  // CONFIRMED: 'Подтверждён',
   CANCELED: 'Отменён',
-  SENT: 'Отправлен',
-  FAILURE: 'Не удался',
+  // SENT: 'Отправлен',
+  // FAILURE: 'Не удался',
   SUCCESS: 'Завершён',
 }

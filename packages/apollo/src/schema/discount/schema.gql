@@ -1,6 +1,7 @@
 extend type Query {
   discounts: [Discount]!
   discount(id: ID!): Discount
+  discountByCode(code: String!): Discount
 }
 
 extend type Mutation {
@@ -23,6 +24,13 @@ input DiscountInput {
   isDisposable: Boolean
 }
 
+type DiscountStatus {
+  isDisabled: Boolean!
+  isExists: Boolean!
+  isUsed: Boolean!
+  isOutdated: Boolean!
+}
+
 interface IDiscount {
   id: ID!
   name: String!
@@ -33,6 +41,7 @@ interface IDiscount {
   endDate: Date!
   isGlobal: Boolean!
   isDisposable: Boolean!
+  status: DiscountStatus!
 }
 
 type DiscountSimple implements IDiscount {
@@ -45,6 +54,7 @@ type DiscountSimple implements IDiscount {
   endDate: Date!
   isGlobal: Boolean!
   isDisposable: Boolean!
+  status: DiscountStatus!
 }
 
 type Discount implements IDiscount {
@@ -57,9 +67,10 @@ type Discount implements IDiscount {
   endDate: Date!
   isGlobal: Boolean!
   isDisposable: Boolean!
+  status: DiscountStatus!
   productCategories: [ProductCategory]!
-  products: [Product]!
-  features: [Feature]!
-  orders: [Order]!
-  bonuses: [Bonus]!
+  products: [Product!]!
+  features: [Feature!]!
+  orders: [Order!]!
+  bonuses: [Bonus!]!
 }

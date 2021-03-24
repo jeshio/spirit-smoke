@@ -2,7 +2,12 @@
 
 fragment OrdersListPage on Order {
   ...OrderMinimum
-  totalPrice
+  updatedAt
+  orderTotal {
+    totalPrice
+    totalPriceWithDiscount
+    totalDiscount
+  }
 }
 
 query ordersListPage {

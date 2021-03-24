@@ -1,7 +1,16 @@
 #import "@/gql/fragments/discount/simple.gql"
+#import "@/gql/fragments/order/simple.gql"
 
 fragment DiscountItemPage on Discount {
   ...DiscountSimple
+  orders {
+    ...OrderSimple
+    orderTotal {
+      totalPrice
+      totalPriceWithDiscount
+      totalDiscount
+    }
+  }
 }
 
 query discountItemPage($id: ID!) {

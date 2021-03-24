@@ -1,0 +1,5 @@
+fragment OrderTotal on OrderTotal {
+  totalPrice
+  totalPriceWithDiscount
+  totalDiscount
+}

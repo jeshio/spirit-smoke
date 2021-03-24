@@ -142,6 +142,7 @@ const UItemsSelector: React.FunctionComponent<IUItemsSelectorProps> = ({
                   min={1}
                   style={{ width: '60px' }}
                   placeholder="Количество"
+                  disabled={disabled}
                 />
               )}
               {withPriceSetter && selectedValuesExtra[id] && (
@@ -150,6 +151,7 @@ const UItemsSelector: React.FunctionComponent<IUItemsSelectorProps> = ({
                   onChange={makeProductChangeHandler(id, 'price', (price) => Number(price) || 0)}
                   min={0}
                   placeholder="Цена"
+                  disabled={disabled}
                 />
               )}
               <UButton

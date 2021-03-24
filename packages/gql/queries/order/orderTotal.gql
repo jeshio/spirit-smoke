@@ -1,0 +1,7 @@
+#import "../../fragments/order/orderTotal.gql"
+
+query orderTotal($products: [OrderProductInput!]!, $discountCode: String) {
+  orderTotal(products: $products, discountCode: $discountCode) {
+    ...OrderTotal
+  }
+}

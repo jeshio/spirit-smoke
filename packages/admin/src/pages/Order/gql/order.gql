@@ -3,13 +3,20 @@
 
 fragment OrderItemPage on Order {
   ...OrderSimple
-  totalPrice
+  orderTotal {
+    totalPrice
+    totalPriceWithDiscount
+    totalDiscount
+  }
   orderProducts {
     productsCount
     product {
       ...ProductMinimum
       price
     }
+  }
+  discounts {
+    code
   }
 }
 

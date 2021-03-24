@@ -10,6 +10,7 @@ import { Card } from 'antd'
 import UDescriptions from '@/ui-components/UDescriptions'
 import UBlock from '@/ui-components/UBlock'
 import UPrice from '@/ui-components/UPrice'
+import OrdersList from './components/OrdersList'
 
 interface IDiscountItemPageProps
   extends RouteComponentProps<{
@@ -58,6 +59,10 @@ const DiscountItemPage: React.FunctionComponent<IDiscountItemPageProps> = (props
             </UDescriptions>
           </UCol>
         </URow>
+      </Card>
+
+      <Card title="Использование в заказах">
+        <OrdersList discount={discount} />
       </Card>
     </UPageContainer>
   )
