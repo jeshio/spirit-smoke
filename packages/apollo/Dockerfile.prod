@@ -13,7 +13,4 @@ COPY . /usr/app
 
 EXPOSE 4000
 
-RUN chmod +x /usr/app/setup.db.sh
-RUN /usr/app/setup.db.sh
-
 CMD ["sh", "-c", "./start.sh"]
