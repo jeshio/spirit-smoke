@@ -1,0 +1,8 @@
+
+#import "@@/gql/fragments/product/simple.gql"
+
+mutation setProductBarcode($id: ID!, $barcode: String!) {
+	setProductBarcode(id: $id, barcode: $barcode) {
+		...ProductSimple
+	}
+}

@@ -148,6 +148,7 @@ export type Mutation = {
   addProcurementProduct: ProcurementSimple;
   createProduct: ProductSimple;
   updateProduct: ProductSimple;
+  setProductBarcode: ProductSimple;
   deleteProduct: Scalars['ID'];
   syncAllProductsCount?: Maybe<Scalars['Boolean']>;
   createProductCategory: ProductCategorySimple;
@@ -289,6 +290,12 @@ export type MutationCreateProductArgs = {
 export type MutationUpdateProductArgs = {
   id: Scalars['ID'];
   input: ProductInput;
+};
+
+
+export type MutationSetProductBarcodeArgs = {
+  id: Scalars['ID'];
+  barcode: Scalars['String'];
 };
 
 
@@ -1001,6 +1008,20 @@ export type DeleteProductMutationVariables = Exact<{
 export type DeleteProductMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'deleteProduct'>
+);
+
+export type SetProductBarcodeMutationVariables = Exact<{
+  id: Scalars['ID'];
+  barcode: Scalars['String'];
+}>;
+
+
+export type SetProductBarcodeMutation = (
+  { __typename?: 'Mutation' }
+  & { setProductBarcode: (
+    { __typename?: 'ProductSimple' }
+    & ProductSimple_ProductSimple_Fragment
+  ) }
 );
 
 export type SyncAllProductsCountMutationVariables = Exact<{ [key: string]: never; }>;
@@ -2060,6 +2081,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   addProcurementProduct?: Resolver<ResolversTypes['ProcurementSimple'], ParentType, ContextType, RequireFields<MutationAddProcurementProductArgs, 'procurementId' | 'input'>>;
   createProduct?: Resolver<ResolversTypes['ProductSimple'], ParentType, ContextType, RequireFields<MutationCreateProductArgs, 'input'>>;
   updateProduct?: Resolver<ResolversTypes['ProductSimple'], ParentType, ContextType, RequireFields<MutationUpdateProductArgs, 'id' | 'input'>>;
+  setProductBarcode?: Resolver<ResolversTypes['ProductSimple'], ParentType, ContextType, RequireFields<MutationSetProductBarcodeArgs, 'id' | 'barcode'>>;
   deleteProduct?: Resolver<ResolversTypes['ID'], ParentType, ContextType, RequireFields<MutationDeleteProductArgs, 'id'>>;
   syncAllProductsCount?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   createProductCategory?: Resolver<ResolversTypes['ProductCategorySimple'], ParentType, ContextType, RequireFields<MutationCreateProductCategoryArgs, 'input'>>;
@@ -3356,6 +3378,39 @@ export function useDeleteProductMutation(baseOptions?: Apollo.MutationHookOption
 export type DeleteProductMutationHookResult = ReturnType<typeof useDeleteProductMutation>;
 export type DeleteProductMutationResult = Apollo.MutationResult<DeleteProductMutation>;
 export type DeleteProductMutationOptions = Apollo.BaseMutationOptions<DeleteProductMutation, DeleteProductMutationVariables>;
+export const SetProductBarcodeDocument = gql`
+    mutation setProductBarcode($id: ID!, $barcode: String!) {
+  setProductBarcode(id: $id, barcode: $barcode) {
+    ...ProductSimple
+  }
+}
+    ${ProductSimpleFragmentDoc}`;
+export type SetProductBarcodeMutationFn = Apollo.MutationFunction<SetProductBarcodeMutation, SetProductBarcodeMutationVariables>;
+
+/**
+ * __useSetProductBarcodeMutation__
+ *
+ * To run a mutation, you first call `useSetProductBarcodeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSetProductBarcodeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [setProductBarcodeMutation, { data, loading, error }] = useSetProductBarcodeMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      barcode: // value for 'barcode'
+ *   },
+ * });
+ */
+export function useSetProductBarcodeMutation(baseOptions?: Apollo.MutationHookOptions<SetProductBarcodeMutation, SetProductBarcodeMutationVariables>) {
+        return Apollo.useMutation<SetProductBarcodeMutation, SetProductBarcodeMutationVariables>(SetProductBarcodeDocument, baseOptions);
+      }
+export type SetProductBarcodeMutationHookResult = ReturnType<typeof useSetProductBarcodeMutation>;
+export type SetProductBarcodeMutationResult = Apollo.MutationResult<SetProductBarcodeMutation>;
+export type SetProductBarcodeMutationOptions = Apollo.BaseMutationOptions<SetProductBarcodeMutation, SetProductBarcodeMutationVariables>;
 export const SyncAllProductsCountDocument = gql`
     mutation syncAllProductsCount {
   syncAllProductsCount

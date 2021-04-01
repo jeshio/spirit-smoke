@@ -6,6 +6,7 @@ import {
   useDeleteProductMutation,
   ProductsListPageDocument,
   useSyncAllProductsCountMutation,
+  useSetProductBarcodeMutation,
 } from '@/gql/__generated__/types'
 import { IColumn } from '@/ui-components/UTable/types'
 import { Link } from 'umi'
@@ -17,10 +18,15 @@ import { Badge, Tooltip } from 'antd'
 import UFeaturesList from '@/ui-components/UFeaturesList'
 import UWAddProductToProcurementModal from '@/ui-widgets/UWAddProductToProcurementModal'
 import productFeaturesToFlatFeature from './helpers/productFeaturesToFlatFeatures'
+import BarcodePopover from './components/BarcodePopover'
 
-const columns = ({ addToProcurement }: { addToProcurement: (productId: string) => void }): ListColumnsType => ({
-  deleteItem,
-}): IColumn<ProductsListPageFragment>[] => [
+const columns = ({
+  addToProcurement,
+  setProductBarcode,
+}: {
+  addToProcurement: (productId: string) => void
+  setProductBarcode: ReturnType<typeof useSetProductBarcodeMutation>[0]
+}): ListColumnsType => ({ deleteItem }): IColumn<ProductsListPageFragment>[] => [
   {
     title: 'ID',
     field: 'id',
@@ -59,6 +65,7 @@ const columns = ({ addToProcurement }: { addToProcurement: (productId: string) =
   {
     title: 'Штрихкод',
     field: 'barcode',
+    render: (barcode, { id }) => barcode || <BarcodePopover productId={id} setProductBarcode={setProductBarcode} />,
   },
   {
     title: 'Количество',
@@ -132,6 +139,13 @@ const ProductListPage: React.FunctionComponent<IProductListPageProps> = () => {
       },
     ],
   })
+  const [setProductBarcode] = useSetProductBarcodeMutation({
+    refetchQueries: [
+      {
+        query: ProductsListPageDocument,
+      },
+    ],
+  })
   const handleSyncCountClick = () => {
     syncAllProductsCount()
   }
@@ -156,6 +170,7 @@ const ProductListPage: React.FunctionComponent<IProductListPageProps> = () => {
         ]}
         columns={columns({
           addToProcurement: switchAddToProcurementModalVisible,
+          setProductBarcode,
         })}
         listQuery={{
           hook: useProductsListPageQuery,

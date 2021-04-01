@@ -8,6 +8,7 @@ extend type Query {
 extend type Mutation {
   createProduct(input: ProductInput!): ProductSimple!
   updateProduct(id: ID!, input: ProductInput!): ProductSimple!
+  setProductBarcode(id: ID!, barcode: String!): ProductSimple!
   deleteProduct(id: ID!): ID!
   syncAllProductsCount: Boolean
 }
