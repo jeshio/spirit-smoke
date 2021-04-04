@@ -22,6 +22,8 @@ export interface IUItemsSelectorProps {
   value?: ValueType[]
   loading?: boolean
   onChange?: (value: ValueType[]) => void
+  /* Передатчик внутренний функции для добавления item в список */
+  setAddValueFn?: (cb: (value: ValueType) => void) => void
   enableToSelectDisabledItems?: boolean
   disabled?: boolean
   withCount?: boolean

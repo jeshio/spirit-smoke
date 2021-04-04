@@ -1083,30 +1083,6 @@ export type UpdateProductCategoryMutation = (
   ) }
 );
 
-export type OrderFormProductFragment = (
-  { __typename?: 'Product' }
-  & Pick<Product, 'price' | 'count'>
-  & { productCategory?: Maybe<(
-    { __typename?: 'ProductCategory' }
-    & ProductCategoryMinimum_ProductCategory_Fragment
-  )>, company?: Maybe<(
-    { __typename?: 'Company' }
-    & CompanyMinimum_Company_Fragment
-  )> }
-  & ProductMinimum_Product_Fragment
-);
-
-export type OrderFormProductsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type OrderFormProductsQuery = (
-  { __typename?: 'Query' }
-  & { products: Array<(
-    { __typename?: 'Product' }
-    & OrderFormProductFragment
-  )> }
-);
-
 export type CompanyListPageFragment = (
   { __typename?: 'Company' }
   & Pick<Company, 'slug' | 'country' | 'color' | 'barcode' | 'createdAt'>
@@ -1492,7 +1468,7 @@ export type AddProductModalProcurementsQuery = (
 
 export type ProductsSelectorFragment = (
   { __typename?: 'Product' }
-  & Pick<Product, 'price' | 'count'>
+  & Pick<Product, 'barcode' | 'price' | 'count'>
   & { productCategory?: Maybe<(
     { __typename?: 'ProductCategory' }
     & ProductCategoryMinimum_ProductCategory_Fragment
@@ -2513,41 +2489,18 @@ export type Resolvers<ContextType = any> = {
  */
 export type IResolvers<ContextType = any> = Resolvers<ContextType>;
 
-export const ProductMinimumFragmentDoc = gql`
-    fragment ProductMinimum on IProduct {
-  id
-  name
-}
-    `;
-export const ProductCategoryMinimumFragmentDoc = gql`
-    fragment ProductCategoryMinimum on IProductCategory {
-  id
-  name
-  iconUrl
-  slug
-}
-    `;
 export const CompanyMinimumFragmentDoc = gql`
     fragment CompanyMinimum on ICompany {
   id
   name
 }
     `;
-export const OrderFormProductFragmentDoc = gql`
-    fragment OrderFormProduct on Product {
-  ...ProductMinimum
-  price
-  count
-  productCategory {
-    ...ProductCategoryMinimum
-  }
-  company {
-    ...CompanyMinimum
-  }
+export const ProductMinimumFragmentDoc = gql`
+    fragment ProductMinimum on IProduct {
+  id
+  name
 }
-    ${ProductMinimumFragmentDoc}
-${ProductCategoryMinimumFragmentDoc}
-${CompanyMinimumFragmentDoc}`;
+    `;
 export const CompanyListPageFragmentDoc = gql`
     fragment CompanyListPage on Company {
   ...CompanyMinimum
@@ -2749,6 +2702,14 @@ export const ProcurementsListPageFragmentDoc = gql`
   weight
 }
     ${ProcurementSimpleFragmentDoc}`;
+export const ProductCategoryMinimumFragmentDoc = gql`
+    fragment ProductCategoryMinimum on IProductCategory {
+  id
+  name
+  iconUrl
+  slug
+}
+    `;
 export const ProcurementFormProductFragmentDoc = gql`
     fragment ProcurementFormProduct on Product {
   ...ProductMinimum
@@ -2904,6 +2865,7 @@ export const AddProductModalProcurementsFragmentDoc = gql`
 export const ProductsSelectorFragmentDoc = gql`
     fragment ProductsSelector on Product {
   ...ProductMinimum
+  barcode
   price
   count
   productCategory {
@@ -3568,38 +3530,6 @@ export function useUpdateProductCategoryMutation(baseOptions?: Apollo.MutationHo
 export type UpdateProductCategoryMutationHookResult = ReturnType<typeof useUpdateProductCategoryMutation>;
 export type UpdateProductCategoryMutationResult = Apollo.MutationResult<UpdateProductCategoryMutation>;
 export type UpdateProductCategoryMutationOptions = Apollo.BaseMutationOptions<UpdateProductCategoryMutation, UpdateProductCategoryMutationVariables>;
-export const OrderFormProductsDocument = gql`
-    query OrderFormProducts {
-  products {
-    ...OrderFormProduct
-  }
-}
-    ${OrderFormProductFragmentDoc}`;
-
-/**
- * __useOrderFormProductsQuery__
- *
- * To run a query within a React component, call `useOrderFormProductsQuery` and pass it any options that fit your needs.
- * When your component renders, `useOrderFormProductsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useOrderFormProductsQuery({
- *   variables: {
- *   },
- * });
- */
-export function useOrderFormProductsQuery(baseOptions?: Apollo.QueryHookOptions<OrderFormProductsQuery, OrderFormProductsQueryVariables>) {
-        return Apollo.useQuery<OrderFormProductsQuery, OrderFormProductsQueryVariables>(OrderFormProductsDocument, baseOptions);
-      }
-export function useOrderFormProductsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<OrderFormProductsQuery, OrderFormProductsQueryVariables>) {
-          return Apollo.useLazyQuery<OrderFormProductsQuery, OrderFormProductsQueryVariables>(OrderFormProductsDocument, baseOptions);
-        }
-export type OrderFormProductsQueryHookResult = ReturnType<typeof useOrderFormProductsQuery>;
-export type OrderFormProductsLazyQueryHookResult = ReturnType<typeof useOrderFormProductsLazyQuery>;
-export type OrderFormProductsQueryResult = Apollo.QueryResult<OrderFormProductsQuery, OrderFormProductsQueryVariables>;
 export const CompanyListPageDocument = gql`
     query companyListPage {
   companies {
