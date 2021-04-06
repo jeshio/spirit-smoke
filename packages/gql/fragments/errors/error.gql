@@ -1,0 +1,5 @@
+fragment Error on IError {
+  code
+  message
+  isError
+}

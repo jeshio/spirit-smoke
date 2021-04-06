@@ -1,0 +1,11 @@
+interface IError {
+  code: Int!
+  message: String!
+  isError: Boolean!
+}
+
+type NotFound implements IError {
+  code: Int!
+  message: String!
+  isError: Boolean!
+}

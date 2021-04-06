@@ -1,0 +1,5 @@
+extend type Query {
+  searchByBarcode(barcode: String!): SearchResult!
+}
+
+union SearchResult = NotFound | Product

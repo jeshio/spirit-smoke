@@ -1,40 +1,7 @@
-#import "@/gql/fragments/product/simple.gql"
-#import "@/gql/fragments/productFeature/simple.gql"
-#import "@/gql/fragments/productCategory/minimum.gql"
-#import "@/gql/fragments/feature/minimum.gql"
-#import "@/gql/fragments/company/minimum.gql"
-
-fragment ProductItemPage on Product {
-  ...ProductSimple
-  productCategory {
-    ...ProductCategoryMinimum
-    features {
-      ...FeatureMinimum
-    }
-  }
-  company {
-    ...CompanyMinimum
-  }
-  productFeatures {
-    ...ProductFeatureSimple
-    feature {
-      ...FeatureMinimum
-    }
-  }
-  productProcurements {
-    procurement {
-      id
-      name
-      status
-      nextStatusDate
-    }
-    count
-    costs
-  }
-}
+#import "@/gql/fragments/product/item.gql"
 
 query productItemPage($id: ID!) {
   product(id: $id) {
-    ...ProductItemPage
+    ...ProductItem
   }
 }

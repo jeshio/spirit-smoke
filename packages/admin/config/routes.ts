@@ -12,6 +12,12 @@ export const baseRoutes: IRoute[] = [
     component: './Welcome',
   },
   {
+    path: '/barcode-search',
+    name: 'Поиск по штрихкоду',
+    icon: 'search',
+    component: './BarcodeSearch',
+  },
+  {
     path: '/mashagosha/:pass',
     name: 'Hey',
     icon: 'smile',

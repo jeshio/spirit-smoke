@@ -4,6 +4,7 @@ import {
   useOrderTotalLazyQuery,
   Maybe,
 } from '@/gql/__generated__/types'
+import useBarcodeScanner from '@/hooks/useBarcodeScanner'
 import UBlock from '@/ui-components/UBlock'
 import UButton from '@/ui-components/UButton'
 import UCol from '@/ui-components/UCol'
@@ -16,6 +17,7 @@ import URow from '@/ui-components/URow'
 import UWProductsSelector from '@/ui-widgets/UWProductsSelector'
 import { Card, Input, Select, Steps } from 'antd'
 import TextArea from 'antd/lib/input/TextArea'
+import { noop } from 'lodash'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { ORDER_STATUSES } from './constants'
 
@@ -27,8 +29,7 @@ export interface IOrderFormProps {
 }
 
 const OrderForm: React.FunctionComponent<IOrderFormProps> = ({ order, loading, isUpdate, onSubmit }) => {
-  const [scannerMode, setScannerMode] = useState(false)
-  const [currentScannerString, setCurrentScannerString] = useState('')
+  const [scannerModeIsActive, setScannerMode] = useState(false)
   const addProductByBarcodeRef = useRef<(barcode: string) => void>()
   const switchScannerMode = () => setScannerMode((mode) => !mode)
   const [getOrderTotal, currentOrderTotal] = useOrderTotalLazyQuery()
@@ -75,33 +76,14 @@ const OrderForm: React.FunctionComponent<IOrderFormProps> = ({ order, loading, i
     addProductByBarcodeRef.current = setter
   }
 
-  const handleKeyDown = useCallback(
-    (e: KeyboardEvent) => {
-      e.preventDefault()
-      const { key } = e
-
-      if (key === 'Enter') {
-        addProductByBarcodeRef.current?.(currentScannerString)
-        setCurrentScannerString('')
-        return
-      }
-
-      setCurrentScannerString((prev) => `${prev}${key}`)
-    },
-    [addProductByBarcodeRef, setCurrentScannerString, currentScannerString]
-  )
+  useBarcodeScanner({
+    isActive: scannerModeIsActive,
+    onEnter: addProductByBarcodeRef.current || noop,
+  })
 
   useEffect(() => {
     updateOrderTotal(currentDiscountByCode.data?.discountByCode?.code)
   }, [currentSelectedProducts, currentDiscountByCode.data?.discountByCode?.code])
-
-  useEffect(() => {
-    if (scannerMode) {
-      window.addEventListener('keydown', handleKeyDown)
-    }
-
-    return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [scannerMode, handleKeyDown])
 
   return (
     <UForm labelCol={{ sm: 7, lg: 6, xl: 8, xxl: 9 }} onFinish={handleSubmit}>
@@ -168,31 +150,33 @@ const OrderForm: React.FunctionComponent<IOrderFormProps> = ({ order, loading, i
                     />
                   </UForm.Item>
                 </UCol>
-                <UCol xl={10} xxl={12}>
-                  <UButton type={scannerMode ? 'primary' : 'dashed'} onClick={switchScannerMode}>
-                    {scannerMode ? 'Отключить режим сканера' : 'Режим сканера штрих-кодов'}
-                  </UButton>
-                  <UBlock mt={4}>
-                    <Steps current={scannerMode ? 1 : 0} direction="vertical">
-                      <Steps.Step
-                        title="Режим сканера штрих-кодов"
-                        description="Для добавления позиций с помощью сканера нажмите кнопку выше."
-                      />
-                      {scannerMode && (
+                {!isUpdate && (
+                  <UCol xl={10} xxl={12}>
+                    <UButton type={scannerModeIsActive ? 'primary' : 'dashed'} onClick={switchScannerMode}>
+                      {scannerModeIsActive ? 'Отключить режим сканера' : 'Режим сканера штрих-кодов'}
+                    </UButton>
+                    <UBlock mt={4}>
+                      <Steps current={scannerModeIsActive ? 1 : 0} direction="vertical">
                         <Steps.Step
-                          title="Ожидание скана товаров"
-                          description="Поднесите сканер к штрихкоду, чтобы добавить товарную позицию в заказ."
+                          title="Режим сканера штрих-кодов"
+                          description="Для добавления позиций с помощью сканера нажмите кнопку выше."
                         />
-                      )}
-                      {scannerMode && (
-                        <Steps.Step
-                          title="Отключите режим сканера после добавления всех позиций"
-                          description="Пока вы не выключите режим, не сможете печатать на клавиатуре!"
-                        />
-                      )}
-                    </Steps>
-                  </UBlock>
-                </UCol>
+                        {scannerModeIsActive && (
+                          <Steps.Step
+                            title="Ожидание скана товаров"
+                            description="Поднесите сканер к штрихкоду, чтобы добавить товарную позицию в заказ."
+                          />
+                        )}
+                        {scannerModeIsActive && (
+                          <Steps.Step
+                            title="Отключите режим сканера после добавления всех позиций"
+                            description="Пока вы не выключите режим, не сможете печатать на клавиатуре!"
+                          />
+                        )}
+                      </Steps>
+                    </UBlock>
+                  </UCol>
+                )}
               </URow>
             </UBlock>
           </Card>
