@@ -1,0 +1,28 @@
+fragment ProductItem on Product {
+  ...ProductSimple
+  productCategory {
+    ...ProductCategoryMinimum
+    features {
+      ...FeatureMinimum
+    }
+  }
+  company {
+    ...CompanyMinimum
+  }
+  productFeatures {
+    ...ProductFeatureSimple
+    feature {
+      ...FeatureMinimum
+    }
+  }
+  productProcurements {
+    procurement {
+      id
+      name
+      status
+      nextStatusDate
+    }
+    count
+    costs
+  }
+}

@@ -9,6 +9,9 @@
       "DiscountSimple",
       "Discount"
     ],
+    "IError": [
+      "NotFound"
+    ],
     "IFeature": [
       "FeatureSimple",
       "Feature"
@@ -28,6 +31,10 @@
     "IProductCategory": [
       "ProductCategorySimple",
       "ProductCategory"
+    ],
+    "SearchResult": [
+      "NotFound",
+      "Product"
     ]
   }
 };
@@ -41,6 +48,9 @@
       "DiscountSimple",
       "Discount"
     ],
+    "IError": [
+      "NotFound"
+    ],
     "IFeature": [
       "FeatureSimple",
       "Feature"
@@ -60,6 +70,10 @@
     "IProductCategory": [
       "ProductCategorySimple",
       "ProductCategory"
+    ],
+    "SearchResult": [
+      "NotFound",
+      "Product"
     ]
   }
 };

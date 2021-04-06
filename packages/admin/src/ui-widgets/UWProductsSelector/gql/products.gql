@@ -6,6 +6,7 @@
 
 fragment ProductsSelector on Product {
   ...ProductMinimum
+  barcode
   price
   count
   productCategory {

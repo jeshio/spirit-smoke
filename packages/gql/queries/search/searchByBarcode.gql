@@ -1,0 +1,8 @@
+#import "../../fragments/product/item.gql"
+
+query searchByBarcode($barcode: String!) {
+  searchByBarcode(barcode: $barcode) {
+    ...Error
+    ...ProductItem
+  }
+}

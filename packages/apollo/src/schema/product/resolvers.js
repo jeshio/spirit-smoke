@@ -105,6 +105,16 @@ const resolvers = {
 
         return updatedProduct
       }),
+    setProductBarcode: async (parent, {
+      id,
+      barcode,
+    }, { models }) => {
+      const updatedProduct = await models.product.update({
+        barcode,
+      }, { where: { id }, returning: true }).then(([, [product]]) => product)
+
+      return updatedProduct
+    },
     deleteProduct: (parent, { id }, { models }) => models.product.destroy({
       where: {
         id,

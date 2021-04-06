@@ -1,7 +1,11 @@
 import { ProductsSelectorFragment, useProductsSelectorQuery } from '@/gql/__generated__/types'
-import UItemsSelector, { IUItemsSelectorProps, UItemsSelectorValueObjectType } from '@/ui-components/UItemsSelector'
+import UItemsSelector, {
+  IUItemsSelectorProps,
+  UItemsSelectorValueObjectType,
+  ValueType,
+} from '@/ui-components/UItemsSelector'
 import { keyBy } from 'lodash'
-import React, { ComponentProps, useCallback, useMemo } from 'react'
+import React, { ComponentProps, useCallback, useEffect, useMemo, useRef } from 'react'
 
 interface IUWProductsSelectorProps extends Omit<IUItemsSelectorProps, 'onChange' | 'optionsToAdd' | 'loading'> {
   onChange: (
@@ -11,10 +15,13 @@ interface IUWProductsSelectorProps extends Omit<IUItemsSelectorProps, 'onChange'
       }
     >
   ) => void
+  /* Передатчик внутренней функции добавления продукта */
+  setAddProductByBarcodeFn?: (cb: (barcode: string) => void) => void
 }
 
 const UWProductsSelector: React.FunctionComponent<IUWProductsSelectorProps> = (props) => {
   const productsRequest = useProductsSelectorQuery()
+  const addValueFnRef = useRef<(_: ValueType) => void>()
   const productItems = useMemo(
     (): ComponentProps<typeof UItemsSelector>['optionsToAdd'] =>
       productsRequest.data?.products.map((product) => ({
@@ -26,6 +33,9 @@ const UWProductsSelector: React.FunctionComponent<IUWProductsSelectorProps> = (p
     [productsRequest.data]
   )
   const productsById = useMemo(() => keyBy(productsRequest.data?.products, 'id'), [productsRequest.data?.products])
+  const productsByBarcode = useMemo(() => keyBy(productsRequest.data?.products, 'barcode'), [
+    productsRequest.data?.products,
+  ])
   const handleChange: IUItemsSelectorProps['onChange'] = useCallback(
     (items) =>
       props.onChange?.(
@@ -36,9 +46,28 @@ const UWProductsSelector: React.FunctionComponent<IUWProductsSelectorProps> = (p
       ),
     [props.onChange, productsById]
   )
+  const setAddValueFn = (setter: typeof addValueFnRef.current) => {
+    addValueFnRef.current = setter
+  }
+
+  // передача функции добавления продукта во внешний компонент
+  useEffect(() => {
+    props.setAddProductByBarcodeFn?.((barcode: string) => {
+      const product = productsByBarcode[barcode]
+      if (product) {
+        addValueFnRef.current?.(product.id)
+      }
+    })
+  }, [productsByBarcode, addValueFnRef])
 
   return (
-    <UItemsSelector optionsToAdd={productItems} loading={productsRequest.loading} {...props} onChange={handleChange} />
+    <UItemsSelector
+      optionsToAdd={productItems}
+      loading={productsRequest.loading}
+      {...props}
+      setAddValueFn={setAddValueFn}
+      onChange={handleChange}
+    />
   )
 }
 

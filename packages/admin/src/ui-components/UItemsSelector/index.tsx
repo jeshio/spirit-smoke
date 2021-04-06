@@ -1,4 +1,4 @@
-import React, { ComponentProps, useCallback, useRef, useState } from 'react'
+import React, { ComponentProps, useCallback, useEffect, useRef, useState } from 'react'
 import { Select, Skeleton } from 'antd'
 import { keyBy, isEqual, difference, uniq } from 'lodash'
 import { CloseOutlined } from '@ant-design/icons'
@@ -41,6 +41,7 @@ const UItemsSelector: React.FunctionComponent<IUItemsSelectorProps> = ({
   withCount,
   onChange,
   withPriceSetter,
+  setAddValueFn,
 }) => {
   const [selectedIds, setSelectedIds] = useState(getIdsFromValueTypes(value))
   const [selectedValuesExtra, setSelectedValuesExtra] = useState(getExtraFromValues(value))
@@ -174,16 +175,18 @@ const UItemsSelector: React.FunctionComponent<IUItemsSelectorProps> = ({
     []
   )
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (value.length !== 0) {
       setSelectedValues(value)
     }
   }, [value])
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (!loading && isChanged.current) {
       if (withCount) {
-        const valuesWithExtra: UItemsSelectorValueObjectType[] = selectedIds.map((id) => selectedValuesExtra[id])
+        const valuesWithExtra = selectedIds
+          .map((id) => selectedValuesExtra[id])
+          .filter((item) => item !== undefined) as UItemsSelectorValueObjectType[]
         if (!isEqual(value, valuesWithExtra)) {
           onChange?.(valuesWithExtra)
         }
@@ -192,6 +195,25 @@ const UItemsSelector: React.FunctionComponent<IUItemsSelectorProps> = ({
       }
     }
   }, [selectedIds, selectedValuesExtra, withCount, onChange, loading, isChanged.current])
+
+  // передача функции добавления во внешний компонент
+  useEffect(() => {
+    setAddValueFn?.((v) => {
+      const addedValue = typeof v === 'string' ? v : v?.id
+
+      if (addedValue in optionsToAddByValue) {
+        if (withCount && selectedIds.includes(addedValue)) {
+          makeProductChangeHandler(
+            addedValue,
+            'count',
+            (count) => Number(count) || 1
+          )(selectedValuesExtra[addedValue].count + 1)
+        } else {
+          handleSelectChange([...selectedIds, addedValue])
+        }
+      }
+    })
+  }, [setAddValueFn, handleSelectChange, selectedIds])
 
   return (
     <styled.Root>

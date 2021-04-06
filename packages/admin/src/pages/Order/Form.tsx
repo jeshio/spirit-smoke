@@ -1,10 +1,10 @@
 import {
   OrderItemPageFragment,
   useDiscountByCodeLazyQuery,
-  DiscountByCodeQueryResult,
   useOrderTotalLazyQuery,
   Maybe,
 } from '@/gql/__generated__/types'
+import useBarcodeScanner from '@/hooks/useBarcodeScanner'
 import UBlock from '@/ui-components/UBlock'
 import UButton from '@/ui-components/UButton'
 import UCol from '@/ui-components/UCol'
@@ -15,9 +15,10 @@ import { UItemsSelectorValueObjectType } from '@/ui-components/UItemsSelector'
 import UPrice from '@/ui-components/UPrice'
 import URow from '@/ui-components/URow'
 import UWProductsSelector from '@/ui-widgets/UWProductsSelector'
-import { Card, Input, Select } from 'antd'
+import { Card, Input, Select, Steps } from 'antd'
 import TextArea from 'antd/lib/input/TextArea'
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import { noop } from 'lodash'
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { ORDER_STATUSES } from './constants'
 
 export interface IOrderFormProps {
@@ -28,6 +29,9 @@ export interface IOrderFormProps {
 }
 
 const OrderForm: React.FunctionComponent<IOrderFormProps> = ({ order, loading, isUpdate, onSubmit }) => {
+  const [scannerModeIsActive, setScannerMode] = useState(false)
+  const addProductByBarcodeRef = useRef<(barcode: string) => void>()
+  const switchScannerMode = () => setScannerMode((mode) => !mode)
   const [getOrderTotal, currentOrderTotal] = useOrderTotalLazyQuery()
   const initialSelectedProducts = useMemo(
     () =>
@@ -67,6 +71,15 @@ const OrderForm: React.FunctionComponent<IOrderFormProps> = ({ order, loading, i
     })
   }
   const orderTotal = isUpdate ? order?.orderTotal : currentOrderTotal.data?.orderTotal
+
+  const setAddProductByBarcodeFn = (setter: typeof addProductByBarcodeRef.current) => {
+    addProductByBarcodeRef.current = setter
+  }
+
+  useBarcodeScanner({
+    isActive: scannerModeIsActive,
+    onEnter: addProductByBarcodeRef.current || noop,
+  })
 
   useEffect(() => {
     updateOrderTotal(currentDiscountByCode.data?.discountByCode?.code)
@@ -129,9 +142,41 @@ const OrderForm: React.FunctionComponent<IOrderFormProps> = ({ order, loading, i
                       xxl: 6,
                     }}
                   >
-                    <UWProductsSelector withCount onChange={setCurrentSelectedProducts} disabled={isUpdate} />
+                    <UWProductsSelector
+                      withCount
+                      onChange={setCurrentSelectedProducts}
+                      disabled={isUpdate}
+                      setAddProductByBarcodeFn={setAddProductByBarcodeFn}
+                    />
                   </UForm.Item>
                 </UCol>
+                {!isUpdate && (
+                  <UCol xl={10} xxl={12}>
+                    <UButton type={scannerModeIsActive ? 'primary' : 'dashed'} onClick={switchScannerMode}>
+                      {scannerModeIsActive ? 'Отключить режим сканера' : 'Режим сканера штрих-кодов'}
+                    </UButton>
+                    <UBlock mt={4}>
+                      <Steps current={scannerModeIsActive ? 1 : 0} direction="vertical">
+                        <Steps.Step
+                          title="Режим сканера штрих-кодов"
+                          description="Для добавления позиций с помощью сканера нажмите кнопку выше."
+                        />
+                        {scannerModeIsActive && (
+                          <Steps.Step
+                            title="Ожидание скана товаров"
+                            description="Поднесите сканер к штрихкоду, чтобы добавить товарную позицию в заказ."
+                          />
+                        )}
+                        {scannerModeIsActive && (
+                          <Steps.Step
+                            title="Отключите режим сканера после добавления всех позиций"
+                            description="Пока вы не выключите режим, не сможете печатать на клавиатуре!"
+                          />
+                        )}
+                      </Steps>
+                    </UBlock>
+                  </UCol>
+                )}
               </URow>
             </UBlock>
           </Card>

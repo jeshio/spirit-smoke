@@ -114,7 +114,7 @@ const ProductForm: React.FunctionComponent<IProductFormProps> = ({
                   <Input onChange={changeNameHandler(fields, form)} />
                 </UForm.Item>
                 <UForm.Item label="Штрихкод" name="barcode" initialValue={product?.barcode}>
-                  <Input />
+                  <Input onPressEnter={(e) => e.preventDefault()} />
                 </UForm.Item>
                 <UForm.Item label="Slug" required name="slug" initialValue={product?.slug}>
                   <Input disabled={isUpdate} />

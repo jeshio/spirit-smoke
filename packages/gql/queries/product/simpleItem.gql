@@ -1,7 +1,7 @@
-#import "../../fragments/order/simple.gql"
+#import "../../fragments/product/simple.gql"
 
-query orderSimpleItem($id: ID!) {
-  order(id: $id) {
-    ...OrderSimple
+query productSimpleItem($id: ID!) {
+  product(id: $id) {
+    ...ProductSimple
   }
 }

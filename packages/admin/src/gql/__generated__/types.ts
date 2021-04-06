@@ -43,6 +43,7 @@ export type Query = {
   productCategory?: Maybe<ProductCategory>;
   promotions: Array<Maybe<Promotion>>;
   promotion?: Maybe<Promotion>;
+  searchByBarcode: SearchResult;
 };
 
 
@@ -121,6 +122,11 @@ export type QueryPromotionArgs = {
   id: Scalars['ID'];
 };
 
+
+export type QuerySearchByBarcodeArgs = {
+  barcode: Scalars['String'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
   _?: Maybe<Scalars['Boolean']>;
@@ -148,6 +154,7 @@ export type Mutation = {
   addProcurementProduct: ProcurementSimple;
   createProduct: ProductSimple;
   updateProduct: ProductSimple;
+  setProductBarcode: ProductSimple;
   deleteProduct: Scalars['ID'];
   syncAllProductsCount?: Maybe<Scalars['Boolean']>;
   createProductCategory: ProductCategorySimple;
@@ -289,6 +296,12 @@ export type MutationCreateProductArgs = {
 export type MutationUpdateProductArgs = {
   id: Scalars['ID'];
   input: ProductInput;
+};
+
+
+export type MutationSetProductBarcodeArgs = {
+  id: Scalars['ID'];
+  barcode: Scalars['String'];
 };
 
 
@@ -447,6 +460,19 @@ export type Discount = IDiscount & {
   features: Array<Feature>;
   orders: Array<Order>;
   bonuses: Array<Bonus>;
+};
+
+export type IError = {
+  code: Scalars['Int'];
+  message: Scalars['String'];
+  isError: Scalars['Boolean'];
+};
+
+export type NotFound = IError & {
+  __typename?: 'NotFound';
+  code: Scalars['Int'];
+  message: Scalars['String'];
+  isError: Scalars['Boolean'];
 };
 
 export type FeatureInput = {
@@ -825,6 +851,8 @@ export type Promotion = {
   priority: Scalars['Int'];
 };
 
+export type SearchResult = NotFound | Product;
+
 export type CreateCompanyMutationVariables = Exact<{
   input: CompanyInput;
 }>;
@@ -1003,6 +1031,20 @@ export type DeleteProductMutation = (
   & Pick<Mutation, 'deleteProduct'>
 );
 
+export type SetProductBarcodeMutationVariables = Exact<{
+  id: Scalars['ID'];
+  barcode: Scalars['String'];
+}>;
+
+
+export type SetProductBarcodeMutation = (
+  { __typename?: 'Mutation' }
+  & { setProductBarcode: (
+    { __typename?: 'ProductSimple' }
+    & ProductSimple_ProductSimple_Fragment
+  ) }
+);
+
 export type SyncAllProductsCountMutationVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -1060,30 +1102,6 @@ export type UpdateProductCategoryMutation = (
     { __typename?: 'ProductCategorySimple' }
     & ProductCategorySimple_ProductCategorySimple_Fragment
   ) }
-);
-
-export type OrderFormProductFragment = (
-  { __typename?: 'Product' }
-  & Pick<Product, 'price' | 'count'>
-  & { productCategory?: Maybe<(
-    { __typename?: 'ProductCategory' }
-    & ProductCategoryMinimum_ProductCategory_Fragment
-  )>, company?: Maybe<(
-    { __typename?: 'Company' }
-    & CompanyMinimum_Company_Fragment
-  )> }
-  & ProductMinimum_Product_Fragment
-);
-
-export type OrderFormProductsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type OrderFormProductsQuery = (
-  { __typename?: 'Query' }
-  & { products: Array<(
-    { __typename?: 'Product' }
-    & OrderFormProductFragment
-  )> }
 );
 
 export type CompanyListPageFragment = (
@@ -1332,36 +1350,6 @@ export type ProcurementFormProductsQuery = (
   )> }
 );
 
-export type ProductItemPageFragment = (
-  { __typename?: 'Product' }
-  & { productCategory?: Maybe<(
-    { __typename?: 'ProductCategory' }
-    & { features: Array<(
-      { __typename?: 'Feature' }
-      & FeatureMinimum_Feature_Fragment
-    )> }
-    & ProductCategoryMinimum_ProductCategory_Fragment
-  )>, company?: Maybe<(
-    { __typename?: 'Company' }
-    & CompanyMinimum_Company_Fragment
-  )>, productFeatures: Array<(
-    { __typename?: 'ProductFeature' }
-    & { feature: (
-      { __typename?: 'Feature' }
-      & FeatureMinimum_Feature_Fragment
-    ) }
-    & ProductFeatureSimpleFragment
-  )>, productProcurements: Array<(
-    { __typename?: 'ProductProcurement' }
-    & Pick<ProductProcurement, 'count' | 'costs'>
-    & { procurement: (
-      { __typename?: 'Procurement' }
-      & Pick<Procurement, 'id' | 'name' | 'status' | 'nextStatusDate'>
-    ) }
-  )> }
-  & ProductSimple_Product_Fragment
-);
-
 export type ProductItemPageQueryVariables = Exact<{
   id: Scalars['ID'];
 }>;
@@ -1371,7 +1359,7 @@ export type ProductItemPageQuery = (
   { __typename?: 'Query' }
   & { product?: Maybe<(
     { __typename?: 'Product' }
-    & ProductItemPageFragment
+    & ProductItemFragment
   )> }
 );
 
@@ -1471,7 +1459,7 @@ export type AddProductModalProcurementsQuery = (
 
 export type ProductsSelectorFragment = (
   { __typename?: 'Product' }
-  & Pick<Product, 'price' | 'count'>
+  & Pick<Product, 'barcode' | 'price' | 'count'>
   & { productCategory?: Maybe<(
     { __typename?: 'ProductCategory' }
     & ProductCategoryMinimum_ProductCategory_Fragment
@@ -1536,6 +1524,11 @@ type DiscountSimple_Discount_Fragment = (
 );
 
 export type DiscountSimpleFragment = DiscountSimple_DiscountSimple_Fragment | DiscountSimple_Discount_Fragment;
+
+export type ErrorFragment = (
+  { __typename?: 'NotFound' }
+  & Pick<NotFound, 'code' | 'message' | 'isError'>
+);
 
 type FeatureMinimum_FeatureSimple_Fragment = (
   { __typename?: 'FeatureSimple' }
@@ -1613,6 +1606,36 @@ type ProcurementSimple_Procurement_Fragment = (
 );
 
 export type ProcurementSimpleFragment = ProcurementSimple_ProcurementSimple_Fragment | ProcurementSimple_Procurement_Fragment;
+
+export type ProductItemFragment = (
+  { __typename?: 'Product' }
+  & { productCategory?: Maybe<(
+    { __typename?: 'ProductCategory' }
+    & { features: Array<(
+      { __typename?: 'Feature' }
+      & FeatureMinimum_Feature_Fragment
+    )> }
+    & ProductCategoryMinimum_ProductCategory_Fragment
+  )>, company?: Maybe<(
+    { __typename?: 'Company' }
+    & CompanyMinimum_Company_Fragment
+  )>, productFeatures: Array<(
+    { __typename?: 'ProductFeature' }
+    & { feature: (
+      { __typename?: 'Feature' }
+      & FeatureMinimum_Feature_Fragment
+    ) }
+    & ProductFeatureSimpleFragment
+  )>, productProcurements: Array<(
+    { __typename?: 'ProductProcurement' }
+    & Pick<ProductProcurement, 'count' | 'costs'>
+    & { procurement: (
+      { __typename?: 'Procurement' }
+      & Pick<Procurement, 'id' | 'name' | 'status' | 'nextStatusDate'>
+    ) }
+  )> }
+  & ProductSimple_Product_Fragment
+);
 
 type ProductMinimum_ProductSimple_Fragment = (
   { __typename?: 'ProductSimple' }
@@ -1764,6 +1787,19 @@ export type OrderSimpleListQuery = (
   )> }
 );
 
+export type ProductSimpleItemQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type ProductSimpleItemQuery = (
+  { __typename?: 'Query' }
+  & { product?: Maybe<(
+    { __typename?: 'Product' }
+    & ProductSimple_Product_Fragment
+  )> }
+);
+
 export type ProductSimpleListQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -1810,6 +1846,22 @@ export type ProductCategorySimpleItemQuery = (
     { __typename?: 'ProductCategory' }
     & ProductCategorySimple_ProductCategory_Fragment
   )> }
+);
+
+export type SearchByBarcodeQueryVariables = Exact<{
+  barcode: Scalars['String'];
+}>;
+
+
+export type SearchByBarcodeQuery = (
+  { __typename?: 'Query' }
+  & { searchByBarcode: (
+    { __typename?: 'NotFound' }
+    & ErrorFragment
+  ) | (
+    { __typename?: 'Product' }
+    & ProductItemFragment
+  ) }
 );
 
 
@@ -1909,13 +1961,15 @@ export type ResolversTypes = {
   IDiscount: ResolversTypes['DiscountSimple'] | ResolversTypes['Discount'];
   DiscountSimple: ResolverTypeWrapper<DiscountSimple>;
   Discount: ResolverTypeWrapper<Discount>;
+  IError: ResolversTypes['NotFound'];
+  Int: ResolverTypeWrapper<Scalars['Int']>;
+  NotFound: ResolverTypeWrapper<NotFound>;
   FeatureInput: FeatureInput;
   IFeature: ResolversTypes['FeatureSimple'] | ResolversTypes['Feature'];
   FeatureSimple: ResolverTypeWrapper<FeatureSimple>;
   Feature: ResolverTypeWrapper<Feature>;
   ProductFeature: ResolverTypeWrapper<ProductFeature>;
   OrderInput: OrderInput;
-  Int: ResolverTypeWrapper<Scalars['Int']>;
   OrderStatus: OrderStatus;
   OrderProductInput: OrderProductInput;
   OrderProduct: ResolverTypeWrapper<OrderProduct>;
@@ -1944,6 +1998,7 @@ export type ResolversTypes = {
   ProductCategory: ResolverTypeWrapper<ProductCategory>;
   PromotionInput: PromotionInput;
   Promotion: ResolverTypeWrapper<Promotion>;
+  SearchResult: ResolversTypes['NotFound'] | ResolversTypes['Product'];
 };
 
 /** Mapping between all available schema types and the resolvers parents */
@@ -1967,13 +2022,15 @@ export type ResolversParentTypes = {
   IDiscount: ResolversParentTypes['DiscountSimple'] | ResolversParentTypes['Discount'];
   DiscountSimple: DiscountSimple;
   Discount: Discount;
+  IError: ResolversParentTypes['NotFound'];
+  Int: Scalars['Int'];
+  NotFound: NotFound;
   FeatureInput: FeatureInput;
   IFeature: ResolversParentTypes['FeatureSimple'] | ResolversParentTypes['Feature'];
   FeatureSimple: FeatureSimple;
   Feature: Feature;
   ProductFeature: ProductFeature;
   OrderInput: OrderInput;
-  Int: Scalars['Int'];
   OrderProductInput: OrderProductInput;
   OrderProduct: OrderProduct;
   OrderTotal: OrderTotal;
@@ -2000,6 +2057,7 @@ export type ResolversParentTypes = {
   ProductCategory: ProductCategory;
   PromotionInput: PromotionInput;
   Promotion: Promotion;
+  SearchResult: ResolversParentTypes['NotFound'] | ResolversParentTypes['Product'];
 };
 
 export interface DateTimeScalarConfig extends GraphQLScalarTypeConfig<ResolversTypes['DateTime'], any> {
@@ -2032,6 +2090,7 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   productCategory?: Resolver<Maybe<ResolversTypes['ProductCategory']>, ParentType, ContextType, RequireFields<QueryProductCategoryArgs, 'idSlug'>>;
   promotions?: Resolver<Array<Maybe<ResolversTypes['Promotion']>>, ParentType, ContextType>;
   promotion?: Resolver<Maybe<ResolversTypes['Promotion']>, ParentType, ContextType, RequireFields<QueryPromotionArgs, 'id'>>;
+  searchByBarcode?: Resolver<ResolversTypes['SearchResult'], ParentType, ContextType, RequireFields<QuerySearchByBarcodeArgs, 'barcode'>>;
 };
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
@@ -2060,6 +2119,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   addProcurementProduct?: Resolver<ResolversTypes['ProcurementSimple'], ParentType, ContextType, RequireFields<MutationAddProcurementProductArgs, 'procurementId' | 'input'>>;
   createProduct?: Resolver<ResolversTypes['ProductSimple'], ParentType, ContextType, RequireFields<MutationCreateProductArgs, 'input'>>;
   updateProduct?: Resolver<ResolversTypes['ProductSimple'], ParentType, ContextType, RequireFields<MutationUpdateProductArgs, 'id' | 'input'>>;
+  setProductBarcode?: Resolver<ResolversTypes['ProductSimple'], ParentType, ContextType, RequireFields<MutationSetProductBarcodeArgs, 'id' | 'barcode'>>;
   deleteProduct?: Resolver<ResolversTypes['ID'], ParentType, ContextType, RequireFields<MutationDeleteProductArgs, 'id'>>;
   syncAllProductsCount?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   createProductCategory?: Resolver<ResolversTypes['ProductCategorySimple'], ParentType, ContextType, RequireFields<MutationCreateProductCategoryArgs, 'input'>>;
@@ -2172,6 +2232,20 @@ export type DiscountResolvers<ContextType = any, ParentType extends ResolversPar
   features?: Resolver<Array<ResolversTypes['Feature']>, ParentType, ContextType>;
   orders?: Resolver<Array<ResolversTypes['Order']>, ParentType, ContextType>;
   bonuses?: Resolver<Array<ResolversTypes['Bonus']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType>;
+};
+
+export type IErrorResolvers<ContextType = any, ParentType extends ResolversParentTypes['IError'] = ResolversParentTypes['IError']> = {
+  __resolveType: TypeResolveFn<'NotFound', ParentType, ContextType>;
+  code?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  isError?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+};
+
+export type NotFoundResolvers<ContextType = any, ParentType extends ResolversParentTypes['NotFound'] = ResolversParentTypes['NotFound']> = {
+  code?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  isError?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 };
 
@@ -2448,6 +2522,10 @@ export type PromotionResolvers<ContextType = any, ParentType extends ResolversPa
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 };
 
+export type SearchResultResolvers<ContextType = any, ParentType extends ResolversParentTypes['SearchResult'] = ResolversParentTypes['SearchResult']> = {
+  __resolveType: TypeResolveFn<'NotFound' | 'Product', ParentType, ContextType>;
+};
+
 export type Resolvers<ContextType = any> = {
   DateTime?: GraphQLScalarType;
   Query?: QueryResolvers<ContextType>;
@@ -2461,6 +2539,8 @@ export type Resolvers<ContextType = any> = {
   IDiscount?: IDiscountResolvers<ContextType>;
   DiscountSimple?: DiscountSimpleResolvers<ContextType>;
   Discount?: DiscountResolvers<ContextType>;
+  IError?: IErrorResolvers<ContextType>;
+  NotFound?: NotFoundResolvers<ContextType>;
   IFeature?: IFeatureResolvers<ContextType>;
   FeatureSimple?: FeatureSimpleResolvers<ContextType>;
   Feature?: FeatureResolvers<ContextType>;
@@ -2482,6 +2562,7 @@ export type Resolvers<ContextType = any> = {
   ProductCategorySimple?: ProductCategorySimpleResolvers<ContextType>;
   ProductCategory?: ProductCategoryResolvers<ContextType>;
   Promotion?: PromotionResolvers<ContextType>;
+  SearchResult?: SearchResultResolvers<ContextType>;
 };
 
 
@@ -2491,41 +2572,18 @@ export type Resolvers<ContextType = any> = {
  */
 export type IResolvers<ContextType = any> = Resolvers<ContextType>;
 
-export const ProductMinimumFragmentDoc = gql`
-    fragment ProductMinimum on IProduct {
-  id
-  name
-}
-    `;
-export const ProductCategoryMinimumFragmentDoc = gql`
-    fragment ProductCategoryMinimum on IProductCategory {
-  id
-  name
-  iconUrl
-  slug
-}
-    `;
 export const CompanyMinimumFragmentDoc = gql`
     fragment CompanyMinimum on ICompany {
   id
   name
 }
     `;
-export const OrderFormProductFragmentDoc = gql`
-    fragment OrderFormProduct on Product {
-  ...ProductMinimum
-  price
-  count
-  productCategory {
-    ...ProductCategoryMinimum
-  }
-  company {
-    ...CompanyMinimum
-  }
+export const ProductMinimumFragmentDoc = gql`
+    fragment ProductMinimum on IProduct {
+  id
+  name
 }
-    ${ProductMinimumFragmentDoc}
-${ProductCategoryMinimumFragmentDoc}
-${CompanyMinimumFragmentDoc}`;
+    `;
 export const CompanyListPageFragmentDoc = gql`
     fragment CompanyListPage on Company {
   ...CompanyMinimum
@@ -2727,6 +2785,14 @@ export const ProcurementsListPageFragmentDoc = gql`
   weight
 }
     ${ProcurementSimpleFragmentDoc}`;
+export const ProductCategoryMinimumFragmentDoc = gql`
+    fragment ProductCategoryMinimum on IProductCategory {
+  id
+  name
+  iconUrl
+  slug
+}
+    `;
 export const ProcurementFormProductFragmentDoc = gql`
     fragment ProcurementFormProduct on Product {
   ...ProductMinimum
@@ -2742,21 +2808,9 @@ export const ProcurementFormProductFragmentDoc = gql`
     ${ProductMinimumFragmentDoc}
 ${ProductCategoryMinimumFragmentDoc}
 ${CompanyMinimumFragmentDoc}`;
-export const ProductSimpleFragmentDoc = gql`
-    fragment ProductSimple on IProduct {
-  id
-  barcode
-  name
-  slug
-  description
-  imageUrl
-  productCategoryId
-  companyId
-  weight
-  price
-  count
-  createdAt
-  updatedAt
+export const ProductFeatureSimpleFragmentDoc = gql`
+    fragment ProductFeatureSimple on ProductFeature {
+  endTime
 }
     `;
 export const FeatureMinimumFragmentDoc = gql`
@@ -2767,45 +2821,6 @@ export const FeatureMinimumFragmentDoc = gql`
   isDisabled
 }
     `;
-export const ProductFeatureSimpleFragmentDoc = gql`
-    fragment ProductFeatureSimple on ProductFeature {
-  endTime
-}
-    `;
-export const ProductItemPageFragmentDoc = gql`
-    fragment ProductItemPage on Product {
-  ...ProductSimple
-  productCategory {
-    ...ProductCategoryMinimum
-    features {
-      ...FeatureMinimum
-    }
-  }
-  company {
-    ...CompanyMinimum
-  }
-  productFeatures {
-    ...ProductFeatureSimple
-    feature {
-      ...FeatureMinimum
-    }
-  }
-  productProcurements {
-    procurement {
-      id
-      name
-      status
-      nextStatusDate
-    }
-    count
-    costs
-  }
-}
-    ${ProductSimpleFragmentDoc}
-${ProductCategoryMinimumFragmentDoc}
-${FeatureMinimumFragmentDoc}
-${CompanyMinimumFragmentDoc}
-${ProductFeatureSimpleFragmentDoc}`;
 export const ProductsListPageFragmentDoc = gql`
     fragment ProductsListPage on Product {
   ...ProductMinimum
@@ -2882,6 +2897,7 @@ export const AddProductModalProcurementsFragmentDoc = gql`
 export const ProductsSelectorFragmentDoc = gql`
     fragment ProductsSelector on Product {
   ...ProductMinimum
+  barcode
   price
   count
   productCategory {
@@ -2894,6 +2910,13 @@ export const ProductsSelectorFragmentDoc = gql`
     ${ProductMinimumFragmentDoc}
 ${ProductCategoryMinimumFragmentDoc}
 ${CompanyMinimumFragmentDoc}`;
+export const ErrorFragmentDoc = gql`
+    fragment Error on IError {
+  code
+  message
+  isError
+}
+    `;
 export const OrderTotalFragmentDoc = gql`
     fragment OrderTotal on OrderTotal {
   totalPrice
@@ -2909,6 +2932,57 @@ export const ProcurementMinimumFragmentDoc = gql`
   status
 }
     `;
+export const ProductSimpleFragmentDoc = gql`
+    fragment ProductSimple on IProduct {
+  id
+  barcode
+  name
+  slug
+  description
+  imageUrl
+  productCategoryId
+  companyId
+  weight
+  price
+  count
+  createdAt
+  updatedAt
+}
+    `;
+export const ProductItemFragmentDoc = gql`
+    fragment ProductItem on Product {
+  ...ProductSimple
+  productCategory {
+    ...ProductCategoryMinimum
+    features {
+      ...FeatureMinimum
+    }
+  }
+  company {
+    ...CompanyMinimum
+  }
+  productFeatures {
+    ...ProductFeatureSimple
+    feature {
+      ...FeatureMinimum
+    }
+  }
+  productProcurements {
+    procurement {
+      id
+      name
+      status
+      nextStatusDate
+    }
+    count
+    costs
+  }
+}
+    ${ProductSimpleFragmentDoc}
+${ProductCategoryMinimumFragmentDoc}
+${FeatureMinimumFragmentDoc}
+${CompanyMinimumFragmentDoc}
+${ProductFeatureSimpleFragmentDoc}`;
 export const CreateCompanyDocument = gql`
     mutation createCompany($input: CompanyInput!) {
   createCompany(input: $input) {
@@ -3356,6 +3430,39 @@ export function useDeleteProductMutation(baseOptions?: Apollo.MutationHookOption
 export type DeleteProductMutationHookResult = ReturnType<typeof useDeleteProductMutation>;
 export type DeleteProductMutationResult = Apollo.MutationResult<DeleteProductMutation>;
 export type DeleteProductMutationOptions = Apollo.BaseMutationOptions<DeleteProductMutation, DeleteProductMutationVariables>;
+export const SetProductBarcodeDocument = gql`
+    mutation setProductBarcode($id: ID!, $barcode: String!) {
+  setProductBarcode(id: $id, barcode: $barcode) {
+    ...ProductSimple
+  }
+}
+    ${ProductSimpleFragmentDoc}`;
+export type SetProductBarcodeMutationFn = Apollo.MutationFunction<SetProductBarcodeMutation, SetProductBarcodeMutationVariables>;
+
+/**
+ * __useSetProductBarcodeMutation__
+ *
+ * To run a mutation, you first call `useSetProductBarcodeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSetProductBarcodeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [setProductBarcodeMutation, { data, loading, error }] = useSetProductBarcodeMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      barcode: // value for 'barcode'
+ *   },
+ * });
+ */
+export function useSetProductBarcodeMutation(baseOptions?: Apollo.MutationHookOptions<SetProductBarcodeMutation, SetProductBarcodeMutationVariables>) {
+        return Apollo.useMutation<SetProductBarcodeMutation, SetProductBarcodeMutationVariables>(SetProductBarcodeDocument, baseOptions);
+      }
+export type SetProductBarcodeMutationHookResult = ReturnType<typeof useSetProductBarcodeMutation>;
+export type SetProductBarcodeMutationResult = Apollo.MutationResult<SetProductBarcodeMutation>;
+export type SetProductBarcodeMutationOptions = Apollo.BaseMutationOptions<SetProductBarcodeMutation, SetProductBarcodeMutationVariables>;
 export const SyncAllProductsCountDocument = gql`
     mutation syncAllProductsCount {
   syncAllProductsCount
@@ -3513,38 +3620,6 @@ export function useUpdateProductCategoryMutation(baseOptions?: Apollo.MutationHo
 export type UpdateProductCategoryMutationHookResult = ReturnType<typeof useUpdateProductCategoryMutation>;
 export type UpdateProductCategoryMutationResult = Apollo.MutationResult<UpdateProductCategoryMutation>;
 export type UpdateProductCategoryMutationOptions = Apollo.BaseMutationOptions<UpdateProductCategoryMutation, UpdateProductCategoryMutationVariables>;
-export const OrderFormProductsDocument = gql`
-    query OrderFormProducts {
-  products {
-    ...OrderFormProduct
-  }
-}
-    ${OrderFormProductFragmentDoc}`;
-
-/**
- * __useOrderFormProductsQuery__
- *
- * To run a query within a React component, call `useOrderFormProductsQuery` and pass it any options that fit your needs.
- * When your component renders, `useOrderFormProductsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useOrderFormProductsQuery({
- *   variables: {
- *   },
- * });
- */
-export function useOrderFormProductsQuery(baseOptions?: Apollo.QueryHookOptions<OrderFormProductsQuery, OrderFormProductsQueryVariables>) {
-        return Apollo.useQuery<OrderFormProductsQuery, OrderFormProductsQueryVariables>(OrderFormProductsDocument, baseOptions);
-      }
-export function useOrderFormProductsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<OrderFormProductsQuery, OrderFormProductsQueryVariables>) {
-          return Apollo.useLazyQuery<OrderFormProductsQuery, OrderFormProductsQueryVariables>(OrderFormProductsDocument, baseOptions);
-        }
-export type OrderFormProductsQueryHookResult = ReturnType<typeof useOrderFormProductsQuery>;
-export type OrderFormProductsLazyQueryHookResult = ReturnType<typeof useOrderFormProductsLazyQuery>;
-export type OrderFormProductsQueryResult = Apollo.QueryResult<OrderFormProductsQuery, OrderFormProductsQueryVariables>;
 export const CompanyListPageDocument = gql`
     query companyListPage {
   companies {
@@ -3905,10 +3980,10 @@ export type ProcurementFormProductsQueryResult = Apollo.QueryResult<ProcurementF
 export const ProductItemPageDocument = gql`
     query productItemPage($id: ID!) {
   product(id: $id) {
-    ...ProductItemPage
+    ...ProductItem
   }
 }
-    ${ProductItemPageFragmentDoc}`;
+    ${ProductItemFragmentDoc}`;
 
 /**
  * __useProductItemPageQuery__
@@ -4357,6 +4432,39 @@ export function useOrderSimpleListLazyQuery(baseOptions?: Apollo.LazyQueryHookOp
 export type OrderSimpleListQueryHookResult = ReturnType<typeof useOrderSimpleListQuery>;
 export type OrderSimpleListLazyQueryHookResult = ReturnType<typeof useOrderSimpleListLazyQuery>;
 export type OrderSimpleListQueryResult = Apollo.QueryResult<OrderSimpleListQuery, OrderSimpleListQueryVariables>;
+export const ProductSimpleItemDocument = gql`
+    query productSimpleItem($id: ID!) {
+  product(id: $id) {
+    ...ProductSimple
+  }
+}
+    ${ProductSimpleFragmentDoc}`;
+
+/**
+ * __useProductSimpleItemQuery__
+ *
+ * To run a query within a React component, call `useProductSimpleItemQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProductSimpleItemQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProductSimpleItemQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useProductSimpleItemQuery(baseOptions?: Apollo.QueryHookOptions<ProductSimpleItemQuery, ProductSimpleItemQueryVariables>) {
+        return Apollo.useQuery<ProductSimpleItemQuery, ProductSimpleItemQueryVariables>(ProductSimpleItemDocument, baseOptions);
+      }
+export function useProductSimpleItemLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProductSimpleItemQuery, ProductSimpleItemQueryVariables>) {
+          return Apollo.useLazyQuery<ProductSimpleItemQuery, ProductSimpleItemQueryVariables>(ProductSimpleItemDocument, baseOptions);
+        }
+export type ProductSimpleItemQueryHookResult = ReturnType<typeof useProductSimpleItemQuery>;
+export type ProductSimpleItemLazyQueryHookResult = ReturnType<typeof useProductSimpleItemLazyQuery>;
+export type ProductSimpleItemQueryResult = Apollo.QueryResult<ProductSimpleItemQuery, ProductSimpleItemQueryVariables>;
 export const ProductSimpleListDocument = gql`
     query productSimpleList {
   products {
@@ -4487,3 +4595,38 @@ export function useProductCategorySimpleItemLazyQuery(baseOptions?: Apollo.LazyQ
 export type ProductCategorySimpleItemQueryHookResult = ReturnType<typeof useProductCategorySimpleItemQuery>;
 export type ProductCategorySimpleItemLazyQueryHookResult = ReturnType<typeof useProductCategorySimpleItemLazyQuery>;
 export type ProductCategorySimpleItemQueryResult = Apollo.QueryResult<ProductCategorySimpleItemQuery, ProductCategorySimpleItemQueryVariables>;
+export const SearchByBarcodeDocument = gql`
+    query searchByBarcode($barcode: String!) {
+  searchByBarcode(barcode: $barcode) {
+    ...Error
+    ...ProductItem
+  }
+}
+    ${ErrorFragmentDoc}
+${ProductItemFragmentDoc}`;
+
+/**
+ * __useSearchByBarcodeQuery__
+ *
+ * To run a query within a React component, call `useSearchByBarcodeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSearchByBarcodeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSearchByBarcodeQuery({
+ *   variables: {
+ *      barcode: // value for 'barcode'
+ *   },
+ * });
+ */
+export function useSearchByBarcodeQuery(baseOptions?: Apollo.QueryHookOptions<SearchByBarcodeQuery, SearchByBarcodeQueryVariables>) {
+        return Apollo.useQuery<SearchByBarcodeQuery, SearchByBarcodeQueryVariables>(SearchByBarcodeDocument, baseOptions);
+      }
+export function useSearchByBarcodeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SearchByBarcodeQuery, SearchByBarcodeQueryVariables>) {
+          return Apollo.useLazyQuery<SearchByBarcodeQuery, SearchByBarcodeQueryVariables>(SearchByBarcodeDocument, baseOptions);
+        }
+export type SearchByBarcodeQueryHookResult = ReturnType<typeof useSearchByBarcodeQuery>;
+export type SearchByBarcodeLazyQueryHookResult = ReturnType<typeof useSearchByBarcodeLazyQuery>;
+export type SearchByBarcodeQueryResult = Apollo.QueryResult<SearchByBarcodeQuery, SearchByBarcodeQueryVariables>;
