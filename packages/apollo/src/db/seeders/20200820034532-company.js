@@ -3,7 +3,7 @@ import fakerUnique from '../../utils/fakerUnique'
 
 const devRows = [...Array(21)].map(() => (
   {
-    name: faker.company.companyName(),
+    name: faker.commerce.department,
     barcode: fakerUnique(faker.finance.bic, [Math.random() * 5], {
       maxRetries: 1000,
     }),
@@ -27,7 +27,7 @@ module.exports = {
    * @returns
    */
   up: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkInsert('companies', devRows, {})
+    await queryInterface.bulkInsert('productLines', devRows, {})
   },
 
   /**
@@ -36,6 +36,6 @@ module.exports = {
    * @returns
    */
   down: async (queryInterface, Sequelize) => {
-    await queryInterface.bulkDelete('companies', null, {})
+    await queryInterface.bulkDelete('productLines', null, {})
   },
 }

@@ -6,7 +6,7 @@ import UCol from '@/ui-components/UCol'
 import UButton from '@/ui-components/UButton'
 import {
   useProductCategoryMinimumListQuery,
-  useCompanyMinimumListQuery,
+  useProductLineMinimumListQuery,
   ProductItemPageFragment,
 } from '@/gql/__generated__/types'
 import numberToPrice from '@@utils/src/numberToPrice'
@@ -30,7 +30,7 @@ const ProductForm: React.FunctionComponent<IProductFormProps> = ({
   product,
 }) => {
   const categoriesRequest = useProductCategoryMinimumListQuery()
-  const companyRequest = useCompanyMinimumListQuery()
+  const productLineRequest = useProductLineMinimumListQuery()
   const handleSubmit = (fields: any) =>
     onSubmit({
       ...fields,
@@ -56,10 +56,10 @@ const ProductForm: React.FunctionComponent<IProductFormProps> = ({
     product,
   ])
   const changeNameHandler = (fields: any, form: FormInstance) => (e: React.ChangeEvent<HTMLInputElement>) => {
-    const company = companyRequest.data?.companies.find(({ id }) => id === fields.companyId)
+    const productLine = productLineRequest.data?.productLines.find(({ id }) => id === fields.productLineId)
     let name = e.target.value
-    if (company) {
-      name = `${company.name} ${name}`
+    if (productLine) {
+      name = `${productLine.name} ${name}`
     }
     return updateSlugOnChangeTitle(name, form)
   }
@@ -67,24 +67,24 @@ const ProductForm: React.FunctionComponent<IProductFormProps> = ({
   return (
     <UForm onFinish={handleSubmit} labelCol={{ span: 6, sm: 6, md: 9, lg: 9, xl: 7, xxl: 7 }}>
       {(fields, form) => {
-        const companyWarning = isUpdate && !product?.company && fields.companyId === product?.companyId
+        const productLineWarning = isUpdate && !product?.productLine && fields.productLineId === product?.productLineId
         const productCategoryWarning =
           isUpdate && !product?.productCategory && fields.productCategoryId === product?.productCategoryId
         const featuresSelectorIsDisabled = isUpdate && product?.productCategoryId !== fields.productCategoryId
         return (
-          <Card loading={categoriesRequest.loading || companyRequest.loading}>
+          <Card loading={categoriesRequest.loading || productLineRequest.loading}>
             <URow>
               <UCol md={12} xxl={8}>
                 <UForm.Item
-                  label="Производитель"
-                  name="companyId"
+                  label="Линейка продуктов"
+                  name="productLineId"
                   required
-                  initialValue={product?.companyId}
-                  help={companyWarning && 'Этот производитель удалён, продукт невидим'}
-                  validateStatus={(companyWarning && 'warning') || undefined}
+                  initialValue={product?.productLineId}
+                  help={productLineWarning && 'Эта линейка продуктов удалена, продукт невидим'}
+                  validateStatus={(productLineWarning && 'warning') || undefined}
                 >
                   <Select>
-                    {companyRequest.data?.companies.map(({ id, name }) => (
+                    {productLineRequest.data?.productLines.map(({ id, name }) => (
                       <Select.Option value={id} key={id}>
                         ({id}) {name}
                       </Select.Option>

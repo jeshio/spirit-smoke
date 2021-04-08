@@ -16,9 +16,9 @@ const ProductDescription: FC<IProductDescriptionProps> = ({ product }) => {
 
   return (
     <Card
-      title={`Информация о продукте ${product.company ? `${product.company.name} -` : ''} ${product.name}`}
+      title={`Информация о продукте ${product.productLine ? `${product.productLine.name} -` : ''} ${product.name}`}
       extra={
-        !product.company || !product.productCategory ? <Badge status="warning" text="НЕВИДИМ для клиентов" /> : null
+        !product.productLine || !product.productCategory ? <Badge status="warning" text="НЕВИДИМ для клиентов" /> : null
       }
     >
       <UDescriptions>
@@ -28,11 +28,11 @@ const ProductDescription: FC<IProductDescriptionProps> = ({ product }) => {
           )}
           {product.productCategory ? product.productCategory.name : <Badge status="warning" text="БЕЗ КАТЕГОРИИ" />}
         </UDescriptions.Item>
-        <UDescriptions.Item label="Производитель">
-          {product.company && (
-            <UButton href={`/companies/${product.company.id}`} type="link" icon={<ImportOutlined />} />
+        <UDescriptions.Item label="Линейка продуктов">
+          {product.productLine && (
+            <UButton href={`/product-lines/${product.productLine.id}`} type="link" icon={<ImportOutlined />} />
           )}
-          {product.company ? product.company.name : <Badge status="warning" text="БЕЗ ПРОИЗВОДИТЕЛЯ" />}
+          {product.productLine ? product.productLine.name : <Badge status="warning" text="БЕЗ ЛИНЕЙКИ" />}
         </UDescriptions.Item>
         <UDescriptions.Item label="Название">{product.name}</UDescriptions.Item>
         <UDescriptions.Item label="Осталось штук">{product.count}</UDescriptions.Item>

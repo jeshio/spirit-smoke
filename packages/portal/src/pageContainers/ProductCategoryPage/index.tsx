@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import UMetaTitle from '@/ui-components/UMetaTitle'
-import CCompaniesSelector from '@/containers/CCompaniesSelector'
+import CProductLinesSelector from '@/containers/CProductLinesSelector'
 import UContent from '@/ui-components/UContent'
 import { useProductsCatalogLazyQuery, useProductCategoryMinimumItemLazyQuery } from '@/gql/__generated__/types'
 import WProductCard from '@/ui-widgets/WProductCard'
@@ -44,7 +44,7 @@ const ProductCategoryPageContainer: React.FunctionComponent<IProductCategoryPage
     })
   }, [currentCategorySlug, getProductCategory, getProductsCatalog])
   const filters = useReactiveVar(productCategoriesFiltersVar)
-  const selectedCompanyIds = filters[currentCategorySlug]?.selectedCompanyIds || []
+  const selectedProductLineIds = filters[currentCategorySlug]?.selectedProductLineIds || []
   const selectedFeatureIds = filters[currentCategorySlug]?.selectedFeatureIds || []
   const productsCatalogItems = useMemo(
     () =>
@@ -52,12 +52,12 @@ const ProductCategoryPageContainer: React.FunctionComponent<IProductCategoryPage
         .filter((product) => {
           const productFeatureIds = product.features.map(({ id }) => id)
           return (
-            (selectedCompanyIds.length === 0 || selectedCompanyIds.includes(product.company.id)) &&
+            (selectedProductLineIds.length === 0 || selectedProductLineIds.includes(product.productLine.id)) &&
             (selectedFeatureIds.length === 0 || selectedFeatureIds.every((id) => productFeatureIds.includes(id)))
           )
         })
         .map((product) => <WProductCard key={product.id} product={product} />) || [],
-    [productsCatalogRequest.data?.productsByCategory, selectedCompanyIds, selectedFeatureIds]
+    [productsCatalogRequest.data?.productsByCategory, selectedProductLineIds, selectedFeatureIds]
   )
 
   if (isServer() && !productsCatalogRequest.called && !productCategoryRequest.called) {
@@ -82,7 +82,7 @@ const ProductCategoryPageContainer: React.FunctionComponent<IProductCategoryPage
 
       <WProductsSlider items={productsCatalogItems.slice(0, 9)} />
 
-      <CCompaniesSelector productCategorySlug={currentCategorySlug} />
+      <CProductLinesSelector productCategorySlug={currentCategorySlug} />
 
       <UContent forwardStyleConfig={{ mt: [5] }}>
         <UTitle level={2}>Новые поступления</UTitle>

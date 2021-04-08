@@ -27,7 +27,7 @@ export const Title = styled(
   })
 )``
 
-export const CompanyName = styled(
+export const ProductLineName = styled(
   getUBlockWithProps({
     styleConfig: {
       fontSize: [12, 15],

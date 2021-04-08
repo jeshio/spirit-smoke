@@ -104,7 +104,7 @@ export const Title = styled(
   overflow: hidden;
 `
 
-export const CompanyName = styled(
+export const ProductLineName = styled(
   getUBlockWithProps({
     tag: createComponentWithPropsOmit('h6', ['color']),
     styleConfig: {

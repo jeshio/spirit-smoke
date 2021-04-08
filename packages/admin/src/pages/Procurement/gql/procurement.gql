@@ -12,7 +12,7 @@ fragment ProcurementItemPage on Procurement {
       id
       name
       price
-      company {
+      productLine {
         id
         name
       }

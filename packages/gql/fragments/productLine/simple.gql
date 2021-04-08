@@ -1,0 +1,10 @@
+fragment ProductLineSimple on IProductLine {
+  id
+  name
+  slug
+  country
+  color
+  barcode
+  createdAt
+  updatedAt
+}

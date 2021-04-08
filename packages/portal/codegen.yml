@@ -1,6 +1,8 @@
 overwrite: true
 schema:
-  - http://wsl.ru:4000/graphql
+  - http://apollo:4000/graphql:
+      headers:
+        Authorization: Bearer teStt
   - src/gql/cache/client-schema.gql
 documents:
   - src/**/*.gql

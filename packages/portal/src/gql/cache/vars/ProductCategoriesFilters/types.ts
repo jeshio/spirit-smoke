@@ -1,6 +1,6 @@
 export interface IProductCategoriesFilters {
   [productCategorySlug: string]: {
-    selectedCompanyIds: string[]
+    selectedProductLineIds: string[]
     selectedFeatureIds: string[]
   }
 }

@@ -1,4 +1,4 @@
-mutation createCheckoutOrder($phoneNumber: String!, $address: String!, $deliveryTime: String!, $intercomCode: String, $products: [OrderProductInput!]!) {
+mutation createCheckoutOrder($phoneNumber: String!, $address: String!, $deliveryTime: DateTime!, $intercomCode: String, $products: [OrderProductInput!]!) {
   createOrder(input: {
     address: $address
     intercomCode: $intercomCode

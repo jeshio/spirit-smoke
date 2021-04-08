@@ -22,7 +22,7 @@ const authLink = setContext((_, { headers }) => {
 
 const link = from([errorHandler, authLink, httpLink])
 
-const models = ['products', 'companies', 'productCategories', 'features']
+const models = ['products', 'productLines', 'productCategories', 'features']
 
 const createApolloClient = () => {
   const client = new ApolloClient({

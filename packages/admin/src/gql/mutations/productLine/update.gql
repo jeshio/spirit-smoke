@@ -1,0 +1,8 @@
+
+#import "@@/gql/fragments/productLine/simple.gql"
+
+mutation updateProductLine($id: ID!, $input: ProductLineInput!) {
+	updateProductLine(id: $id, input: $input) {
+		...ProductLineSimple
+	}
+}

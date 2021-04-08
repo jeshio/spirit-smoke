@@ -1,0 +1,52 @@
+extend type Query {
+  productLines: [ProductLine!]!
+  productLine(id: ID!): ProductLine
+}
+
+extend type Mutation {
+  createProductLine(input: ProductLineInput!): ProductLineSimple!
+  updateProductLine(id: ID!, input: ProductLineInput!): ProductLineSimple!
+  deleteProductLine(id: ID!): ID!
+}
+
+input ProductLineInput {
+  country: String
+  color: String
+  barcode: String
+  name: String!
+  slug: String!
+}
+
+interface IProductLine {
+  id: ID!
+  country: String
+  color: String!
+  barcode: String
+  name: String!
+  slug: String!
+  createdAt: Date!
+  updatedAt: Date!
+}
+
+type ProductLineSimple implements IProductLine {
+  id: ID!
+  country: String
+  color: String!
+  barcode: String
+  name: String!
+  slug: String!
+  createdAt: Date!
+  updatedAt: Date!
+}
+
+type ProductLine implements IProductLine {
+  id: ID!
+  country: String
+  color: String!
+  barcode: String
+  name: String!
+  slug: String!
+  products: [Product!]!
+  createdAt: Date!
+  updatedAt: Date!
+} 

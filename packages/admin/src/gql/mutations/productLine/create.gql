@@ -1,0 +1,8 @@
+
+#import "@@/gql/fragments/productLine/simple.gql"
+
+mutation createProductLine($input: ProductLineInput!) {
+	createProductLine(input: $input) {
+		...ProductLineSimple
+	}
+}

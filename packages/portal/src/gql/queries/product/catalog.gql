@@ -15,7 +15,7 @@ query productsCatalog($categorySlug: ID!) {
       imageUrl
       name
     }
-    company {
+    productLine {
       id
       name
       color

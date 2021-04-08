@@ -33,18 +33,18 @@ const columns = ({
     width: 50,
   },
   {
-    title: 'Производитель',
+    title: 'Линейка продуктов',
     width: 250,
-    field: ['company', 'name'],
-    render: (name, { companyId }) =>
+    field: ['productLine', 'name'],
+    render: (name, { productLineId }) =>
       name ? (
         <>
-          <UButton href={`/companies/${companyId}`} type="link" icon={<ImportOutlined />} />
+          <UButton href={`/product-lines/${productLineId}`} type="link" icon={<ImportOutlined />} />
           {name}
         </>
       ) : (
         <Tooltip title="Продукт невидим для клиентов">
-          <Badge status="warning" text="БЕЗ ПРОИЗВОДИТЕЛЯ" />
+          <Badge status="warning" text="БЕЗ ЛИНЕЙКИ ПРОДУКТОВ" />
         </Tooltip>
       ),
   },
@@ -187,7 +187,7 @@ const ProductListPage: React.FunctionComponent<IProductListPageProps> = () => {
         }}
         tableProps={{
           invalidRowCondition: {
-            company: undefined,
+            productLine: undefined,
             productCategory: undefined,
           },
         }}

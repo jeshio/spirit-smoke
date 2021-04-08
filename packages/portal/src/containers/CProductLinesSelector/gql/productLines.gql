@@ -1,0 +1,13 @@
+#import "@/gql/fragments/productLine/minimum.gql"
+
+fragment ProductLinesSelector on ProductLine {
+  ...ProductLineMinimum
+  color
+}
+
+query ProductLinesSelector($productCategorySlug: ID!) {
+  productLines {
+    ...ProductLinesSelector
+    isSelectedForProductCategory(productCategorySlug: $productCategorySlug) @client
+  }
+}

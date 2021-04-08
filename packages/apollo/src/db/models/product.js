@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       Product.belongsTo(models.productCategory)
-      Product.belongsTo(models.company)
+      Product.belongsTo(models.productLine)
       Product.belongsToMany(models.feature, { through: models.productFeature, timestamps: false })
       Product.belongsToMany(models.discount, { through: 'productDiscounts', timestamps: false })
       Product.belongsToMany(models.order, { through: models.orderProduct, timestamps: false })

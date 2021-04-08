@@ -1,10 +1,6 @@
 
       export type PossibleTypesResultData = {
   "possibleTypes": {
-    "ICompany": [
-      "CompanySimple",
-      "Company"
-    ],
     "IDiscount": [
       "DiscountSimple",
       "Discount"
@@ -31,6 +27,10 @@
     "IProductCategory": [
       "ProductCategorySimple",
       "ProductCategory"
+    ],
+    "IProductLine": [
+      "ProductLineSimple",
+      "ProductLine"
     ],
     "SearchResult": [
       "NotFound",
@@ -40,10 +40,6 @@
 };
       const result: PossibleTypesResultData = {
   "possibleTypes": {
-    "ICompany": [
-      "CompanySimple",
-      "Company"
-    ],
     "IDiscount": [
       "DiscountSimple",
       "Discount"
@@ -70,6 +66,10 @@
     "IProductCategory": [
       "ProductCategorySimple",
       "ProductCategory"
+    ],
+    "IProductLine": [
+      "ProductLineSimple",
+      "ProductLine"
     ],
     "SearchResult": [
       "NotFound",

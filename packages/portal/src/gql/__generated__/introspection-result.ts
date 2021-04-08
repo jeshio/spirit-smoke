@@ -1,9 +1,12 @@
 
       export type PossibleTypesResultData = {
   "possibleTypes": {
-    "ICompany": [
-      "CompanySimple",
-      "Company"
+    "IDiscount": [
+      "DiscountSimple",
+      "Discount"
+    ],
+    "IError": [
+      "NotFound"
     ],
     "IFeature": [
       "FeatureSimple",
@@ -24,14 +27,25 @@
     "IProductCategory": [
       "ProductCategorySimple",
       "ProductCategory"
+    ],
+    "IProductLine": [
+      "ProductLineSimple",
+      "ProductLine"
+    ],
+    "SearchResult": [
+      "NotFound",
+      "Product"
     ]
   }
 };
       const result: PossibleTypesResultData = {
   "possibleTypes": {
-    "ICompany": [
-      "CompanySimple",
-      "Company"
+    "IDiscount": [
+      "DiscountSimple",
+      "Discount"
+    ],
+    "IError": [
+      "NotFound"
     ],
     "IFeature": [
       "FeatureSimple",
@@ -52,6 +66,14 @@
     "IProductCategory": [
       "ProductCategorySimple",
       "ProductCategory"
+    ],
+    "IProductLine": [
+      "ProductLineSimple",
+      "ProductLine"
+    ],
+    "SearchResult": [
+      "NotFound",
+      "Product"
     ]
   }
 };

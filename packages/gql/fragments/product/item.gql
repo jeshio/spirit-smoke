@@ -6,8 +6,8 @@ fragment ProductItem on Product {
       ...FeatureMinimum
     }
   }
-  company {
-    ...CompanyMinimum
+  productLine {
+    ...ProductLineMinimum
   }
   productFeatures {
     ...ProductFeatureSimple

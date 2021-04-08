@@ -50,7 +50,7 @@ const ProductItemPage: React.FunctionComponent<IProductItemPageProps> = (props) 
 
   return (
     <UPageContainer
-      title={product.company ? `${product.company.name}, ${product.name}` : product.name}
+      title={product.productLine ? `${product.productLine.name}, ${product.name}` : product.name}
       extra={
         <>
           <UButton onClick={switchAddToProcurementModalVisible} icon={<EditFilled />}>

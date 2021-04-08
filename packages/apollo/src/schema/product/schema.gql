@@ -26,7 +26,7 @@ input ProductInput {
   imageUrl: String
   price: Int!
   productCategoryId: ID!
-  companyId: ID!
+  productLineId: ID!
   weight: Int!
   features: [ProductFeatureInput!]
 }
@@ -42,7 +42,7 @@ interface IProduct {
   price: Int!
   count: Int!
   productCategoryId: ID!
-  companyId: ID!
+  productLineId: ID!
   createdAt: Date!
   updatedAt: Date!
 }
@@ -58,7 +58,7 @@ type ProductSimple implements IProduct {
   price: Int!
   count: Int!
   productCategoryId: ID!
-  companyId: ID!
+  productLineId: ID!
   createdAt: Date!
   updatedAt: Date!
 }
@@ -74,11 +74,11 @@ type Product implements IProduct {
   price: Int!
   count: Int!
   productCategoryId: ID!
-  companyId: ID!
+  productLineId: ID!
   createdAt: Date!
   updatedAt: Date!
   waitingCount: Int! # количество продукта, ожидаемое от ближайших поставок
-  company: Company
+  productLine: ProductLine
   productCategory: ProductCategory
   features: [Feature!]!
   discounts: [Discount!]!

@@ -8,7 +8,7 @@ import { ProductCategoryItemPageFragment, useFeatureMinimumListQuery } from '@/g
 import UBlock from '@/ui-components/UBlock'
 import UItemsSelector from '@/ui-components/UItemsSelector'
 import updateSlugOnChangeTitle from '@/helpers/updateSlugOnChangeTitle'
-import ProductsTable from '../Company/components/ProductsTable'
+import ProductsTable from '../ProductLine/components/ProductsTable'
 
 export interface IProductCategoryFormProps {
   isUpdate?: boolean

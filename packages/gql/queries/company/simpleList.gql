@@ -1,7 +1,0 @@
-#import "../../fragments/company/simple.gql"
-
-query companySimpleList {
-  companies {
-    ...CompanySimple
-  }
-}

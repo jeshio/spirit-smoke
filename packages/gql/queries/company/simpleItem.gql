@@ -1,7 +1,0 @@
-#import "../../fragments/company/simple.gql"
-
-query companySimpleItem($id: ID!) {
-  company(id: $id) {
-    ...CompanySimple
-  }
-}

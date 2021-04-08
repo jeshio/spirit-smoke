@@ -1,0 +1,20 @@
+#import "@/gql/fragments/productLine/minimum.gql"
+#import "@/gql/fragments/product/minimum.gql"
+
+fragment ProductLineListPage on ProductLine {
+  ...ProductLineMinimum
+  slug
+  country
+  color
+  barcode
+  createdAt
+  products {
+    ...ProductMinimum
+  }
+}
+
+query productLineListPage {
+  productLines {
+    ...ProductLineListPage
+  }
+}

@@ -32,7 +32,7 @@ const CartPage: React.FunctionComponent<ICartPageProps> = () => {
   ])
   const makeProductsList = useCallback(
     (productCategoryId) =>
-      sortBy(productsByCategory[productCategoryId], ['company.name', 'name']).map((item) => (
+      sortBy(productsByCategory[productCategoryId], ['productLine.name', 'name']).map((item) => (
         <CartItem key={item.id} product={item} />
       )) || [],
     [productsByCategory]
