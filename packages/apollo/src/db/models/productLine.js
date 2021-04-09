@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       ProductLine.hasMany(models.product, { onDelete: 'CASCADE' })
+      ProductLine.belongsTo(models.productCategory)
     }
   }
   ProductLine.init({
@@ -44,6 +45,22 @@ module.exports = (sequelize, DataTypes) => {
         is: /^#(([\dabcdef]{3})|([\dabcdef]{6}))$/i,
       },
       defaultValue: '#000',
+    },
+    weight: {
+      type: DataTypes.INTEGER,
+      validate: {
+        isInt: true,
+        min: 0,
+      },
+      defaultValue: 0,
+    },
+    price: {
+      type: DataTypes.INTEGER,
+      validate: {
+        isInt: true,
+        min: 0,
+      },
+      defaultValue: 0,
     },
   }, {
     sequelize,

@@ -10,16 +10,36 @@ const resolvers = {
     createProductLine: (parent, {
       input: {
         name, country, barcode, color, slug,
+        weight,
+        price,
+        productCategoryId,
       },
     }, { models }) => models.productLine.create({
-      name, country, barcode, color, slug,
+      name,
+      country,
+      barcode,
+      color,
+      slug,
+      weight,
+      price,
+      productCategoryId,
     }),
     updateProductLine: (parent, {
       id, input: {
         name, country, barcode, color, slug,
+        weight,
+        price,
+        productCategoryId,
       },
     }, { models }) => models.productLine.update({
-      name, country, barcode, color, slug,
+      name,
+      country,
+      barcode,
+      color,
+      slug,
+      weight,
+      price,
+      productCategoryId,
     }, {
       where: { id }, returning: true,
     }).then(([, [productLine]]) => productLine),
@@ -32,6 +52,8 @@ const resolvers = {
 
   ProductLine: {
     products: async (productLine) => productLine.getProducts(), // TODO: сделать loader
+    productCategory: async (productLine, args, { loaders }) =>
+      (productLine.productCategoryId ? loaders.productCategory.load(productLine.productCategoryId) : null),
   },
 }
 

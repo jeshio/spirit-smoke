@@ -3,13 +3,15 @@ import UPageContainer from '@/ui-components/UPageContainer'
 import { useProductLineItemPageQuery, useDeleteProductLineMutation } from '@/gql/__generated__/types'
 import { RouteComponentProps } from 'react-router'
 import useStableQuery from '@/hooks/gql/useStableQuery'
-import { Card } from 'antd'
+import { Badge, Card } from 'antd'
 import UDescriptions from '@/ui-components/UDescriptions'
-import { EditFilled, DeleteFilled } from '@ant-design/icons'
+import { EditFilled, DeleteFilled, ImportOutlined } from '@ant-design/icons'
 import UButton from '@/ui-components/UButton'
 import URow from '@/ui-components/URow'
 import UCol from '@/ui-components/UCol'
 import UPopconfirm from '@/ui-components/UPopconfirm'
+import UPrice from '@/ui-components/UPrice'
+import UWeight from '@/ui-components/UWeight'
 import ProductsTable from './components/ProductsTable'
 
 interface ProductLineItemPageProps
@@ -63,8 +65,26 @@ const ProductLineItemPage: React.FunctionComponent<ProductLineItemPageProps> = (
       <Card title={`Информация о линейке продуктов (ID ${productLine.id})`}>
         <UDescriptions>
           <UDescriptions.Item label="Название">{productLine.name}</UDescriptions.Item>
-          <UDescriptions.Item label="Штрихкод">{productLine.barcode}</UDescriptions.Item>
-          <UDescriptions.Item label="Страна">{productLine.country}</UDescriptions.Item>
+          <UDescriptions.Item label="Категория">
+            {productLine.productCategory && (
+              <UButton
+                href={`/product-categories/${productLine.productCategory.id}`}
+                type="link"
+                icon={<ImportOutlined />}
+              />
+            )}
+            {productLine.productCategory ? (
+              productLine.productCategory.name
+            ) : (
+              <Badge status="warning" text="БЕЗ КАТЕГОРИИ" />
+            )}
+          </UDescriptions.Item>
+          <UDescriptions.Item label="Текущая цена">
+            <UPrice>{productLine.price}</UPrice>
+          </UDescriptions.Item>
+          <UDescriptions.Item label="Вес">
+            <UWeight>{productLine.weight}</UWeight>
+          </UDescriptions.Item>
           <UDescriptions.Item label="Цвет в интерфейсе">{productLine.color}</UDescriptions.Item>
           <UDescriptions.Item label="slug">{productLine.slug}</UDescriptions.Item>
         </UDescriptions>

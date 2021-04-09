@@ -15,6 +15,9 @@ input ProductLineInput {
   barcode: String
   name: String!
   slug: String!
+  price: Int
+  weight: Int
+  productCategoryId: ID!
 }
 
 interface IProductLine {
@@ -24,6 +27,9 @@ interface IProductLine {
   barcode: String
   name: String!
   slug: String!
+  price: Int!
+  weight: Int!
+  productCategoryId: ID
   createdAt: Date!
   updatedAt: Date!
 }
@@ -35,6 +41,9 @@ type ProductLineSimple implements IProductLine {
   barcode: String
   name: String!
   slug: String!
+  price: Int!
+  weight: Int!
+  productCategoryId: ID
   createdAt: Date!
   updatedAt: Date!
 }
@@ -46,7 +55,11 @@ type ProductLine implements IProductLine {
   barcode: String
   name: String!
   slug: String!
-  products: [Product!]!
+  price: Int!
+  weight: Int!
+  productCategoryId: ID
   createdAt: Date!
   updatedAt: Date!
+  productCategory: ProductCategory
+  products: [Product!]!
 } 

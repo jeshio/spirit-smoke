@@ -1,5 +1,6 @@
 #import "@/gql/fragments/productLine/simple.gql"
 #import "@/gql/fragments/product/minimum.gql"
+#import "@/gql/fragments/productCategory/minimum.gql"
 
 fragment ProductLineItemPage on ProductLine {
   ...ProductLineSimple
@@ -7,6 +8,9 @@ fragment ProductLineItemPage on ProductLine {
     ...ProductMinimum
     price
     count
+  }
+  productCategory {
+    ...ProductCategoryMinimum
   }
 }
 

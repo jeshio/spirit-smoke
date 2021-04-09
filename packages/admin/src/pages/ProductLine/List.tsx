@@ -3,7 +3,7 @@ import * as React from 'react'
 import { IColumn } from '@/ui-components/UTable/types'
 import { Link } from 'umi'
 import UButton from '@/ui-components/UButton'
-import { EditFilled, DeleteFilled } from '@ant-design/icons'
+import { EditFilled, DeleteFilled, ImportOutlined } from '@ant-design/icons'
 import UPopconfirm from '@/ui-components/UPopconfirm'
 import {
   ProductLineListPageFragment,
@@ -12,6 +12,9 @@ import {
   ProductLineListPageDocument,
 } from '@/gql/__generated__/types'
 import ListPageBuilder, { ListColumnsType } from '@/builders/ListPage'
+import UPrice from '@/ui-components/UPrice'
+import UWeight from '@/ui-components/UWeight'
+import { Badge, Tooltip } from 'antd'
 
 const columns: ListColumnsType = ({ deleteItem }): IColumn<ProductLineListPageFragment>[] => [
   {
@@ -25,25 +28,42 @@ const columns: ListColumnsType = ({ deleteItem }): IColumn<ProductLineListPageFr
     render: (name, { id }) => <Link to={`/product-lines/${id}`}>{name}</Link>,
   },
   {
-    title: 'Slug',
-    field: 'slug',
-    responsive: ['xl'],
+    title: 'Категория',
+    field: ['productCategory', 'name'],
+    render: (name, { productCategoryId }) =>
+      name ? (
+        <>
+          <UButton href={`/product-categories/${productCategoryId}`} type="link" icon={<ImportOutlined />} />
+          {name}
+        </>
+      ) : (
+        <Tooltip title="Линейка невидима для клиентов">
+          <Badge status="warning" text="БЕЗ КАТЕГОРИИ" />
+        </Tooltip>
+      ),
   },
   {
-    title: 'Штрихкод',
-    field: 'barcode',
+    title: 'Текущая цена',
+    field: 'price',
+    render: (price) => <UPrice>{price}</UPrice>,
   },
   {
-    title: 'Цвет',
-    field: 'color',
+    title: 'Вес',
+    field: 'weight',
+    render: (weight) => <UWeight>{weight}</UWeight>,
   },
-  {
-    title: 'Страна',
-    field: 'country',
-  },
+  // {
+  //   title: 'Цвет',
+  //   field: 'color',
+  // },
   {
     title: 'Создан',
     field: 'createdAt',
+  },
+  {
+    title: 'Slug',
+    field: 'slug',
+    responsive: ['xl'],
   },
   {
     title: '',

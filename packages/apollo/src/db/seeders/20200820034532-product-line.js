@@ -3,7 +3,7 @@ import fakerUnique from '../../utils/fakerUnique'
 
 const devRows = [...Array(21)].map(() => (
   {
-    name: faker.commerce.department,
+    name: faker.commerce.department(),
     barcode: fakerUnique(faker.finance.bic, [Math.random() * 5], {
       maxRetries: 1000,
     }),

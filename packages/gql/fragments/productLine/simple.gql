@@ -5,6 +5,9 @@ fragment ProductLineSimple on IProductLine {
   country
   color
   barcode
+  price
+  weight
+  productCategoryId
   createdAt
   updatedAt
 }
