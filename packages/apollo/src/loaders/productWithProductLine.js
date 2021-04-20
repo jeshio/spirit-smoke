@@ -1,6 +1,6 @@
 import DataLoader from 'dataloader'
 
-export const batchProductsWithProductLine = async (keys, models) => {
+export const batchProducts = async (keys, models) => {
   const products = await models.product.findAll({
     where: {
       id: keys,
@@ -15,4 +15,4 @@ export const batchProductsWithProductLine = async (keys, models) => {
 }
 
 export default (models) => new DataLoader((keys) =>
-  batchProductsWithProductLine(keys, models))
+  batchProducts(keys, models))

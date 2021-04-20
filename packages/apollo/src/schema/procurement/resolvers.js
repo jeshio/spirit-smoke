@@ -127,10 +127,13 @@ resolvers.Procurement.saleAmount = async (...args) => {
   const [procurement,, { models }] = args
   const productProcurements = await resolvers.Procurement.productProcurements(procurement, {
     include: [
-      { model: models.product, attributes: ['price'] },
+      { model: models.product, attributes: ['price'], include: { model: models.productLine, attributes: ['price'] } },
     ],
   })
-  return productProcurements.reduce((base, { count, product: { price } }) => base + (price || 0) * count, 0)
+  return productProcurements.reduce(
+    (base, { count, product: { price, productLine } }) =>
+      base + ((price === null ? productLine?.price : price) || 0) * count, 0,
+  )
 }
 
 resolvers.Procurement.margin = async (...args) => {

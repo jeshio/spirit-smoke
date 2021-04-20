@@ -5,9 +5,9 @@ import URow from '@/ui-components/URow'
 import UCol from '@/ui-components/UCol'
 import UButton from '@/ui-components/UButton'
 import {
+  ProductItemFragment,
   useProductCategoryMinimumListQuery,
   useProductLineMinimumListQuery,
-  ProductItemPageFragment,
 } from '@/gql/__generated__/types'
 import numberToPrice from '@@utils/src/numberToPrice'
 import TextArea from 'antd/lib/input/TextArea'
@@ -20,7 +20,7 @@ export interface IProductFormProps {
   loading?: boolean
   onSubmit: (values: Record<string, string>) => void
   isUpdate?: boolean
-  product?: ProductItemPageFragment
+  product?: ProductItemFragment
 }
 
 const ProductForm: React.FunctionComponent<IProductFormProps> = ({
@@ -38,7 +38,6 @@ const ProductForm: React.FunctionComponent<IProductFormProps> = ({
         featureId,
       })),
       price: numberToPrice(parseFloat(fields.price)),
-      weight: Number(fields.weight || 0),
     })
   const featureOptions =
     React.useMemo(
@@ -55,13 +54,34 @@ const ProductForm: React.FunctionComponent<IProductFormProps> = ({
   const initialSelectedFeatureIds = React.useMemo(() => product?.productFeatures.map(({ feature: { id } }) => id), [
     product,
   ])
-  const changeNameHandler = (fields: any, form: FormInstance) => (e: React.ChangeEvent<HTMLInputElement>) => {
+
+  const changeSlugDependencyHandler = (fields: any, form: FormInstance) => {
     const productLine = productLineRequest.data?.productLines.find(({ id }) => id === fields.productLineId)
-    let name = e.target.value
+    let { name = '' } = fields
     if (productLine) {
       name = `${productLine.name} ${name}`
     }
     return updateSlugOnChangeTitle(name, form)
+  }
+
+  const nameChangeHandler = (fields: any, form: FormInstance) => (e: React.ChangeEvent<HTMLInputElement>) => {
+    return changeSlugDependencyHandler(
+      {
+        ...fields,
+        name: e.target.value,
+      },
+      form
+    )
+  }
+
+  const productLineChangeHandler = (fields: any, form: FormInstance) => (productLineId: any) => {
+    return changeSlugDependencyHandler(
+      {
+        ...fields,
+        productLineId,
+      },
+      form
+    )
   }
 
   return (
@@ -69,7 +89,10 @@ const ProductForm: React.FunctionComponent<IProductFormProps> = ({
       {(fields, form) => {
         const productLineWarning = isUpdate && !product?.productLine && fields.productLineId === product?.productLineId
         const productCategoryWarning =
-          isUpdate && !product?.productCategory && fields.productCategoryId === product?.productCategoryId
+          isUpdate &&
+          !product?.productCategory &&
+          !product?.productLine?.productCategory &&
+          fields.productCategoryId === null
         const featuresSelectorIsDisabled = isUpdate && product?.productCategoryId !== fields.productCategoryId
         return (
           <Card loading={categoriesRequest.loading || productLineRequest.loading}>
@@ -83,7 +106,7 @@ const ProductForm: React.FunctionComponent<IProductFormProps> = ({
                   help={productLineWarning && 'Эта линейка продуктов удалена, продукт невидим'}
                   validateStatus={(productLineWarning && 'warning') || undefined}
                 >
-                  <Select>
+                  <Select onChange={productLineChangeHandler(fields, form)}>
                     {productLineRequest.data?.productLines.map(({ id, name }) => (
                       <Select.Option value={id} key={id}>
                         ({id}) {name}
@@ -94,12 +117,14 @@ const ProductForm: React.FunctionComponent<IProductFormProps> = ({
                 <UForm.Item
                   label="Категория"
                   name="productCategoryId"
-                  required
-                  initialValue={product?.productCategoryId}
-                  help={productCategoryWarning && 'Эта категория удалена, продукт невидим'}
+                  initialValue={product?.productCategoryId || null}
+                  help={productCategoryWarning && 'Категория не установлена, продукт невидим'}
                   validateStatus={(productCategoryWarning && 'warning') || undefined}
                 >
                   <Select>
+                    <Select.Option value={null as any} key="productLine">
+                      Стандартная категория линейки
+                    </Select.Option>
                     {categoriesRequest.data?.productCategories.map(({ id, name }) => (
                       <Select.Option value={id} key={id}>
                         ({id}) {name}
@@ -111,7 +136,7 @@ const ProductForm: React.FunctionComponent<IProductFormProps> = ({
                   <Input />
                 </UForm.Item>
                 <UForm.Item label="Название" name="name" required initialValue={product?.name}>
-                  <Input onChange={changeNameHandler(fields, form)} />
+                  <Input onChange={nameChangeHandler(fields, form)} />
                 </UForm.Item>
                 <UForm.Item label="Штрихкод" name="barcode" initialValue={product?.barcode}>
                   <Input onPressEnter={(e) => e.preventDefault()} />
@@ -136,13 +161,23 @@ const ProductForm: React.FunctionComponent<IProductFormProps> = ({
                 </UForm.Item>
               </UCol>
               <UCol md={12} xxl={8}>
-                <UForm.Item label="Вес (г)" name="weight" initialValue={product?.weight || 0}>
-                  <Input type="number" />
+                <UForm.Item
+                  label="Вес (г)"
+                  name="weight"
+                  initialValue={product?.weightIsSpecial ? product?.weight : null}
+                  help="Оставьте пустым, чтобы использовать вес из линейки"
+                >
+                  <InputNumber min={0} />
                 </UForm.Item>
                 <UForm.Item label="Количество" help="Добавляется поставками, убавляется заказами и списаниями">
                   <InputNumber name="count" disabled value={isUpdate ? product?.count : 0} />
                 </UForm.Item>
-                <UForm.Item label="Цена (₽)" required name="price" initialValue={product?.price}>
+                <UForm.Item
+                  label="Цена (₽)"
+                  name="price"
+                  initialValue={product?.priceIsSpecial ? product?.price : null}
+                  help="Оставьте пустым, чтобы использовать цену из линейки"
+                >
                   <InputNumber min={0} />
                 </UForm.Item>
                 <UForm.Item

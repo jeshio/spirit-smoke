@@ -3,5 +3,7 @@
 query productItemPage($id: ID!) {
   product(id: $id) {
     ...ProductItem
+    weightIsSpecial
+    priceIsSpecial
   }
 }

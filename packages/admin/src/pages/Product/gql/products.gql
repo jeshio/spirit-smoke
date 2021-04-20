@@ -13,6 +13,8 @@ fragment ProductsListPage on Product {
   price
   count
   weight
+  weightIsSpecial
+  priceIsSpecial
   waitingCount
   createdAt
   productCategory {
@@ -20,6 +22,9 @@ fragment ProductsListPage on Product {
   }
   productLine {
     ...ProductLineMinimum
+    productCategory {
+    ...ProductCategoryMinimum
+    }
   }
   productFeatures {
     ...ProductFeatureSimple

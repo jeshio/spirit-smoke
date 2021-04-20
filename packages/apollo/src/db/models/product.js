@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Product.belongsTo(models.productCategory)
+      Product.belongsTo(models.productCategory, { foreignKey: { allowNull: true } })
       Product.belongsTo(models.productLine)
       Product.belongsToMany(models.feature, { through: models.productFeature, timestamps: false })
       Product.belongsToMany(models.discount, { through: 'productDiscounts', timestamps: false })
@@ -145,12 +145,10 @@ module.exports = (sequelize, DataTypes) => {
         isInt: true,
         min: 0,
       },
-      defaultValue: 0,
     },
     price: {
       type: DataTypes.INTEGER,
       validate: {
-        notEmpty: true,
         isInt: true,
         min: 0,
       },

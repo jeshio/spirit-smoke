@@ -64,7 +64,12 @@ const resolvers = {
   },
 
   ProductCategory: {
-    products: async (productCategory) => productCategory.getProducts(),
+    products: async (productCategory) => {
+      const products = await productCategory.getProducts()
+      // TODO: добавить продукты из линеек, у которых productCategoryId === null
+
+      return [...products]
+    },
     features: async (productCategory, args, { loaders }) => {
       const featureIds = await loaders.featureIdsByProductCategory.load(productCategory.id)
       const features = await loaders.feature.loadMany(featureIds)

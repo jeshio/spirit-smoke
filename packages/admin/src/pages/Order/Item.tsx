@@ -37,20 +37,23 @@ const OrderItemPage: React.FunctionComponent<IOrderItemPageProps> = (props) => {
   const order = query?.data?.order
   const productsList = useMemo(
     () =>
-      order?.orderProducts.map(({ product, productsCount }) => (
-        <Item key={product.id}>
-          <ItemTitle>
-            <Link to={`/products/${product.id}`}>{product.name}</Link>
-          </ItemTitle>
-          <div>
-            <ItemProductsCount>x{productsCount}</ItemProductsCount>
-            {' по '}
-            <ItemProductPrice>{product.price} ₽</ItemProductPrice>
-            {', всего '}
-            <ItemProductTotalPrice>{product.price * productsCount} ₽</ItemProductTotalPrice>
-          </div>
-        </Item>
-      )) || [],
+      order?.orderProducts.map(
+        ({ product, productsCount }) =>
+          (
+            <Item key={product.id}>
+              <ItemTitle>
+                <Link to={`/products/${product.id}`}>{product.name}</Link>
+              </ItemTitle>
+              <div>
+                <ItemProductsCount>x{productsCount}</ItemProductsCount>
+                {' по '}
+                <ItemProductPrice>{product.price} ₽</ItemProductPrice>
+                {', всего '}
+                <ItemProductTotalPrice>{(product.price || 0) * productsCount} ₽</ItemProductTotalPrice>
+              </div>
+            </Item>
+          ) || []
+      ),
     [order]
   )
 

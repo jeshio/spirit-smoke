@@ -24,10 +24,10 @@ input ProductInput {
   slug: String!
   description: String!
   imageUrl: String
-  price: Int!
-  productCategoryId: ID!
+  price: Int
+  productCategoryId: ID
   productLineId: ID!
-  weight: Int!
+  weight: Int
   features: [ProductFeatureInput!]
 }
 
@@ -38,10 +38,14 @@ interface IProduct {
   slug: String!
   description: String!
   imageUrl: String!
-  weight: Int!
-  price: Int!
+  weight: Int
+  # для продукта задан особенный вес
+  weightIsSpecial: Boolean!
+  price: Int
+  # для продукта задана особенная цена
+  priceIsSpecial: Boolean!
   count: Int!
-  productCategoryId: ID!
+  productCategoryId: ID
   productLineId: ID!
   createdAt: Date!
   updatedAt: Date!
@@ -54,10 +58,12 @@ type ProductSimple implements IProduct {
   slug: String!
   description: String!
   imageUrl: String!
-  weight: Int!
-  price: Int!
+  weight: Int
+  weightIsSpecial: Boolean!
+  price: Int
+  priceIsSpecial: Boolean!
   count: Int!
-  productCategoryId: ID!
+  productCategoryId: ID
   productLineId: ID!
   createdAt: Date!
   updatedAt: Date!
@@ -70,10 +76,12 @@ type Product implements IProduct {
   slug: String!
   description: String!
   imageUrl: String!
-  weight: Int!
-  price: Int!
+  weight: Int
+  weightIsSpecial: Boolean!
+  price: Int
+  priceIsSpecial: Boolean!
   count: Int!
-  productCategoryId: ID!
+  productCategoryId: ID
   productLineId: ID!
   createdAt: Date!
   updatedAt: Date!

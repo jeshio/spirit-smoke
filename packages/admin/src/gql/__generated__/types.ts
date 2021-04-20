@@ -675,10 +675,10 @@ export type ProductInput = {
   slug: Scalars['String'];
   description: Scalars['String'];
   imageUrl?: Maybe<Scalars['String']>;
-  price: Scalars['Int'];
-  productCategoryId: Scalars['ID'];
+  price?: Maybe<Scalars['Int']>;
+  productCategoryId?: Maybe<Scalars['ID']>;
   productLineId: Scalars['ID'];
-  weight: Scalars['Int'];
+  weight?: Maybe<Scalars['Int']>;
   features?: Maybe<Array<ProductFeatureInput>>;
 };
 
@@ -689,10 +689,12 @@ export type IProduct = {
   slug: Scalars['String'];
   description: Scalars['String'];
   imageUrl: Scalars['String'];
-  weight: Scalars['Int'];
-  price: Scalars['Int'];
+  weight?: Maybe<Scalars['Int']>;
+  weightIsSpecial: Scalars['Boolean'];
+  price?: Maybe<Scalars['Int']>;
+  priceIsSpecial: Scalars['Boolean'];
   count: Scalars['Int'];
-  productCategoryId: Scalars['ID'];
+  productCategoryId?: Maybe<Scalars['ID']>;
   productLineId: Scalars['ID'];
   createdAt: Scalars['DateTime'];
   updatedAt: Scalars['DateTime'];
@@ -706,10 +708,12 @@ export type ProductSimple = IProduct & {
   slug: Scalars['String'];
   description: Scalars['String'];
   imageUrl: Scalars['String'];
-  weight: Scalars['Int'];
-  price: Scalars['Int'];
+  weight?: Maybe<Scalars['Int']>;
+  weightIsSpecial: Scalars['Boolean'];
+  price?: Maybe<Scalars['Int']>;
+  priceIsSpecial: Scalars['Boolean'];
   count: Scalars['Int'];
-  productCategoryId: Scalars['ID'];
+  productCategoryId?: Maybe<Scalars['ID']>;
   productLineId: Scalars['ID'];
   createdAt: Scalars['DateTime'];
   updatedAt: Scalars['DateTime'];
@@ -723,10 +727,12 @@ export type Product = IProduct & {
   slug: Scalars['String'];
   description: Scalars['String'];
   imageUrl: Scalars['String'];
-  weight: Scalars['Int'];
-  price: Scalars['Int'];
+  weight?: Maybe<Scalars['Int']>;
+  weightIsSpecial: Scalars['Boolean'];
+  price?: Maybe<Scalars['Int']>;
+  priceIsSpecial: Scalars['Boolean'];
   count: Scalars['Int'];
-  productCategoryId: Scalars['ID'];
+  productCategoryId?: Maybe<Scalars['ID']>;
   productLineId: Scalars['ID'];
   createdAt: Scalars['DateTime'];
   updatedAt: Scalars['DateTime'];
@@ -1204,6 +1210,10 @@ export type OrderItemPageFragment = (
     & { product: (
       { __typename?: 'Product' }
       & Pick<Product, 'price'>
+      & { productLine?: Maybe<(
+        { __typename?: 'ProductLine' }
+        & Pick<ProductLine, 'price'>
+      )> }
       & ProductMinimum_Product_Fragment
     ) }
   )>, discounts: Array<(
@@ -1258,7 +1268,7 @@ export type ProcurementItemPageFragment = (
       & Pick<Product, 'id' | 'name' | 'price'>
       & { productLine?: Maybe<(
         { __typename?: 'ProductLine' }
-        & Pick<ProductLine, 'id' | 'name'>
+        & ProductLineMinimum_ProductLine_Fragment
       )> }
     ) }
   )> }
@@ -1328,18 +1338,23 @@ export type ProductItemPageQuery = (
   { __typename?: 'Query' }
   & { product?: Maybe<(
     { __typename?: 'Product' }
+    & Pick<Product, 'weightIsSpecial' | 'priceIsSpecial'>
     & ProductItemFragment
   )> }
 );
 
 export type ProductsListPageFragment = (
   { __typename?: 'Product' }
-  & Pick<Product, 'slug' | 'barcode' | 'productCategoryId' | 'productLineId' | 'price' | 'count' | 'weight' | 'waitingCount' | 'createdAt'>
+  & Pick<Product, 'slug' | 'barcode' | 'productCategoryId' | 'productLineId' | 'price' | 'count' | 'weight' | 'weightIsSpecial' | 'priceIsSpecial' | 'waitingCount' | 'createdAt'>
   & { productCategory?: Maybe<(
     { __typename?: 'ProductCategory' }
     & ProductCategoryMinimum_ProductCategory_Fragment
   )>, productLine?: Maybe<(
     { __typename?: 'ProductLine' }
+    & { productCategory?: Maybe<(
+      { __typename?: 'ProductCategory' }
+      & ProductCategoryMinimum_ProductCategory_Fragment
+    )> }
     & ProductLineMinimum_ProductLine_Fragment
   )>, productFeatures: Array<(
     { __typename?: 'ProductFeature' }
@@ -1613,6 +1628,11 @@ export type ProductItemFragment = (
     & ProductCategoryMinimum_ProductCategory_Fragment
   )>, productLine?: Maybe<(
     { __typename?: 'ProductLine' }
+    & Pick<ProductLine, 'price' | 'weight'>
+    & { productCategory?: Maybe<(
+      { __typename?: 'ProductCategory' }
+      & ProductCategoryMinimum_ProductCategory_Fragment
+    )> }
     & ProductLineMinimum_ProductLine_Fragment
   )>, productFeatures: Array<(
     { __typename?: 'ProductFeature' }
@@ -1879,6 +1899,7 @@ export type SearchByBarcodeQuery = (
     & ErrorFragment
   ) | (
     { __typename?: 'Product' }
+    & Pick<Product, 'weightIsSpecial' | 'priceIsSpecial'>
     & ProductItemFragment
   ) }
 );
@@ -2403,10 +2424,12 @@ export type IProductResolvers<ContextType = any, ParentType extends ResolversPar
   slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   imageUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  weight?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  price?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  weight?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  weightIsSpecial?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  price?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  priceIsSpecial?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  productCategoryId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  productCategoryId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   productLineId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
@@ -2419,10 +2442,12 @@ export type ProductSimpleResolvers<ContextType = any, ParentType extends Resolve
   slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   imageUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  weight?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  price?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  weight?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  weightIsSpecial?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  price?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  priceIsSpecial?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  productCategoryId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  productCategoryId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   productLineId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
@@ -2436,10 +2461,12 @@ export type ProductResolvers<ContextType = any, ParentType extends ResolversPare
   slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   description?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   imageUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  weight?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  price?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  weight?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  weightIsSpecial?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  price?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  priceIsSpecial?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  productCategoryId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  productCategoryId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   productLineId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
@@ -2699,6 +2726,9 @@ export const OrderItemPageFragmentDoc = gql`
     product {
       ...ProductMinimum
       price
+      productLine {
+        price
+      }
     }
   }
   discounts {
@@ -2738,6 +2768,14 @@ export const ProcurementSimpleFragmentDoc = gql`
   providerInfo
 }
     `;
+export const ProductLineMinimumFragmentDoc = gql`
+    fragment ProductLineMinimum on IProductLine {
+  id
+  name
+  price
+  weight
+}
+    `;
 export const ProcurementItemPageFragmentDoc = gql`
     fragment ProcurementItemPage on Procurement {
   ...ProcurementSimple
@@ -2752,15 +2790,15 @@ export const ProcurementItemPageFragmentDoc = gql`
       name
       price
       productLine {
-        id
-        name
+        ...ProductLineMinimum
       }
     }
     count
     costs
   }
 }
-    ${ProcurementSimpleFragmentDoc}`;
+    ${ProcurementSimpleFragmentDoc}
+${ProductLineMinimumFragmentDoc}`;
 export const ProcurementsListPageFragmentDoc = gql`
     fragment ProcurementsListPage on Procurement {
   ...ProcurementSimple
@@ -2777,14 +2815,6 @@ export const ProductCategoryMinimumFragmentDoc = gql`
   name
   iconUrl
   slug
-}
-    `;
-export const ProductLineMinimumFragmentDoc = gql`
-    fragment ProductLineMinimum on IProductLine {
-  id
-  name
-  price
-  weight
 }
     `;
 export const ProcurementFormProductFragmentDoc = gql`
@@ -2825,6 +2855,8 @@ export const ProductsListPageFragmentDoc = gql`
   price
   count
   weight
+  weightIsSpecial
+  priceIsSpecial
   waitingCount
   createdAt
   productCategory {
@@ -2832,6 +2864,9 @@ export const ProductsListPageFragmentDoc = gql`
   }
   productLine {
     ...ProductLineMinimum
+    productCategory {
+      ...ProductCategoryMinimum
+    }
   }
   productFeatures {
     ...ProductFeatureSimple
@@ -3003,6 +3038,11 @@ export const ProductItemFragmentDoc = gql`
   }
   productLine {
     ...ProductLineMinimum
+    price
+    weight
+    productCategory {
+      ...ProductCategoryMinimum
+    }
   }
   productFeatures {
     ...ProductFeatureSimple
@@ -3959,6 +3999,8 @@ export const ProductItemPageDocument = gql`
     query productItemPage($id: ID!) {
   product(id: $id) {
     ...ProductItem
+    weightIsSpecial
+    priceIsSpecial
   }
 }
     ${ProductItemFragmentDoc}`;
@@ -4642,7 +4684,11 @@ export const SearchByBarcodeDocument = gql`
     query searchByBarcode($barcode: String!) {
   searchByBarcode(barcode: $barcode) {
     ...Error
-    ...ProductItem
+    ... on IProduct {
+      ...ProductItem
+      weightIsSpecial
+      priceIsSpecial
+    }
   }
 }
     ${ErrorFragmentDoc}

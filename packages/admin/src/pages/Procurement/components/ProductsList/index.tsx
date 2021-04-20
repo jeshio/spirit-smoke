@@ -38,10 +38,11 @@ const columns: IColumn<ProcurementItemPageFragment['productProcurements'][0]>[] 
   {
     field: 'costs',
     title: 'Цена за шт.',
+    render: (price) => <UPrice>{price}</UPrice>,
   },
   {
-    field: ['product', 'price'],
     title: 'Цена продажи',
+    field: ['product', 'price'],
     render: (price) => <UPrice>{price}</UPrice>,
   },
   {

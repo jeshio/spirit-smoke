@@ -17,6 +17,8 @@ import ListPageBuilder, { ListColumnsType } from '@/builders/ListPage'
 import { Badge, Tooltip } from 'antd'
 import UFeaturesList from '@/ui-components/UFeaturesList'
 import UWAddProductToProcurementModal from '@/ui-widgets/UWAddProductToProcurementModal'
+import UWeight from '@/ui-components/UWeight'
+import UPrice from '@/ui-components/UPrice'
 import productFeaturesToFlatFeature from './helpers/productFeaturesToFlatFeatures'
 import BarcodePopover from './components/BarcodePopover'
 
@@ -59,8 +61,16 @@ const columns = ({
     responsive: ['xl'],
   },
   {
-    title: 'Вес (г)',
+    title: 'Вес',
     field: 'weight',
+    render: (weight, { weightIsSpecial }) =>
+      weightIsSpecial ? (
+        <Tooltip title="Задана особая цена для продукта">
+          <Badge status="warning" text={<UWeight>{weight}</UWeight>} />
+        </Tooltip>
+      ) : (
+        <UWeight>{weight}</UWeight>
+      ),
   },
   {
     title: 'Штрихкод',
@@ -78,22 +88,52 @@ const columns = ({
   {
     title: 'Текущая цена',
     field: 'price',
-    render: (price) => `${price} ₽`,
+    render: (price, { priceIsSpecial }) =>
+      priceIsSpecial ? (
+        <Tooltip title="Задана особая цена для продукта">
+          <Badge status="warning" text={<UPrice>{price}</UPrice>} />
+        </Tooltip>
+      ) : (
+        <UPrice>{price}</UPrice>
+      ),
   },
   {
     title: 'Категория',
-    field: ['productCategory', 'name'],
-    render: (name, { productCategoryId }) =>
-      name ? (
-        <>
-          <UButton href={`/product-categories/${productCategoryId}`} type="link" icon={<ImportOutlined />} />
-          {name}
-        </>
-      ) : (
+    field: 'productCategory',
+    render: (specificProductCategory, { productLine }) => {
+      const productCategory = specificProductCategory || productLine
+
+      if (productCategory) {
+        if (specificProductCategory) {
+          return (
+            <Tooltip title="Задана особая категория для продукта">
+              <Badge
+                status="warning"
+                text={
+                  <>
+                    <UButton href={`/product-categories/${productCategory.id}`} type="link" icon={<ImportOutlined />} />
+                    {productCategory.name}
+                  </>
+                }
+              />
+            </Tooltip>
+          )
+        }
+
+        return (
+          <>
+            <UButton href={`/product-categories/${productCategory.id}`} type="link" icon={<ImportOutlined />} />
+            {productCategory.name}
+          </>
+        )
+      }
+
+      return (
         <Tooltip title="Продукт невидим для клиентов">
           <Badge status="warning" text="БЕЗ КАТЕГОРИИ" />
         </Tooltip>
-      ),
+      )
+    },
   },
   {
     title: 'Особенности',
@@ -188,7 +228,6 @@ const ProductListPage: React.FunctionComponent<IProductListPageProps> = () => {
         tableProps={{
           invalidRowCondition: {
             productLine: undefined,
-            productCategory: undefined,
           },
         }}
       />

@@ -126,7 +126,7 @@ const resolvers = {
 
   Product: {
     productCategory: async (product, args, { loaders }) =>
-      loaders.productCategory.load(product.productCategoryId),
+      (product.productCategoryId ? loaders.productCategory.load(product.productCategoryId) : null),
     productLine: async (product, args, { loaders }) =>
       loaders.productLine.load(product.productLineId),
     features: async (product, args, { loaders }) => {
@@ -138,7 +138,35 @@ const resolvers = {
     orderProducts: async (product) => product.getOrderProducts(),
     productProcurements: async (product, args, { loaders }) => loaders.productProcurementsByProductId.load(product.id),
     productFeatures: async (product, args, { loaders }) => loaders.productFeaturesByProductId.load(product.id),
+    priceIsSpecial: (product) => product.price !== null || product.productLineId === null,
+    weightIsSpecial: (product) => product.weight !== null || product.productLineId === null,
   },
+}
+
+resolvers.Product.price = async (...args) => {
+  const [product] = args
+  const priceIsSpecial = await resolvers.Product.priceIsSpecial(...args)
+
+  if (priceIsSpecial) {
+    return product.price
+  }
+
+  const productLine = await resolvers.Product.productLine(...args)
+
+  return productLine.price
+}
+
+resolvers.Product.weight = async (...args) => {
+  const [product] = args
+  const weightIsSpecial = await resolvers.Product.weightIsSpecial(...args)
+
+  if (weightIsSpecial) {
+    return product.weight
+  }
+
+  const productLine = await resolvers.Product.productLine(...args)
+
+  return productLine.weight
 }
 
 resolvers.Product.waitingCount = async (...args) => {
