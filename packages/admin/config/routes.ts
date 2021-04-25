@@ -31,7 +31,7 @@ export const baseRoutes: IRoute[] = [
   },
   {
     name: 'Поставки',
-    icon: 'CrownOutlined',
+    icon: 'insertRowBelow',
     path: '/procurements',
     routes: [
       {
@@ -67,7 +67,7 @@ export const baseRoutes: IRoute[] = [
   },
   {
     name: 'Заказы',
-    icon: 'CrownOutlined',
+    icon: 'dollar',
     path: '/orders',
     routes: [
       {
@@ -169,6 +169,42 @@ export const baseRoutes: IRoute[] = [
     ],
   },
   {
+    path: '/companies',
+    redirect: '/companies/list',
+    exact: true,
+  },
+  {
+    name: 'Компании',
+    icon: 'border',
+    path: '/companies',
+    routes: [
+      {
+        path: '/companies/list',
+        name: 'Список',
+        component: './Company/List',
+        hideInMenu: true,
+      },
+      {
+        path: '/companies/add',
+        name: 'Добавить компанию',
+        component: './Company/Add',
+        hideInMenu: true,
+      },
+      {
+        path: '/companies/:id/edit',
+        name: 'Редактирование компании',
+        hideInMenu: true,
+        component: './Company/Update',
+      },
+      {
+        path: '/companies/:id',
+        name: 'Компания',
+        hideInMenu: true,
+        component: './Company/Item',
+      },
+    ],
+  },
+  {
     path: '/product-categories',
     redirect: '/product-categories/list',
     exact: true,
@@ -211,7 +247,7 @@ export const baseRoutes: IRoute[] = [
   },
   {
     name: 'Особенности',
-    icon: 'infoCircle',
+    icon: 'tags',
     path: '/features',
     routes: [
       {

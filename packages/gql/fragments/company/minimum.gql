@@ -1,0 +1,4 @@
+fragment CompanyMinimum on ICompany {
+  id
+  name
+}

@@ -1,0 +1,10 @@
+fragment CompanySimple on ICompany {
+  id
+  name
+  slug
+  country
+  color
+  barcode
+  createdAt
+  updatedAt
+}

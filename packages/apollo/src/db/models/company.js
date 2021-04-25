@@ -3,19 +3,17 @@ const {
 } = require('sequelize')
 
 module.exports = (sequelize, DataTypes) => {
-  class ProductLine extends Model {
+  class Company extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      ProductLine.hasMany(models.product, { onDelete: 'CASCADE' })
-      ProductLine.belongsTo(models.productCategory)
-      ProductLine.belongsTo(models.company)
+      Company.hasMany(models.productLine, { onDelete: 'CASCADE' })
     }
   }
-  ProductLine.init({
+  Company.init({
     name: {
       type: DataTypes.STRING,
       validate: {
@@ -47,26 +45,15 @@ module.exports = (sequelize, DataTypes) => {
       },
       defaultValue: '#000',
     },
-    weight: {
-      type: DataTypes.INTEGER,
-      validate: {
-        isInt: true,
-        min: 0,
-      },
-      defaultValue: 0,
-    },
-    price: {
-      type: DataTypes.INTEGER,
-      validate: {
-        isInt: true,
-        min: 0,
-      },
-      defaultValue: 0,
-    },
   }, {
     sequelize,
-    modelName: 'productLine',
+    modelName: 'company',
+    name: {
+      singular: 'company',
+      plural: 'companies',
+    },
+    tableName: 'companies',
     paranoid: true,
   })
-  return ProductLine
+  return Company
 }

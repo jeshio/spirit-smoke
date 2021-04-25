@@ -10,12 +10,6 @@ module.exports = {
    * @returns
    */
   up: async (queryInterface, Sequelize) => {
-    /**
-     * Add altering commands here.
-     *
-     * Example:
-     * await queryInterface.createTable('users', { id: Sequelize.INTEGER });
-     */
     await queryInterface.sequelize.transaction(async (transaction) => {
       await queryInterface.addColumn('productLines', 'weight', {
         type: Sequelize.INTEGER,
@@ -49,12 +43,6 @@ module.exports = {
    * @returns
    */
   down: async (queryInterface, Sequelize) => {
-    /**
-     * Add reverting commands here.
-     *
-     * Example:
-     * await queryInterface.dropTable('users');
-     */
     await queryInterface.sequelize.transaction(async (transaction) => {
       await queryInterface.removeColumn('productLines', 'weight', { transaction })
       await queryInterface.removeColumn('productLines', 'price', { transaction })

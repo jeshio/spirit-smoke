@@ -2,6 +2,7 @@
 export { default as productCategory } from './productCategory'
 export { default as feature } from './feature'
 export { default as productLine } from './productLine'
+export { default as company } from './company'
 export { default as product } from './product'
 export { default as productWithProductLine } from './productWithProductLine'
 export { default as procurement } from './procurement'

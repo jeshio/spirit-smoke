@@ -1,6 +1,10 @@
 
       export type PossibleTypesResultData = {
   "possibleTypes": {
+    "ICompany": [
+      "CompanySimple",
+      "Company"
+    ],
     "IDiscount": [
       "DiscountSimple",
       "Discount"
@@ -40,6 +44,10 @@
 };
       const result: PossibleTypesResultData = {
   "possibleTypes": {
+    "ICompany": [
+      "CompanySimple",
+      "Company"
+    ],
     "IDiscount": [
       "DiscountSimple",
       "Discount"

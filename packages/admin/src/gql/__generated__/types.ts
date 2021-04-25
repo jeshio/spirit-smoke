@@ -21,6 +21,8 @@ export type Query = {
   _?: Maybe<Scalars['Boolean']>;
   bonuses: Array<Maybe<Bonus>>;
   bonus?: Maybe<Bonus>;
+  companies: Array<Company>;
+  company?: Maybe<Company>;
   discounts: Array<Maybe<Discount>>;
   discount?: Maybe<Discount>;
   discountByCode?: Maybe<Discount>;
@@ -48,6 +50,11 @@ export type Query = {
 
 
 export type QueryBonusArgs = {
+  id: Scalars['ID'];
+};
+
+
+export type QueryCompanyArgs = {
   id: Scalars['ID'];
 };
 
@@ -132,6 +139,9 @@ export type Mutation = {
   _?: Maybe<Scalars['Boolean']>;
   createBonus: Bonus;
   addOrderBonus: Bonus;
+  createCompany: CompanySimple;
+  updateCompany: CompanySimple;
+  deleteCompany: Scalars['ID'];
   createDiscount: Discount;
   addProductCategoryDiscount: Discount;
   addProductDiscount: Discount;
@@ -172,6 +182,22 @@ export type MutationCreateBonusArgs = {
 export type MutationAddOrderBonusArgs = {
   bonusId: Scalars['ID'];
   orderId: Scalars['ID'];
+};
+
+
+export type MutationCreateCompanyArgs = {
+  input: CompanyInput;
+};
+
+
+export type MutationUpdateCompanyArgs = {
+  id: Scalars['ID'];
+  input: CompanyInput;
+};
+
+
+export type MutationDeleteCompanyArgs = {
+  id: Scalars['ID'];
 };
 
 
@@ -351,6 +377,50 @@ export type Bonus = {
   iconUrl: Scalars['String'];
   orders: Array<Maybe<Order>>;
   discounts: Array<Maybe<Discount>>;
+};
+
+export type CompanyInput = {
+  country?: Maybe<Scalars['String']>;
+  color?: Maybe<Scalars['String']>;
+  barcode?: Maybe<Scalars['String']>;
+  name: Scalars['String'];
+  slug: Scalars['String'];
+};
+
+export type ICompany = {
+  id: Scalars['ID'];
+  country?: Maybe<Scalars['String']>;
+  color: Scalars['String'];
+  barcode?: Maybe<Scalars['String']>;
+  name: Scalars['String'];
+  slug: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
+};
+
+export type CompanySimple = ICompany & {
+  __typename?: 'CompanySimple';
+  id: Scalars['ID'];
+  country?: Maybe<Scalars['String']>;
+  color: Scalars['String'];
+  barcode?: Maybe<Scalars['String']>;
+  name: Scalars['String'];
+  slug: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
+};
+
+export type Company = ICompany & {
+  __typename?: 'Company';
+  id: Scalars['ID'];
+  country?: Maybe<Scalars['String']>;
+  color: Scalars['String'];
+  barcode?: Maybe<Scalars['String']>;
+  name: Scalars['String'];
+  slug: Scalars['String'];
+  createdAt: Scalars['DateTime'];
+  updatedAt: Scalars['DateTime'];
+  productLines: Array<ProductLine>;
 };
 
 export type DiscountInput = {
@@ -872,6 +942,43 @@ export type Promotion = {
 
 export type SearchResult = NotFound | Product;
 
+export type CreateCompanyMutationVariables = Exact<{
+  input: CompanyInput;
+}>;
+
+
+export type CreateCompanyMutation = (
+  { __typename?: 'Mutation' }
+  & { createCompany: (
+    { __typename?: 'CompanySimple' }
+    & CompanySimple_CompanySimple_Fragment
+  ) }
+);
+
+export type DeleteCompanyMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type DeleteCompanyMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'deleteCompany'>
+);
+
+export type UpdateCompanyMutationVariables = Exact<{
+  id: Scalars['ID'];
+  input: CompanyInput;
+}>;
+
+
+export type UpdateCompanyMutation = (
+  { __typename?: 'Mutation' }
+  & { updateCompany: (
+    { __typename?: 'CompanySimple' }
+    & CompanySimple_CompanySimple_Fragment
+  ) }
+);
+
 export type CreateDiscountMutationVariables = Exact<{
   input: DiscountInput;
 }>;
@@ -1123,6 +1230,45 @@ export type UpdateProductLineMutation = (
   ) }
 );
 
+export type CompanyListPageFragment = (
+  { __typename?: 'Company' }
+  & Pick<Company, 'slug' | 'country' | 'color' | 'barcode' | 'createdAt'>
+  & CompanySimple_Company_Fragment
+);
+
+export type CompanyListPageQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CompanyListPageQuery = (
+  { __typename?: 'Query' }
+  & { companies: Array<(
+    { __typename?: 'Company' }
+    & CompanyListPageFragment
+  )> }
+);
+
+export type CompanyItemPageFragment = (
+  { __typename?: 'Company' }
+  & { productLines: Array<(
+    { __typename?: 'ProductLine' }
+    & ProductLineMinimum_ProductLine_Fragment
+  )> }
+  & CompanySimple_Company_Fragment
+);
+
+export type CompanyItemPageQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type CompanyItemPageQuery = (
+  { __typename?: 'Query' }
+  & { company?: Maybe<(
+    { __typename?: 'Company' }
+    & CompanyItemPageFragment
+  )> }
+);
+
 export type DiscountItemPageFragment = (
   { __typename?: 'Discount' }
   & { orders: Array<(
@@ -1210,10 +1356,6 @@ export type OrderItemPageFragment = (
     & { product: (
       { __typename?: 'Product' }
       & Pick<Product, 'price'>
-      & { productLine?: Maybe<(
-        { __typename?: 'ProductLine' }
-        & Pick<ProductLine, 'price'>
-      )> }
       & ProductMinimum_Product_Fragment
     ) }
   )>, discounts: Array<(
@@ -1515,6 +1657,30 @@ export type ProductsSelectorQuery = (
   )> }
 );
 
+type CompanyMinimum_CompanySimple_Fragment = (
+  { __typename?: 'CompanySimple' }
+  & Pick<CompanySimple, 'id' | 'name'>
+);
+
+type CompanyMinimum_Company_Fragment = (
+  { __typename?: 'Company' }
+  & Pick<Company, 'id' | 'name'>
+);
+
+export type CompanyMinimumFragment = CompanyMinimum_CompanySimple_Fragment | CompanyMinimum_Company_Fragment;
+
+type CompanySimple_CompanySimple_Fragment = (
+  { __typename?: 'CompanySimple' }
+  & Pick<CompanySimple, 'id' | 'name' | 'slug' | 'country' | 'color' | 'barcode' | 'createdAt' | 'updatedAt'>
+);
+
+type CompanySimple_Company_Fragment = (
+  { __typename?: 'Company' }
+  & Pick<Company, 'id' | 'name' | 'slug' | 'country' | 'color' | 'barcode' | 'createdAt' | 'updatedAt'>
+);
+
+export type CompanySimpleFragment = CompanySimple_CompanySimple_Fragment | CompanySimple_Company_Fragment;
+
 type DiscountSimple_DiscountSimple_Fragment = (
   { __typename?: 'DiscountSimple' }
   & Pick<DiscountSimple, 'id' | 'name' | 'percent' | 'rub' | 'code' | 'startDate' | 'endDate' | 'isGlobal' | 'isDisposable'>
@@ -1728,6 +1894,41 @@ type ProductLineSimple_ProductLine_Fragment = (
 );
 
 export type ProductLineSimpleFragment = ProductLineSimple_ProductLineSimple_Fragment | ProductLineSimple_ProductLine_Fragment;
+
+export type CompanyMinimumListQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CompanyMinimumListQuery = (
+  { __typename?: 'Query' }
+  & { companies: Array<(
+    { __typename?: 'Company' }
+    & CompanyMinimum_Company_Fragment
+  )> }
+);
+
+export type CompanySimpleItemQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type CompanySimpleItemQuery = (
+  { __typename?: 'Query' }
+  & { company?: Maybe<(
+    { __typename?: 'Company' }
+    & CompanySimple_Company_Fragment
+  )> }
+);
+
+export type CompanySimpleListQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type CompanySimpleListQuery = (
+  { __typename?: 'Query' }
+  & { companies: Array<(
+    { __typename?: 'Company' }
+    & CompanySimple_Company_Fragment
+  )> }
+);
 
 export type DiscountByCodeQueryVariables = Exact<{
   code: Scalars['String'];
@@ -1991,6 +2192,10 @@ export type ResolversTypes = {
   Subscription: ResolverTypeWrapper<{}>;
   BonusInput: BonusInput;
   Bonus: ResolverTypeWrapper<Bonus>;
+  CompanyInput: CompanyInput;
+  ICompany: ResolversTypes['CompanySimple'] | ResolversTypes['Company'];
+  CompanySimple: ResolverTypeWrapper<CompanySimple>;
+  Company: ResolverTypeWrapper<Company>;
   DiscountInput: DiscountInput;
   Float: ResolverTypeWrapper<Scalars['Float']>;
   DiscountStatus: ResolverTypeWrapper<DiscountStatus>;
@@ -2052,6 +2257,10 @@ export type ResolversParentTypes = {
   Subscription: {};
   BonusInput: BonusInput;
   Bonus: Bonus;
+  CompanyInput: CompanyInput;
+  ICompany: ResolversParentTypes['CompanySimple'] | ResolversParentTypes['Company'];
+  CompanySimple: CompanySimple;
+  Company: Company;
   DiscountInput: DiscountInput;
   Float: Scalars['Float'];
   DiscountStatus: DiscountStatus;
@@ -2108,6 +2317,8 @@ export type QueryResolvers<ContextType = any, ParentType extends ResolversParent
   _?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   bonuses?: Resolver<Array<Maybe<ResolversTypes['Bonus']>>, ParentType, ContextType>;
   bonus?: Resolver<Maybe<ResolversTypes['Bonus']>, ParentType, ContextType, RequireFields<QueryBonusArgs, 'id'>>;
+  companies?: Resolver<Array<ResolversTypes['Company']>, ParentType, ContextType>;
+  company?: Resolver<Maybe<ResolversTypes['Company']>, ParentType, ContextType, RequireFields<QueryCompanyArgs, 'id'>>;
   discounts?: Resolver<Array<Maybe<ResolversTypes['Discount']>>, ParentType, ContextType>;
   discount?: Resolver<Maybe<ResolversTypes['Discount']>, ParentType, ContextType, RequireFields<QueryDiscountArgs, 'id'>>;
   discountByCode?: Resolver<Maybe<ResolversTypes['Discount']>, ParentType, ContextType, RequireFields<QueryDiscountByCodeArgs, 'code'>>;
@@ -2137,6 +2348,9 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   _?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   createBonus?: Resolver<ResolversTypes['Bonus'], ParentType, ContextType, RequireFields<MutationCreateBonusArgs, 'input'>>;
   addOrderBonus?: Resolver<ResolversTypes['Bonus'], ParentType, ContextType, RequireFields<MutationAddOrderBonusArgs, 'bonusId' | 'orderId'>>;
+  createCompany?: Resolver<ResolversTypes['CompanySimple'], ParentType, ContextType, RequireFields<MutationCreateCompanyArgs, 'input'>>;
+  updateCompany?: Resolver<ResolversTypes['CompanySimple'], ParentType, ContextType, RequireFields<MutationUpdateCompanyArgs, 'id' | 'input'>>;
+  deleteCompany?: Resolver<ResolversTypes['ID'], ParentType, ContextType, RequireFields<MutationDeleteCompanyArgs, 'id'>>;
   createDiscount?: Resolver<ResolversTypes['Discount'], ParentType, ContextType, RequireFields<MutationCreateDiscountArgs, 'input'>>;
   addProductCategoryDiscount?: Resolver<ResolversTypes['Discount'], ParentType, ContextType, RequireFields<MutationAddProductCategoryDiscountArgs, 'discountId' | 'productCategoryId'>>;
   addProductDiscount?: Resolver<ResolversTypes['Discount'], ParentType, ContextType, RequireFields<MutationAddProductDiscountArgs, 'discountId' | 'productId'>>;
@@ -2180,6 +2394,43 @@ export type BonusResolvers<ContextType = any, ParentType extends ResolversParent
   iconUrl?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   orders?: Resolver<Array<Maybe<ResolversTypes['Order']>>, ParentType, ContextType>;
   discounts?: Resolver<Array<Maybe<ResolversTypes['Discount']>>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType>;
+};
+
+export type ICompanyResolvers<ContextType = any, ParentType extends ResolversParentTypes['ICompany'] = ResolversParentTypes['ICompany']> = {
+  __resolveType: TypeResolveFn<'CompanySimple' | 'Company', ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  country?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  color?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  barcode?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+};
+
+export type CompanySimpleResolvers<ContextType = any, ParentType extends ResolversParentTypes['CompanySimple'] = ResolversParentTypes['CompanySimple']> = {
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  country?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  color?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  barcode?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType>;
+};
+
+export type CompanyResolvers<ContextType = any, ParentType extends ResolversParentTypes['Company'] = ResolversParentTypes['Company']> = {
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  country?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  color?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  barcode?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
+  productLines?: Resolver<Array<ResolversTypes['ProductLine']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 };
 
@@ -2588,6 +2839,9 @@ export type Resolvers<ContextType = any> = {
   Mutation?: MutationResolvers<ContextType>;
   Subscription?: SubscriptionResolvers<ContextType>;
   Bonus?: BonusResolvers<ContextType>;
+  ICompany?: ICompanyResolvers<ContextType>;
+  CompanySimple?: CompanySimpleResolvers<ContextType>;
+  Company?: CompanyResolvers<ContextType>;
   DiscountStatus?: DiscountStatusResolvers<ContextType>;
   IDiscount?: IDiscountResolvers<ContextType>;
   DiscountSimple?: DiscountSimpleResolvers<ContextType>;
@@ -2628,6 +2882,45 @@ export type Resolvers<ContextType = any> = {
  */
 export type IResolvers<ContextType = any> = Resolvers<ContextType>;
 
+export const CompanySimpleFragmentDoc = gql`
+    fragment CompanySimple on ICompany {
+  id
+  name
+  slug
+  country
+  color
+  barcode
+  createdAt
+  updatedAt
+}
+    `;
+export const CompanyListPageFragmentDoc = gql`
+    fragment CompanyListPage on Company {
+  ...CompanySimple
+  slug
+  country
+  color
+  barcode
+  createdAt
+}
+    ${CompanySimpleFragmentDoc}`;
+export const ProductLineMinimumFragmentDoc = gql`
+    fragment ProductLineMinimum on IProductLine {
+  id
+  name
+  price
+  weight
+}
+    `;
+export const CompanyItemPageFragmentDoc = gql`
+    fragment CompanyItemPage on Company {
+  ...CompanySimple
+  productLines {
+    ...ProductLineMinimum
+  }
+}
+    ${CompanySimpleFragmentDoc}
+${ProductLineMinimumFragmentDoc}`;
 export const DiscountSimpleFragmentDoc = gql`
     fragment DiscountSimple on IDiscount {
   id
@@ -2726,9 +3019,6 @@ export const OrderItemPageFragmentDoc = gql`
     product {
       ...ProductMinimum
       price
-      productLine {
-        price
-      }
     }
   }
   discounts {
@@ -2766,14 +3056,6 @@ export const ProcurementSimpleFragmentDoc = gql`
   name
   comment
   providerInfo
-}
-    `;
-export const ProductLineMinimumFragmentDoc = gql`
-    fragment ProductLineMinimum on IProductLine {
-  id
-  name
-  price
-  weight
 }
     `;
 export const ProcurementItemPageFragmentDoc = gql`
@@ -2988,6 +3270,12 @@ export const ProductsSelectorFragmentDoc = gql`
     ${ProductMinimumFragmentDoc}
 ${ProductCategoryMinimumFragmentDoc}
 ${ProductLineMinimumFragmentDoc}`;
+export const CompanyMinimumFragmentDoc = gql`
+    fragment CompanyMinimum on ICompany {
+  id
+  name
+}
+    `;
 export const ErrorFragmentDoc = gql`
     fragment Error on IError {
   code
@@ -3066,6 +3354,101 @@ ${ProductCategoryMinimumFragmentDoc}
 ${FeatureMinimumFragmentDoc}
 ${ProductLineMinimumFragmentDoc}
 ${ProductFeatureSimpleFragmentDoc}`;
+export const CreateCompanyDocument = gql`
+    mutation createCompany($input: CompanyInput!) {
+  createCompany(input: $input) {
+    ...CompanySimple
+  }
+}
+    ${CompanySimpleFragmentDoc}`;
+export type CreateCompanyMutationFn = Apollo.MutationFunction<CreateCompanyMutation, CreateCompanyMutationVariables>;
+
+/**
+ * __useCreateCompanyMutation__
+ *
+ * To run a mutation, you first call `useCreateCompanyMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateCompanyMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createCompanyMutation, { data, loading, error }] = useCreateCompanyMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateCompanyMutation(baseOptions?: Apollo.MutationHookOptions<CreateCompanyMutation, CreateCompanyMutationVariables>) {
+        return Apollo.useMutation<CreateCompanyMutation, CreateCompanyMutationVariables>(CreateCompanyDocument, baseOptions);
+      }
+export type CreateCompanyMutationHookResult = ReturnType<typeof useCreateCompanyMutation>;
+export type CreateCompanyMutationResult = Apollo.MutationResult<CreateCompanyMutation>;
+export type CreateCompanyMutationOptions = Apollo.BaseMutationOptions<CreateCompanyMutation, CreateCompanyMutationVariables>;
+export const DeleteCompanyDocument = gql`
+    mutation deleteCompany($id: ID!) {
+  deleteCompany(id: $id)
+}
+    `;
+export type DeleteCompanyMutationFn = Apollo.MutationFunction<DeleteCompanyMutation, DeleteCompanyMutationVariables>;
+
+/**
+ * __useDeleteCompanyMutation__
+ *
+ * To run a mutation, you first call `useDeleteCompanyMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteCompanyMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteCompanyMutation, { data, loading, error }] = useDeleteCompanyMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteCompanyMutation(baseOptions?: Apollo.MutationHookOptions<DeleteCompanyMutation, DeleteCompanyMutationVariables>) {
+        return Apollo.useMutation<DeleteCompanyMutation, DeleteCompanyMutationVariables>(DeleteCompanyDocument, baseOptions);
+      }
+export type DeleteCompanyMutationHookResult = ReturnType<typeof useDeleteCompanyMutation>;
+export type DeleteCompanyMutationResult = Apollo.MutationResult<DeleteCompanyMutation>;
+export type DeleteCompanyMutationOptions = Apollo.BaseMutationOptions<DeleteCompanyMutation, DeleteCompanyMutationVariables>;
+export const UpdateCompanyDocument = gql`
+    mutation updateCompany($id: ID!, $input: CompanyInput!) {
+  updateCompany(id: $id, input: $input) {
+    ...CompanySimple
+  }
+}
+    ${CompanySimpleFragmentDoc}`;
+export type UpdateCompanyMutationFn = Apollo.MutationFunction<UpdateCompanyMutation, UpdateCompanyMutationVariables>;
+
+/**
+ * __useUpdateCompanyMutation__
+ *
+ * To run a mutation, you first call `useUpdateCompanyMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateCompanyMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateCompanyMutation, { data, loading, error }] = useUpdateCompanyMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateCompanyMutation(baseOptions?: Apollo.MutationHookOptions<UpdateCompanyMutation, UpdateCompanyMutationVariables>) {
+        return Apollo.useMutation<UpdateCompanyMutation, UpdateCompanyMutationVariables>(UpdateCompanyDocument, baseOptions);
+      }
+export type UpdateCompanyMutationHookResult = ReturnType<typeof useUpdateCompanyMutation>;
+export type UpdateCompanyMutationResult = Apollo.MutationResult<UpdateCompanyMutation>;
+export type UpdateCompanyMutationOptions = Apollo.BaseMutationOptions<UpdateCompanyMutation, UpdateCompanyMutationVariables>;
 export const CreateDiscountDocument = gql`
     mutation createDiscount($input: DiscountInput!) {
   createDiscount(input: $input) {
@@ -3703,6 +4086,71 @@ export function useUpdateProductLineMutation(baseOptions?: Apollo.MutationHookOp
 export type UpdateProductLineMutationHookResult = ReturnType<typeof useUpdateProductLineMutation>;
 export type UpdateProductLineMutationResult = Apollo.MutationResult<UpdateProductLineMutation>;
 export type UpdateProductLineMutationOptions = Apollo.BaseMutationOptions<UpdateProductLineMutation, UpdateProductLineMutationVariables>;
+export const CompanyListPageDocument = gql`
+    query companyListPage {
+  companies {
+    ...CompanyListPage
+  }
+}
+    ${CompanyListPageFragmentDoc}`;
+
+/**
+ * __useCompanyListPageQuery__
+ *
+ * To run a query within a React component, call `useCompanyListPageQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCompanyListPageQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCompanyListPageQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useCompanyListPageQuery(baseOptions?: Apollo.QueryHookOptions<CompanyListPageQuery, CompanyListPageQueryVariables>) {
+        return Apollo.useQuery<CompanyListPageQuery, CompanyListPageQueryVariables>(CompanyListPageDocument, baseOptions);
+      }
+export function useCompanyListPageLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CompanyListPageQuery, CompanyListPageQueryVariables>) {
+          return Apollo.useLazyQuery<CompanyListPageQuery, CompanyListPageQueryVariables>(CompanyListPageDocument, baseOptions);
+        }
+export type CompanyListPageQueryHookResult = ReturnType<typeof useCompanyListPageQuery>;
+export type CompanyListPageLazyQueryHookResult = ReturnType<typeof useCompanyListPageLazyQuery>;
+export type CompanyListPageQueryResult = Apollo.QueryResult<CompanyListPageQuery, CompanyListPageQueryVariables>;
+export const CompanyItemPageDocument = gql`
+    query companyItemPage($id: ID!) {
+  company(id: $id) {
+    ...CompanyItemPage
+  }
+}
+    ${CompanyItemPageFragmentDoc}`;
+
+/**
+ * __useCompanyItemPageQuery__
+ *
+ * To run a query within a React component, call `useCompanyItemPageQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCompanyItemPageQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCompanyItemPageQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useCompanyItemPageQuery(baseOptions?: Apollo.QueryHookOptions<CompanyItemPageQuery, CompanyItemPageQueryVariables>) {
+        return Apollo.useQuery<CompanyItemPageQuery, CompanyItemPageQueryVariables>(CompanyItemPageDocument, baseOptions);
+      }
+export function useCompanyItemPageLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CompanyItemPageQuery, CompanyItemPageQueryVariables>) {
+          return Apollo.useLazyQuery<CompanyItemPageQuery, CompanyItemPageQueryVariables>(CompanyItemPageDocument, baseOptions);
+        }
+export type CompanyItemPageQueryHookResult = ReturnType<typeof useCompanyItemPageQuery>;
+export type CompanyItemPageLazyQueryHookResult = ReturnType<typeof useCompanyItemPageLazyQuery>;
+export type CompanyItemPageQueryResult = Apollo.QueryResult<CompanyItemPageQuery, CompanyItemPageQueryVariables>;
 export const DiscountItemPageDocument = gql`
     query discountItemPage($id: ID!) {
   discount(id: $id) {
@@ -4256,6 +4704,103 @@ export function useProductsSelectorLazyQuery(baseOptions?: Apollo.LazyQueryHookO
 export type ProductsSelectorQueryHookResult = ReturnType<typeof useProductsSelectorQuery>;
 export type ProductsSelectorLazyQueryHookResult = ReturnType<typeof useProductsSelectorLazyQuery>;
 export type ProductsSelectorQueryResult = Apollo.QueryResult<ProductsSelectorQuery, ProductsSelectorQueryVariables>;
+export const CompanyMinimumListDocument = gql`
+    query companyMinimumList {
+  companies {
+    ...CompanyMinimum
+  }
+}
+    ${CompanyMinimumFragmentDoc}`;
+
+/**
+ * __useCompanyMinimumListQuery__
+ *
+ * To run a query within a React component, call `useCompanyMinimumListQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCompanyMinimumListQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCompanyMinimumListQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useCompanyMinimumListQuery(baseOptions?: Apollo.QueryHookOptions<CompanyMinimumListQuery, CompanyMinimumListQueryVariables>) {
+        return Apollo.useQuery<CompanyMinimumListQuery, CompanyMinimumListQueryVariables>(CompanyMinimumListDocument, baseOptions);
+      }
+export function useCompanyMinimumListLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CompanyMinimumListQuery, CompanyMinimumListQueryVariables>) {
+          return Apollo.useLazyQuery<CompanyMinimumListQuery, CompanyMinimumListQueryVariables>(CompanyMinimumListDocument, baseOptions);
+        }
+export type CompanyMinimumListQueryHookResult = ReturnType<typeof useCompanyMinimumListQuery>;
+export type CompanyMinimumListLazyQueryHookResult = ReturnType<typeof useCompanyMinimumListLazyQuery>;
+export type CompanyMinimumListQueryResult = Apollo.QueryResult<CompanyMinimumListQuery, CompanyMinimumListQueryVariables>;
+export const CompanySimpleItemDocument = gql`
+    query companySimpleItem($id: ID!) {
+  company(id: $id) {
+    ...CompanySimple
+  }
+}
+    ${CompanySimpleFragmentDoc}`;
+
+/**
+ * __useCompanySimpleItemQuery__
+ *
+ * To run a query within a React component, call `useCompanySimpleItemQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCompanySimpleItemQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCompanySimpleItemQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useCompanySimpleItemQuery(baseOptions?: Apollo.QueryHookOptions<CompanySimpleItemQuery, CompanySimpleItemQueryVariables>) {
+        return Apollo.useQuery<CompanySimpleItemQuery, CompanySimpleItemQueryVariables>(CompanySimpleItemDocument, baseOptions);
+      }
+export function useCompanySimpleItemLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CompanySimpleItemQuery, CompanySimpleItemQueryVariables>) {
+          return Apollo.useLazyQuery<CompanySimpleItemQuery, CompanySimpleItemQueryVariables>(CompanySimpleItemDocument, baseOptions);
+        }
+export type CompanySimpleItemQueryHookResult = ReturnType<typeof useCompanySimpleItemQuery>;
+export type CompanySimpleItemLazyQueryHookResult = ReturnType<typeof useCompanySimpleItemLazyQuery>;
+export type CompanySimpleItemQueryResult = Apollo.QueryResult<CompanySimpleItemQuery, CompanySimpleItemQueryVariables>;
+export const CompanySimpleListDocument = gql`
+    query companySimpleList {
+  companies {
+    ...CompanySimple
+  }
+}
+    ${CompanySimpleFragmentDoc}`;
+
+/**
+ * __useCompanySimpleListQuery__
+ *
+ * To run a query within a React component, call `useCompanySimpleListQuery` and pass it any options that fit your needs.
+ * When your component renders, `useCompanySimpleListQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useCompanySimpleListQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useCompanySimpleListQuery(baseOptions?: Apollo.QueryHookOptions<CompanySimpleListQuery, CompanySimpleListQueryVariables>) {
+        return Apollo.useQuery<CompanySimpleListQuery, CompanySimpleListQueryVariables>(CompanySimpleListDocument, baseOptions);
+      }
+export function useCompanySimpleListLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<CompanySimpleListQuery, CompanySimpleListQueryVariables>) {
+          return Apollo.useLazyQuery<CompanySimpleListQuery, CompanySimpleListQueryVariables>(CompanySimpleListDocument, baseOptions);
+        }
+export type CompanySimpleListQueryHookResult = ReturnType<typeof useCompanySimpleListQuery>;
+export type CompanySimpleListLazyQueryHookResult = ReturnType<typeof useCompanySimpleListLazyQuery>;
+export type CompanySimpleListQueryResult = Apollo.QueryResult<CompanySimpleListQuery, CompanySimpleListQueryVariables>;
 export const DiscountByCodeDocument = gql`
     query discountByCode($code: String!) {
   discountByCode(code: $code) {

@@ -1,0 +1,16 @@
+#import "@/gql/fragments/company/simple.gql"
+
+fragment CompanyListPage on Company {
+  ...CompanySimple
+  slug
+  country
+  color
+  barcode
+  createdAt
+}
+
+query companyListPage {
+  companies {
+    ...CompanyListPage
+  }
+}

@@ -14,7 +14,7 @@ const ProductLineUpdatePage: React.FunctionComponent<IProductLineUpdatePageProps
     variables: {
       id,
     },
-    loadingTip: 'Загрузка продукта',
+    loadingTip: 'Загрузка линейки продуктов',
     queryName: 'productLine',
   })
   const [updateProductLine, updateProductLineRequest] = useUpdateProductLineMutation({
