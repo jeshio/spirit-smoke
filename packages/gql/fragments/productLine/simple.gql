@@ -7,6 +7,7 @@ fragment ProductLineSimple on IProductLine {
   barcode
   price
   weight
+  companyId
   productCategoryId
   createdAt
   updatedAt

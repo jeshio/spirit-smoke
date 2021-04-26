@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React, { ChangeEvent } from 'react'
 import UForm from '@/ui-components/UForm'
 import { Card, Input } from 'antd'
 import URow from '@/ui-components/URow'
@@ -7,6 +7,7 @@ import UButton from '@/ui-components/UButton'
 import { CompanyInput, CompanyItemPageFragment } from '@/gql/__generated__/types'
 import UBlock from '@/ui-components/UBlock'
 import updateSlugOnChangeTitle from '@/helpers/updateSlugOnChangeTitle'
+import { FormInstance } from 'rc-field-form/lib/interface'
 import ProductLinesTable from './components/ProductLinesTable'
 
 export interface ICompanyFormProps {
@@ -17,6 +18,10 @@ export interface ICompanyFormProps {
 }
 
 const CompanyForm: React.FunctionComponent<ICompanyFormProps> = ({ isUpdate = false, company, loading, onSubmit }) => {
+  const handleChangeName = (form: FormInstance) => (e?: ChangeEvent<HTMLInputElement>) => {
+    updateSlugOnChangeTitle(e?.target.value || '', form)
+  }
+
   return (
     <UForm labelCol={{ span: 6, sm: 6, md: 9, lg: 9, xl: 7, xxl: 7 }} onFinish={onSubmit}>
       {(_, form) => {
@@ -26,10 +31,10 @@ const CompanyForm: React.FunctionComponent<ICompanyFormProps> = ({ isUpdate = fa
               <UCol md={20} lg={18} xl={10} xxl={8}>
                 <UBlock mt={{ xl: 6 }}>
                   <UForm.Item label="Название" name="name" required initialValue={company?.name}>
-                    <Input onChange={(e) => !isUpdate && updateSlugOnChangeTitle(e.target.value, form)} />
+                    <Input onChange={handleChangeName(form)} />
                   </UForm.Item>
                   <UForm.Item label="Slug" name="slug" required initialValue={company?.slug}>
-                    <Input disabled={isUpdate} />
+                    <Input />
                   </UForm.Item>
                   {/* <UForm.Item label="Цвет в интерфейсе" name="color" initialValue={company?.color}>
                     <Input />

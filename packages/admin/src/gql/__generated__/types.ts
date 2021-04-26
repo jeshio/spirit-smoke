@@ -872,6 +872,7 @@ export type ProductLineInput = {
   price?: Maybe<Scalars['Int']>;
   weight?: Maybe<Scalars['Int']>;
   productCategoryId: Scalars['ID'];
+  companyId: Scalars['ID'];
 };
 
 export type IProductLine = {
@@ -884,6 +885,7 @@ export type IProductLine = {
   price: Scalars['Int'];
   weight: Scalars['Int'];
   productCategoryId?: Maybe<Scalars['ID']>;
+  companyId?: Maybe<Scalars['ID']>;
   createdAt: Scalars['DateTime'];
   updatedAt: Scalars['DateTime'];
 };
@@ -899,6 +901,7 @@ export type ProductLineSimple = IProductLine & {
   price: Scalars['Int'];
   weight: Scalars['Int'];
   productCategoryId?: Maybe<Scalars['ID']>;
+  companyId?: Maybe<Scalars['ID']>;
   createdAt: Scalars['DateTime'];
   updatedAt: Scalars['DateTime'];
 };
@@ -914,9 +917,11 @@ export type ProductLine = IProductLine & {
   price: Scalars['Int'];
   weight: Scalars['Int'];
   productCategoryId?: Maybe<Scalars['ID']>;
+  companyId?: Maybe<Scalars['ID']>;
   createdAt: Scalars['DateTime'];
   updatedAt: Scalars['DateTime'];
   productCategory?: Maybe<ProductCategory>;
+  company?: Maybe<Company>;
   products: Array<Product>;
 };
 
@@ -1576,6 +1581,9 @@ export type ProductLineItemPageFragment = (
   )>, productCategory?: Maybe<(
     { __typename?: 'ProductCategory' }
     & ProductCategoryMinimum_ProductCategory_Fragment
+  )>, company?: Maybe<(
+    { __typename?: 'Company' }
+    & CompanyMinimum_Company_Fragment
   )> }
   & ProductLineSimple_ProductLine_Fragment
 );
@@ -1595,15 +1603,17 @@ export type ProductLineItemPageQuery = (
 
 export type ProductLineListPageFragment = (
   { __typename?: 'ProductLine' }
-  & Pick<ProductLine, 'slug' | 'country' | 'color' | 'barcode' | 'createdAt' | 'productCategoryId'>
   & { products: Array<(
     { __typename?: 'Product' }
     & ProductMinimum_Product_Fragment
+  )>, company?: Maybe<(
+    { __typename?: 'Company' }
+    & CompanyMinimum_Company_Fragment
   )>, productCategory?: Maybe<(
     { __typename?: 'ProductCategory' }
     & ProductCategoryMinimum_ProductCategory_Fragment
   )> }
-  & ProductLineMinimum_ProductLine_Fragment
+  & ProductLineSimple_ProductLine_Fragment
 );
 
 export type ProductLineListPageQueryVariables = Exact<{ [key: string]: never; }>;
@@ -1885,12 +1895,12 @@ export type ProductLineMinimumFragment = ProductLineMinimum_ProductLineSimple_Fr
 
 type ProductLineSimple_ProductLineSimple_Fragment = (
   { __typename?: 'ProductLineSimple' }
-  & Pick<ProductLineSimple, 'id' | 'name' | 'slug' | 'country' | 'color' | 'barcode' | 'price' | 'weight' | 'productCategoryId' | 'createdAt' | 'updatedAt'>
+  & Pick<ProductLineSimple, 'id' | 'name' | 'slug' | 'country' | 'color' | 'barcode' | 'price' | 'weight' | 'companyId' | 'productCategoryId' | 'createdAt' | 'updatedAt'>
 );
 
 type ProductLineSimple_ProductLine_Fragment = (
   { __typename?: 'ProductLine' }
-  & Pick<ProductLine, 'id' | 'name' | 'slug' | 'country' | 'color' | 'barcode' | 'price' | 'weight' | 'productCategoryId' | 'createdAt' | 'updatedAt'>
+  & Pick<ProductLine, 'id' | 'name' | 'slug' | 'country' | 'color' | 'barcode' | 'price' | 'weight' | 'companyId' | 'productCategoryId' | 'createdAt' | 'updatedAt'>
 );
 
 export type ProductLineSimpleFragment = ProductLineSimple_ProductLineSimple_Fragment | ProductLineSimple_ProductLine_Fragment;
@@ -2782,6 +2792,7 @@ export type IProductLineResolvers<ContextType = any, ParentType extends Resolver
   price?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   weight?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   productCategoryId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
+  companyId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
 };
@@ -2796,6 +2807,7 @@ export type ProductLineSimpleResolvers<ContextType = any, ParentType extends Res
   price?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   weight?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   productCategoryId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
+  companyId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
@@ -2811,9 +2823,11 @@ export type ProductLineResolvers<ContextType = any, ParentType extends Resolvers
   price?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   weight?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   productCategoryId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
+  companyId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   productCategory?: Resolver<Maybe<ResolversTypes['ProductCategory']>, ParentType, ContextType>;
+  company?: Resolver<Maybe<ResolversTypes['Company']>, ParentType, ContextType>;
   products?: Resolver<Array<ResolversTypes['Product']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 };
@@ -3210,9 +3224,16 @@ export const ProductLineSimpleFragmentDoc = gql`
   barcode
   price
   weight
+  companyId
   productCategoryId
   createdAt
   updatedAt
+}
+    `;
+export const CompanyMinimumFragmentDoc = gql`
+    fragment CompanyMinimum on ICompany {
+  id
+  name
 }
     `;
 export const ProductLineItemPageFragmentDoc = gql`
@@ -3226,28 +3247,30 @@ export const ProductLineItemPageFragmentDoc = gql`
   productCategory {
     ...ProductCategoryMinimum
   }
+  company {
+    ...CompanyMinimum
+  }
 }
     ${ProductLineSimpleFragmentDoc}
 ${ProductMinimumFragmentDoc}
-${ProductCategoryMinimumFragmentDoc}`;
+${ProductCategoryMinimumFragmentDoc}
+${CompanyMinimumFragmentDoc}`;
 export const ProductLineListPageFragmentDoc = gql`
     fragment ProductLineListPage on ProductLine {
-  ...ProductLineMinimum
-  slug
-  country
-  color
-  barcode
-  createdAt
-  productCategoryId
+  ...ProductLineSimple
   products {
     ...ProductMinimum
+  }
+  company {
+    ...CompanyMinimum
   }
   productCategory {
     ...ProductCategoryMinimum
   }
 }
-    ${ProductLineMinimumFragmentDoc}
+    ${ProductLineSimpleFragmentDoc}
 ${ProductMinimumFragmentDoc}
+${CompanyMinimumFragmentDoc}
 ${ProductCategoryMinimumFragmentDoc}`;
 export const AddProductModalProcurementsFragmentDoc = gql`
     fragment AddProductModalProcurements on Procurement {
@@ -3270,12 +3293,6 @@ export const ProductsSelectorFragmentDoc = gql`
     ${ProductMinimumFragmentDoc}
 ${ProductCategoryMinimumFragmentDoc}
 ${ProductLineMinimumFragmentDoc}`;
-export const CompanyMinimumFragmentDoc = gql`
-    fragment CompanyMinimum on ICompany {
-  id
-  name
-}
-    `;
 export const ErrorFragmentDoc = gql`
     fragment Error on IError {
   code

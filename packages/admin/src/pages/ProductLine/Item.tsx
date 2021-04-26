@@ -76,8 +76,14 @@ const ProductLineItemPage: React.FunctionComponent<ProductLineItemPageProps> = (
             {productLine.productCategory ? (
               productLine.productCategory.name
             ) : (
-              <Badge status="warning" text="БЕЗ КАТЕГОРИИ" />
+              <Badge status="error" text="БЕЗ КАТЕГОРИИ" />
             )}
+          </UDescriptions.Item>
+          <UDescriptions.Item label="Компания">
+            {productLine.company && (
+              <UButton href={`/companies/${productLine.company.id}`} type="link" icon={<ImportOutlined />} />
+            )}
+            {productLine.company ? productLine.company.name : <Badge status="error" text="БЕЗ КОМПАНИИ" />}
           </UDescriptions.Item>
           <UDescriptions.Item label="Текущая цена">
             <UPrice>{productLine.price}</UPrice>

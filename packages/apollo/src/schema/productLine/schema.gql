@@ -18,6 +18,7 @@ input ProductLineInput {
   price: Int
   weight: Int
   productCategoryId: ID!
+  companyId: ID!
 }
 
 interface IProductLine {
@@ -30,6 +31,7 @@ interface IProductLine {
   price: Int!
   weight: Int!
   productCategoryId: ID
+  companyId: ID
   createdAt: Date!
   updatedAt: Date!
 }
@@ -44,6 +46,7 @@ type ProductLineSimple implements IProductLine {
   price: Int!
   weight: Int!
   productCategoryId: ID
+  companyId: ID
   createdAt: Date!
   updatedAt: Date!
 }
@@ -58,8 +61,10 @@ type ProductLine implements IProductLine {
   price: Int!
   weight: Int!
   productCategoryId: ID
+  companyId: ID
   createdAt: Date!
   updatedAt: Date!
   productCategory: ProductCategory
+  company: Company
   products: [Product!]!
 } 

@@ -13,6 +13,7 @@ const resolvers = {
         weight,
         price,
         productCategoryId,
+        companyId,
       },
     }, { models }) => models.productLine.create({
       name,
@@ -23,6 +24,7 @@ const resolvers = {
       weight,
       price,
       productCategoryId,
+      companyId,
     }),
     updateProductLine: (parent, {
       id, input: {
@@ -30,6 +32,7 @@ const resolvers = {
         weight,
         price,
         productCategoryId,
+        companyId,
       },
     }, { models }) => models.productLine.update({
       name,
@@ -40,6 +43,7 @@ const resolvers = {
       weight,
       price,
       productCategoryId,
+      companyId,
     }, {
       where: { id }, returning: true,
     }).then(([, [productLine]]) => productLine),
@@ -54,6 +58,8 @@ const resolvers = {
     products: async (productLine) => productLine.getProducts(), // TODO: сделать loader
     productCategory: async (productLine, args, { loaders }) =>
       (productLine.productCategoryId ? loaders.productCategory.load(productLine.productCategoryId) : null),
+    company: async (productLine, args, { loaders }) =>
+      (productLine.companyId ? loaders.company.load(productLine.companyId) : null),
   },
 }
 

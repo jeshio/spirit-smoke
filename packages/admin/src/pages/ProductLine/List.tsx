@@ -23,6 +23,21 @@ const columns: ListColumnsType = ({ deleteItem }): IColumn<ProductLineListPageFr
     width: 50,
   },
   {
+    title: 'Компания',
+    field: ['company', 'name'],
+    render: (name, { companyId }) =>
+      name ? (
+        <>
+          <UButton href={`/companies/${companyId || ''}`} type="link" icon={<ImportOutlined />} />
+          {name}
+        </>
+      ) : (
+        <Tooltip title="Линейка невидима для клиентов">
+          <Badge status="error" text="БЕЗ КОМПАНИИ" />
+        </Tooltip>
+      ),
+  },
+  {
     title: 'Имя',
     field: 'name',
     render: (name, { id }) => <Link to={`/product-lines/${id}`}>{name}</Link>,
@@ -33,12 +48,12 @@ const columns: ListColumnsType = ({ deleteItem }): IColumn<ProductLineListPageFr
     render: (name, { productCategoryId }) =>
       name ? (
         <>
-          <UButton href={`/product-categories/${productCategoryId}`} type="link" icon={<ImportOutlined />} />
+          <UButton href={`/product-categories/${productCategoryId || ''}`} type="link" icon={<ImportOutlined />} />
           {name}
         </>
       ) : (
         <Tooltip title="Линейка невидима для клиентов">
-          <Badge status="warning" text="БЕЗ КАТЕГОРИИ" />
+          <Badge status="error" text="БЕЗ КАТЕГОРИИ" />
         </Tooltip>
       ),
   },
