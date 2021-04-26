@@ -67,10 +67,6 @@ const columns: ListColumnsType = ({ deleteItem }): IColumn<ProductLineListPageFr
     field: 'weight',
     render: (weight) => <UWeight>{weight}</UWeight>,
   },
-  // {
-  //   title: 'Цвет',
-  //   field: 'color',
-  // },
   {
     title: 'Создан',
     field: 'createdAt',

@@ -25,7 +25,7 @@ const UWProductsSelector: React.FunctionComponent<IUWProductsSelectorProps> = (p
   const productItems = useMemo(
     (): ComponentProps<typeof UItemsSelector>['optionsToAdd'] =>
       productsRequest.data?.products.map((product) => ({
-        title: `${product.productLine?.name || ''}, ${product.name}`,
+        title: `${product.productLine?.company?.name || ''} ${product.productLine?.name || ''} - ${product.name}`,
         value: product.id,
         link: `/products/${product.id}`,
         extra: `${product.price} ₽`,

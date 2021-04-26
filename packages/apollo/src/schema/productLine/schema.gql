@@ -23,9 +23,6 @@ input ProductLineInput {
 
 interface IProductLine {
   id: ID!
-  country: String
-  color: String!
-  barcode: String
   name: String!
   slug: String!
   price: Int!
@@ -38,9 +35,6 @@ interface IProductLine {
 
 type ProductLineSimple implements IProductLine {
   id: ID!
-  country: String
-  color: String!
-  barcode: String
   name: String!
   slug: String!
   price: Int!
@@ -53,9 +47,6 @@ type ProductLineSimple implements IProductLine {
 
 type ProductLine implements IProductLine {
   id: ID!
-  country: String
-  color: String!
-  barcode: String
   name: String!
   slug: String!
   price: Int!

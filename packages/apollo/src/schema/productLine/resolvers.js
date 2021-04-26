@@ -9,7 +9,7 @@ const resolvers = {
   Mutation: {
     createProductLine: (parent, {
       input: {
-        name, country, barcode, color, slug,
+        name, slug,
         weight,
         price,
         productCategoryId,
@@ -17,9 +17,6 @@ const resolvers = {
       },
     }, { models }) => models.productLine.create({
       name,
-      country,
-      barcode,
-      color,
       slug,
       weight,
       price,
@@ -28,7 +25,7 @@ const resolvers = {
     }),
     updateProductLine: (parent, {
       id, input: {
-        name, country, barcode, color, slug,
+        name, slug,
         weight,
         price,
         productCategoryId,
@@ -36,9 +33,6 @@ const resolvers = {
       },
     }, { models }) => models.productLine.update({
       name,
-      country,
-      barcode,
-      color,
       slug,
       weight,
       price,

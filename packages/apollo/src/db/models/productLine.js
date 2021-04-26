@@ -29,24 +29,6 @@ module.exports = (sequelize, DataTypes) => {
         is: /^[a-z-\d]+$/,
       },
     },
-    barcode: {
-      type: DataTypes.STRING,
-      unique: true,
-      validate: {
-        len: [0, 48],
-      },
-    },
-    country: {
-      type: DataTypes.STRING,
-    },
-    color: {
-      type: DataTypes.STRING,
-      validate: {
-        notEmpty: true,
-        is: /^#(([\dabcdef]{3})|([\dabcdef]{6}))$/i,
-      },
-      defaultValue: '#000',
-    },
     weight: {
       type: DataTypes.INTEGER,
       validate: {

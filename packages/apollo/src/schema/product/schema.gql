@@ -22,7 +22,7 @@ input ProductInput {
   barcode: String
   name: String!
   slug: String!
-  description: String!
+  description: String
   imageUrl: String
   price: Int
   productCategoryId: ID

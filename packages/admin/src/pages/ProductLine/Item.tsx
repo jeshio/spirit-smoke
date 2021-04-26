@@ -91,7 +91,6 @@ const ProductLineItemPage: React.FunctionComponent<ProductLineItemPageProps> = (
           <UDescriptions.Item label="Вес">
             <UWeight>{productLine.weight}</UWeight>
           </UDescriptions.Item>
-          <UDescriptions.Item label="Цвет в интерфейсе">{productLine.color}</UDescriptions.Item>
           <UDescriptions.Item label="slug">{productLine.slug}</UDescriptions.Item>
         </UDescriptions>
       </Card>

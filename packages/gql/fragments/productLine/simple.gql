@@ -2,9 +2,6 @@ fragment ProductLineSimple on IProductLine {
   id
   name
   slug
-  country
-  color
-  barcode
   price
   weight
   companyId

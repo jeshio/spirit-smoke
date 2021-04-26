@@ -877,9 +877,6 @@ export type ProductLineInput = {
 
 export type IProductLine = {
   id: Scalars['ID'];
-  country?: Maybe<Scalars['String']>;
-  color: Scalars['String'];
-  barcode?: Maybe<Scalars['String']>;
   name: Scalars['String'];
   slug: Scalars['String'];
   price: Scalars['Int'];
@@ -893,9 +890,6 @@ export type IProductLine = {
 export type ProductLineSimple = IProductLine & {
   __typename?: 'ProductLineSimple';
   id: Scalars['ID'];
-  country?: Maybe<Scalars['String']>;
-  color: Scalars['String'];
-  barcode?: Maybe<Scalars['String']>;
   name: Scalars['String'];
   slug: Scalars['String'];
   price: Scalars['Int'];
@@ -909,9 +903,6 @@ export type ProductLineSimple = IProductLine & {
 export type ProductLine = IProductLine & {
   __typename?: 'ProductLine';
   id: Scalars['ID'];
-  country?: Maybe<Scalars['String']>;
-  color: Scalars['String'];
-  barcode?: Maybe<Scalars['String']>;
   name: Scalars['String'];
   slug: Scalars['String'];
   price: Scalars['Int'];
@@ -1490,6 +1481,21 @@ export type ProductItemPageQuery = (
   )> }
 );
 
+export type ProductFormProductLineListQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ProductFormProductLineListQuery = (
+  { __typename?: 'Query' }
+  & { productLines: Array<(
+    { __typename?: 'ProductLine' }
+    & { company?: Maybe<(
+      { __typename?: 'Company' }
+      & CompanyMinimum_Company_Fragment
+    )> }
+    & ProductLineMinimum_ProductLine_Fragment
+  )> }
+);
+
 export type ProductsListPageFragment = (
   { __typename?: 'Product' }
   & Pick<Product, 'slug' | 'barcode' | 'productCategoryId' | 'productLineId' | 'price' | 'count' | 'weight' | 'weightIsSpecial' | 'priceIsSpecial' | 'waitingCount' | 'createdAt'>
@@ -1651,6 +1657,10 @@ export type ProductsSelectorFragment = (
     & ProductCategoryMinimum_ProductCategory_Fragment
   )>, productLine?: Maybe<(
     { __typename?: 'ProductLine' }
+    & { company?: Maybe<(
+      { __typename?: 'Company' }
+      & CompanyMinimum_Company_Fragment
+    )> }
     & ProductLineMinimum_ProductLine_Fragment
   )> }
   & ProductMinimum_Product_Fragment
@@ -1808,6 +1818,9 @@ export type ProductItemFragment = (
     & { productCategory?: Maybe<(
       { __typename?: 'ProductCategory' }
       & ProductCategoryMinimum_ProductCategory_Fragment
+    )>, company?: Maybe<(
+      { __typename?: 'Company' }
+      & CompanyMinimum_Company_Fragment
     )> }
     & ProductLineMinimum_ProductLine_Fragment
   )>, productFeatures: Array<(
@@ -1895,12 +1908,12 @@ export type ProductLineMinimumFragment = ProductLineMinimum_ProductLineSimple_Fr
 
 type ProductLineSimple_ProductLineSimple_Fragment = (
   { __typename?: 'ProductLineSimple' }
-  & Pick<ProductLineSimple, 'id' | 'name' | 'slug' | 'country' | 'color' | 'barcode' | 'price' | 'weight' | 'companyId' | 'productCategoryId' | 'createdAt' | 'updatedAt'>
+  & Pick<ProductLineSimple, 'id' | 'name' | 'slug' | 'price' | 'weight' | 'companyId' | 'productCategoryId' | 'createdAt' | 'updatedAt'>
 );
 
 type ProductLineSimple_ProductLine_Fragment = (
   { __typename?: 'ProductLine' }
-  & Pick<ProductLine, 'id' | 'name' | 'slug' | 'country' | 'color' | 'barcode' | 'price' | 'weight' | 'companyId' | 'productCategoryId' | 'createdAt' | 'updatedAt'>
+  & Pick<ProductLine, 'id' | 'name' | 'slug' | 'price' | 'weight' | 'companyId' | 'productCategoryId' | 'createdAt' | 'updatedAt'>
 );
 
 export type ProductLineSimpleFragment = ProductLineSimple_ProductLineSimple_Fragment | ProductLineSimple_ProductLine_Fragment;
@@ -2784,9 +2797,6 @@ export type ProductCategoryResolvers<ContextType = any, ParentType extends Resol
 export type IProductLineResolvers<ContextType = any, ParentType extends ResolversParentTypes['IProductLine'] = ResolversParentTypes['IProductLine']> = {
   __resolveType: TypeResolveFn<'ProductLineSimple' | 'ProductLine', ParentType, ContextType>;
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  country?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  color?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  barcode?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   price?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
@@ -2799,9 +2809,6 @@ export type IProductLineResolvers<ContextType = any, ParentType extends Resolver
 
 export type ProductLineSimpleResolvers<ContextType = any, ParentType extends ResolversParentTypes['ProductLineSimple'] = ResolversParentTypes['ProductLineSimple']> = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  country?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  color?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  barcode?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   price?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
@@ -2815,9 +2822,6 @@ export type ProductLineSimpleResolvers<ContextType = any, ParentType extends Res
 
 export type ProductLineResolvers<ContextType = any, ParentType extends ResolversParentTypes['ProductLine'] = ResolversParentTypes['ProductLine']> = {
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
-  country?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  color?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  barcode?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   price?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
@@ -3219,9 +3223,6 @@ export const ProductLineSimpleFragmentDoc = gql`
   id
   name
   slug
-  country
-  color
-  barcode
   price
   weight
   companyId
@@ -3288,11 +3289,15 @@ export const ProductsSelectorFragmentDoc = gql`
   }
   productLine {
     ...ProductLineMinimum
+    company {
+      ...CompanyMinimum
+    }
   }
 }
     ${ProductMinimumFragmentDoc}
 ${ProductCategoryMinimumFragmentDoc}
-${ProductLineMinimumFragmentDoc}`;
+${ProductLineMinimumFragmentDoc}
+${CompanyMinimumFragmentDoc}`;
 export const ErrorFragmentDoc = gql`
     fragment Error on IError {
   code
@@ -3348,6 +3353,9 @@ export const ProductItemFragmentDoc = gql`
     productCategory {
       ...ProductCategoryMinimum
     }
+    company {
+      ...CompanyMinimum
+    }
   }
   productFeatures {
     ...ProductFeatureSimple
@@ -3370,6 +3378,7 @@ export const ProductItemFragmentDoc = gql`
 ${ProductCategoryMinimumFragmentDoc}
 ${FeatureMinimumFragmentDoc}
 ${ProductLineMinimumFragmentDoc}
+${CompanyMinimumFragmentDoc}
 ${ProductFeatureSimpleFragmentDoc}`;
 export const CreateCompanyDocument = gql`
     mutation createCompany($input: CompanyInput!) {
@@ -4495,6 +4504,42 @@ export function useProductItemPageLazyQuery(baseOptions?: Apollo.LazyQueryHookOp
 export type ProductItemPageQueryHookResult = ReturnType<typeof useProductItemPageQuery>;
 export type ProductItemPageLazyQueryHookResult = ReturnType<typeof useProductItemPageLazyQuery>;
 export type ProductItemPageQueryResult = Apollo.QueryResult<ProductItemPageQuery, ProductItemPageQueryVariables>;
+export const ProductFormProductLineListDocument = gql`
+    query productFormProductLineList {
+  productLines {
+    ...ProductLineMinimum
+    company {
+      ...CompanyMinimum
+    }
+  }
+}
+    ${ProductLineMinimumFragmentDoc}
+${CompanyMinimumFragmentDoc}`;
+
+/**
+ * __useProductFormProductLineListQuery__
+ *
+ * To run a query within a React component, call `useProductFormProductLineListQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProductFormProductLineListQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProductFormProductLineListQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useProductFormProductLineListQuery(baseOptions?: Apollo.QueryHookOptions<ProductFormProductLineListQuery, ProductFormProductLineListQueryVariables>) {
+        return Apollo.useQuery<ProductFormProductLineListQuery, ProductFormProductLineListQueryVariables>(ProductFormProductLineListDocument, baseOptions);
+      }
+export function useProductFormProductLineListLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProductFormProductLineListQuery, ProductFormProductLineListQueryVariables>) {
+          return Apollo.useLazyQuery<ProductFormProductLineListQuery, ProductFormProductLineListQueryVariables>(ProductFormProductLineListDocument, baseOptions);
+        }
+export type ProductFormProductLineListQueryHookResult = ReturnType<typeof useProductFormProductLineListQuery>;
+export type ProductFormProductLineListLazyQueryHookResult = ReturnType<typeof useProductFormProductLineListLazyQuery>;
+export type ProductFormProductLineListQueryResult = Apollo.QueryResult<ProductFormProductLineListQuery, ProductFormProductLineListQueryVariables>;
 export const ProductsListPageDocument = gql`
     query productsListPage {
   products {

@@ -83,9 +83,6 @@ const ProductLineForm: React.FunctionComponent<IProductLineFormProps> = ({
                   <UForm.Item label="Slug" name="slug" required initialValue={productLine?.slug}>
                     <Input />
                   </UForm.Item>
-                  <UForm.Item label="Цвет в интерфейсе" name="color" initialValue={productLine?.color}>
-                    <Input />
-                  </UForm.Item>
                   <UForm.Item label="Вес (г)" name="weight" initialValue={productLine?.weight || 0}>
                     <InputNumber min={0} />
                   </UForm.Item>

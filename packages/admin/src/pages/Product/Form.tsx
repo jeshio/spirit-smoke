@@ -5,9 +5,9 @@ import URow from '@/ui-components/URow'
 import UCol from '@/ui-components/UCol'
 import UButton from '@/ui-components/UButton'
 import {
-  ProductItemFragment,
+  ProductItemPageQuery,
   useProductCategoryMinimumListQuery,
-  useProductLineMinimumListQuery,
+  useProductFormProductLineListQuery,
 } from '@/gql/__generated__/types'
 import numberToPrice from '@@utils/src/numberToPrice'
 import TextArea from 'antd/lib/input/TextArea'
@@ -20,7 +20,7 @@ export interface IProductFormProps {
   loading?: boolean
   onSubmit: (values: Record<string, string>) => void
   isUpdate?: boolean
-  product?: ProductItemFragment
+  product?: ProductItemPageQuery['product']
 }
 
 const ProductForm: React.FunctionComponent<IProductFormProps> = ({
@@ -30,7 +30,7 @@ const ProductForm: React.FunctionComponent<IProductFormProps> = ({
   product,
 }) => {
   const categoriesRequest = useProductCategoryMinimumListQuery()
-  const productLineRequest = useProductLineMinimumListQuery()
+  const productLineRequest = useProductFormProductLineListQuery()
   const handleSubmit = (fields: any) =>
     onSubmit({
       ...fields,
@@ -59,7 +59,7 @@ const ProductForm: React.FunctionComponent<IProductFormProps> = ({
     const productLine = productLineRequest.data?.productLines.find(({ id }) => id === fields.productLineId)
     let { name = '' } = fields
     if (productLine) {
-      name = `${productLine.name} ${name}`
+      name = `${productLine.company?.name || ''} ${productLine.name} ${name}`
     }
     return updateSlugOnChangeTitle(name, form)
   }
@@ -187,7 +187,6 @@ const ProductForm: React.FunctionComponent<IProductFormProps> = ({
                   wrapperCol={{
                     span: 0,
                   }}
-                  required
                 >
                   <TextArea rows={5} />
                 </UForm.Item>
