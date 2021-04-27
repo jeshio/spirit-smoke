@@ -20,7 +20,9 @@ const ProductDescription: FC<IProductDescriptionProps> = ({ product }) => {
 
   return (
     <Card
-      title={`Информация о продукте ${product.productLine ? `${product.productLine.name} -` : ''} ${product.name}`}
+      title={`Информация о продукте ${
+        product.productLine ? `${product.productLine.company?.name || ''} ${product.productLine.name} -` : ''
+      } ${product.name}`}
       extra={!product.productLine || !productCategory ? <Badge status="warning" text="НЕВИДИМ для клиентов" /> : null}
     >
       <UDescriptions>
@@ -29,6 +31,16 @@ const ProductDescription: FC<IProductDescriptionProps> = ({ product }) => {
             <UButton href={`/product-categories/${productCategory.id}`} type="link" icon={<ImportOutlined />} />
           )}
           {productCategory ? productCategory.name : <Badge status="warning" text="БЕЗ КАТЕГОРИИ" />}
+        </UDescriptions.Item>
+        <UDescriptions.Item label="Компания">
+          {product.productLine?.company && (
+            <UButton href={`/product-lines/${product.productLine?.company.id}`} type="link" icon={<ImportOutlined />} />
+          )}
+          {product.productLine?.company ? (
+            product.productLine?.company.name
+          ) : (
+            <Badge status="warning" text="БЕЗ КОМПАНИИ" />
+          )}
         </UDescriptions.Item>
         <UDescriptions.Item label="Линейка продуктов">
           {product.productLine && (

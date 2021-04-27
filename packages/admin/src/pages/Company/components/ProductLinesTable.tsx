@@ -5,7 +5,7 @@ import { ImportOutlined } from '@ant-design/icons'
 import { CompanyItemPageFragment } from '@/gql/__generated__/types'
 import UTable from '@/ui-components/UTable'
 
-const productColumns: IColumn<CompanyItemPageFragment['productLines'][0]>[] = [
+const productLineColumns: IColumn<CompanyItemPageFragment['productLines'][0]>[] = [
   {
     field: 'id',
     title: 'ID',
@@ -23,13 +23,13 @@ const productColumns: IColumn<CompanyItemPageFragment['productLines'][0]>[] = [
   },
 ]
 
-interface IProductsTableProps {
+interface IProductLinesTableProps {
   productLines?: CompanyItemPageFragment['productLines']
   tableProps?: Partial<React.ComponentProps<typeof UTable>>
 }
 
-const ProductsTable: React.FunctionComponent<IProductsTableProps> = ({ productLines = [], tableProps }) => {
-  return <UTable<any> dataSource={productLines} columns={productColumns} {...tableProps} />
+const ProductLinesTable: React.FunctionComponent<IProductLinesTableProps> = ({ productLines = [], tableProps }) => {
+  return <UTable<any> dataSource={productLines} columns={productLineColumns} {...tableProps} />
 }
 
-export default ProductsTable
+export default ProductLinesTable

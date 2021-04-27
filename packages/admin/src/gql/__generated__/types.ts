@@ -743,7 +743,7 @@ export type ProductInput = {
   barcode?: Maybe<Scalars['String']>;
   name: Scalars['String'];
   slug: Scalars['String'];
-  description: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
   imageUrl?: Maybe<Scalars['String']>;
   price?: Maybe<Scalars['Int']>;
   productCategoryId?: Maybe<Scalars['ID']>;
@@ -1507,6 +1507,9 @@ export type ProductsListPageFragment = (
     & { productCategory?: Maybe<(
       { __typename?: 'ProductCategory' }
       & ProductCategoryMinimum_ProductCategory_Fragment
+    )>, company?: Maybe<(
+      { __typename?: 'Company' }
+      & CompanyMinimum_Company_Fragment
     )> }
     & ProductLineMinimum_ProductLine_Fragment
   )>, productFeatures: Array<(
@@ -3132,6 +3135,12 @@ export const ProcurementFormProductFragmentDoc = gql`
     ${ProductMinimumFragmentDoc}
 ${ProductCategoryMinimumFragmentDoc}
 ${ProductLineMinimumFragmentDoc}`;
+export const CompanyMinimumFragmentDoc = gql`
+    fragment CompanyMinimum on ICompany {
+  id
+  name
+}
+    `;
 export const ProductFeatureSimpleFragmentDoc = gql`
     fragment ProductFeatureSimple on ProductFeature {
   endTime
@@ -3167,6 +3176,9 @@ export const ProductsListPageFragmentDoc = gql`
     productCategory {
       ...ProductCategoryMinimum
     }
+    company {
+      ...CompanyMinimum
+    }
   }
   productFeatures {
     ...ProductFeatureSimple
@@ -3178,6 +3190,7 @@ export const ProductsListPageFragmentDoc = gql`
     ${ProductMinimumFragmentDoc}
 ${ProductCategoryMinimumFragmentDoc}
 ${ProductLineMinimumFragmentDoc}
+${CompanyMinimumFragmentDoc}
 ${ProductFeatureSimpleFragmentDoc}
 ${FeatureMinimumFragmentDoc}`;
 export const ProductCategoryListPageFragmentDoc = gql`
@@ -3229,12 +3242,6 @@ export const ProductLineSimpleFragmentDoc = gql`
   productCategoryId
   createdAt
   updatedAt
-}
-    `;
-export const CompanyMinimumFragmentDoc = gql`
-    fragment CompanyMinimum on ICompany {
-  id
-  name
 }
     `;
 export const ProductLineItemPageFragmentDoc = gql`

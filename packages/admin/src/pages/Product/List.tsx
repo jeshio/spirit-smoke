@@ -14,7 +14,7 @@ import UButton from '@/ui-components/UButton'
 import { EditFilled, DeleteFilled, ImportOutlined } from '@ant-design/icons'
 import UPopconfirm from '@/ui-components/UPopconfirm'
 import ListPageBuilder, { ListColumnsType } from '@/builders/ListPage'
-import { Badge, Tooltip } from 'antd'
+import { Badge, notification, Tooltip } from 'antd'
 import UFeaturesList from '@/ui-components/UFeaturesList'
 import UWAddProductToProcurementModal from '@/ui-widgets/UWAddProductToProcurementModal'
 import UWeight from '@/ui-components/UWeight'
@@ -35,8 +35,62 @@ const columns = ({
     width: 50,
   },
   {
+    title: 'Категория',
+    field: 'productCategory',
+    render: (specificProductCategory, { productLine }) => {
+      const productCategory = specificProductCategory || productLine?.productCategory
+
+      if (productCategory) {
+        if (specificProductCategory) {
+          return (
+            <Tooltip title="Задана особая категория для продукта">
+              <Badge
+                status="warning"
+                text={
+                  <>
+                    <UButton href={`/product-categories/${productCategory.id}`} type="link" icon={<ImportOutlined />} />
+                    {productCategory.name}
+                  </>
+                }
+              />
+            </Tooltip>
+          )
+        }
+
+        return (
+          <>
+            <UButton href={`/product-categories/${productCategory.id}`} type="link" icon={<ImportOutlined />} />
+            {productCategory.name}
+          </>
+        )
+      }
+
+      return (
+        <Tooltip title="Продукт невидим для клиентов">
+          <Badge status="warning" text="БЕЗ КАТЕГОРИИ" />
+        </Tooltip>
+      )
+    },
+  },
+  {
+    title: 'Компания',
+    width: 280,
+    field: ['productLine', 'company'],
+    render: (company) =>
+      company?.name ? (
+        <>
+          <UButton href={`/companies/${company.id}`} type="link" icon={<ImportOutlined />} />
+          {company.name}
+        </>
+      ) : (
+        <Tooltip title="Продукт невидим для клиентов">
+          <Badge status="warning" text="БЕЗ КОМПАНИИ" />
+        </Tooltip>
+      ),
+  },
+  {
     title: 'Линейка продуктов',
-    width: 250,
+    width: 280,
     field: ['productLine', 'name'],
     render: (name, { productLineId }) =>
       name ? (
@@ -98,44 +152,6 @@ const columns = ({
       ),
   },
   {
-    title: 'Категория',
-    field: 'productCategory',
-    render: (specificProductCategory, { productLine }) => {
-      const productCategory = specificProductCategory || productLine
-
-      if (productCategory) {
-        if (specificProductCategory) {
-          return (
-            <Tooltip title="Задана особая категория для продукта">
-              <Badge
-                status="warning"
-                text={
-                  <>
-                    <UButton href={`/product-categories/${productCategory.id}`} type="link" icon={<ImportOutlined />} />
-                    {productCategory.name}
-                  </>
-                }
-              />
-            </Tooltip>
-          )
-        }
-
-        return (
-          <>
-            <UButton href={`/product-categories/${productCategory.id}`} type="link" icon={<ImportOutlined />} />
-            {productCategory.name}
-          </>
-        )
-      }
-
-      return (
-        <Tooltip title="Продукт невидим для клиентов">
-          <Badge status="warning" text="БЕЗ КАТЕГОРИИ" />
-        </Tooltip>
-      )
-    },
-  },
-  {
     title: 'Особенности',
     field: ['productFeatures'],
     render: (_, { productFeatures }) => (
@@ -151,7 +167,6 @@ const columns = ({
     title: '',
     field: 'id',
     key: 'controls',
-    width: 140,
     disableSort: true,
     render: (id) => (
       <>
@@ -178,6 +193,10 @@ const ProductListPage: React.FunctionComponent<IProductListPageProps> = () => {
         query: ProductsListPageDocument,
       },
     ],
+    onCompleted: () =>
+      notification.success({
+        message: 'Синхронизация выполнена!',
+      }),
   })
   const [setProductBarcode] = useSetProductBarcodeMutation({
     refetchQueries: [
