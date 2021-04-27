@@ -46,7 +46,7 @@ type Company implements ICompany {
   barcode: String
   name: String!
   slug: String!
-  products: [Product!]!
   createdAt: Date!
   updatedAt: Date!
+  productLines: [ProductLine!]!
 } 

@@ -1,25 +1,34 @@
 #import "@/gql/fragments/productFeature/simple.gql"
 #import "@/gql/fragments/productCategory/minimum.gql"
-#import "@/gql/fragments/company/minimum.gql"
+#import "@/gql/fragments/productLine/minimum.gql"
 #import "@/gql/fragments/feature/minimum.gql"
 #import "@/gql/fragments/product/minimum.gql"
+#import "@/gql/fragments/company/minimum.gql"
 
 fragment ProductsListPage on Product {
   ...ProductMinimum
   slug
   barcode
   productCategoryId
-  companyId
+  productLineId
   price
   count
   weight
+  weightIsSpecial
+  priceIsSpecial
   waitingCount
   createdAt
   productCategory {
     ...ProductCategoryMinimum
   }
-  company {
-    ...CompanyMinimum
+  productLine {
+    ...ProductLineMinimum
+    productCategory {
+    ...ProductCategoryMinimum
+    }
+    company {
+      ...CompanyMinimum
+    }
   }
   productFeatures {
     ...ProductFeatureSimple

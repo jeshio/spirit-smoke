@@ -11,7 +11,7 @@ import { RouteComponentProps } from 'react-router'
 import useStableQuery from '@/hooks/gql/useStableQuery'
 import { useProductCategoryItemPageQuery, useDeleteProductCategoryMutation } from '@/gql/__generated__/types'
 import UFeaturesList from '@/ui-components/UFeaturesList'
-import ProductsTable from '../Company/components/ProductsTable'
+import ProductsTable from '../ProductLine/components/ProductsTable'
 
 interface IProductCategoryItemPageProps
   extends RouteComponentProps<{

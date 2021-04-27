@@ -1,11 +1,11 @@
-interface ICompany {
+interface IProductLine {
   isSelectedForProductCategory(productCategorySlug: ID!): Boolean
 }
 
-type CompanySimple {
+type ProductLineSimple {
   isSelectedForProductCategory(productCategorySlug: ID!): Boolean
 }
 
-type Company {
+type ProductLine {
   isSelectedForProductCategory(productCategorySlug: ID!): Boolean
 }

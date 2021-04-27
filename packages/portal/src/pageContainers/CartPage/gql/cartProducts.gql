@@ -9,7 +9,7 @@ query cartProducts($productIds: [ID!]!) {
     cartItem @client {
       productsCount
     }
-    company {
+    productLine {
       id
       name
       color

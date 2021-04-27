@@ -12,7 +12,7 @@ const AddCompanyPage: React.FunctionComponent<IAddCompanyPageProps> = (props) =>
     onCompleted: (r) => {
       if (!('errors' in r)) {
         notification.success({
-          message: 'Производитель успешно добавлен!',
+          message: 'Компания успешно добавлена!',
         })
         props.history.push(`/companies/${r.createCompany.id}`)
       }
@@ -23,13 +23,13 @@ const AddCompanyPage: React.FunctionComponent<IAddCompanyPageProps> = (props) =>
   const handleSubmit: ICompanyFormProps['onSubmit'] = (fields) => {
     createCompany({
       variables: {
-        input: fields as any,
+        input: fields,
       },
     })
   }
 
   return (
-    <UPageContainer title="Добавить производителя">
+    <UPageContainer title="Добавить компанию">
       <CompanyForm loading={createCompanyRequest.loading} onSubmit={handleSubmit} />
     </UPageContainer>
   )

@@ -1,0 +1,6 @@
+fragment ProductLineMinimum on IProductLine {
+  id
+  name
+  price
+  weight
+}

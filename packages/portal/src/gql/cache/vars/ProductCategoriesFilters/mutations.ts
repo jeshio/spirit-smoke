@@ -1,9 +1,9 @@
 import { productCategoriesFiltersVar } from '.'
 import { IProductCategoriesFilters } from './types'
 
-export const setSelectedCompanyIds = (
+export const setSelectedProductLineIds = (
   productCategorySlug: string,
-  selectedCompanyIds: IProductCategoriesFilters[0]['selectedCompanyIds']
+  selectedProductLineIds: IProductCategoriesFilters[0]['selectedProductLineIds']
 ) => {
   const currentFilters = productCategoriesFiltersVar()
   productCategoriesFiltersVar({
@@ -11,7 +11,7 @@ export const setSelectedCompanyIds = (
     [productCategorySlug]: {
       selectedFeatureIds: [],
       ...currentFilters[productCategorySlug],
-      selectedCompanyIds,
+      selectedProductLineIds,
     },
   })
 }
@@ -24,7 +24,7 @@ export const setSelectedFeatureIds = (
   productCategoriesFiltersVar({
     ...currentFilters,
     [productCategorySlug]: {
-      selectedCompanyIds: [],
+      selectedProductLineIds: [],
       ...currentFilters[productCategorySlug],
       selectedFeatureIds,
     },

@@ -2,10 +2,10 @@ import * as React from 'react'
 import { IColumn } from '@/ui-components/UTable/types'
 import UButton from '@/ui-components/UButton'
 import { ImportOutlined } from '@ant-design/icons'
-import { CompanyItemPageFragment } from '@/gql/__generated__/types'
+import { ProductLineItemPageFragment } from '@/gql/__generated__/types'
 import UTable from '@/ui-components/UTable'
 
-const productColumns: IColumn<CompanyItemPageFragment['products'][0]>[] = [
+const productColumns: IColumn<ProductLineItemPageFragment['products'][0]>[] = [
   {
     field: 'id',
     title: 'ID',
@@ -33,7 +33,7 @@ const productColumns: IColumn<CompanyItemPageFragment['products'][0]>[] = [
 ]
 
 interface IProductsTableProps {
-  products?: CompanyItemPageFragment['products']
+  products?: ProductLineItemPageFragment['products']
   tableProps?: Partial<React.ComponentProps<typeof UTable>>
 }
 

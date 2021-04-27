@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       ProductCategory.hasMany(models.product, { onDelete: 'CASCADE' })
+      ProductCategory.hasMany(models.productLine, { onDelete: 'CASCADE' })
       ProductCategory.belongsToMany(models.feature, { through: 'productCategoryFeatures', timestamps: false })
       ProductCategory.belongsToMany(models.discount, { through: 'productCategoryDiscounts', timestamps: false })
     }

@@ -2,19 +2,16 @@ import React, { useState } from 'react'
 import { RouteComponentProps } from 'react-router'
 import { useProductItemPageQuery, useDeleteProductMutation } from '@/gql/__generated__/types'
 import UPageContainer from '@/ui-components/UPageContainer'
-import { Card, Divider, Badge } from 'antd'
-import UDescriptions from '@/ui-components/UDescriptions'
+import { Card } from 'antd'
 import UButton from '@/ui-components/UButton'
 import UPopconfirm from '@/ui-components/UPopconfirm'
-import { DeleteFilled, EditFilled, ImportOutlined } from '@ant-design/icons'
+import { DeleteFilled, EditFilled } from '@ant-design/icons'
 import URow from '@/ui-components/URow'
 import UCol from '@/ui-components/UCol'
 
 import useStableQuery from '@/hooks/gql/useStableQuery'
-import UFeaturesList from '@/ui-components/UFeaturesList'
 import UWAddProductToProcurementModal from '@/ui-widgets/UWAddProductToProcurementModal'
 import { ItemImage, ItemImageWrapper } from './styles/item.styled'
-import productFeaturesToFlatFeature from './helpers/productFeaturesToFlatFeatures'
 import ProcurementsList from './components/ProcurementsList'
 import ProductDescription from './components/ProductDescription'
 
@@ -50,7 +47,7 @@ const ProductItemPage: React.FunctionComponent<IProductItemPageProps> = (props) 
 
   return (
     <UPageContainer
-      title={product.company ? `${product.company.name}, ${product.name}` : product.name}
+      title={product.productLine ? `${product.productLine.name}, ${product.name}` : product.name}
       extra={
         <>
           <UButton onClick={switchAddToProcurementModalVisible} icon={<EditFilled />}>

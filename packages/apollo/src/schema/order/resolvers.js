@@ -1,6 +1,9 @@
 import { keyBy } from 'lodash'
 import checkDiscount from '../discount/helpers/checkDiscount'
 
+const getProductPrice = (productWithProductLine) => (productWithProductLine.price === null
+  ? productWithProductLine?.productLine?.price : productWithProductLine.price) || 0
+
 const getTotalDiscount = ({
   totalPrice,
   discount,
@@ -26,7 +29,7 @@ const getTotalOrder = async ({
 }) => {
   // TODO: скидка на все товары или на часть
   const totalPrice = products.reduce(
-    (base, product) => base + product.price * orderProductsById[product.id].productsCount,
+    (base, product) => base + getProductPrice(product) * orderProductsById[product.id].productsCount,
     0,
   )
   const totalDiscount = getTotalDiscount({
@@ -67,7 +70,7 @@ const resolvers = {
       })
 
       const discountStatus = checkDiscount(discountByCode, discountByCode?.orders)
-      const products = await loaders.product.loadMany(orderProducts.map(({ id }) => Number(id)))
+      const products = await loaders.productWithProductLine.loadMany(orderProducts.map(({ id }) => Number(id)))
       const orderProductsById = keyBy(orderProducts, 'id')
 
       return getTotalOrder({
@@ -194,7 +197,8 @@ resolvers.Order.orderTotal = async (...args) => {
   const [,, { loaders }] = args
   const discounts = await resolvers.Order.discounts(...args)
   const orderProducts = await resolvers.Order.orderProducts(...args)
-  const products = await loaders.product.loadMany(orderProducts.map(({ productId }) => Number(productId)))
+  const products = await loaders.productWithProductLine
+    .loadMany(orderProducts.map(({ productId }) => Number(productId)))
   const orderProductsById = keyBy(orderProducts, 'productId')
 
   return getTotalOrder({

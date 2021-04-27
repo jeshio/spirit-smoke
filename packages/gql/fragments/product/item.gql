@@ -1,3 +1,10 @@
+#import "@/gql/fragments/productFeature/simple.gql"
+#import "@/gql/fragments/productCategory/minimum.gql"
+#import "@/gql/fragments/productLine/minimum.gql"
+#import "@/gql/fragments/feature/minimum.gql"
+#import "@/gql/fragments/product/simple.gql"
+#import "@/gql/fragments/company/minimum.gql"
+
 fragment ProductItem on Product {
   ...ProductSimple
   productCategory {
@@ -6,8 +13,16 @@ fragment ProductItem on Product {
       ...FeatureMinimum
     }
   }
-  company {
-    ...CompanyMinimum
+  productLine {
+    ...ProductLineMinimum
+    price
+    weight
+    productCategory {
+    ...ProductCategoryMinimum
+    }
+    company {
+      ...CompanyMinimum
+    }
   }
   productFeatures {
     ...ProductFeatureSimple

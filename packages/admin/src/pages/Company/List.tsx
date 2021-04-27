@@ -24,26 +24,18 @@ const columns: ListColumnsType = ({ deleteItem }): IColumn<CompanyListPageFragme
     field: 'name',
     render: (name, { id }) => <Link to={`/companies/${id}`}>{name}</Link>,
   },
+  // {
+  //   title: 'Цвет',
+  //   field: 'color',
+  // },
+  {
+    title: 'Создан',
+    field: 'createdAt',
+  },
   {
     title: 'Slug',
     field: 'slug',
     responsive: ['xl'],
-  },
-  {
-    title: 'Штрихкод',
-    field: 'barcode',
-  },
-  {
-    title: 'Цвет',
-    field: 'color',
-  },
-  {
-    title: 'Страна',
-    field: 'country',
-  },
-  {
-    title: 'Создан',
-    field: 'createdAt',
   },
   {
     title: '',
@@ -55,7 +47,7 @@ const columns: ListColumnsType = ({ deleteItem }): IColumn<CompanyListPageFragme
       <>
         <UPopconfirm
           onConfirm={() => deleteItem(id)}
-          title="Все продукты производителя станут недоступны для клиентов. Вы уверены?"
+          title="Все линейки и продукты компании станут недоступны для клиентов. Вы уверены?"
           placement="topRight"
         >
           <UButton type="link" danger>
@@ -77,15 +69,15 @@ const CompanyListPage: React.FunctionComponent<ICompanyListPageProps> = () => {
     <ListPageBuilder
       addItemButton={{
         link: '/companies/add',
-        name: 'Добавить производителя',
+        name: 'Добавить компанию',
       }}
       columns={columns}
       listQuery={{
         hook: useCompanyListPageQuery,
         queryName: 'companies',
       }}
-      loadingTip="Загрузка производителей"
-      title="Список производителей"
+      loadingTip="Загрузка компаний"
+      title="Список компаний"
       deleteItemMutation={{
         hook: useDeleteCompanyMutation,
         deleteName: 'deleteCompany',

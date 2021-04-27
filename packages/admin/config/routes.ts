@@ -31,7 +31,7 @@ export const baseRoutes: IRoute[] = [
   },
   {
     name: 'Поставки',
-    icon: 'CrownOutlined',
+    icon: 'insertRowBelow',
     path: '/procurements',
     routes: [
       {
@@ -67,7 +67,7 @@ export const baseRoutes: IRoute[] = [
   },
   {
     name: 'Заказы',
-    icon: 'CrownOutlined',
+    icon: 'dollar',
     path: '/orders',
     routes: [
       {
@@ -133,13 +133,49 @@ export const baseRoutes: IRoute[] = [
     ],
   },
   {
+    path: '/product-lines',
+    redirect: '/product-lines/list',
+    exact: true,
+  },
+  {
+    name: 'Линейки продуктов',
+    icon: 'deploymentUnit',
+    path: '/product-lines',
+    routes: [
+      {
+        path: '/product-lines/list',
+        name: 'Список',
+        component: './ProductLine/List',
+        hideInMenu: true,
+      },
+      {
+        path: '/product-lines/add',
+        name: 'Добавить линейку продуктов',
+        component: './ProductLine/Add',
+        hideInMenu: true,
+      },
+      {
+        path: '/product-lines/:id/edit',
+        name: 'Редактирование линейку продуктов',
+        hideInMenu: true,
+        component: './ProductLine/Update',
+      },
+      {
+        path: '/product-lines/:id',
+        name: 'Линейка продуктов',
+        hideInMenu: true,
+        component: './ProductLine/Item',
+      },
+    ],
+  },
+  {
     path: '/companies',
     redirect: '/companies/list',
     exact: true,
   },
   {
-    name: 'Производители',
-    icon: 'deploymentUnit',
+    name: 'Компании',
+    icon: 'border',
     path: '/companies',
     routes: [
       {
@@ -150,19 +186,19 @@ export const baseRoutes: IRoute[] = [
       },
       {
         path: '/companies/add',
-        name: 'Добавить производителя',
+        name: 'Добавить компанию',
         component: './Company/Add',
         hideInMenu: true,
       },
       {
         path: '/companies/:id/edit',
-        name: 'Редактирование производителя',
+        name: 'Редактирование компании',
         hideInMenu: true,
         component: './Company/Update',
       },
       {
         path: '/companies/:id',
-        name: 'Производитель',
+        name: 'Компания',
         hideInMenu: true,
         component: './Company/Item',
       },
@@ -211,7 +247,7 @@ export const baseRoutes: IRoute[] = [
   },
   {
     name: 'Особенности',
-    icon: 'infoCircle',
+    icon: 'tags',
     path: '/features',
     routes: [
       {

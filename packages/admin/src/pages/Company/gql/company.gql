@@ -1,12 +1,10 @@
 #import "@/gql/fragments/company/simple.gql"
-#import "@/gql/fragments/product/minimum.gql"
+#import "@/gql/fragments/productLine/minimum.gql"
 
 fragment CompanyItemPage on Company {
   ...CompanySimple
-  products {
-    ...ProductMinimum
-    price
-    count
+  productLines {
+    ...ProductLineMinimum
   }
 }
 

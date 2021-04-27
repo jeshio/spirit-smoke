@@ -5,7 +5,7 @@ import WCartItemCounter from '@/ui-widgets/WCartItemCounter'
 import { CloseIcon } from '@@icons'
 import * as React from 'react'
 import styled from 'styled-components'
-import { CompanyName, DeleteButton, Footer, StyledCartItem, Title } from './index.styled'
+import { ProductLineName, DeleteButton, Footer, StyledCartItem, Title } from './index.styled'
 
 interface ICartItemProps {
   product: CartProductsQuery['productsByIds'][0]
@@ -18,7 +18,7 @@ const CartItem: React.FunctionComponent<ICartItemProps> = ({ product, className 
 
   return (
     <StyledCartItem className={className}>
-      <CompanyName>{product.company?.name}</CompanyName>
+      <ProductLineName>{product.productLine?.name}</ProductLineName>
       <Title>{product.name}</Title>
 
       <DeleteButton onClick={deleteHandle}>

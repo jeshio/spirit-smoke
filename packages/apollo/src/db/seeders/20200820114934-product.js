@@ -5,7 +5,7 @@ import getTableIds from '../helpers/getTableIds'
 
 const getDevRows = ({
   productCategoryIds,
-  companyIds,
+  productLineIds,
 }) => [...Array(500)].map((v, i) => (
   {
     barcode: fakerUnique(faker.finance.bic, [Math.random() * 5], {
@@ -21,7 +21,7 @@ const getDevRows = ({
     price: Math.round(Math.max(Math.random() * 25 - 1, 0)),
     count: Math.floor(Math.random() * 11),
     productCategoryId: getRandomElement(productCategoryIds),
-    companyId: getRandomElement(companyIds),
+    productLineId: getRandomElement(productLineIds),
     createdAt: new Date(),
     updatedAt: new Date(),
   }
@@ -40,10 +40,10 @@ module.exports = {
    */
   up: async (queryInterface, Sequelize) => {
     const productCategoryIds = await getTableIds(queryInterface, 'productCategories')
-    const companyIds = await getTableIds(queryInterface, 'companies')
+    const productLineIds = await getTableIds(queryInterface, 'productLines')
     await queryInterface.bulkInsert('products', getDevRows({
       productCategoryIds,
-      companyIds,
+      productLineIds,
     }), {})
   },
 

@@ -10,7 +10,7 @@ import UButton from '@/ui-components/UButton'
 import URow from '@/ui-components/URow'
 import UCol from '@/ui-components/UCol'
 import UPopconfirm from '@/ui-components/UPopconfirm'
-import ProductsTable from './components/ProductsTable'
+import ProductLinesTable from './components/ProductLinesTable'
 
 interface CompanyItemPageProps
   extends RouteComponentProps<{
@@ -23,7 +23,7 @@ const CompanyItemPage: React.FunctionComponent<CompanyItemPageProps> = (props) =
     variables: {
       id,
     },
-    loadingTip: 'Загрузка производителя',
+    loadingTip: 'Загрузка компании',
     queryName: 'company',
   })
   const [deleteCompany] = useDeleteCompanyMutation({
@@ -42,12 +42,12 @@ const CompanyItemPage: React.FunctionComponent<CompanyItemPageProps> = (props) =
 
   return (
     <UPageContainer
-      title={`${company.name}`}
+      title={`Компания ${company.name}`}
       extra={
         <>
           <UPopconfirm
             onConfirm={deleteCompany as any}
-            title="Все продукты производителя станут недоступны для клиентов. Вы уверены?"
+            title="Все линейки и продукты компании станут недоступны для клиентов. Вы уверены?"
             placement="topRight"
           >
             <UButton danger icon={<DeleteFilled />}>
@@ -60,13 +60,13 @@ const CompanyItemPage: React.FunctionComponent<CompanyItemPageProps> = (props) =
         </>
       }
     >
-      <Card title={`Информация о производителе (ID ${company.id})`}>
+      <Card title={`Информация о компании (ID ${company.id})`}>
         <UDescriptions>
           <UDescriptions.Item label="Название">{company.name}</UDescriptions.Item>
-          <UDescriptions.Item label="Штрихкод">{company.barcode}</UDescriptions.Item>
-          <UDescriptions.Item label="Страна">{company.country}</UDescriptions.Item>
           <UDescriptions.Item label="Цвет в интерфейсе">{company.color}</UDescriptions.Item>
-          <UDescriptions.Item label="slug">{company.slug}</UDescriptions.Item>
+          <UDescriptions.Item label="Slug">{company.slug}</UDescriptions.Item>
+          <UDescriptions.Item label="Страна">{company.country}</UDescriptions.Item>
+          <UDescriptions.Item label="Штрихкод">{company.barcode}</UDescriptions.Item>
         </UDescriptions>
       </Card>
       <URow gutter={[4, 8]}>
@@ -74,9 +74,9 @@ const CompanyItemPage: React.FunctionComponent<CompanyItemPageProps> = (props) =
           <Card title="Статистика">В разработке</Card>
         </UCol>
         <UCol xxl={12}>
-          <Card title="Продукты производителя">
-            <ProductsTable
-              products={company.products}
+          <Card title="Линейки компании">
+            <ProductLinesTable
+              productLines={company.productLines}
               tableProps={{
                 pagination: {
                   defaultPageSize: 5,

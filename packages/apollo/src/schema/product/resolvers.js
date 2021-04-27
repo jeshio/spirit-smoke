@@ -13,8 +13,8 @@ const resolvers = {
         include: [
           {
             model: models.product,
-            order: [[models.company, 'name'], ['name']],
-            include: [{ model: models.company, attributes: ['name'] }],
+            order: [[models.productLine, 'name'], ['name']],
+            include: [{ model: models.productLine, attributes: ['name'] }],
           },
         ],
         where: isNumberString(categoryIdSlug) ? {
@@ -34,7 +34,7 @@ const resolvers = {
       input: {
         barcode, name, slug,
         description,
-        imageUrl, weight, price, count, productCategoryId, companyId,
+        imageUrl, weight, price, count, productCategoryId, productLineId,
         features,
       },
     }, { models, sequelize }) =>
@@ -49,7 +49,7 @@ const resolvers = {
           price,
           count,
           productCategoryId,
-          companyId,
+          productLineId,
         }, { transaction })
 
         if (features) {
@@ -70,7 +70,7 @@ const resolvers = {
       input: {
         barcode, name, slug,
         description,
-        imageUrl, weight, price, count, productCategoryId, companyId,
+        imageUrl, weight, price, count, productCategoryId, productLineId,
         features,
       },
     }, { models, sequelize }) =>
@@ -86,7 +86,7 @@ const resolvers = {
           price,
           count,
           productCategoryId,
-          companyId,
+          productLineId,
         }, { where: { id }, returning: true, transaction }).then(([, [product]]) => product)
         // при смене категории очищаем особенности продукта
         if (Number(sourceProduct?.dataValues.productCategoryId) !== Number(productCategoryId)) {
@@ -126,9 +126,9 @@ const resolvers = {
 
   Product: {
     productCategory: async (product, args, { loaders }) =>
-      loaders.productCategory.load(product.productCategoryId),
-    company: async (product, args, { loaders }) =>
-      loaders.company.load(product.companyId),
+      (product.productCategoryId ? loaders.productCategory.load(product.productCategoryId) : null),
+    productLine: async (product, args, { loaders }) =>
+      loaders.productLine.load(product.productLineId),
     features: async (product, args, { loaders }) => {
       const productFeatures = await loaders.productFeaturesByProductId.load(product.id)
       const features = await loaders.feature.loadMany(productFeatures.map(({ featureId }) => featureId))
@@ -138,7 +138,35 @@ const resolvers = {
     orderProducts: async (product) => product.getOrderProducts(),
     productProcurements: async (product, args, { loaders }) => loaders.productProcurementsByProductId.load(product.id),
     productFeatures: async (product, args, { loaders }) => loaders.productFeaturesByProductId.load(product.id),
+    priceIsSpecial: (product) => product.price !== null || product.productLineId === null,
+    weightIsSpecial: (product) => product.weight !== null || product.productLineId === null,
   },
+}
+
+resolvers.Product.price = async (...args) => {
+  const [product] = args
+  const priceIsSpecial = await resolvers.Product.priceIsSpecial(...args)
+
+  if (priceIsSpecial) {
+    return product.price
+  }
+
+  const productLine = await resolvers.Product.productLine(...args)
+
+  return productLine.price
+}
+
+resolvers.Product.weight = async (...args) => {
+  const [product] = args
+  const weightIsSpecial = await resolvers.Product.weightIsSpecial(...args)
+
+  if (weightIsSpecial) {
+    return product.weight
+  }
+
+  const productLine = await resolvers.Product.productLine(...args)
+
+  return productLine.weight
 }
 
 resolvers.Product.waitingCount = async (...args) => {

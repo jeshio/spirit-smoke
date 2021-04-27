@@ -6,7 +6,7 @@ fragment ProductSimple on IProduct {
   description
   imageUrl
   productCategoryId
-  companyId
+  productLineId
   weight
   price
   count

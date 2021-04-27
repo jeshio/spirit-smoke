@@ -1,0 +1,11 @@
+fragment ProductLineSimple on IProductLine {
+  id
+  name
+  slug
+  price
+  weight
+  companyId
+  productCategoryId
+  createdAt
+  updatedAt
+}

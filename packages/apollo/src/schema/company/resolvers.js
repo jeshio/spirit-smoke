@@ -12,14 +12,22 @@ const resolvers = {
         name, country, barcode, color, slug,
       },
     }, { models }) => models.company.create({
-      name, country, barcode, color, slug,
+      name,
+      country,
+      barcode,
+      color,
+      slug,
     }),
     updateCompany: (parent, {
       id, input: {
         name, country, barcode, color, slug,
       },
     }, { models }) => models.company.update({
-      name, country, barcode, color, slug,
+      name,
+      country,
+      barcode,
+      color,
+      slug,
     }, {
       where: { id }, returning: true,
     }).then(([, [company]]) => company),
@@ -31,7 +39,7 @@ const resolvers = {
   },
 
   Company: {
-    products: async (company) => company.getProducts(), // TODO: сделать loader
+    productLines: async (company) => company.getProductLines(), // TODO: сделать loader
   },
 }
 

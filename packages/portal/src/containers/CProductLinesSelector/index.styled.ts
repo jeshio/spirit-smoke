@@ -30,7 +30,7 @@ export const Root = styled(
   }
 `
 
-export const CompanyItem = styled(
+export const ProductLineItem = styled(
   getUBlockWithProps({
     tag: createComponentWithPropsOmit(UButton, ['color', 'isActive']),
     styleConfig: {

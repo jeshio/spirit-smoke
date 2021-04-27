@@ -6,7 +6,7 @@ import FeatureItem from './components/FeatureItem'
 import {
   ButtonsBlock,
   BuyButton,
-  CompanyName,
+  ProductLineName,
   Description,
   FeatureList,
   Footer,
@@ -44,7 +44,7 @@ const WProductCard: React.FunctionComponent<IWProductCardProps> = ({ product }) 
     <ProductCard>
       <Header>
         <ImageWrapper>
-          <Image src={product.imageUrl} alt={`Купить ${product.company.name}, ${product.name}`} />
+          <Image src={product.imageUrl} alt={`Купить ${product.productLine.name}, ${product.name}`} />
         </ImageWrapper>
         <div>
           <TagsRow />
@@ -54,9 +54,9 @@ const WProductCard: React.FunctionComponent<IWProductCardProps> = ({ product }) 
             </InfoButton>
           )}
           <Description isVisible={descIsVisible}>{product.description}</Description>
-          <CompanyName title={product.company.name} color={product.company.color}>
-            {product.company.name}
-          </CompanyName>
+          <ProductLineName title={product.productLine.name} color={product.productLine.color}>
+            {product.productLine.name}
+          </ProductLineName>
           <Title>{product.name}</Title>
         </div>
         <div>

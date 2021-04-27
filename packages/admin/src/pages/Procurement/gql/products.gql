@@ -1,6 +1,6 @@
 #import "@/gql/fragments/productFeature/simple.gql"
 #import "@/gql/fragments/productCategory/minimum.gql"
-#import "@/gql/fragments/company/minimum.gql"
+#import "@/gql/fragments/productLine/minimum.gql"
 #import "@/gql/fragments/feature/minimum.gql"
 #import "@/gql/fragments/product/minimum.gql"
 
@@ -11,8 +11,8 @@ fragment ProcurementFormProduct on Product {
   productCategory {
     ...ProductCategoryMinimum
   }
-  company {
-    ...CompanyMinimum
+  productLine {
+    ...ProductLineMinimum
   }
 }
 

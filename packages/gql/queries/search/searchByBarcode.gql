@@ -3,6 +3,10 @@
 query searchByBarcode($barcode: String!) {
   searchByBarcode(barcode: $barcode) {
     ...Error
-    ...ProductItem
+    ... on IProduct {
+      ...ProductItem
+      weightIsSpecial
+      priceIsSpecial
+    }
   }
 }

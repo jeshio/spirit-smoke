@@ -22,12 +22,12 @@ input ProductInput {
   barcode: String
   name: String!
   slug: String!
-  description: String!
+  description: String
   imageUrl: String
-  price: Int!
-  productCategoryId: ID!
-  companyId: ID!
-  weight: Int!
+  price: Int
+  productCategoryId: ID
+  productLineId: ID!
+  weight: Int
   features: [ProductFeatureInput!]
 }
 
@@ -38,11 +38,15 @@ interface IProduct {
   slug: String!
   description: String!
   imageUrl: String!
-  weight: Int!
-  price: Int!
+  weight: Int
+  # для продукта задан особенный вес
+  weightIsSpecial: Boolean!
+  price: Int
+  # для продукта задана особенная цена
+  priceIsSpecial: Boolean!
   count: Int!
-  productCategoryId: ID!
-  companyId: ID!
+  productCategoryId: ID
+  productLineId: ID!
   createdAt: Date!
   updatedAt: Date!
 }
@@ -54,11 +58,13 @@ type ProductSimple implements IProduct {
   slug: String!
   description: String!
   imageUrl: String!
-  weight: Int!
-  price: Int!
+  weight: Int
+  weightIsSpecial: Boolean!
+  price: Int
+  priceIsSpecial: Boolean!
   count: Int!
-  productCategoryId: ID!
-  companyId: ID!
+  productCategoryId: ID
+  productLineId: ID!
   createdAt: Date!
   updatedAt: Date!
 }
@@ -70,15 +76,17 @@ type Product implements IProduct {
   slug: String!
   description: String!
   imageUrl: String!
-  weight: Int!
-  price: Int!
+  weight: Int
+  weightIsSpecial: Boolean!
+  price: Int
+  priceIsSpecial: Boolean!
   count: Int!
-  productCategoryId: ID!
-  companyId: ID!
+  productCategoryId: ID
+  productLineId: ID!
   createdAt: Date!
   updatedAt: Date!
   waitingCount: Int! # количество продукта, ожидаемое от ближайших поставок
-  company: Company
+  productLine: ProductLine
   productCategory: ProductCategory
   features: [Feature!]!
   discounts: [Discount!]!

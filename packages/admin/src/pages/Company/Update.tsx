@@ -14,14 +14,14 @@ const CompanyUpdatePage: React.FunctionComponent<ICompanyUpdatePageProps> = (pro
     variables: {
       id,
     },
-    loadingTip: 'Загрузка продукта',
+    loadingTip: 'Загрузка компании',
     queryName: 'company',
   })
   const [updateCompany, updateCompanyRequest] = useUpdateCompanyMutation({
     onCompleted: (r) => {
       if (!('errors' in r)) {
         notification.success({
-          message: 'Производитель успешно обновлён!',
+          message: 'Компания успешно обновлена!',
         })
         props.history.push(`/companies/${id}`)
       }
@@ -32,7 +32,7 @@ const CompanyUpdatePage: React.FunctionComponent<ICompanyUpdatePageProps> = (pro
     updateCompany({
       variables: {
         id,
-        input: fields as any,
+        input: fields,
       },
     })
   }
@@ -42,7 +42,7 @@ const CompanyUpdatePage: React.FunctionComponent<ICompanyUpdatePageProps> = (pro
   const { company } = companyQuery.data
 
   return (
-    <UPageContainer title="Редактирование производителя">
+    <UPageContainer title="Редактирование компании">
       <CompanyForm isUpdate company={company} loading={updateCompanyRequest.loading} onSubmit={handleSubmit} />
     </UPageContainer>
   )

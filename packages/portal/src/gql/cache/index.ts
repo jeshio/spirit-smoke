@@ -1,5 +1,5 @@
 import { TypedTypePolicies } from '../__generated__/apollo-helpers'
-import Company from './Company'
+import ProductLine from './ProductLine'
 import Product from './Product'
 import Feature from './Feature'
 import Query from './Query'
@@ -8,8 +8,8 @@ export const clientSchemaTypePolicies: TypedTypePolicies = {
   Query: {
     ...Query,
   },
-  Company: {
-    ...Company,
+  ProductLine: {
+    ...ProductLine,
   },
   Product: {
     ...Product,

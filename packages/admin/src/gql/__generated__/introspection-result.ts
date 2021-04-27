@@ -32,6 +32,10 @@
       "ProductCategorySimple",
       "ProductCategory"
     ],
+    "IProductLine": [
+      "ProductLineSimple",
+      "ProductLine"
+    ],
     "SearchResult": [
       "NotFound",
       "Product"
@@ -70,6 +74,10 @@
     "IProductCategory": [
       "ProductCategorySimple",
       "ProductCategory"
+    ],
+    "IProductLine": [
+      "ProductLineSimple",
+      "ProductLine"
     ],
     "SearchResult": [
       "NotFound",

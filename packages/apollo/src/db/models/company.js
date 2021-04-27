@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      Company.hasMany(models.product, { onDelete: 'CASCADE' })
+      Company.hasMany(models.productLine, { onDelete: 'CASCADE' })
     }
   }
   Company.init({
@@ -48,6 +48,11 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'company',
+    name: {
+      singular: 'company',
+      plural: 'companies',
+    },
+    tableName: 'companies',
     paranoid: true,
   })
   return Company
