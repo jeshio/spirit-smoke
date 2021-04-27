@@ -1,4 +1,4 @@
-import * as React from 'react'
+import React, { ChangeEvent, ComponentProps, FunctionComponent, useMemo } from 'react'
 import { Input, Card, InputNumber, Select } from 'antd'
 import UForm from '@/ui-components/UForm'
 import URow from '@/ui-components/URow'
@@ -15,6 +15,7 @@ import UItemsSelector from '@/ui-components/UItemsSelector'
 import UBlock from '@/ui-components/UBlock'
 import updateSlugOnChangeTitle from '@/helpers/updateSlugOnChangeTitle'
 import { FormInstance } from 'rc-field-form/lib/interface'
+import selectIncludeFilter from '@/helpers/selectIncludeFilter'
 
 export interface IProductFormProps {
   loading?: boolean
@@ -23,7 +24,7 @@ export interface IProductFormProps {
   product?: ProductItemPageQuery['product']
 }
 
-const ProductForm: React.FunctionComponent<IProductFormProps> = ({
+const ProductForm: FunctionComponent<IProductFormProps> = ({
   loading = false,
   onSubmit,
   isUpdate = false,
@@ -40,7 +41,7 @@ const ProductForm: React.FunctionComponent<IProductFormProps> = ({
       price: numberToPrice(parseFloat(fields.price)),
     })
   const featureOptions =
-    React.useMemo(
+    useMemo(
       () =>
         product?.productCategory?.features.map((feature) => ({
           title: feature.name,
@@ -48,12 +49,10 @@ const ProductForm: React.FunctionComponent<IProductFormProps> = ({
           iconUrl: feature.imageUrl,
           link: `/features/${feature.id}`,
           isDisabled: feature.isDisabled,
-        })) as React.ComponentProps<typeof UItemsSelector>['optionsToAdd'],
+        })) as ComponentProps<typeof UItemsSelector>['optionsToAdd'],
       [product?.productCategory]
     ) || []
-  const initialSelectedFeatureIds = React.useMemo(() => product?.productFeatures.map(({ feature: { id } }) => id), [
-    product,
-  ])
+  const initialSelectedFeatureIds = useMemo(() => product?.productFeatures.map(({ feature: { id } }) => id), [product])
 
   const changeSlugDependencyHandler = (fields: any, form: FormInstance) => {
     const productLine = productLineRequest.data?.productLines.find(({ id }) => id === fields.productLineId)
@@ -64,7 +63,7 @@ const ProductForm: React.FunctionComponent<IProductFormProps> = ({
     return updateSlugOnChangeTitle(name, form)
   }
 
-  const nameChangeHandler = (fields: any, form: FormInstance) => (e: React.ChangeEvent<HTMLInputElement>) => {
+  const nameChangeHandler = (fields: any, form: FormInstance) => (e: ChangeEvent<HTMLInputElement>) => {
     return changeSlugDependencyHandler(
       {
         ...fields,
@@ -106,7 +105,11 @@ const ProductForm: React.FunctionComponent<IProductFormProps> = ({
                   help={productLineWarning && 'Эта линейка продуктов удалена, продукт невидим'}
                   validateStatus={(productLineWarning && 'warning') || undefined}
                 >
-                  <Select onChange={productLineChangeHandler(fields, form)}>
+                  <Select
+                    onChange={productLineChangeHandler(fields, form)}
+                    showSearch
+                    filterOption={selectIncludeFilter}
+                  >
                     {productLineRequest.data?.productLines.map(({ id, name }) => (
                       <Select.Option value={id} key={id}>
                         ({id}) {name}
@@ -121,7 +124,7 @@ const ProductForm: React.FunctionComponent<IProductFormProps> = ({
                   help={productCategoryWarning && 'Категория не установлена, продукт невидим'}
                   validateStatus={(productCategoryWarning && 'warning') || undefined}
                 >
-                  <Select>
+                  <Select showSearch filterOption={selectIncludeFilter}>
                     <Select.Option value={null as any} key="productLine">
                       Стандартная категория линейки
                     </Select.Option>

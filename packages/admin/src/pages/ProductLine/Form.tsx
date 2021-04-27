@@ -12,6 +12,7 @@ import {
 import UBlock from '@/ui-components/UBlock'
 import updateSlugOnChangeTitle from '@/helpers/updateSlugOnChangeTitle'
 import { FormInstance } from 'rc-field-form/lib/interface'
+import selectIncludeFilter from '@/helpers/selectIncludeFilter'
 import ProductsTable from './components/ProductsTable'
 
 export interface IProductLineFormProps {
@@ -72,7 +73,7 @@ const ProductLineForm: React.FunctionComponent<IProductLineFormProps> = ({
                     help={companyWarning && 'Компания не установлена или удалена, линейка невидима'}
                     validateStatus={(companyWarning && 'error') || undefined}
                   >
-                    <Select onChange={companyChangeHandler(fields, form)}>
+                    <Select onChange={companyChangeHandler(fields, form)} showSearch filterOption={selectIncludeFilter}>
                       {companiesRequest.data?.companies.map(({ id, name }) => (
                         <Select.Option value={id} key={id}>
                           ({id}) {name}
@@ -88,7 +89,7 @@ const ProductLineForm: React.FunctionComponent<IProductLineFormProps> = ({
                     help={productCategoryWarning && 'Категория не установлена или удалена, линейка невидима'}
                     validateStatus={(productCategoryWarning && 'error') || undefined}
                   >
-                    <Select>
+                    <Select showSearch filterOption={selectIncludeFilter}>
                       {categoriesRequest.data?.productCategories.map(({ id, name }) => (
                         <Select.Option value={id} key={id}>
                           ({id}) {name}
