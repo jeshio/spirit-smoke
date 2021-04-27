@@ -29,8 +29,27 @@ const ProductLineForm: React.FunctionComponent<IProductLineFormProps> = ({
 }) => {
   const categoriesRequest = useProductCategoryMinimumListQuery()
   const companiesRequest = useCompanyMinimumListQuery()
-  const handleChangeName = (form: FormInstance) => (e?: ChangeEvent<HTMLInputElement>) => {
-    updateSlugOnChangeTitle(e?.target.value || '', form)
+  const changeSlugDependencyHandler = (fields: any, form: FormInstance) => {
+    const company = companiesRequest.data?.companies.find(({ id }) => id === fields.companyId)
+    let { name = '' } = fields
+    if (company) {
+      name = `${company.name} ${name}`
+    }
+    return updateSlugOnChangeTitle(name, form)
+  }
+
+  const handleChangeName = (fields: any, form: FormInstance) => (e?: ChangeEvent<HTMLInputElement>) => {
+    changeSlugDependencyHandler({ ...fields, name: e?.target.value || '' }, form)
+  }
+
+  const companyChangeHandler = (fields: any, form: FormInstance) => (companyId: any) => {
+    return changeSlugDependencyHandler(
+      {
+        ...fields,
+        companyId,
+      },
+      form
+    )
   }
 
   return (
@@ -53,7 +72,7 @@ const ProductLineForm: React.FunctionComponent<IProductLineFormProps> = ({
                     help={companyWarning && 'Компания не установлена или удалена, линейка невидима'}
                     validateStatus={(companyWarning && 'error') || undefined}
                   >
-                    <Select>
+                    <Select onChange={companyChangeHandler(fields, form)}>
                       {companiesRequest.data?.companies.map(({ id, name }) => (
                         <Select.Option value={id} key={id}>
                           ({id}) {name}
@@ -78,7 +97,7 @@ const ProductLineForm: React.FunctionComponent<IProductLineFormProps> = ({
                     </Select>
                   </UForm.Item>
                   <UForm.Item label="Название" name="name" required initialValue={productLine?.name}>
-                    <Input onChange={handleChangeName(form)} />
+                    <Input onChange={handleChangeName(fields, form)} />
                   </UForm.Item>
                   <UForm.Item label="Slug" name="slug" required initialValue={productLine?.slug}>
                     <Input />
