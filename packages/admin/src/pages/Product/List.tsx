@@ -7,6 +7,7 @@ import {
   ProductsListPageDocument,
   useSyncAllProductsCountMutation,
   useSetProductBarcodeMutation,
+  useProductsXlsLazyQuery,
 } from '@/gql/__generated__/types'
 import { IColumn } from '@/ui-components/UTable/types'
 import { Link } from 'umi'
@@ -19,6 +20,8 @@ import UFeaturesList from '@/ui-components/UFeaturesList'
 import UWAddProductToProcurementModal from '@/ui-widgets/UWAddProductToProcurementModal'
 import UWeight from '@/ui-components/UWeight'
 import UPrice from '@/ui-components/UPrice'
+import downloadBase64 from '@/helpers/downloadBase64'
+import ExcelJS from 'exceljs'
 import productFeaturesToFlatFeature from './helpers/productFeaturesToFlatFeatures'
 import BarcodePopover from './components/BarcodePopover'
 
@@ -187,6 +190,48 @@ const columns = ({
 interface IProductListPageProps {}
 
 const ProductListPage: React.FunctionComponent<IProductListPageProps> = () => {
+  const [fetchProductsXls] = useProductsXlsLazyQuery({
+    onCompleted: async (response) => {
+      const workbook = new ExcelJS.Workbook()
+      const worksheet = workbook.addWorksheet('Продукты')
+
+      worksheet.addRow(['Код', 'Наименование', 'Группа', 'Цена', 'Остаток', 'Штрих-код', 'Ед.изм.', 'НДС'])
+
+      response.products.slice(0, 10).forEach((product) => {
+        const group = `${product.productLine?.company?.name || ''} ${product.productLine?.name || ''}`.trim()
+        let name = group
+
+        if (name) {
+          name += ', '
+        }
+
+        name += product.name
+
+        if (product.weight) {
+          name += `, ${product.weight} гр`
+        }
+
+        return worksheet.addRow([
+          product.id,
+          name,
+          group,
+          product.price,
+          product.count,
+          product.barcode,
+          'шт',
+          'VAT_18',
+        ])
+      })
+
+      const buffer = await workbook.xlsx.writeBuffer()
+
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      const productsBase64 = buffer.toString('base64')
+
+      downloadBase64(productsBase64, 'products.xlsx')
+    },
+  })
   const [syncAllProductsCount] = useSyncAllProductsCountMutation({
     refetchQueries: [
       {
@@ -214,6 +259,9 @@ const ProductListPage: React.FunctionComponent<IProductListPageProps> = () => {
     setAddableProductId(productId)
     setAddToProcurementModalVisible(!addToProcurementModalVisible)
   }
+  const handleImportClick = () => {
+    fetchProductsXls()
+  }
 
   return (
     <>
@@ -223,6 +271,9 @@ const ProductListPage: React.FunctionComponent<IProductListPageProps> = () => {
           name: 'Добавить продукт',
         }}
         extraButtons={[
+          <UButton key="xls" onClick={handleImportClick}>
+            Экспорт в Excel
+          </UButton>,
           <UButton key="sync" onClick={handleSyncCountClick}>
             Синхронизировать количество продуктов
           </UButton>,

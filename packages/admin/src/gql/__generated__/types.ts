@@ -1534,6 +1534,37 @@ export type ProductsListPageQuery = (
   )> }
 );
 
+export type ProductsXlsFragmentFragment = (
+  { __typename?: 'Product' }
+  & Pick<Product, 'slug' | 'barcode' | 'price' | 'count' | 'weight'>
+  & { productCategory?: Maybe<(
+    { __typename?: 'ProductCategory' }
+    & ProductCategoryMinimum_ProductCategory_Fragment
+  )>, productLine?: Maybe<(
+    { __typename?: 'ProductLine' }
+    & { productCategory?: Maybe<(
+      { __typename?: 'ProductCategory' }
+      & ProductCategoryMinimum_ProductCategory_Fragment
+    )>, company?: Maybe<(
+      { __typename?: 'Company' }
+      & CompanyMinimum_Company_Fragment
+    )> }
+    & ProductLineMinimum_ProductLine_Fragment
+  )> }
+  & ProductMinimum_Product_Fragment
+);
+
+export type ProductsXlsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ProductsXlsQuery = (
+  { __typename?: 'Query' }
+  & { products: Array<(
+    { __typename?: 'Product' }
+    & ProductsXlsFragmentFragment
+  )> }
+);
+
 export type ProductCategoryListPageFragment = (
   { __typename?: 'ProductCategory' }
   & Pick<ProductCategory, 'slug' | 'createdAt'>
@@ -3193,6 +3224,31 @@ ${ProductLineMinimumFragmentDoc}
 ${CompanyMinimumFragmentDoc}
 ${ProductFeatureSimpleFragmentDoc}
 ${FeatureMinimumFragmentDoc}`;
+export const ProductsXlsFragmentFragmentDoc = gql`
+    fragment productsXlsFragment on Product {
+  ...ProductMinimum
+  slug
+  barcode
+  price
+  count
+  weight
+  productCategory {
+    ...ProductCategoryMinimum
+  }
+  productLine {
+    ...ProductLineMinimum
+    productCategory {
+      ...ProductCategoryMinimum
+    }
+    company {
+      ...CompanyMinimum
+    }
+  }
+}
+    ${ProductMinimumFragmentDoc}
+${ProductCategoryMinimumFragmentDoc}
+${ProductLineMinimumFragmentDoc}
+${CompanyMinimumFragmentDoc}`;
 export const ProductCategoryListPageFragmentDoc = gql`
     fragment ProductCategoryListPage on ProductCategory {
   ...ProductCategoryMinimum
@@ -4579,6 +4635,38 @@ export function useProductsListPageLazyQuery(baseOptions?: Apollo.LazyQueryHookO
 export type ProductsListPageQueryHookResult = ReturnType<typeof useProductsListPageQuery>;
 export type ProductsListPageLazyQueryHookResult = ReturnType<typeof useProductsListPageLazyQuery>;
 export type ProductsListPageQueryResult = Apollo.QueryResult<ProductsListPageQuery, ProductsListPageQueryVariables>;
+export const ProductsXlsDocument = gql`
+    query productsXls {
+  products {
+    ...productsXlsFragment
+  }
+}
+    ${ProductsXlsFragmentFragmentDoc}`;
+
+/**
+ * __useProductsXlsQuery__
+ *
+ * To run a query within a React component, call `useProductsXlsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProductsXlsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProductsXlsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useProductsXlsQuery(baseOptions?: Apollo.QueryHookOptions<ProductsXlsQuery, ProductsXlsQueryVariables>) {
+        return Apollo.useQuery<ProductsXlsQuery, ProductsXlsQueryVariables>(ProductsXlsDocument, baseOptions);
+      }
+export function useProductsXlsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProductsXlsQuery, ProductsXlsQueryVariables>) {
+          return Apollo.useLazyQuery<ProductsXlsQuery, ProductsXlsQueryVariables>(ProductsXlsDocument, baseOptions);
+        }
+export type ProductsXlsQueryHookResult = ReturnType<typeof useProductsXlsQuery>;
+export type ProductsXlsLazyQueryHookResult = ReturnType<typeof useProductsXlsLazyQuery>;
+export type ProductsXlsQueryResult = Apollo.QueryResult<ProductsXlsQuery, ProductsXlsQueryVariables>;
 export const ProductCategoryListPageDocument = gql`
     query productCategoryListPage {
   productCategories {
