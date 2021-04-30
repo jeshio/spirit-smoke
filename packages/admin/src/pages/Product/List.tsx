@@ -197,7 +197,7 @@ const ProductListPage: React.FunctionComponent<IProductListPageProps> = () => {
 
       worksheet.addRow(['Код', 'Наименование', 'Группа', 'Цена', 'Остаток', 'Штрих-код', 'Ед.изм.', 'НДС'])
 
-      response.products.slice(0, 10).forEach((product) => {
+      response.products.forEach((product) => {
         const group = `${product.productLine?.company?.name || ''} ${product.productLine?.name || ''}`.trim()
         let name = group
 
