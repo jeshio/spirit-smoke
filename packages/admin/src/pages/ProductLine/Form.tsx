@@ -32,15 +32,25 @@ const ProductLineForm: React.FunctionComponent<IProductLineFormProps> = ({
   const companiesRequest = useCompanyMinimumListQuery()
   const changeSlugDependencyHandler = (fields: any, form: FormInstance) => {
     const company = companiesRequest.data?.companies.find(({ id }) => id === fields.companyId)
+    const { weight = '' } = fields
     let { name = '' } = fields
     if (company) {
       name = `${company.name} ${name}`
     }
+
+    if (weight) {
+      name += ` ${weight}`
+    }
+
     return updateSlugOnChangeTitle(name, form)
   }
 
   const handleChangeName = (fields: any, form: FormInstance) => (e?: ChangeEvent<HTMLInputElement>) => {
     changeSlugDependencyHandler({ ...fields, name: e?.target.value || '' }, form)
+  }
+
+  const handleChangeWeight = (fields: any, form: FormInstance) => (value?: string | number) => {
+    changeSlugDependencyHandler({ ...fields, weight: value || '' }, form)
   }
 
   const companyChangeHandler = (fields: any, form: FormInstance) => (companyId: any) => {
@@ -104,7 +114,7 @@ const ProductLineForm: React.FunctionComponent<IProductLineFormProps> = ({
                     <Input />
                   </UForm.Item>
                   <UForm.Item label="Вес (г)" name="weight" initialValue={productLine?.weight || 0}>
-                    <InputNumber min={0} />
+                    <InputNumber min={0} onChange={handleChangeWeight(fields, form)} />
                   </UForm.Item>
                   <UForm.Item label="Цена (₽)" name="price" initialValue={productLine?.price}>
                     <InputNumber min={0} />

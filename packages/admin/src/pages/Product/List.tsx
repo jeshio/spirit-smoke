@@ -195,7 +195,7 @@ const ProductListPage: React.FunctionComponent<IProductListPageProps> = () => {
       const workbook = new ExcelJS.Workbook()
       const worksheet = workbook.addWorksheet('Продукты')
 
-      worksheet.addRow(['Код', 'Наименование', 'Группа', 'Цена', 'Остаток', 'Штрих-код', 'Ед.изм.', 'НДС'])
+      worksheet.addRow(['Код', 'Наименование', 'Группа', 'Цена', 'В продаже', 'Остаток', 'Штрих-код', 'Ед.изм.', 'НДС'])
 
       response.products.forEach((product) => {
         const group = `${product.productLine?.company?.name || ''} ${product.productLine?.name || ''}`.trim()
@@ -216,6 +216,7 @@ const ProductListPage: React.FunctionComponent<IProductListPageProps> = () => {
           name,
           group,
           product.price,
+          'ИСТИНА',
           product.count,
           product.barcode,
           'шт',

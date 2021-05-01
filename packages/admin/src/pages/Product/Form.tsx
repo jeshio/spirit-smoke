@@ -110,9 +110,9 @@ const ProductForm: FunctionComponent<IProductFormProps> = ({
                     showSearch
                     filterOption={selectIncludeFilter}
                   >
-                    {productLineRequest.data?.productLines.map(({ id, name }) => (
+                    {productLineRequest.data?.productLines.map(({ id, name, company }) => (
                       <Select.Option value={id} key={id}>
-                        ({id}) {name}
+                        ({id}) {company?.name || ''} {name}
                       </Select.Option>
                     ))}
                   </Select>
