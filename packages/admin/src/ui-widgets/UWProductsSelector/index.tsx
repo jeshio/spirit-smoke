@@ -1,4 +1,5 @@
 import { ProductsSelectorFragment, useProductsSelectorQuery } from '@/gql/__generated__/types'
+import getProductName from '@/helpers/getProductName'
 import UItemsSelector, {
   IUItemsSelectorProps,
   UItemsSelectorValueObjectType,
@@ -8,7 +9,7 @@ import { keyBy } from 'lodash'
 import React, { ComponentProps, useCallback, useEffect, useMemo, useRef } from 'react'
 
 interface IUWProductsSelectorProps extends Omit<IUItemsSelectorProps, 'onChange' | 'optionsToAdd' | 'loading'> {
-  onChange: (
+  onChange?: (
     value: Array<
       UItemsSelectorValueObjectType & {
         product: ProductsSelectorFragment
@@ -25,10 +26,10 @@ const UWProductsSelector: React.FunctionComponent<IUWProductsSelectorProps> = (p
   const productItems = useMemo(
     (): ComponentProps<typeof UItemsSelector>['optionsToAdd'] =>
       productsRequest.data?.products.map((product) => ({
-        title: `${product.productLine?.company?.name || ''} ${product.productLine?.name || ''} - ${product.name}`,
+        title: getProductName(product),
         value: product.id,
         link: `/products/${product.id}`,
-        extra: `${product.price} ₽`,
+        extra: `${product.price || 0} ₽`,
       })) || [],
     [productsRequest.data]
   )

@@ -62,13 +62,6 @@ export default function useOriginalColumns(columns: IColumn<any>[]): ColumnsType
       })
     ) as ColumnsType<any>
 
-    cols.unshift({
-      title: '№',
-      key: 'index',
-      render: colRender((text, record, index) => index + 1),
-      width: 50,
-    })
-
     return cols
   }, [columns])
 

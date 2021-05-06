@@ -1,9 +1,11 @@
 import * as React from 'react'
 
-interface IUPriceProps {}
+interface IUPriceProps {
+  children?: number
+}
 
-const UPrice: React.FunctionComponent<IUPriceProps> = ({ children }) => {
-  return <span>{children} ₽</span>
+const UPrice: React.FunctionComponent<IUPriceProps> = ({ children = 0 }) => {
+  return <span>{children.toLocaleString()} ₽</span>
 }
 
 export default UPrice

@@ -112,6 +112,15 @@ const resolvers = {
   },
 }
 
+resolvers.Mutation.checkProcurementProducts = (parent, input, ...args) =>
+  resolvers.Mutation.updateProcurement(parent, {
+    ...input,
+    input: {
+      ...input.input,
+      status: 'SUCCESS',
+    },
+  }, ...args)
+
 resolvers.Procurement.productsPrice = async (...args) => {
   const productProcurements = await resolvers.Procurement.productProcurements(...args)
   return productProcurements.reduce((base, { costs, count }) => base + (costs || 0) * count, 0)
@@ -146,10 +155,14 @@ resolvers.Procurement.weight = async (...args) => {
   const [procurement,, { models }] = args
   const productProcurements = await resolvers.Procurement.productProcurements(procurement, {
     include: [
-      { model: models.product, attributes: ['weight'] },
+      { model: models.product, attributes: ['weight'], include: { model: models.productLine, attributes: ['weight'] } },
     ],
   })
-  return productProcurements.reduce((base, { count, product: { weight } }) => base + (weight || 0) * count, 0)
+  return productProcurements.reduce(
+    (base, { count, product: { weight, productLine } }) =>
+      base + ((weight === null ? productLine.weight : weight) || 0) * count,
+    0,
+  )
 }
 
 export default resolvers

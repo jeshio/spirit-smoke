@@ -158,6 +158,7 @@ export type Mutation = {
   createParam: Param;
   createProcurement: ProcurementSimple;
   updateProcurement: ProcurementSimple;
+  checkProcurementProducts: ProcurementSimple;
   addProcurementProduct: ProcurementSimple;
   createProduct: ProductSimple;
   updateProduct: ProductSimple;
@@ -289,6 +290,12 @@ export type MutationCreateProcurementArgs = {
 export type MutationUpdateProcurementArgs = {
   id: Scalars['ID'];
   input: ProcurementInput;
+};
+
+
+export type MutationCheckProcurementProductsArgs = {
+  id: Scalars['ID'];
+  input?: Maybe<ProcurementCheckProductsInput>;
 };
 
 
@@ -661,6 +668,10 @@ export type ProcurementInput = {
   name: Scalars['String'];
   comment?: Maybe<Scalars['String']>;
   providerInfo?: Maybe<Scalars['String']>;
+  products: Array<ProcurementProductInput>;
+};
+
+export type ProcurementCheckProductsInput = {
   products: Array<ProcurementProductInput>;
 };
 
@@ -1066,6 +1077,20 @@ export type AddProcurementProductMutation = (
   ) }
 );
 
+export type CheckProcurementProductsMutationVariables = Exact<{
+  id: Scalars['ID'];
+  input: ProcurementCheckProductsInput;
+}>;
+
+
+export type CheckProcurementProductsMutation = (
+  { __typename?: 'Mutation' }
+  & { checkProcurementProducts: (
+    { __typename?: 'ProcurementSimple' }
+    & ProcurementSimple_ProcurementSimple_Fragment
+  ) }
+);
+
 export type CreateProcurementMutationVariables = Exact<{
   input: ProcurementInput;
 }>;
@@ -1395,6 +1420,34 @@ export type OrdersListPageQuery = (
   )> }
 );
 
+export type ProcurementFormProductFragment = (
+  { __typename?: 'Product' }
+  & Pick<Product, 'price' | 'count'>
+  & { productCategory?: Maybe<(
+    { __typename?: 'ProductCategory' }
+    & ProductCategoryMinimum_ProductCategory_Fragment
+  )>, productLine?: Maybe<(
+    { __typename?: 'ProductLine' }
+    & { company?: Maybe<(
+      { __typename?: 'Company' }
+      & CompanyMinimum_Company_Fragment
+    )> }
+    & ProductLineMinimum_ProductLine_Fragment
+  )> }
+  & ProductMinimum_Product_Fragment
+);
+
+export type ProcurementFormProductsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ProcurementFormProductsQuery = (
+  { __typename?: 'Query' }
+  & { products: Array<(
+    { __typename?: 'Product' }
+    & ProcurementFormProductFragment
+  )> }
+);
+
 export type ProcurementItemPageFragment = (
   { __typename?: 'Procurement' }
   & Pick<Procurement, 'productsPrice' | 'totalPrice' | 'saleAmount' | 'margin' | 'weight'>
@@ -1406,6 +1459,10 @@ export type ProcurementItemPageFragment = (
       & Pick<Product, 'id' | 'name' | 'price'>
       & { productLine?: Maybe<(
         { __typename?: 'ProductLine' }
+        & { company?: Maybe<(
+          { __typename?: 'Company' }
+          & CompanyMinimum_Company_Fragment
+        )> }
         & ProductLineMinimum_ProductLine_Fragment
       )> }
     ) }
@@ -1426,6 +1483,58 @@ export type ProcurementItemPageQuery = (
   )> }
 );
 
+export type ProcurementCheckPageFragment = (
+  { __typename?: 'Procurement' }
+  & Pick<Procurement, 'productsPrice' | 'totalPrice' | 'saleAmount' | 'margin' | 'weight'>
+  & { productProcurements: Array<(
+    { __typename?: 'ProductProcurement' }
+    & Pick<ProductProcurement, 'count' | 'costs'>
+    & { product: (
+      { __typename?: 'Product' }
+      & Pick<Product, 'id'>
+    ) }
+  )> }
+  & ProcurementSimple_Procurement_Fragment
+);
+
+export type ProcurementCheckPageQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type ProcurementCheckPageQuery = (
+  { __typename?: 'Query' }
+  & { procurement?: Maybe<(
+    { __typename?: 'Procurement' }
+    & ProcurementCheckPageFragment
+  )> }
+);
+
+export type ProcurementCheckProductFragment = (
+  { __typename?: 'Product' }
+  & Pick<Product, 'count' | 'barcode' | 'weight' | 'price'>
+  & { productLine?: Maybe<(
+    { __typename?: 'ProductLine' }
+    & { company?: Maybe<(
+      { __typename?: 'Company' }
+      & CompanyMinimum_Company_Fragment
+    )> }
+    & ProductLineMinimum_ProductLine_Fragment
+  )> }
+  & ProductMinimum_Product_Fragment
+);
+
+export type ProcurementCheckProductsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type ProcurementCheckProductsQuery = (
+  { __typename?: 'Query' }
+  & { products: Array<(
+    { __typename?: 'Product' }
+    & ProcurementCheckProductFragment
+  )> }
+);
+
 export type ProcurementsListPageFragment = (
   { __typename?: 'Procurement' }
   & Pick<Procurement, 'productsPrice' | 'totalPrice' | 'saleAmount' | 'margin' | 'weight'>
@@ -1440,30 +1549,6 @@ export type ProcurementsListPageQuery = (
   & { procurements: Array<(
     { __typename?: 'Procurement' }
     & ProcurementsListPageFragment
-  )> }
-);
-
-export type ProcurementFormProductFragment = (
-  { __typename?: 'Product' }
-  & Pick<Product, 'price' | 'count'>
-  & { productCategory?: Maybe<(
-    { __typename?: 'ProductCategory' }
-    & ProductCategoryMinimum_ProductCategory_Fragment
-  )>, productLine?: Maybe<(
-    { __typename?: 'ProductLine' }
-    & ProductLineMinimum_ProductLine_Fragment
-  )> }
-  & ProductMinimum_Product_Fragment
-);
-
-export type ProcurementFormProductsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type ProcurementFormProductsQuery = (
-  { __typename?: 'Query' }
-  & { products: Array<(
-    { __typename?: 'Product' }
-    & ProcurementFormProductFragment
   )> }
 );
 
@@ -2278,6 +2363,7 @@ export type ResolversTypes = {
   ParamInput: ParamInput;
   Param: ResolverTypeWrapper<Param>;
   ProcurementInput: ProcurementInput;
+  ProcurementCheckProductsInput: ProcurementCheckProductsInput;
   ProcurementProductInput: ProcurementProductInput;
   AddProcurementProductInput: AddProcurementProductInput;
   ProcurementStatus: ProcurementStatus;
@@ -2342,6 +2428,7 @@ export type ResolversParentTypes = {
   ParamInput: ParamInput;
   Param: Param;
   ProcurementInput: ProcurementInput;
+  ProcurementCheckProductsInput: ProcurementCheckProductsInput;
   ProcurementProductInput: ProcurementProductInput;
   AddProcurementProductInput: AddProcurementProductInput;
   ProductProcurement: ProductProcurement;
@@ -2424,6 +2511,7 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   createParam?: Resolver<ResolversTypes['Param'], ParentType, ContextType, RequireFields<MutationCreateParamArgs, 'input'>>;
   createProcurement?: Resolver<ResolversTypes['ProcurementSimple'], ParentType, ContextType, RequireFields<MutationCreateProcurementArgs, 'input'>>;
   updateProcurement?: Resolver<ResolversTypes['ProcurementSimple'], ParentType, ContextType, RequireFields<MutationUpdateProcurementArgs, 'id' | 'input'>>;
+  checkProcurementProducts?: Resolver<ResolversTypes['ProcurementSimple'], ParentType, ContextType, RequireFields<MutationCheckProcurementProductsArgs, 'id'>>;
   addProcurementProduct?: Resolver<ResolversTypes['ProcurementSimple'], ParentType, ContextType, RequireFields<MutationAddProcurementProductArgs, 'procurementId' | 'input'>>;
   createProduct?: Resolver<ResolversTypes['ProductSimple'], ParentType, ContextType, RequireFields<MutationCreateProductArgs, 'input'>>;
   updateProduct?: Resolver<ResolversTypes['ProductSimple'], ParentType, ContextType, RequireFields<MutationUpdateProductArgs, 'id' | 'input'>>;
@@ -3099,6 +3187,39 @@ export const OrdersListPageFragmentDoc = gql`
   }
 }
     ${OrderMinimumFragmentDoc}`;
+export const ProductCategoryMinimumFragmentDoc = gql`
+    fragment ProductCategoryMinimum on IProductCategory {
+  id
+  name
+  iconUrl
+  slug
+}
+    `;
+export const CompanyMinimumFragmentDoc = gql`
+    fragment CompanyMinimum on ICompany {
+  id
+  name
+}
+    `;
+export const ProcurementFormProductFragmentDoc = gql`
+    fragment ProcurementFormProduct on Product {
+  ...ProductMinimum
+  price
+  count
+  productCategory {
+    ...ProductCategoryMinimum
+  }
+  productLine {
+    ...ProductLineMinimum
+    company {
+      ...CompanyMinimum
+    }
+  }
+}
+    ${ProductMinimumFragmentDoc}
+${ProductCategoryMinimumFragmentDoc}
+${ProductLineMinimumFragmentDoc}
+${CompanyMinimumFragmentDoc}`;
 export const ProcurementSimpleFragmentDoc = gql`
     fragment ProcurementSimple on IProcurement {
   id
@@ -3125,6 +3246,9 @@ export const ProcurementItemPageFragmentDoc = gql`
       price
       productLine {
         ...ProductLineMinimum
+        company {
+          ...CompanyMinimum
+        }
       }
     }
     count
@@ -3132,7 +3256,42 @@ export const ProcurementItemPageFragmentDoc = gql`
   }
 }
     ${ProcurementSimpleFragmentDoc}
-${ProductLineMinimumFragmentDoc}`;
+${ProductLineMinimumFragmentDoc}
+${CompanyMinimumFragmentDoc}`;
+export const ProcurementCheckPageFragmentDoc = gql`
+    fragment ProcurementCheckPage on Procurement {
+  ...ProcurementSimple
+  productsPrice
+  totalPrice
+  saleAmount
+  margin
+  weight
+  productProcurements {
+    product {
+      id
+    }
+    count
+    costs
+  }
+}
+    ${ProcurementSimpleFragmentDoc}`;
+export const ProcurementCheckProductFragmentDoc = gql`
+    fragment ProcurementCheckProduct on Product {
+  ...ProductMinimum
+  count
+  barcode
+  weight
+  price
+  productLine {
+    ...ProductLineMinimum
+    company {
+      ...CompanyMinimum
+    }
+  }
+}
+    ${ProductMinimumFragmentDoc}
+${ProductLineMinimumFragmentDoc}
+${CompanyMinimumFragmentDoc}`;
 export const ProcurementsListPageFragmentDoc = gql`
     fragment ProcurementsListPage on Procurement {
   ...ProcurementSimple
@@ -3143,35 +3302,6 @@ export const ProcurementsListPageFragmentDoc = gql`
   weight
 }
     ${ProcurementSimpleFragmentDoc}`;
-export const ProductCategoryMinimumFragmentDoc = gql`
-    fragment ProductCategoryMinimum on IProductCategory {
-  id
-  name
-  iconUrl
-  slug
-}
-    `;
-export const ProcurementFormProductFragmentDoc = gql`
-    fragment ProcurementFormProduct on Product {
-  ...ProductMinimum
-  price
-  count
-  productCategory {
-    ...ProductCategoryMinimum
-  }
-  productLine {
-    ...ProductLineMinimum
-  }
-}
-    ${ProductMinimumFragmentDoc}
-${ProductCategoryMinimumFragmentDoc}
-${ProductLineMinimumFragmentDoc}`;
-export const CompanyMinimumFragmentDoc = gql`
-    fragment CompanyMinimum on ICompany {
-  id
-  name
-}
-    `;
 export const ProductFeatureSimpleFragmentDoc = gql`
     fragment ProductFeatureSimple on ProductFeature {
   endTime
@@ -3763,6 +3893,39 @@ export function useAddProcurementProductMutation(baseOptions?: Apollo.MutationHo
 export type AddProcurementProductMutationHookResult = ReturnType<typeof useAddProcurementProductMutation>;
 export type AddProcurementProductMutationResult = Apollo.MutationResult<AddProcurementProductMutation>;
 export type AddProcurementProductMutationOptions = Apollo.BaseMutationOptions<AddProcurementProductMutation, AddProcurementProductMutationVariables>;
+export const CheckProcurementProductsDocument = gql`
+    mutation checkProcurementProducts($id: ID!, $input: ProcurementCheckProductsInput!) {
+  checkProcurementProducts(id: $id, input: $input) {
+    ...ProcurementSimple
+  }
+}
+    ${ProcurementSimpleFragmentDoc}`;
+export type CheckProcurementProductsMutationFn = Apollo.MutationFunction<CheckProcurementProductsMutation, CheckProcurementProductsMutationVariables>;
+
+/**
+ * __useCheckProcurementProductsMutation__
+ *
+ * To run a mutation, you first call `useCheckProcurementProductsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCheckProcurementProductsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [checkProcurementProductsMutation, { data, loading, error }] = useCheckProcurementProductsMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCheckProcurementProductsMutation(baseOptions?: Apollo.MutationHookOptions<CheckProcurementProductsMutation, CheckProcurementProductsMutationVariables>) {
+        return Apollo.useMutation<CheckProcurementProductsMutation, CheckProcurementProductsMutationVariables>(CheckProcurementProductsDocument, baseOptions);
+      }
+export type CheckProcurementProductsMutationHookResult = ReturnType<typeof useCheckProcurementProductsMutation>;
+export type CheckProcurementProductsMutationResult = Apollo.MutationResult<CheckProcurementProductsMutation>;
+export type CheckProcurementProductsMutationOptions = Apollo.BaseMutationOptions<CheckProcurementProductsMutation, CheckProcurementProductsMutationVariables>;
 export const CreateProcurementDocument = gql`
     mutation createProcurement($input: ProcurementInput!) {
   createProcurement(input: $input) {
@@ -4435,6 +4598,38 @@ export function useOrdersListPageLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
 export type OrdersListPageQueryHookResult = ReturnType<typeof useOrdersListPageQuery>;
 export type OrdersListPageLazyQueryHookResult = ReturnType<typeof useOrdersListPageLazyQuery>;
 export type OrdersListPageQueryResult = Apollo.QueryResult<OrdersListPageQuery, OrdersListPageQueryVariables>;
+export const ProcurementFormProductsDocument = gql`
+    query ProcurementFormProducts {
+  products {
+    ...ProcurementFormProduct
+  }
+}
+    ${ProcurementFormProductFragmentDoc}`;
+
+/**
+ * __useProcurementFormProductsQuery__
+ *
+ * To run a query within a React component, call `useProcurementFormProductsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProcurementFormProductsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProcurementFormProductsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useProcurementFormProductsQuery(baseOptions?: Apollo.QueryHookOptions<ProcurementFormProductsQuery, ProcurementFormProductsQueryVariables>) {
+        return Apollo.useQuery<ProcurementFormProductsQuery, ProcurementFormProductsQueryVariables>(ProcurementFormProductsDocument, baseOptions);
+      }
+export function useProcurementFormProductsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProcurementFormProductsQuery, ProcurementFormProductsQueryVariables>) {
+          return Apollo.useLazyQuery<ProcurementFormProductsQuery, ProcurementFormProductsQueryVariables>(ProcurementFormProductsDocument, baseOptions);
+        }
+export type ProcurementFormProductsQueryHookResult = ReturnType<typeof useProcurementFormProductsQuery>;
+export type ProcurementFormProductsLazyQueryHookResult = ReturnType<typeof useProcurementFormProductsLazyQuery>;
+export type ProcurementFormProductsQueryResult = Apollo.QueryResult<ProcurementFormProductsQuery, ProcurementFormProductsQueryVariables>;
 export const ProcurementItemPageDocument = gql`
     query procurementItemPage($id: ID!) {
   procurement(id: $id) {
@@ -4468,6 +4663,71 @@ export function useProcurementItemPageLazyQuery(baseOptions?: Apollo.LazyQueryHo
 export type ProcurementItemPageQueryHookResult = ReturnType<typeof useProcurementItemPageQuery>;
 export type ProcurementItemPageLazyQueryHookResult = ReturnType<typeof useProcurementItemPageLazyQuery>;
 export type ProcurementItemPageQueryResult = Apollo.QueryResult<ProcurementItemPageQuery, ProcurementItemPageQueryVariables>;
+export const ProcurementCheckPageDocument = gql`
+    query procurementCheckPage($id: ID!) {
+  procurement(id: $id) {
+    ...ProcurementCheckPage
+  }
+}
+    ${ProcurementCheckPageFragmentDoc}`;
+
+/**
+ * __useProcurementCheckPageQuery__
+ *
+ * To run a query within a React component, call `useProcurementCheckPageQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProcurementCheckPageQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProcurementCheckPageQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useProcurementCheckPageQuery(baseOptions?: Apollo.QueryHookOptions<ProcurementCheckPageQuery, ProcurementCheckPageQueryVariables>) {
+        return Apollo.useQuery<ProcurementCheckPageQuery, ProcurementCheckPageQueryVariables>(ProcurementCheckPageDocument, baseOptions);
+      }
+export function useProcurementCheckPageLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProcurementCheckPageQuery, ProcurementCheckPageQueryVariables>) {
+          return Apollo.useLazyQuery<ProcurementCheckPageQuery, ProcurementCheckPageQueryVariables>(ProcurementCheckPageDocument, baseOptions);
+        }
+export type ProcurementCheckPageQueryHookResult = ReturnType<typeof useProcurementCheckPageQuery>;
+export type ProcurementCheckPageLazyQueryHookResult = ReturnType<typeof useProcurementCheckPageLazyQuery>;
+export type ProcurementCheckPageQueryResult = Apollo.QueryResult<ProcurementCheckPageQuery, ProcurementCheckPageQueryVariables>;
+export const ProcurementCheckProductsDocument = gql`
+    query ProcurementCheckProducts {
+  products {
+    ...ProcurementCheckProduct
+  }
+}
+    ${ProcurementCheckProductFragmentDoc}`;
+
+/**
+ * __useProcurementCheckProductsQuery__
+ *
+ * To run a query within a React component, call `useProcurementCheckProductsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProcurementCheckProductsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProcurementCheckProductsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useProcurementCheckProductsQuery(baseOptions?: Apollo.QueryHookOptions<ProcurementCheckProductsQuery, ProcurementCheckProductsQueryVariables>) {
+        return Apollo.useQuery<ProcurementCheckProductsQuery, ProcurementCheckProductsQueryVariables>(ProcurementCheckProductsDocument, baseOptions);
+      }
+export function useProcurementCheckProductsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProcurementCheckProductsQuery, ProcurementCheckProductsQueryVariables>) {
+          return Apollo.useLazyQuery<ProcurementCheckProductsQuery, ProcurementCheckProductsQueryVariables>(ProcurementCheckProductsDocument, baseOptions);
+        }
+export type ProcurementCheckProductsQueryHookResult = ReturnType<typeof useProcurementCheckProductsQuery>;
+export type ProcurementCheckProductsLazyQueryHookResult = ReturnType<typeof useProcurementCheckProductsLazyQuery>;
+export type ProcurementCheckProductsQueryResult = Apollo.QueryResult<ProcurementCheckProductsQuery, ProcurementCheckProductsQueryVariables>;
 export const ProcurementsListPageDocument = gql`
     query procurementsListPage {
   procurements {
@@ -4500,38 +4760,6 @@ export function useProcurementsListPageLazyQuery(baseOptions?: Apollo.LazyQueryH
 export type ProcurementsListPageQueryHookResult = ReturnType<typeof useProcurementsListPageQuery>;
 export type ProcurementsListPageLazyQueryHookResult = ReturnType<typeof useProcurementsListPageLazyQuery>;
 export type ProcurementsListPageQueryResult = Apollo.QueryResult<ProcurementsListPageQuery, ProcurementsListPageQueryVariables>;
-export const ProcurementFormProductsDocument = gql`
-    query ProcurementFormProducts {
-  products {
-    ...ProcurementFormProduct
-  }
-}
-    ${ProcurementFormProductFragmentDoc}`;
-
-/**
- * __useProcurementFormProductsQuery__
- *
- * To run a query within a React component, call `useProcurementFormProductsQuery` and pass it any options that fit your needs.
- * When your component renders, `useProcurementFormProductsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useProcurementFormProductsQuery({
- *   variables: {
- *   },
- * });
- */
-export function useProcurementFormProductsQuery(baseOptions?: Apollo.QueryHookOptions<ProcurementFormProductsQuery, ProcurementFormProductsQueryVariables>) {
-        return Apollo.useQuery<ProcurementFormProductsQuery, ProcurementFormProductsQueryVariables>(ProcurementFormProductsDocument, baseOptions);
-      }
-export function useProcurementFormProductsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProcurementFormProductsQuery, ProcurementFormProductsQueryVariables>) {
-          return Apollo.useLazyQuery<ProcurementFormProductsQuery, ProcurementFormProductsQueryVariables>(ProcurementFormProductsDocument, baseOptions);
-        }
-export type ProcurementFormProductsQueryHookResult = ReturnType<typeof useProcurementFormProductsQuery>;
-export type ProcurementFormProductsLazyQueryHookResult = ReturnType<typeof useProcurementFormProductsLazyQuery>;
-export type ProcurementFormProductsQueryResult = Apollo.QueryResult<ProcurementFormProductsQuery, ProcurementFormProductsQueryVariables>;
 export const ProductItemPageDocument = gql`
     query productItemPage($id: ID!) {
   product(id: $id) {

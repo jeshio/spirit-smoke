@@ -1,5 +1,6 @@
 #import "@/gql/fragments/procurement/simple.gql"
 #import "@/gql/fragments/productLine/minimum.gql"
+#import "@/gql/fragments/company/minimum.gql"
 
 fragment ProcurementItemPage on Procurement {
   ...ProcurementSimple
@@ -15,6 +16,9 @@ fragment ProcurementItemPage on Procurement {
       price
       productLine {
         ...ProductLineMinimum
+        company {
+          ...CompanyMinimum
+        }
       }
     }
     count

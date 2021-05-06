@@ -1,4 +1,5 @@
-import { ProductItemPageFragment } from '@/gql/__generated__/types'
+import { ProductItemFragment } from '@/gql/__generated__/types'
+import { PROCUREMENT_STATUSES } from '@/pages/Procurement/constants'
 import { procurementsStatusSorter } from '@/pages/Procurement/List'
 import UButton from '@/ui-components/UButton'
 import UTable from '@/ui-components/UTable'
@@ -7,10 +8,10 @@ import { ImportOutlined } from '@ant-design/icons'
 import * as React from 'react'
 
 interface IProcurementsListProps {
-  product: ProductItemPageFragment
+  product: ProductItemFragment
 }
 
-const columns: IColumn<ProductItemPageFragment['productProcurements'][0]>[] = [
+const columns: IColumn<ProductItemFragment['productProcurements'][0]>[] = [
   {
     field: ['procurement', 'name'],
     title: 'Поставка',
@@ -33,6 +34,7 @@ const columns: IColumn<ProductItemPageFragment['productProcurements'][0]>[] = [
     field: ['procurement', 'status'],
     title: 'Статус',
     sorter: procurementsStatusSorter,
+    render: (status) => PROCUREMENT_STATUSES[status],
   },
   {
     field: ['procurement', 'nextStatusDate'],

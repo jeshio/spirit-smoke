@@ -53,6 +53,12 @@ export const baseRoutes: IRoute[] = [
         component: './Procurement/Update',
       },
       {
+        path: '/procurements/:id/check',
+        name: 'Приём поставки',
+        hideInMenu: true,
+        component: './Procurement/Check',
+      },
+      {
         path: '/procurements/:id',
         name: 'Поставка',
         hideInMenu: true,

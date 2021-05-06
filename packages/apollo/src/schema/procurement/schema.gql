@@ -6,6 +6,7 @@ extend type Query {
 extend type Mutation {
   createProcurement(input: ProcurementInput!): ProcurementSimple!
   updateProcurement(id: ID!, input: ProcurementInput!): ProcurementSimple!
+  checkProcurementProducts(id: ID!, input: ProcurementCheckProductsInput): ProcurementSimple!
   addProcurementProduct(procurementId: ID!, input: AddProcurementProductInput!): ProcurementSimple!
 }
 
@@ -16,6 +17,10 @@ input ProcurementInput {
   name: String!
   comment: String
   providerInfo: String
+  products: [ProcurementProductInput!]!
+}
+
+input ProcurementCheckProductsInput {
   products: [ProcurementProductInput!]!
 }
 

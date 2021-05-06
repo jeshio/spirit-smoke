@@ -17,14 +17,14 @@ const UpdateProcurementPage: React.FunctionComponent<IUpdateProcurementPageProps
     variables: {
       id,
     },
-    loadingTip: 'Загрузка заказа',
+    loadingTip: 'Загрузка поставки',
     queryName: 'procurement',
   })
   const [updateProcurement, updateProcurementRequest] = useUpdateProcurementMutation({
     onCompleted: (r) => {
       if (!('errors' in r)) {
         notification.success({
-          message: 'Заказ успешно обновлён!',
+          message: 'Поставка успешно обновлена!',
         })
         props.history.push(`/procurements/${id}`)
       }

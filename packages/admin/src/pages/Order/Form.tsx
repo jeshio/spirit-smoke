@@ -15,7 +15,7 @@ import { UItemsSelectorValueObjectType } from '@/ui-components/UItemsSelector'
 import UPrice from '@/ui-components/UPrice'
 import URow from '@/ui-components/URow'
 import UWProductsSelector from '@/ui-widgets/UWProductsSelector'
-import { Card, Input, Select, Steps } from 'antd'
+import { Card, Input, Select } from 'antd'
 import TextArea from 'antd/lib/input/TextArea'
 import { noop } from 'lodash'
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
@@ -29,9 +29,7 @@ export interface IOrderFormProps {
 }
 
 const OrderForm: React.FunctionComponent<IOrderFormProps> = ({ order, loading, isUpdate, onSubmit }) => {
-  const [scannerModeIsActive, setScannerMode] = useState(false)
   const addProductByBarcodeRef = useRef<(barcode: string) => void>()
-  const switchScannerMode = () => setScannerMode((mode) => !mode)
   const [getOrderTotal, currentOrderTotal] = useOrderTotalLazyQuery()
   const initialSelectedProducts = useMemo(
     () =>
@@ -77,7 +75,6 @@ const OrderForm: React.FunctionComponent<IOrderFormProps> = ({ order, loading, i
   }
 
   useBarcodeScanner({
-    isActive: scannerModeIsActive,
     onEnter: addProductByBarcodeRef.current || noop,
   })
 
@@ -129,7 +126,7 @@ const OrderForm: React.FunctionComponent<IOrderFormProps> = ({ order, loading, i
 
             <UBlock pt={2}>
               <URow>
-                <UCol xl={14} xxl={12}>
+                <UCol xl={14} xxl={16}>
                   <UForm.Item
                     label="Продукты"
                     name="products"
@@ -141,6 +138,7 @@ const OrderForm: React.FunctionComponent<IOrderFormProps> = ({ order, loading, i
                       xl: 6,
                       xxl: 6,
                     }}
+                    help="Отсканируйте штрихкод, чтобы добавить в список покупок"
                   >
                     <UWProductsSelector
                       withCount
@@ -150,33 +148,6 @@ const OrderForm: React.FunctionComponent<IOrderFormProps> = ({ order, loading, i
                     />
                   </UForm.Item>
                 </UCol>
-                {!isUpdate && (
-                  <UCol xl={10} xxl={12}>
-                    <UButton type={scannerModeIsActive ? 'primary' : 'dashed'} onClick={switchScannerMode}>
-                      {scannerModeIsActive ? 'Отключить режим сканера' : 'Режим сканера штрих-кодов'}
-                    </UButton>
-                    <UBlock mt={4}>
-                      <Steps current={scannerModeIsActive ? 1 : 0} direction="vertical">
-                        <Steps.Step
-                          title="Режим сканера штрих-кодов"
-                          description="Для добавления позиций с помощью сканера нажмите кнопку выше."
-                        />
-                        {scannerModeIsActive && (
-                          <Steps.Step
-                            title="Ожидание скана товаров"
-                            description="Поднесите сканер к штрихкоду, чтобы добавить товарную позицию в заказ."
-                          />
-                        )}
-                        {scannerModeIsActive && (
-                          <Steps.Step
-                            title="Отключите режим сканера после добавления всех позиций"
-                            description="Пока вы не выключите режим, не сможете печатать на клавиатуре!"
-                          />
-                        )}
-                      </Steps>
-                    </UBlock>
-                  </UCol>
-                )}
               </URow>
             </UBlock>
           </Card>

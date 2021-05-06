@@ -1,9 +1,9 @@
 export const PROCUREMENT_STATUSES = {
   BUILDING: 'Собирается',
-  NOT_CONFIRMED: 'Не подтверждена',
-  CONFIRMED: 'Подтверждена',
-  CANCELED: 'Отменена',
-  SENT: 'Отправлена',
-  FAILURE: 'Не успешна',
-  SUCCESS: 'Успешна',
+  NOT_CONFIRMED: 'Не подтверждено',
+  CONFIRMED: 'Подтверждено',
+  CANCELED: 'Отменено',
+  SENT: 'Отправлено',
+  FAILURE: 'Не успешно',
+  SUCCESS: 'Успешно',
 }
