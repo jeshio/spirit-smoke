@@ -1,7 +1,7 @@
 import * as React from 'react'
 
 interface IUWeightProps {
-  children: number
+  children?: number
 }
 
 const UWeight: React.FunctionComponent<IUWeightProps> = ({ children = 0 }) => {

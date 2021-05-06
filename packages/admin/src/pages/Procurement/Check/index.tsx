@@ -19,14 +19,14 @@ import { Card, Modal, notification, Select } from 'antd'
 import { keyBy } from 'lodash'
 import React, { useEffect, useMemo, useState } from 'react'
 import { getColumns } from './constants'
-import useHandlers from './hooks/useHandlers'
+import useCurrentProductsHandlers from './hooks/useCurrentProductsHandlers'
 import useTotal from './hooks/useTotal'
 import { ICheckPageProps, ICurrentProducts } from './types'
 
 const CheckPage: React.FunctionComponent<ICheckPageProps> = (props) => {
   const { id } = props.match.params
   const [currentProducts, setCurrentProducts] = useState<ICurrentProducts>({})
-  const handlers = useHandlers(currentProducts, setCurrentProducts)
+  const handlers = useCurrentProductsHandlers(currentProducts, setCurrentProducts)
   const [lastScannedBarcode, setLastScannedBarcode] = useState<string>()
   const [tryAgainModalIsVisible, setTryAgainModalIsVisible] = useState(false)
   const [procurementQuery, procurementQueryComponent] = useStableQuery(useProcurementItemPageQuery, {

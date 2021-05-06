@@ -2,7 +2,7 @@ import { useCallback } from 'react'
 import { getColumns } from '../constants'
 import { ICurrentProducts } from '../types'
 
-const useHandlers = (
+const useCurrentProductsHandlers = (
   currentProducts: ICurrentProducts,
   setCurrentProducts: (currentProducts: ICurrentProducts) => void
 ) => {
@@ -75,4 +75,4 @@ const useHandlers = (
   }
 }
 
-export default useHandlers
+export default useCurrentProductsHandlers

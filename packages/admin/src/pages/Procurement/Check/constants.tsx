@@ -1,4 +1,5 @@
 import { ProcurementCheckProductsQuery, ProcurementItemPageFragment } from '@/gql/__generated__/types'
+import getProductName from '@/helpers/getProductName'
 import UButton from '@/ui-components/UButton'
 import { IColumn } from '@/ui-components/UTable/types'
 import { ImportOutlined } from '@ant-design/icons'
@@ -25,11 +26,11 @@ export const getColumns = ({
     title: 'Продукт',
     render: (productId, row) => {
       const currentProduct = row?.[1]
-      const { name, productLine } = productsById?.[productId] || {}
+      const product = productsById?.[productId] || {}
       const component = (
         <>
           <UButton href={`/products/${productId}`} type="link" icon={<ImportOutlined />} />
-          {`${productLine?.company?.name || ''} ${productLine?.name || ''} ${name}`.trim()}
+          {getProductName(product)}
         </>
       )
 
@@ -67,12 +68,12 @@ export const getColumns = ({
     key: 'price',
     title: 'Стоимость единицы',
     render: (procurementPrice, row) => {
-      const [productId] = Object.values(row)
+      const productId = row[0]
 
       return (
         <Input
           value={procurementPrice}
-          onChange={onChangePrice(productId as string)}
+          onChange={onChangePrice(productId)}
           style={{
             width: '100px',
           }}
