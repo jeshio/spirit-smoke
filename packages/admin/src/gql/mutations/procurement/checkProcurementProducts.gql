@@ -1,0 +1,8 @@
+
+#import "@@/gql/fragments/procurement/simple.gql"
+
+mutation checkProcurementProducts($id: ID!, $input: ProcurementCheckProductsInput!) {
+	checkProcurementProducts(id: $id, input: $input) {
+		...ProcurementSimple
+	}
+}

@@ -1,0 +1,23 @@
+#import "@/gql/fragments/procurement/simple.gql"
+
+fragment ProcurementCheckPage on Procurement {
+  ...ProcurementSimple
+  productsPrice
+  totalPrice
+  saleAmount
+  margin
+  weight
+  productProcurements {
+    product {
+      id
+    }
+    count
+    costs
+  }
+}
+
+query procurementCheckPage($id: ID!) {
+  procurement(id: $id) {
+    ...ProcurementCheckPage
+  }
+}

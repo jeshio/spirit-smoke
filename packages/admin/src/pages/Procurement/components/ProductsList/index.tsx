@@ -12,6 +12,17 @@ interface IProductsListProps {
 
 const columns: IColumn<ProcurementItemPageFragment['productProcurements'][0]>[] = [
   {
+    field: ['product', 'productLine', 'company'],
+    title: 'Компания',
+    render: (company) =>
+      company && (
+        <>
+          <UButton href={`/companies/${company?.id}`} type="link" icon={<ImportOutlined />} />
+          {company?.name}
+        </>
+      ),
+  },
+  {
     field: ['product', 'productLine'],
     title: 'Линейка продуктов',
     render: (productLine) => (

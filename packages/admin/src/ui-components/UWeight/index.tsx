@@ -1,9 +1,11 @@
 import * as React from 'react'
 
-interface IUWeightProps {}
+interface IUWeightProps {
+  children: number
+}
 
-const UWeight: React.FunctionComponent<IUWeightProps> = ({ children }) => {
-  return <span>{children} гр.</span>
+const UWeight: React.FunctionComponent<IUWeightProps> = ({ children = 0 }) => {
+  return <span>{children.toLocaleString()} гр.</span>
 }
 
 export default UWeight

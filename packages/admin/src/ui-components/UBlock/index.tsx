@@ -12,10 +12,18 @@ import {
   justifyContent,
   AlignItemsProps,
   JustifyContentProps,
+  TextAlignProps,
+  textAlign,
 } from 'styled-system'
 import { ThemeType } from '@/styles/theme'
 
-interface IUBlockProps extends SpaceProps, ColorProps<ThemeType>, DisplayProps, AlignItemsProps, JustifyContentProps {
+interface IUBlockProps
+  extends SpaceProps,
+    ColorProps<ThemeType>,
+    DisplayProps,
+    AlignItemsProps,
+    JustifyContentProps,
+    TextAlignProps {
   children?: React.ReactNode
   className?: string
   style?: React.CSSProperties
@@ -28,6 +36,7 @@ const Root = styled(({ children, className }: IUBlockProps) => <div className={c
   ${display}
   ${alignItems}
   ${justifyContent}
+  ${textAlign}
 `
 
 const UBlock: React.FunctionComponent<IUBlockProps> = (props) => {
