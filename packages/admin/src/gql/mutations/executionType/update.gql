@@ -1,0 +1,8 @@
+
+#import "@@/gql/fragments/executionType/simple.gql"
+
+mutation updateExecutionType($id: ID!, $input: ExecutionTypeInput!) {
+	updateExecutionType(id: $id, input: $input) {
+		...ExecutionTypeSimple
+	}
+}

@@ -148,6 +148,9 @@ export type Mutation = {
   addFeatureDiscount: Discount;
   addOrderDiscount: Discount;
   addBonusDiscount: Discount;
+  createExecutionType: ExecutionTypeSimple;
+  updateExecutionType: ExecutionTypeSimple;
+  deleteExecutionType: Scalars['ID'];
   createFeature: FeatureSimple;
   updateFeature: FeatureSimple;
   addProductCategoryFeature: FeatureSimple;
@@ -234,6 +237,22 @@ export type MutationAddOrderDiscountArgs = {
 export type MutationAddBonusDiscountArgs = {
   discountId: Scalars['ID'];
   bonusId: Scalars['ID'];
+};
+
+
+export type MutationCreateExecutionTypeArgs = {
+  input: ExecutionTypeInput;
+};
+
+
+export type MutationUpdateExecutionTypeArgs = {
+  id: Scalars['ID'];
+  input: ExecutionTypeInput;
+};
+
+
+export type MutationDeleteExecutionTypeArgs = {
+  id: Scalars['ID'];
 };
 
 
@@ -506,6 +525,40 @@ export type NotFound = IError & {
   code: Scalars['Int'];
   message: Scalars['String'];
   isError: Scalars['Boolean'];
+};
+
+export type ExecutionTypeInput = {
+  productLineId: Scalars['ID'];
+  note: Scalars['String'];
+  price?: Maybe<Scalars['Int']>;
+  weight?: Maybe<Scalars['Int']>;
+};
+
+export type IExecutionType = {
+  id: Scalars['ID'];
+  productLineId: Scalars['ID'];
+  note: Scalars['String'];
+  price?: Maybe<Scalars['Int']>;
+  weight?: Maybe<Scalars['Int']>;
+};
+
+export type ExecutionTypeSimple = IExecutionType & {
+  __typename?: 'ExecutionTypeSimple';
+  id: Scalars['ID'];
+  productLineId: Scalars['ID'];
+  note: Scalars['String'];
+  price?: Maybe<Scalars['Int']>;
+  weight?: Maybe<Scalars['Int']>;
+};
+
+export type ExecutionType = IExecutionType & {
+  __typename?: 'ExecutionType';
+  id: Scalars['ID'];
+  productLineId: Scalars['ID'];
+  note: Scalars['String'];
+  price?: Maybe<Scalars['Int']>;
+  weight?: Maybe<Scalars['Int']>;
+  productLine: ProductLine;
 };
 
 export type FeatureInput = {
@@ -925,6 +978,7 @@ export type ProductLine = IProductLine & {
   productCategory?: Maybe<ProductCategory>;
   company?: Maybe<Company>;
   products: Array<Product>;
+  executionTypes: Array<ExecutionType>;
 };
 
 export type PromotionInput = {
@@ -996,6 +1050,43 @@ export type CreateDiscountMutation = (
   & { createDiscount: (
     { __typename?: 'Discount' }
     & DiscountSimple_Discount_Fragment
+  ) }
+);
+
+export type CreateExecutionTypeMutationVariables = Exact<{
+  input: ExecutionTypeInput;
+}>;
+
+
+export type CreateExecutionTypeMutation = (
+  { __typename?: 'Mutation' }
+  & { createExecutionType: (
+    { __typename?: 'ExecutionTypeSimple' }
+    & ExecutionTypeSimple_ExecutionTypeSimple_Fragment
+  ) }
+);
+
+export type DeleteExecutionTypeMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type DeleteExecutionTypeMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'deleteExecutionType'>
+);
+
+export type UpdateExecutionTypeMutationVariables = Exact<{
+  id: Scalars['ID'];
+  input: ExecutionTypeInput;
+}>;
+
+
+export type UpdateExecutionTypeMutation = (
+  { __typename?: 'Mutation' }
+  & { updateExecutionType: (
+    { __typename?: 'ExecutionTypeSimple' }
+    & ExecutionTypeSimple_ExecutionTypeSimple_Fragment
   ) }
 );
 
@@ -1703,6 +1794,9 @@ export type ProductLineItemPageFragment = (
     { __typename?: 'Product' }
     & Pick<Product, 'price' | 'count'>
     & ProductMinimum_Product_Fragment
+  )>, executionTypes: Array<(
+    { __typename?: 'ExecutionType' }
+    & ExecutionTypeSimple_ExecutionType_Fragment
   )>, productCategory?: Maybe<(
     { __typename?: 'ProductCategory' }
     & ProductCategoryMinimum_ProductCategory_Fragment
@@ -1737,6 +1831,9 @@ export type ProductLineListPageFragment = (
   )>, productCategory?: Maybe<(
     { __typename?: 'ProductCategory' }
     & ProductCategoryMinimum_ProductCategory_Fragment
+  )>, executionTypes: Array<(
+    { __typename?: 'ExecutionType' }
+    & Pick<ExecutionType, 'note'>
   )> }
   & ProductLineSimple_ProductLine_Fragment
 );
@@ -1844,6 +1941,30 @@ export type ErrorFragment = (
   { __typename?: 'NotFound' }
   & Pick<NotFound, 'code' | 'message' | 'isError'>
 );
+
+type ExecutionTypeMinimum_ExecutionTypeSimple_Fragment = (
+  { __typename?: 'ExecutionTypeSimple' }
+  & Pick<ExecutionTypeSimple, 'id' | 'note'>
+);
+
+type ExecutionTypeMinimum_ExecutionType_Fragment = (
+  { __typename?: 'ExecutionType' }
+  & Pick<ExecutionType, 'id' | 'note'>
+);
+
+export type ExecutionTypeMinimumFragment = ExecutionTypeMinimum_ExecutionTypeSimple_Fragment | ExecutionTypeMinimum_ExecutionType_Fragment;
+
+type ExecutionTypeSimple_ExecutionTypeSimple_Fragment = (
+  { __typename?: 'ExecutionTypeSimple' }
+  & Pick<ExecutionTypeSimple, 'id' | 'note' | 'price' | 'weight' | 'productLineId'>
+);
+
+type ExecutionTypeSimple_ExecutionType_Fragment = (
+  { __typename?: 'ExecutionType' }
+  & Pick<ExecutionType, 'id' | 'note' | 'price' | 'weight' | 'productLineId'>
+);
+
+export type ExecutionTypeSimpleFragment = ExecutionTypeSimple_ExecutionTypeSimple_Fragment | ExecutionTypeSimple_ExecutionType_Fragment;
 
 type FeatureMinimum_FeatureSimple_Fragment = (
   { __typename?: 'FeatureSimple' }
@@ -2347,6 +2468,10 @@ export type ResolversTypes = {
   IError: ResolversTypes['NotFound'];
   Int: ResolverTypeWrapper<Scalars['Int']>;
   NotFound: ResolverTypeWrapper<NotFound>;
+  ExecutionTypeInput: ExecutionTypeInput;
+  IExecutionType: ResolversTypes['ExecutionTypeSimple'] | ResolversTypes['ExecutionType'];
+  ExecutionTypeSimple: ResolverTypeWrapper<ExecutionTypeSimple>;
+  ExecutionType: ResolverTypeWrapper<ExecutionType>;
   FeatureInput: FeatureInput;
   IFeature: ResolversTypes['FeatureSimple'] | ResolversTypes['Feature'];
   FeatureSimple: ResolverTypeWrapper<FeatureSimple>;
@@ -2413,6 +2538,10 @@ export type ResolversParentTypes = {
   IError: ResolversParentTypes['NotFound'];
   Int: Scalars['Int'];
   NotFound: NotFound;
+  ExecutionTypeInput: ExecutionTypeInput;
+  IExecutionType: ResolversParentTypes['ExecutionTypeSimple'] | ResolversParentTypes['ExecutionType'];
+  ExecutionTypeSimple: ExecutionTypeSimple;
+  ExecutionType: ExecutionType;
   FeatureInput: FeatureInput;
   IFeature: ResolversParentTypes['FeatureSimple'] | ResolversParentTypes['Feature'];
   FeatureSimple: FeatureSimple;
@@ -2501,6 +2630,9 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   addFeatureDiscount?: Resolver<ResolversTypes['Discount'], ParentType, ContextType, RequireFields<MutationAddFeatureDiscountArgs, 'discountId' | 'featureId'>>;
   addOrderDiscount?: Resolver<ResolversTypes['Discount'], ParentType, ContextType, RequireFields<MutationAddOrderDiscountArgs, 'discountId' | 'orderId'>>;
   addBonusDiscount?: Resolver<ResolversTypes['Discount'], ParentType, ContextType, RequireFields<MutationAddBonusDiscountArgs, 'discountId' | 'bonusId'>>;
+  createExecutionType?: Resolver<ResolversTypes['ExecutionTypeSimple'], ParentType, ContextType, RequireFields<MutationCreateExecutionTypeArgs, 'input'>>;
+  updateExecutionType?: Resolver<ResolversTypes['ExecutionTypeSimple'], ParentType, ContextType, RequireFields<MutationUpdateExecutionTypeArgs, 'id' | 'input'>>;
+  deleteExecutionType?: Resolver<ResolversTypes['ID'], ParentType, ContextType, RequireFields<MutationDeleteExecutionTypeArgs, 'id'>>;
   createFeature?: Resolver<ResolversTypes['FeatureSimple'], ParentType, ContextType, RequireFields<MutationCreateFeatureArgs, 'input'>>;
   updateFeature?: Resolver<ResolversTypes['FeatureSimple'], ParentType, ContextType, RequireFields<MutationUpdateFeatureArgs, 'id' | 'input'>>;
   addProductCategoryFeature?: Resolver<ResolversTypes['FeatureSimple'], ParentType, ContextType, RequireFields<MutationAddProductCategoryFeatureArgs, 'featureId' | 'productCategoryId'>>;
@@ -2645,6 +2777,34 @@ export type NotFoundResolvers<ContextType = any, ParentType extends ResolversPar
   code?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   message?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   isError?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType>;
+};
+
+export type IExecutionTypeResolvers<ContextType = any, ParentType extends ResolversParentTypes['IExecutionType'] = ResolversParentTypes['IExecutionType']> = {
+  __resolveType: TypeResolveFn<'ExecutionTypeSimple' | 'ExecutionType', ParentType, ContextType>;
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  productLineId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  note?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  price?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  weight?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+};
+
+export type ExecutionTypeSimpleResolvers<ContextType = any, ParentType extends ResolversParentTypes['ExecutionTypeSimple'] = ResolversParentTypes['ExecutionTypeSimple']> = {
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  productLineId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  note?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  price?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  weight?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  __isTypeOf?: IsTypeOfResolverFn<ParentType>;
+};
+
+export type ExecutionTypeResolvers<ContextType = any, ParentType extends ResolversParentTypes['ExecutionType'] = ResolversParentTypes['ExecutionType']> = {
+  id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  productLineId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  note?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
+  price?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  weight?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  productLine?: Resolver<ResolversTypes['ProductLine'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 };
 
@@ -2955,6 +3115,7 @@ export type ProductLineResolvers<ContextType = any, ParentType extends Resolvers
   productCategory?: Resolver<Maybe<ResolversTypes['ProductCategory']>, ParentType, ContextType>;
   company?: Resolver<Maybe<ResolversTypes['Company']>, ParentType, ContextType>;
   products?: Resolver<Array<ResolversTypes['Product']>, ParentType, ContextType>;
+  executionTypes?: Resolver<Array<ResolversTypes['ExecutionType']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 };
 
@@ -2988,6 +3149,9 @@ export type Resolvers<ContextType = any> = {
   Discount?: DiscountResolvers<ContextType>;
   IError?: IErrorResolvers<ContextType>;
   NotFound?: NotFoundResolvers<ContextType>;
+  IExecutionType?: IExecutionTypeResolvers<ContextType>;
+  ExecutionTypeSimple?: ExecutionTypeSimpleResolvers<ContextType>;
+  ExecutionType?: ExecutionTypeResolvers<ContextType>;
   IFeature?: IFeatureResolvers<ContextType>;
   FeatureSimple?: FeatureSimpleResolvers<ContextType>;
   Feature?: FeatureResolvers<ContextType>;
@@ -3430,6 +3594,15 @@ export const ProductLineSimpleFragmentDoc = gql`
   updatedAt
 }
     `;
+export const ExecutionTypeSimpleFragmentDoc = gql`
+    fragment ExecutionTypeSimple on IExecutionType {
+  id
+  note
+  price
+  weight
+  productLineId
+}
+    `;
 export const ProductLineItemPageFragmentDoc = gql`
     fragment ProductLineItemPage on ProductLine {
   ...ProductLineSimple
@@ -3437,6 +3610,9 @@ export const ProductLineItemPageFragmentDoc = gql`
     ...ProductMinimum
     price
     count
+  }
+  executionTypes {
+    ...ExecutionTypeSimple
   }
   productCategory {
     ...ProductCategoryMinimum
@@ -3447,6 +3623,7 @@ export const ProductLineItemPageFragmentDoc = gql`
 }
     ${ProductLineSimpleFragmentDoc}
 ${ProductMinimumFragmentDoc}
+${ExecutionTypeSimpleFragmentDoc}
 ${ProductCategoryMinimumFragmentDoc}
 ${CompanyMinimumFragmentDoc}`;
 export const ProductLineListPageFragmentDoc = gql`
@@ -3460,6 +3637,9 @@ export const ProductLineListPageFragmentDoc = gql`
   }
   productCategory {
     ...ProductCategoryMinimum
+  }
+  executionTypes {
+    note
   }
 }
     ${ProductLineSimpleFragmentDoc}
@@ -3496,6 +3676,12 @@ export const ErrorFragmentDoc = gql`
   code
   message
   isError
+}
+    `;
+export const ExecutionTypeMinimumFragmentDoc = gql`
+    fragment ExecutionTypeMinimum on IExecutionType {
+  id
+  note
 }
     `;
 export const OrderTotalFragmentDoc = gql`
@@ -3700,6 +3886,101 @@ export function useCreateDiscountMutation(baseOptions?: Apollo.MutationHookOptio
 export type CreateDiscountMutationHookResult = ReturnType<typeof useCreateDiscountMutation>;
 export type CreateDiscountMutationResult = Apollo.MutationResult<CreateDiscountMutation>;
 export type CreateDiscountMutationOptions = Apollo.BaseMutationOptions<CreateDiscountMutation, CreateDiscountMutationVariables>;
+export const CreateExecutionTypeDocument = gql`
+    mutation createExecutionType($input: ExecutionTypeInput!) {
+  createExecutionType(input: $input) {
+    ...ExecutionTypeSimple
+  }
+}
+    ${ExecutionTypeSimpleFragmentDoc}`;
+export type CreateExecutionTypeMutationFn = Apollo.MutationFunction<CreateExecutionTypeMutation, CreateExecutionTypeMutationVariables>;
+
+/**
+ * __useCreateExecutionTypeMutation__
+ *
+ * To run a mutation, you first call `useCreateExecutionTypeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateExecutionTypeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createExecutionTypeMutation, { data, loading, error }] = useCreateExecutionTypeMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateExecutionTypeMutation(baseOptions?: Apollo.MutationHookOptions<CreateExecutionTypeMutation, CreateExecutionTypeMutationVariables>) {
+        return Apollo.useMutation<CreateExecutionTypeMutation, CreateExecutionTypeMutationVariables>(CreateExecutionTypeDocument, baseOptions);
+      }
+export type CreateExecutionTypeMutationHookResult = ReturnType<typeof useCreateExecutionTypeMutation>;
+export type CreateExecutionTypeMutationResult = Apollo.MutationResult<CreateExecutionTypeMutation>;
+export type CreateExecutionTypeMutationOptions = Apollo.BaseMutationOptions<CreateExecutionTypeMutation, CreateExecutionTypeMutationVariables>;
+export const DeleteExecutionTypeDocument = gql`
+    mutation deleteExecutionType($id: ID!) {
+  deleteExecutionType(id: $id)
+}
+    `;
+export type DeleteExecutionTypeMutationFn = Apollo.MutationFunction<DeleteExecutionTypeMutation, DeleteExecutionTypeMutationVariables>;
+
+/**
+ * __useDeleteExecutionTypeMutation__
+ *
+ * To run a mutation, you first call `useDeleteExecutionTypeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteExecutionTypeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteExecutionTypeMutation, { data, loading, error }] = useDeleteExecutionTypeMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteExecutionTypeMutation(baseOptions?: Apollo.MutationHookOptions<DeleteExecutionTypeMutation, DeleteExecutionTypeMutationVariables>) {
+        return Apollo.useMutation<DeleteExecutionTypeMutation, DeleteExecutionTypeMutationVariables>(DeleteExecutionTypeDocument, baseOptions);
+      }
+export type DeleteExecutionTypeMutationHookResult = ReturnType<typeof useDeleteExecutionTypeMutation>;
+export type DeleteExecutionTypeMutationResult = Apollo.MutationResult<DeleteExecutionTypeMutation>;
+export type DeleteExecutionTypeMutationOptions = Apollo.BaseMutationOptions<DeleteExecutionTypeMutation, DeleteExecutionTypeMutationVariables>;
+export const UpdateExecutionTypeDocument = gql`
+    mutation updateExecutionType($id: ID!, $input: ExecutionTypeInput!) {
+  updateExecutionType(id: $id, input: $input) {
+    ...ExecutionTypeSimple
+  }
+}
+    ${ExecutionTypeSimpleFragmentDoc}`;
+export type UpdateExecutionTypeMutationFn = Apollo.MutationFunction<UpdateExecutionTypeMutation, UpdateExecutionTypeMutationVariables>;
+
+/**
+ * __useUpdateExecutionTypeMutation__
+ *
+ * To run a mutation, you first call `useUpdateExecutionTypeMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateExecutionTypeMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateExecutionTypeMutation, { data, loading, error }] = useUpdateExecutionTypeMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateExecutionTypeMutation(baseOptions?: Apollo.MutationHookOptions<UpdateExecutionTypeMutation, UpdateExecutionTypeMutationVariables>) {
+        return Apollo.useMutation<UpdateExecutionTypeMutation, UpdateExecutionTypeMutationVariables>(UpdateExecutionTypeDocument, baseOptions);
+      }
+export type UpdateExecutionTypeMutationHookResult = ReturnType<typeof useUpdateExecutionTypeMutation>;
+export type UpdateExecutionTypeMutationResult = Apollo.MutationResult<UpdateExecutionTypeMutation>;
+export type UpdateExecutionTypeMutationOptions = Apollo.BaseMutationOptions<UpdateExecutionTypeMutation, UpdateExecutionTypeMutationVariables>;
 export const CreateFeatureDocument = gql`
     mutation createFeature($input: FeatureInput!) {
   createFeature(input: $input) {

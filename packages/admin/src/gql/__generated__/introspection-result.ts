@@ -12,6 +12,10 @@
     "IError": [
       "NotFound"
     ],
+    "IExecutionType": [
+      "ExecutionTypeSimple",
+      "ExecutionType"
+    ],
     "IFeature": [
       "FeatureSimple",
       "Feature"
@@ -54,6 +58,10 @@
     ],
     "IError": [
       "NotFound"
+    ],
+    "IExecutionType": [
+      "ExecutionTypeSimple",
+      "ExecutionType"
     ],
     "IFeature": [
       "FeatureSimple",

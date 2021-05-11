@@ -13,7 +13,9 @@ import UBlock from '@/ui-components/UBlock'
 import updateSlugOnChangeTitle from '@/helpers/updateSlugOnChangeTitle'
 import { FormInstance } from 'rc-field-form/lib/interface'
 import selectIncludeFilter from '@/helpers/selectIncludeFilter'
+import USpace from '@/ui-components/USpace'
 import ProductsTable from './components/ProductsTable'
+import ExecutionTypesForm from './components/ExecutionTypesForm'
 
 export interface IProductLineFormProps {
   isUpdate?: boolean
@@ -138,6 +140,10 @@ const ProductLineForm: React.FunctionComponent<IProductLineFormProps> = ({
               </UCol>
               {isUpdate && (
                 <UCol xl={{ offset: 2, span: 12 }} xxl={{ offset: 4, span: 11 }}>
+                  <ExecutionTypesForm productLine={productLine} />
+
+                  <USpace size="middle" direction="vertical" />
+
                   <Card title="Продукты линейки" size="small">
                     <ProductsTable
                       products={productLine?.products}

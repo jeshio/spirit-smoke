@@ -13,6 +13,7 @@ import UPopconfirm from '@/ui-components/UPopconfirm'
 import UPrice from '@/ui-components/UPrice'
 import UWeight from '@/ui-components/UWeight'
 import ProductsTable from './components/ProductsTable'
+import ExecutionTypesForm from './components/ExecutionTypesForm'
 
 interface ProductLineItemPageProps
   extends RouteComponentProps<{
@@ -96,6 +97,7 @@ const ProductLineItemPage: React.FunctionComponent<ProductLineItemPageProps> = (
       </Card>
       <URow gutter={[4, 8]}>
         <UCol xxl={12}>
+          <ExecutionTypesForm productLine={productLine} readOnly />
           <Card title="Статистика">В разработке</Card>
         </UCol>
         <UCol xxl={12}>
