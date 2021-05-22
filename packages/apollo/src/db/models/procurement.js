@@ -60,7 +60,6 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'procurement',
-    paranoid: true,
   })
 
   Procurement.addHook('afterSave', (...args) => sequelize.models.product.syncAllProductsCountHook(...args))

@@ -25,6 +25,8 @@ input ProductInput {
   description: String
   imageUrl: String
   price: Int
+  originalProductId: ID
+  executionTypeId: ID
   productCategoryId: ID
   productLineId: ID!
   weight: Int
@@ -45,6 +47,8 @@ interface IProduct {
   # для продукта задана особенная цена
   priceIsSpecial: Boolean!
   count: Int!
+  originalProductId: ID
+  executionTypeId: ID
   productCategoryId: ID
   productLineId: ID!
   createdAt: Date!
@@ -63,6 +67,8 @@ type ProductSimple implements IProduct {
   price: Int
   priceIsSpecial: Boolean!
   count: Int!
+  originalProductId: ID
+  executionTypeId: ID
   productCategoryId: ID
   productLineId: ID!
   createdAt: Date!
@@ -81,6 +87,8 @@ type Product implements IProduct {
   price: Int
   priceIsSpecial: Boolean!
   count: Int!
+  originalProductId: ID
+  executionTypeId: ID
   productCategoryId: ID
   productLineId: ID!
   createdAt: Date!
@@ -88,9 +96,13 @@ type Product implements IProduct {
   waitingCount: Int! # количество продукта, ожидаемое от ближайших поставок
   productLine: ProductLine
   productCategory: ProductCategory
+  executionType: ExecutionType
+  originalProduct: Product
   features: [Feature!]!
   discounts: [Discount!]!
   orderProducts: [OrderProduct!]!
   productProcurements: [ProductProcurement!]!
   productFeatures: [ProductFeature!]!
+  executionTypes: [ExecutionType!]!
+  executionTypeProducts: [Product!]!
 }

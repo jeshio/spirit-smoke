@@ -53,7 +53,6 @@ module.exports = (sequelize, DataTypes) => {
       plural: 'companies',
     },
     tableName: 'companies',
-    paranoid: true,
   })
   return Company
 }

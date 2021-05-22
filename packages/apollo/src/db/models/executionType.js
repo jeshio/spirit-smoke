@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       ExecutionType.belongsTo(models.productLine)
+      ExecutionType.hasMany(models.product, { onDelete: 'CASCADE' })
     }
   }
   ExecutionType.init({

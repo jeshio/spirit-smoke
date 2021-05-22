@@ -22,6 +22,8 @@ export interface IColumn<RecordType> {
   defaultSortOrder?: ColumnProps<RecordType>['defaultSortOrder']
   /** Функция сортировки */
   sorter?: IColumnSorter
+  /** Привязать колонку со стороны */
+  fixed?: 'right' | 'left'
   /** Ширина колонки */
   width?: number
 }

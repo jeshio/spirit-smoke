@@ -16,6 +16,7 @@ import UBlock from '@/ui-components/UBlock'
 import updateSlugOnChangeTitle from '@/helpers/updateSlugOnChangeTitle'
 import { FormInstance } from 'rc-field-form/lib/interface'
 import selectIncludeFilter from '@/helpers/selectIncludeFilter'
+import { Link } from 'react-router-dom'
 
 export interface IProductFormProps {
   loading?: boolean
@@ -32,6 +33,7 @@ const ProductForm: FunctionComponent<IProductFormProps> = ({
 }) => {
   const categoriesRequest = useProductCategoryMinimumListQuery()
   const productLineRequest = useProductFormProductLineListQuery()
+  const productWithExecutionType = Boolean(product?.originalProductId)
   const handleSubmit = (fields: any) =>
     onSubmit({
       ...fields,
@@ -93,8 +95,15 @@ const ProductForm: FunctionComponent<IProductFormProps> = ({
           !product?.productLine?.productCategory &&
           fields.productCategoryId === null
         const featuresSelectorIsDisabled = isUpdate && product?.productCategoryId !== fields.productCategoryId
+        const productLineIsChanged = isUpdate && product?.productLineId !== fields.productLineId
         return (
           <Card loading={categoriesRequest.loading || productLineRequest.loading}>
+            {productWithExecutionType && (
+              <UBlock pb={6}>
+                Этот продукт создан как вариант исполнения. Заблокированные поля можно изменить только в{' '}
+                <Link to={`/products/${product?.originalProductId || ''}`}>оригинальном продукте</Link>
+              </UBlock>
+            )}
             <URow>
               <UCol md={12} xxl={8}>
                 <UForm.Item
@@ -102,13 +111,18 @@ const ProductForm: FunctionComponent<IProductFormProps> = ({
                   name="productLineId"
                   required
                   initialValue={product?.productLineId}
-                  help={productLineWarning && 'Эта линейка продуктов удалена, продукт невидим'}
-                  validateStatus={(productLineWarning && 'warning') || undefined}
+                  help={
+                    (productLineIsChanged &&
+                      'При смене линейки все варианты исполнения этого продукта будут УДАЛЕНЫ!') ||
+                    (productLineWarning && 'Эта линейка продуктов удалена, продукт невидим')
+                  }
+                  validateStatus={((productLineWarning || productLineIsChanged) && 'warning') || undefined}
                 >
                   <Select
                     onChange={productLineChangeHandler(fields, form)}
                     showSearch
                     filterOption={selectIncludeFilter}
+                    disabled={productWithExecutionType}
                   >
                     {productLineRequest.data?.productLines.map(({ id, name, company }) => (
                       <Select.Option value={id} key={id}>
@@ -124,7 +138,7 @@ const ProductForm: FunctionComponent<IProductFormProps> = ({
                   help={productCategoryWarning && 'Категория не установлена, продукт невидим'}
                   validateStatus={(productCategoryWarning && 'warning') || undefined}
                 >
-                  <Select showSearch filterOption={selectIncludeFilter}>
+                  <Select showSearch filterOption={selectIncludeFilter} disabled={productWithExecutionType}>
                     <Select.Option value={null as any} key="productLine">
                       Стандартная категория линейки
                     </Select.Option>
@@ -136,10 +150,10 @@ const ProductForm: FunctionComponent<IProductFormProps> = ({
                   </Select>
                 </UForm.Item>
                 <UForm.Item label="Изображение" name="imageUrl" initialValue={product?.imageUrl}>
-                  <Input />
+                  <Input disabled={productWithExecutionType} />
                 </UForm.Item>
                 <UForm.Item label="Название" name="name" required initialValue={product?.name}>
-                  <Input onChange={nameChangeHandler(fields, form)} />
+                  <Input onChange={nameChangeHandler(fields, form)} disabled={productWithExecutionType} />
                 </UForm.Item>
                 <UForm.Item label="Штрихкод" name="barcode" initialValue={product?.barcode}>
                   <Input onPressEnter={(e) => e.preventDefault()} />
@@ -168,9 +182,9 @@ const ProductForm: FunctionComponent<IProductFormProps> = ({
                   label="Вес (г)"
                   name="weight"
                   initialValue={product?.weightIsSpecial ? product?.weight : null}
-                  help="Оставьте пустым, чтобы использовать вес из линейки"
+                  help={!productWithExecutionType && 'Оставьте пустым, чтобы использовать вес из линейки'}
                 >
-                  <InputNumber min={0} />
+                  <InputNumber min={0} disabled={productWithExecutionType} />
                 </UForm.Item>
                 <UForm.Item label="Количество" help="Добавляется поставками, убавляется заказами и списаниями">
                   <InputNumber name="count" disabled value={isUpdate ? product?.count : 0} />
@@ -179,9 +193,9 @@ const ProductForm: FunctionComponent<IProductFormProps> = ({
                   label="Цена (₽)"
                   name="price"
                   initialValue={product?.priceIsSpecial ? product?.price : null}
-                  help="Оставьте пустым, чтобы использовать цену из линейки"
+                  help={!productWithExecutionType && 'Оставьте пустым, чтобы использовать цену из линейки'}
                 >
-                  <InputNumber min={0} />
+                  <InputNumber min={0} disabled={productWithExecutionType} />
                 </UForm.Item>
                 <UForm.Item
                   label="Описание"

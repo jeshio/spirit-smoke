@@ -1,8 +1,21 @@
 import { keyBy } from 'lodash'
 import checkDiscount from '../discount/helpers/checkDiscount'
 
-const getProductPrice = (productWithProductLine) => (productWithProductLine.price === null
-  ? productWithProductLine?.productLine?.price : productWithProductLine.price) || 0
+const getProductPrice = (productWithPrice) => {
+  if (productWithPrice.executionType && productWithPrice.executionType.price !== null) {
+    return productWithPrice.executionType.price
+  }
+
+  if (productWithPrice.price === null) {
+    return productWithPrice?.productLine?.price || null
+  }
+
+  if (productWithPrice.executionType) {
+    return productWithPrice.originalProduct?.price ?? null
+  }
+
+  return productWithPrice.price
+}
 
 const getTotalDiscount = ({
   totalPrice,
@@ -70,7 +83,7 @@ const resolvers = {
       })
 
       const discountStatus = checkDiscount(discountByCode, discountByCode?.orders)
-      const products = await loaders.productWithProductLine.loadMany(orderProducts.map(({ id }) => Number(id)))
+      const products = await loaders.productWithPrice.loadMany(orderProducts.map(({ id }) => Number(id)))
       const orderProductsById = keyBy(orderProducts, 'id')
 
       return getTotalOrder({
@@ -185,27 +198,26 @@ const resolvers = {
     discounts: async (order) => order.getDiscounts(),
     bonuses: async (order) => order.getBonuses(),
     orderProducts: async (order) => order.getOrderProducts(),
+    orderTotal: async (...args) => {
+      const [,, { loaders }] = args
+      const discounts = await resolvers.Order.discounts(...args)
+      const orderProducts = await resolvers.Order.orderProducts(...args)
+      const products = await loaders.productWithPrice
+        .loadMany(orderProducts.map(({ productId }) => Number(productId)))
+      const orderProductsById = keyBy(orderProducts, 'productId')
+
+      return getTotalOrder({
+        products,
+        orderProductsById,
+        discount: discounts[0],
+      })
+    },
   },
 
   OrderProduct: {
     product: async (orderProduct) => orderProduct.getProduct(),
     order: async (orderProduct) => orderProduct.getOrder(),
   },
-}
-
-resolvers.Order.orderTotal = async (...args) => {
-  const [,, { loaders }] = args
-  const discounts = await resolvers.Order.discounts(...args)
-  const orderProducts = await resolvers.Order.orderProducts(...args)
-  const products = await loaders.productWithProductLine
-    .loadMany(orderProducts.map(({ productId }) => Number(productId)))
-  const orderProductsById = keyBy(orderProducts, 'productId')
-
-  return getTotalOrder({
-    products,
-    orderProductsById,
-    discount: discounts[0],
-  })
 }
 
 export default resolvers

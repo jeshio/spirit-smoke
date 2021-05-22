@@ -49,7 +49,6 @@ module.exports = (sequelize, DataTypes) => {
       plural: 'bonuses',
     },
     tableName: 'bonuses',
-    paranoid: true,
   })
   return Bonus
 }

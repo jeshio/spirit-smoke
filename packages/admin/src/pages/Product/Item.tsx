@@ -5,15 +5,17 @@ import UPageContainer from '@/ui-components/UPageContainer'
 import { Card } from 'antd'
 import UButton from '@/ui-components/UButton'
 import UPopconfirm from '@/ui-components/UPopconfirm'
-import { DeleteFilled, EditFilled } from '@ant-design/icons'
+import { DeleteFilled, DiffOutlined, EditFilled } from '@ant-design/icons'
 import URow from '@/ui-components/URow'
 import UCol from '@/ui-components/UCol'
 
 import useStableQuery from '@/hooks/gql/useStableQuery'
 import UWAddProductToProcurementModal from '@/ui-widgets/UWAddProductToProcurementModal'
+import UWAddExecutionTypeProductModal from '@/ui-widgets/UWAddExecutionTypeProductModal'
 import { ItemImage, ItemImageWrapper } from './styles/item.styled'
 import ProcurementsList from './components/ProcurementsList'
 import ProductDescription from './components/ProductDescription'
+import ExecutionTypeProducts from './components/ExecutionTypeProducts'
 
 interface IProductItemPageProps
   extends RouteComponentProps<{
@@ -30,7 +32,9 @@ const ProductItemPage: React.FunctionComponent<IProductItemPageProps> = (props) 
     queryName: 'product',
   })
   const [addToProcurementModalVisible, setAddToProcurementModalVisible] = useState(false)
-  const switchAddToProcurementModalVisible = () => setAddToProcurementModalVisible(!addToProcurementModalVisible)
+  const [addExecutionTypeProductModalVisible, setAddExecutionTypeProductModalVisible] = useState(false)
+  const switchAddToProcurementModalVisible = () => setAddToProcurementModalVisible((value) => !value)
+  const switchAddExecutionTypeProductModalVisible = () => setAddExecutionTypeProductModalVisible((value) => !value)
   const [deleteProduct] = useDeleteProductMutation({
     variables: {
       id,
@@ -45,6 +49,8 @@ const ProductItemPage: React.FunctionComponent<IProductItemPageProps> = (props) 
 
   const { product } = query.data
 
+  const productWithExecutionType = Boolean(product?.originalProductId)
+
   return (
     <UPageContainer
       title={product.productLine ? `${product.productLine.name}, ${product.name}` : product.name}
@@ -53,6 +59,11 @@ const ProductItemPage: React.FunctionComponent<IProductItemPageProps> = (props) 
           <UButton onClick={switchAddToProcurementModalVisible} icon={<EditFilled />}>
             Добавить в поставку
           </UButton>
+          {!productWithExecutionType && (
+            <UButton onClick={switchAddExecutionTypeProductModalVisible} icon={<DiffOutlined />}>
+              Добавить в варианте исполнения
+            </UButton>
+          )}
           <UPopconfirm onConfirm={deleteProduct as any}>
             <UButton danger icon={<DeleteFilled />}>
               Удалить
@@ -78,7 +89,15 @@ const ProductItemPage: React.FunctionComponent<IProductItemPageProps> = (props) 
         </UCol>
         <UCol span={24} md={17} xl={18} xxl={19}>
           <ProductDescription product={product} />
-
+        </UCol>
+      </URow>
+      <URow>
+        <UCol span={24} lg={12}>
+          <Card title="Варианты исполнения продукта" style={{ marginTop: '5px' }}>
+            <ExecutionTypeProducts product={product} />
+          </Card>
+        </UCol>
+        <UCol span={24} lg={12}>
           <Card title="Поставки продукта" style={{ marginTop: '5px' }}>
             <ProcurementsList product={product} />
           </Card>
@@ -89,6 +108,11 @@ const ProductItemPage: React.FunctionComponent<IProductItemPageProps> = (props) 
         visible={addToProcurementModalVisible}
         onClose={switchAddToProcurementModalVisible}
         productId={product.id}
+      />
+      <UWAddExecutionTypeProductModal
+        visible={addExecutionTypeProductModalVisible}
+        onClose={switchAddExecutionTypeProductModalVisible}
+        originalProductId={product.id}
       />
     </UPageContainer>
   )

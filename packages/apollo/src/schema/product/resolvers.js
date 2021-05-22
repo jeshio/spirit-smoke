@@ -35,6 +35,8 @@ const resolvers = {
         barcode, name, slug,
         description,
         imageUrl, weight, price, count, productCategoryId, productLineId,
+        originalProductId,
+        executionTypeId,
         features,
       },
     }, { models, sequelize }) =>
@@ -50,6 +52,8 @@ const resolvers = {
           count,
           productCategoryId,
           productLineId,
+          originalProductId,
+          executionTypeId,
         }, { transaction })
 
         if (features) {
@@ -75,7 +79,7 @@ const resolvers = {
       },
     }, { models, sequelize }) =>
       sequelize.transaction(async (transaction) => {
-        const sourceProduct = await models.product.findByPk(id)
+        const sourceProduct = (await models.product.findByPk(id))?.dataValues
         const updatedProduct = await models.product.update({
           barcode,
           name,
@@ -88,8 +92,14 @@ const resolvers = {
           productCategoryId,
           productLineId,
         }, { where: { id }, returning: true, transaction }).then(([, [product]]) => product)
+
+        // при смене линейки удаляем все варианты исполнения
+        if (Number(sourceProduct?.productLineId) !== Number(productLineId)) {
+          await models.product.destroy({ where: { originalProductId: id }, transaction })
+        }
+
         // при смене категории очищаем особенности продукта
-        if (Number(sourceProduct?.dataValues.productCategoryId) !== Number(productCategoryId)) {
+        if (Number(sourceProduct?.productCategoryId) !== Number(productCategoryId)) {
           await updatedProduct.setFeatures(null, { transaction })
         } else if (features) {
           await updatedProduct.setFeatures(null, { transaction })
@@ -140,49 +150,89 @@ const resolvers = {
     productFeatures: async (product, args, { loaders }) => loaders.productFeaturesByProductId.load(product.id),
     priceIsSpecial: (product) => product.price !== null || product.productLineId === null,
     weightIsSpecial: (product) => product.weight !== null || product.productLineId === null,
+    originalProduct: async (product) => product.getOriginalProduct(),
+    executionType: async (product) => product.getExecutionType(),
+    executionTypes: async (product) => product.getExecutionTypes(), // TODO: сделать loader
+    executionTypeProducts: async (product) => product.getExecutionTypeProducts(),
+    name: async (product, args, { loaders }) => {
+      if (!product.originalProductId || !product.executionTypeId) {
+        return product.name
+      }
+
+      const originalProduct = await loaders.product.load(product.originalProductId)
+      const executionType = await loaders.executionType.load(product.executionTypeId)
+
+      return `${originalProduct.name} ${executionType.note}`.trim()
+    },
+    price: async (product, ...args) => {
+      const [, { loaders }] = args
+      let originalProduct = product
+
+      if (product.executionTypeId) {
+        const executionType = await loaders.executionType.load(product.executionTypeId)
+
+        if (executionType.price !== null) {
+          return executionType.price
+        }
+
+        if (product.originalProductId) {
+          originalProduct = await loaders.product.load(product.originalProductId)
+        }
+      }
+
+      const priceIsSpecial = await resolvers.Product.priceIsSpecial(originalProduct, ...args)
+
+      if (priceIsSpecial) {
+        return product.price
+      }
+
+      const productLine = await resolvers.Product.productLine(originalProduct, ...args)
+
+      return productLine.price
+    },
+    weight: async (product, ...args) => {
+      const [, { loaders }] = args
+      let originalProduct = product
+
+      if (product.executionTypeId) {
+        const executionType = await loaders.executionType.load(product.executionTypeId)
+
+        if (executionType.weight !== null) {
+          return executionType.weight
+        }
+
+        if (product.originalProductId) {
+          originalProduct = await loaders.product.load(product.originalProductId)
+        }
+      }
+
+      const weightIsSpecial = await resolvers.Product.weightIsSpecial(originalProduct, ...args)
+
+      if (weightIsSpecial) {
+        return originalProduct.weight
+      }
+
+      const productLine = await resolvers.Product.productLine(originalProduct, ...args)
+
+      return productLine.weight
+    },
+    waitingCount: async (...args) => {
+      const [,, { loaders }] = args
+      const procurementReadyStatuses = [
+        'CANCELED',
+        'SUCCESS',
+      ]
+      const productProcurements = await resolvers.Product.productProcurements(...args)
+      const procurements = await loaders.procurement
+        .loadMany(productProcurements.map(({ procurementId }) => procurementId))
+      const procurementsById = keyBy(procurements, 'id')
+
+      return productProcurements
+        .reduce((base, { count, procurementId }) =>
+          (procurementReadyStatuses.includes(procurementsById[procurementId]?.status) ? base : base + count),
+        0)
+    },
   },
-}
-
-resolvers.Product.price = async (...args) => {
-  const [product] = args
-  const priceIsSpecial = await resolvers.Product.priceIsSpecial(...args)
-
-  if (priceIsSpecial) {
-    return product.price
-  }
-
-  const productLine = await resolvers.Product.productLine(...args)
-
-  return productLine.price
-}
-
-resolvers.Product.weight = async (...args) => {
-  const [product] = args
-  const weightIsSpecial = await resolvers.Product.weightIsSpecial(...args)
-
-  if (weightIsSpecial) {
-    return product.weight
-  }
-
-  const productLine = await resolvers.Product.productLine(...args)
-
-  return productLine.weight
-}
-
-resolvers.Product.waitingCount = async (...args) => {
-  const [,, { loaders }] = args
-  const procurementReadyStatuses = [
-    'CANCELED',
-    'SUCCESS',
-  ]
-  const productProcurements = await resolvers.Product.productProcurements(...args)
-  const procurements = await loaders.procurement.loadMany(productProcurements.map(({ procurementId }) => procurementId))
-  const procurementsById = keyBy(procurements, 'id')
-
-  return productProcurements
-    .reduce((base, { count, procurementId }) =>
-      (procurementReadyStatuses.includes(procurementsById[procurementId]?.status) ? base : base + count),
-    0)
 }
 
 export default resolvers

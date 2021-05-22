@@ -12,6 +12,7 @@ import ListPageBuilder, { ListColumnsType } from '@/builders/ListPage'
 import { generateSorter } from '@/ui-components/UTable/hooks/useOriginalColumns'
 import USpace from '@/ui-components/USpace'
 import UPrice from '@/ui-components/UPrice'
+import UWeight from '@/ui-components/UWeight'
 
 /** Статусы, обозначающие, что поставка завершена */
 const READY_ORDER_STATUSES = [ProcurementStatus.Canceled, ProcurementStatus.Success]
@@ -63,7 +64,7 @@ const columns: ListColumnsType = (): IColumn<ProcurementsListPageFragment>[] => 
   {
     field: 'weight',
     title: 'Вес (г)',
-    render: (weight) => weight.toLocaleString(),
+    render: (weight) => <UWeight>{weight}</UWeight>,
   },
   {
     field: 'margin',

@@ -16,13 +16,12 @@ import { EditFilled, DeleteFilled, ImportOutlined } from '@ant-design/icons'
 import UPopconfirm from '@/ui-components/UPopconfirm'
 import ListPageBuilder, { ListColumnsType } from '@/builders/ListPage'
 import { Badge, notification, Tooltip } from 'antd'
-import UFeaturesList from '@/ui-components/UFeaturesList'
 import UWAddProductToProcurementModal from '@/ui-widgets/UWAddProductToProcurementModal'
 import UWeight from '@/ui-components/UWeight'
 import UPrice from '@/ui-components/UPrice'
 import downloadBase64 from '@/helpers/downloadBase64'
 import ExcelJS from 'exceljs'
-import productFeaturesToFlatFeature from './helpers/productFeaturesToFlatFeatures'
+import UBlock from '@/ui-components/UBlock'
 import BarcodePopover from './components/BarcodePopover'
 
 const columns = ({
@@ -113,10 +112,23 @@ const columns = ({
     render: (name, { id }) => <Link to={`/products/${id}`}>{name}</Link>,
   },
   {
-    title: 'Slug',
-    field: 'slug',
-    responsive: ['xl'],
+    title: 'Вариант исполнения',
+    field: 'executionType',
+    render: (executionType, { originalProductId }) =>
+      executionType && (
+        <>
+          {originalProductId && (
+            <UButton href={`/products/${originalProductId}`} type="link" icon={<ImportOutlined />} />
+          )}
+          {executionType.note}
+        </>
+      ),
   },
+  // {
+  //   title: 'Slug',
+  //   field: 'slug',
+  //   responsive: ['xl'],
+  // },
   {
     title: 'Вес',
     field: 'weight',
@@ -154,35 +166,39 @@ const columns = ({
         <UPrice>{price}</UPrice>
       ),
   },
-  {
-    title: 'Особенности',
-    field: ['productFeatures'],
-    render: (_, { productFeatures }) => (
-      <UFeaturesList features={productFeaturesToFlatFeature(productFeatures)} isMini />
-    ),
-    responsive: ['sm'],
-  },
+  // {
+  //   title: 'Особенности',
+  //   field: ['productFeatures'],
+  //   render: (_, { productFeatures }) => (
+  //     <UFeaturesList features={productFeaturesToFlatFeature(productFeatures)} isMini />
+  //   ),
+  //   responsive: ['sm'],
+  // },
   {
     title: 'Создан',
     field: 'createdAt',
   },
   {
-    title: '',
+    title: ' ',
     field: 'id',
     key: 'controls',
     disableSort: true,
+    fixed: 'right',
+    width: 350,
     render: (id) => (
-      <>
+      <UBlock textAlign="center">
         <UButton onClick={() => addToProcurement(id)}>+</UButton>
+        <Link to={`/products/${id}/edit`}>
+          <UButton type="link">
+            <EditFilled />
+          </UButton>
+        </Link>
         <UPopconfirm onConfirm={() => deleteItem(id)}>
           <UButton type="link" danger>
             <DeleteFilled />
           </UButton>
         </UPopconfirm>
-        <Link to={`/products/${id}/edit`}>
-          <EditFilled />
-        </Link>
-      </>
+      </UBlock>
     ),
   },
 ]

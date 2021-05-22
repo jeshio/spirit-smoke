@@ -810,6 +810,8 @@ export type ProductInput = {
   description?: Maybe<Scalars['String']>;
   imageUrl?: Maybe<Scalars['String']>;
   price?: Maybe<Scalars['Int']>;
+  originalProductId?: Maybe<Scalars['ID']>;
+  executionTypeId?: Maybe<Scalars['ID']>;
   productCategoryId?: Maybe<Scalars['ID']>;
   productLineId: Scalars['ID'];
   weight?: Maybe<Scalars['Int']>;
@@ -828,6 +830,8 @@ export type IProduct = {
   price?: Maybe<Scalars['Int']>;
   priceIsSpecial: Scalars['Boolean'];
   count: Scalars['Int'];
+  originalProductId?: Maybe<Scalars['ID']>;
+  executionTypeId?: Maybe<Scalars['ID']>;
   productCategoryId?: Maybe<Scalars['ID']>;
   productLineId: Scalars['ID'];
   createdAt: Scalars['DateTime'];
@@ -847,6 +851,8 @@ export type ProductSimple = IProduct & {
   price?: Maybe<Scalars['Int']>;
   priceIsSpecial: Scalars['Boolean'];
   count: Scalars['Int'];
+  originalProductId?: Maybe<Scalars['ID']>;
+  executionTypeId?: Maybe<Scalars['ID']>;
   productCategoryId?: Maybe<Scalars['ID']>;
   productLineId: Scalars['ID'];
   createdAt: Scalars['DateTime'];
@@ -866,6 +872,8 @@ export type Product = IProduct & {
   price?: Maybe<Scalars['Int']>;
   priceIsSpecial: Scalars['Boolean'];
   count: Scalars['Int'];
+  originalProductId?: Maybe<Scalars['ID']>;
+  executionTypeId?: Maybe<Scalars['ID']>;
   productCategoryId?: Maybe<Scalars['ID']>;
   productLineId: Scalars['ID'];
   createdAt: Scalars['DateTime'];
@@ -873,11 +881,15 @@ export type Product = IProduct & {
   waitingCount: Scalars['Int'];
   productLine?: Maybe<ProductLine>;
   productCategory?: Maybe<ProductCategory>;
+  executionType?: Maybe<ExecutionType>;
+  originalProduct?: Maybe<Product>;
   features: Array<Feature>;
   discounts: Array<Discount>;
   orderProducts: Array<OrderProduct>;
   productProcurements: Array<ProductProcurement>;
   productFeatures: Array<ProductFeature>;
+  executionTypes: Array<ExecutionType>;
+  executionTypeProducts: Array<Product>;
 };
 
 export type ProductCategoryInput = {
@@ -1674,8 +1686,11 @@ export type ProductFormProductLineListQuery = (
 
 export type ProductsListPageFragment = (
   { __typename?: 'Product' }
-  & Pick<Product, 'slug' | 'barcode' | 'productCategoryId' | 'productLineId' | 'price' | 'count' | 'weight' | 'weightIsSpecial' | 'priceIsSpecial' | 'waitingCount' | 'createdAt'>
-  & { productCategory?: Maybe<(
+  & Pick<Product, 'slug' | 'barcode' | 'productCategoryId' | 'originalProductId' | 'productLineId' | 'price' | 'count' | 'weight' | 'weightIsSpecial' | 'priceIsSpecial' | 'waitingCount' | 'createdAt'>
+  & { executionType?: Maybe<(
+    { __typename?: 'ExecutionType' }
+    & ExecutionTypeMinimum_ExecutionType_Fragment
+  )>, productCategory?: Maybe<(
     { __typename?: 'ProductCategory' }
     & ProductCategoryMinimum_ProductCategory_Fragment
   )>, productLine?: Maybe<(
@@ -1688,13 +1703,6 @@ export type ProductsListPageFragment = (
       & CompanyMinimum_Company_Fragment
     )> }
     & ProductLineMinimum_ProductLine_Fragment
-  )>, productFeatures: Array<(
-    { __typename?: 'ProductFeature' }
-    & { feature: (
-      { __typename?: 'Feature' }
-      & FeatureMinimum_Feature_Fragment
-    ) }
-    & ProductFeatureSimpleFragment
   )> }
   & ProductMinimum_Product_Fragment
 );
@@ -1846,6 +1854,41 @@ export type ProductLineListPageQuery = (
   & { productLines: Array<(
     { __typename?: 'ProductLine' }
     & ProductLineListPageFragment
+  )> }
+);
+
+export type AddExecutionTypeProductModalProductFragment = (
+  { __typename?: 'Product' }
+  & { productLine?: Maybe<(
+    { __typename?: 'ProductLine' }
+    & Pick<ProductLine, 'id' | 'name'>
+    & { executionTypes: Array<(
+      { __typename?: 'ExecutionType' }
+      & ExecutionTypeSimple_ExecutionType_Fragment
+    )>, company?: Maybe<(
+      { __typename?: 'Company' }
+      & Pick<Company, 'name'>
+    )> }
+  )>, executionTypeProducts: Array<(
+    { __typename?: 'Product' }
+    & { executionType?: Maybe<(
+      { __typename?: 'ExecutionType' }
+      & Pick<ExecutionType, 'id'>
+    )> }
+  )> }
+  & ProductMinimum_Product_Fragment
+);
+
+export type AddExecutionTypeProductModalProductQueryVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type AddExecutionTypeProductModalProductQuery = (
+  { __typename?: 'Query' }
+  & { product?: Maybe<(
+    { __typename?: 'Product' }
+    & AddExecutionTypeProductModalProductFragment
   )> }
 );
 
@@ -2045,7 +2088,14 @@ export type ProcurementSimpleFragment = ProcurementSimple_ProcurementSimple_Frag
 
 export type ProductItemFragment = (
   { __typename?: 'Product' }
-  & { productCategory?: Maybe<(
+  & Pick<Product, 'priceIsSpecial' | 'weightIsSpecial'>
+  & { executionType?: Maybe<(
+    { __typename?: 'ExecutionType' }
+    & ExecutionTypeMinimum_ExecutionType_Fragment
+  )>, executionTypeProducts: Array<(
+    { __typename?: 'Product' }
+    & ProductMinimum_Product_Fragment
+  )>, productCategory?: Maybe<(
     { __typename?: 'ProductCategory' }
     & { features: Array<(
       { __typename?: 'Feature' }
@@ -2095,12 +2145,12 @@ export type ProductMinimumFragment = ProductMinimum_ProductSimple_Fragment | Pro
 
 type ProductSimple_ProductSimple_Fragment = (
   { __typename?: 'ProductSimple' }
-  & Pick<ProductSimple, 'id' | 'barcode' | 'name' | 'slug' | 'description' | 'imageUrl' | 'productCategoryId' | 'productLineId' | 'weight' | 'price' | 'count' | 'createdAt' | 'updatedAt'>
+  & Pick<ProductSimple, 'id' | 'barcode' | 'name' | 'slug' | 'description' | 'imageUrl' | 'productCategoryId' | 'productLineId' | 'originalProductId' | 'executionTypeId' | 'weight' | 'price' | 'count' | 'createdAt' | 'updatedAt'>
 );
 
 type ProductSimple_Product_Fragment = (
   { __typename?: 'Product' }
-  & Pick<Product, 'id' | 'barcode' | 'name' | 'slug' | 'description' | 'imageUrl' | 'productCategoryId' | 'productLineId' | 'weight' | 'price' | 'count' | 'createdAt' | 'updatedAt'>
+  & Pick<Product, 'id' | 'barcode' | 'name' | 'slug' | 'description' | 'imageUrl' | 'productCategoryId' | 'productLineId' | 'originalProductId' | 'executionTypeId' | 'weight' | 'price' | 'count' | 'createdAt' | 'updatedAt'>
 );
 
 export type ProductSimpleFragment = ProductSimple_ProductSimple_Fragment | ProductSimple_Product_Fragment;
@@ -2985,6 +3035,8 @@ export type IProductResolvers<ContextType = any, ParentType extends ResolversPar
   price?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   priceIsSpecial?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  originalProductId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
+  executionTypeId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   productCategoryId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   productLineId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
@@ -3003,6 +3055,8 @@ export type ProductSimpleResolvers<ContextType = any, ParentType extends Resolve
   price?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   priceIsSpecial?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  originalProductId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
+  executionTypeId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   productCategoryId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   productLineId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
@@ -3022,6 +3076,8 @@ export type ProductResolvers<ContextType = any, ParentType extends ResolversPare
   price?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   priceIsSpecial?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  originalProductId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
+  executionTypeId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   productCategoryId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   productLineId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
@@ -3029,11 +3085,15 @@ export type ProductResolvers<ContextType = any, ParentType extends ResolversPare
   waitingCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   productLine?: Resolver<Maybe<ResolversTypes['ProductLine']>, ParentType, ContextType>;
   productCategory?: Resolver<Maybe<ResolversTypes['ProductCategory']>, ParentType, ContextType>;
+  executionType?: Resolver<Maybe<ResolversTypes['ExecutionType']>, ParentType, ContextType>;
+  originalProduct?: Resolver<Maybe<ResolversTypes['Product']>, ParentType, ContextType>;
   features?: Resolver<Array<ResolversTypes['Feature']>, ParentType, ContextType>;
   discounts?: Resolver<Array<ResolversTypes['Discount']>, ParentType, ContextType>;
   orderProducts?: Resolver<Array<ResolversTypes['OrderProduct']>, ParentType, ContextType>;
   productProcurements?: Resolver<Array<ResolversTypes['ProductProcurement']>, ParentType, ContextType>;
   productFeatures?: Resolver<Array<ResolversTypes['ProductFeature']>, ParentType, ContextType>;
+  executionTypes?: Resolver<Array<ResolversTypes['ExecutionType']>, ParentType, ContextType>;
+  executionTypeProducts?: Resolver<Array<ResolversTypes['Product']>, ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
 };
 
@@ -3466,17 +3526,10 @@ export const ProcurementsListPageFragmentDoc = gql`
   weight
 }
     ${ProcurementSimpleFragmentDoc}`;
-export const ProductFeatureSimpleFragmentDoc = gql`
-    fragment ProductFeatureSimple on ProductFeature {
-  endTime
-}
-    `;
-export const FeatureMinimumFragmentDoc = gql`
-    fragment FeatureMinimum on IFeature {
+export const ExecutionTypeMinimumFragmentDoc = gql`
+    fragment ExecutionTypeMinimum on IExecutionType {
   id
-  name
-  imageUrl
-  isDisabled
+  note
 }
     `;
 export const ProductsListPageFragmentDoc = gql`
@@ -3485,6 +3538,7 @@ export const ProductsListPageFragmentDoc = gql`
   slug
   barcode
   productCategoryId
+  originalProductId
   productLineId
   price
   count
@@ -3493,6 +3547,9 @@ export const ProductsListPageFragmentDoc = gql`
   priceIsSpecial
   waitingCount
   createdAt
+  executionType {
+    ...ExecutionTypeMinimum
+  }
   productCategory {
     ...ProductCategoryMinimum
   }
@@ -3505,19 +3562,12 @@ export const ProductsListPageFragmentDoc = gql`
       ...CompanyMinimum
     }
   }
-  productFeatures {
-    ...ProductFeatureSimple
-    feature {
-      ...FeatureMinimum
-    }
-  }
 }
     ${ProductMinimumFragmentDoc}
+${ExecutionTypeMinimumFragmentDoc}
 ${ProductCategoryMinimumFragmentDoc}
 ${ProductLineMinimumFragmentDoc}
-${CompanyMinimumFragmentDoc}
-${ProductFeatureSimpleFragmentDoc}
-${FeatureMinimumFragmentDoc}`;
+${CompanyMinimumFragmentDoc}`;
 export const ProductsXlsFragmentFragmentDoc = gql`
     fragment productsXlsFragment on Product {
   ...ProductMinimum
@@ -3543,6 +3593,14 @@ export const ProductsXlsFragmentFragmentDoc = gql`
 ${ProductCategoryMinimumFragmentDoc}
 ${ProductLineMinimumFragmentDoc}
 ${CompanyMinimumFragmentDoc}`;
+export const FeatureMinimumFragmentDoc = gql`
+    fragment FeatureMinimum on IFeature {
+  id
+  name
+  imageUrl
+  isDisabled
+}
+    `;
 export const ProductCategoryListPageFragmentDoc = gql`
     fragment ProductCategoryListPage on ProductCategory {
   ...ProductCategoryMinimum
@@ -3646,6 +3704,27 @@ export const ProductLineListPageFragmentDoc = gql`
 ${ProductMinimumFragmentDoc}
 ${CompanyMinimumFragmentDoc}
 ${ProductCategoryMinimumFragmentDoc}`;
+export const AddExecutionTypeProductModalProductFragmentDoc = gql`
+    fragment AddExecutionTypeProductModalProduct on Product {
+  ...ProductMinimum
+  productLine {
+    id
+    name
+    executionTypes {
+      ...ExecutionTypeSimple
+    }
+    company {
+      name
+    }
+  }
+  executionTypeProducts {
+    executionType {
+      id
+    }
+  }
+}
+    ${ProductMinimumFragmentDoc}
+${ExecutionTypeSimpleFragmentDoc}`;
 export const AddProductModalProcurementsFragmentDoc = gql`
     fragment AddProductModalProcurements on Procurement {
   ...ProcurementSimple
@@ -3678,12 +3757,6 @@ export const ErrorFragmentDoc = gql`
   isError
 }
     `;
-export const ExecutionTypeMinimumFragmentDoc = gql`
-    fragment ExecutionTypeMinimum on IExecutionType {
-  id
-  note
-}
-    `;
 export const OrderTotalFragmentDoc = gql`
     fragment OrderTotal on OrderTotal {
   totalPrice
@@ -3709,6 +3782,8 @@ export const ProductSimpleFragmentDoc = gql`
   imageUrl
   productCategoryId
   productLineId
+  originalProductId
+  executionTypeId
   weight
   price
   count
@@ -3716,9 +3791,22 @@ export const ProductSimpleFragmentDoc = gql`
   updatedAt
 }
     `;
+export const ProductFeatureSimpleFragmentDoc = gql`
+    fragment ProductFeatureSimple on ProductFeature {
+  endTime
+}
+    `;
 export const ProductItemFragmentDoc = gql`
     fragment ProductItem on Product {
   ...ProductSimple
+  priceIsSpecial
+  weightIsSpecial
+  executionType {
+    ...ExecutionTypeMinimum
+  }
+  executionTypeProducts {
+    ...ProductMinimum
+  }
   productCategory {
     ...ProductCategoryMinimum
     features {
@@ -3754,6 +3842,8 @@ export const ProductItemFragmentDoc = gql`
   }
 }
     ${ProductSimpleFragmentDoc}
+${ExecutionTypeMinimumFragmentDoc}
+${ProductMinimumFragmentDoc}
 ${ProductCategoryMinimumFragmentDoc}
 ${FeatureMinimumFragmentDoc}
 ${ProductLineMinimumFragmentDoc}
@@ -5306,6 +5396,39 @@ export function useProductLineListPageLazyQuery(baseOptions?: Apollo.LazyQueryHo
 export type ProductLineListPageQueryHookResult = ReturnType<typeof useProductLineListPageQuery>;
 export type ProductLineListPageLazyQueryHookResult = ReturnType<typeof useProductLineListPageLazyQuery>;
 export type ProductLineListPageQueryResult = Apollo.QueryResult<ProductLineListPageQuery, ProductLineListPageQueryVariables>;
+export const AddExecutionTypeProductModalProductDocument = gql`
+    query addExecutionTypeProductModalProduct($id: ID!) {
+  product(id: $id) {
+    ...AddExecutionTypeProductModalProduct
+  }
+}
+    ${AddExecutionTypeProductModalProductFragmentDoc}`;
+
+/**
+ * __useAddExecutionTypeProductModalProductQuery__
+ *
+ * To run a query within a React component, call `useAddExecutionTypeProductModalProductQuery` and pass it any options that fit your needs.
+ * When your component renders, `useAddExecutionTypeProductModalProductQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useAddExecutionTypeProductModalProductQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useAddExecutionTypeProductModalProductQuery(baseOptions?: Apollo.QueryHookOptions<AddExecutionTypeProductModalProductQuery, AddExecutionTypeProductModalProductQueryVariables>) {
+        return Apollo.useQuery<AddExecutionTypeProductModalProductQuery, AddExecutionTypeProductModalProductQueryVariables>(AddExecutionTypeProductModalProductDocument, baseOptions);
+      }
+export function useAddExecutionTypeProductModalProductLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<AddExecutionTypeProductModalProductQuery, AddExecutionTypeProductModalProductQueryVariables>) {
+          return Apollo.useLazyQuery<AddExecutionTypeProductModalProductQuery, AddExecutionTypeProductModalProductQueryVariables>(AddExecutionTypeProductModalProductDocument, baseOptions);
+        }
+export type AddExecutionTypeProductModalProductQueryHookResult = ReturnType<typeof useAddExecutionTypeProductModalProductQuery>;
+export type AddExecutionTypeProductModalProductLazyQueryHookResult = ReturnType<typeof useAddExecutionTypeProductModalProductLazyQuery>;
+export type AddExecutionTypeProductModalProductQueryResult = Apollo.QueryResult<AddExecutionTypeProductModalProductQuery, AddExecutionTypeProductModalProductQueryVariables>;
 export const AddProductModalProcurementsDocument = gql`
     query addProductModalProcurements {
   procurements(status: BUILDING) {
