@@ -76,6 +76,7 @@ const OrderForm: React.FunctionComponent<IOrderFormProps> = ({ order, loading, i
 
   useBarcodeScanner({
     onEnter: addProductByBarcodeRef.current || noop,
+    isActive: !isUpdate,
   })
 
   useEffect(() => {
@@ -138,7 +139,7 @@ const OrderForm: React.FunctionComponent<IOrderFormProps> = ({ order, loading, i
                       xl: 6,
                       xxl: 6,
                     }}
-                    help="Отсканируйте штрихкод, чтобы добавить в список покупок"
+                    help={!isUpdate && 'Отсканируйте штрихкод, чтобы добавить в список покупок'}
                   >
                     <UWProductsSelector
                       withCount

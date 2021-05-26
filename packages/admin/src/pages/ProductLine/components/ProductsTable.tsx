@@ -4,6 +4,7 @@ import UButton from '@/ui-components/UButton'
 import { ImportOutlined } from '@ant-design/icons'
 import { ProductLineItemPageFragment } from '@/gql/__generated__/types'
 import UTable from '@/ui-components/UTable'
+import UPrice from '@/ui-components/UPrice'
 
 const productColumns: IColumn<ProductLineItemPageFragment['products'][0]>[] = [
   {
@@ -28,7 +29,7 @@ const productColumns: IColumn<ProductLineItemPageFragment['products'][0]>[] = [
   {
     field: 'price',
     title: 'Цена',
-    render: (price) => `${price} ₽`,
+    render: (price) => <UPrice>{price}</UPrice>,
   },
 ]
 

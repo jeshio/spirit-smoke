@@ -1,0 +1,7 @@
+fragment ExecutionTypeSimple on IExecutionType {
+  id
+  note
+  price
+  weight
+  productLineId
+}

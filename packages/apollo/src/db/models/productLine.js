@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       ProductLine.hasMany(models.product, { onDelete: 'CASCADE' })
+      ProductLine.hasMany(models.executionType, { onDelete: 'CASCADE' })
       ProductLine.belongsTo(models.productCategory)
       ProductLine.belongsTo(models.company)
     }
@@ -48,7 +49,6 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'productLine',
-    paranoid: true,
   })
   return ProductLine
 }

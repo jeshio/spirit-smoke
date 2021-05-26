@@ -1,0 +1,28 @@
+#import "@/gql/fragments/product/minimum.gql"
+#import "@/gql/fragments/executionType/simple.gql"
+
+fragment AddExecutionTypeProductModalProduct on Product {
+  ...ProductMinimum
+
+  productLine {
+    id
+    name
+    executionTypes {
+      ...ExecutionTypeSimple
+    }
+    company {
+      name
+    }
+  }
+  executionTypeProducts {
+    executionType {
+      id
+    }
+  }
+}
+
+query addExecutionTypeProductModalProduct($id: ID!) {
+  product(id: $id) {
+    ...AddExecutionTypeProductModalProduct
+  }
+}

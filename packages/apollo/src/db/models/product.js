@@ -17,10 +17,20 @@ module.exports = (sequelize, DataTypes) => {
     static associate(models) {
       Product.belongsTo(models.productCategory, { foreignKey: { allowNull: true } })
       Product.belongsTo(models.productLine)
+      Product.belongsTo(models.executionType)
+      Product.belongsTo(models.product, {
+        as: 'originalProduct',
+        foreignKey: 'originalProductId',
+      })
       Product.belongsToMany(models.feature, { through: models.productFeature, timestamps: false })
       Product.belongsToMany(models.discount, { through: 'productDiscounts', timestamps: false })
       Product.belongsToMany(models.order, { through: models.orderProduct, timestamps: false })
       Product.belongsToMany(models.procurement, { through: models.productProcurement, timestamps: false })
+      Product.hasMany(models.product, {
+        as: 'executionTypeProducts',
+        foreignKey: 'originalProductId',
+        onDelete: 'CASCADE',
+      })
       Product.hasMany(models.productFeature)
       Product.hasMany(models.productProcurement)
       Product.hasMany(models.orderProduct)
@@ -162,7 +172,6 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'product',
-    paranoid: true,
   })
   return Product
 }

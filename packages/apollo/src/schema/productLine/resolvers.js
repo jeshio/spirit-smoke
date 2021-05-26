@@ -50,6 +50,7 @@ const resolvers = {
 
   ProductLine: {
     products: async (productLine) => productLine.getProducts(), // TODO: сделать loader
+    executionTypes: async (productLine) => productLine.getExecutionTypes(), // TODO: сделать loader
     productCategory: async (productLine, args, { loaders }) =>
       (productLine.productCategoryId ? loaders.productCategory.load(productLine.productCategoryId) : null),
     company: async (productLine, args, { loaders }) =>

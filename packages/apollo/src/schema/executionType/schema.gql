@@ -1,0 +1,37 @@
+extend type Mutation {
+  createExecutionType(input: ExecutionTypeInput!): ExecutionTypeSimple!
+  updateExecutionType(id: ID!, input: ExecutionTypeInput!): ExecutionTypeSimple!
+  deleteExecutionType(id: ID!): ID!
+}
+
+input ExecutionTypeInput {
+  productLineId: ID!
+  note: String!
+  price: Int
+  weight: Int
+}
+
+interface IExecutionType {
+  id: ID!
+  productLineId: ID!
+  note: String!
+  price: Int
+  weight: Int
+}
+
+type ExecutionTypeSimple implements IExecutionType {
+  id: ID!
+  productLineId: ID!
+  note: String!
+  price: Int
+  weight: Int
+}
+
+type ExecutionType implements IExecutionType {
+  id: ID!
+  productLineId: ID!
+  note: String!
+  price: Int
+  weight: Int
+  productLine: ProductLine!
+} 

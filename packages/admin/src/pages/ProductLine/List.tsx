@@ -68,13 +68,10 @@ const columns: ListColumnsType = ({ deleteItem }): IColumn<ProductLineListPageFr
     render: (weight) => <UWeight>{weight}</UWeight>,
   },
   {
-    title: 'Создан',
-    field: 'createdAt',
-  },
-  {
-    title: 'Slug',
-    field: 'slug',
-    responsive: ['xl'],
+    title: 'Варианты исполнения',
+    field: 'executionTypes',
+    render: (executionTypes) => <>{executionTypes.map(({ note }) => note).join(', ')}</>,
+    width: 100,
   },
   {
     title: '',

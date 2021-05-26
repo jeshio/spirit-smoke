@@ -4,9 +4,19 @@
 #import "@/gql/fragments/feature/minimum.gql"
 #import "@/gql/fragments/product/simple.gql"
 #import "@/gql/fragments/company/minimum.gql"
+#import "@/gql/fragments/executionType/minimum.gql"
 
 fragment ProductItem on Product {
   ...ProductSimple
+  priceIsSpecial
+  weightIsSpecial
+  executionType {
+    ...ExecutionTypeMinimum
+  }
+  
+  executionTypeProducts {
+    ...ProductMinimum
+  }
   productCategory {
     ...ProductCategoryMinimum
     features {

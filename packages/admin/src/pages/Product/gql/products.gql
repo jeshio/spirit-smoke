@@ -4,12 +4,14 @@
 #import "@/gql/fragments/feature/minimum.gql"
 #import "@/gql/fragments/product/minimum.gql"
 #import "@/gql/fragments/company/minimum.gql"
+#import "@/gql/fragments/executionType/minimum.gql"
 
 fragment ProductsListPage on Product {
   ...ProductMinimum
   slug
   barcode
   productCategoryId
+  originalProductId
   productLineId
   price
   count
@@ -18,6 +20,9 @@ fragment ProductsListPage on Product {
   priceIsSpecial
   waitingCount
   createdAt
+  executionType {
+    ...ExecutionTypeMinimum
+  }
   productCategory {
     ...ProductCategoryMinimum
   }
@@ -30,12 +35,12 @@ fragment ProductsListPage on Product {
       ...CompanyMinimum
     }
   }
-  productFeatures {
-    ...ProductFeatureSimple
-    feature {
-      ...FeatureMinimum
-    }
-  }
+  # productFeatures {
+  #   ...ProductFeatureSimple
+  #   feature {
+  #     ...FeatureMinimum
+  #   }
+  # }
 }
 
 query productsListPage {

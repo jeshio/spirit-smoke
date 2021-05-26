@@ -6,6 +6,8 @@ import styled from 'styled-components'
 interface IUSpaceProps extends Pick<SpaceProps, 'size' | 'direction'> {}
 
 const Root = styled.div`
+  display: inline-block;
+
   &.isVertical {
     > * + * {
       margin-top: 5px !important;

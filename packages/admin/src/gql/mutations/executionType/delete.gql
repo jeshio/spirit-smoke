@@ -1,0 +1,4 @@
+
+mutation deleteExecutionType($id: ID!) {
+	deleteExecutionType(id: $id)
+}

@@ -1,0 +1,4 @@
+fragment ExecutionTypeMinimum on IExecutionType {
+  id
+  note
+}

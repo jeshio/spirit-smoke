@@ -49,6 +49,12 @@ const ProductDescription: FC<IProductDescriptionProps> = ({ product }) => {
           {product.productLine ? product.productLine.name : <Badge status="warning" text="БЕЗ ЛИНЕЙКИ" />}
         </UDescriptions.Item>
         <UDescriptions.Item label="Название">{product.name}</UDescriptions.Item>
+        <UDescriptions.Item label="Вариант исполнения">
+          {product.executionType && product.originalProductId && (
+            <UButton href={`/products/${product.originalProductId}`} type="link" icon={<ImportOutlined />} />
+          )}
+          {product.executionType?.note}
+        </UDescriptions.Item>
         <UDescriptions.Item label="Осталось штук">{product.count}</UDescriptions.Item>
         <UDescriptions.Item label={`Текущая цена${product.priceIsSpecial ? ' (особая)' : ''}`}>
           <UPrice>{product.price}</UPrice>

@@ -50,7 +50,7 @@ export const generateSorter = (field: any | any[], sorter?: IColumnSorter, inver
 export default function useOriginalColumns(columns: IColumn<any>[]): ColumnsType<any> {
   const result = useMemo(() => {
     const cols = columns.map(
-      ({ title, field, key, render, responsive, disableSort, width, sorter, defaultSortOrder }) => ({
+      ({ title, field, key, render, responsive, disableSort, width, sorter, defaultSortOrder, fixed }) => ({
         title,
         dataIndex: field,
         key: key || field,
@@ -59,6 +59,7 @@ export default function useOriginalColumns(columns: IColumn<any>[]): ColumnsType
         render: colRender(render),
         responsive,
         width,
+        fixed,
       })
     ) as ColumnsType<any>
 

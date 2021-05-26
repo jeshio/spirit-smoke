@@ -1,0 +1,8 @@
+
+#import "@@/gql/fragments/executionType/simple.gql"
+
+mutation createExecutionType($input: ExecutionTypeInput!) {
+	createExecutionType(input: $input) {
+		...ExecutionTypeSimple
+	}
+}

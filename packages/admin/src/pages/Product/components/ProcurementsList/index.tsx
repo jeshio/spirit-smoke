@@ -2,6 +2,7 @@ import { ProductItemFragment } from '@/gql/__generated__/types'
 import { PROCUREMENT_STATUSES } from '@/pages/Procurement/constants'
 import { procurementsStatusSorter } from '@/pages/Procurement/List'
 import UButton from '@/ui-components/UButton'
+import UPrice from '@/ui-components/UPrice'
 import UTable from '@/ui-components/UTable'
 import { IColumn } from '@/ui-components/UTable/types'
 import { ImportOutlined } from '@ant-design/icons'
@@ -29,6 +30,7 @@ const columns: IColumn<ProductItemFragment['productProcurements'][0]>[] = [
   {
     field: 'costs',
     title: 'Цена за шт.',
+    render: (price) => <UPrice>{price}</UPrice>,
   },
   {
     field: ['procurement', 'status'],
