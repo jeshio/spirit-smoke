@@ -5,7 +5,7 @@ interface IUPriceProps {
 }
 
 const UPrice: React.FunctionComponent<IUPriceProps> = ({ children }) => {
-  return <span>{children?.toLocaleString() || '?'} ₽</span>
+  return <span>{children?.toLocaleString() ?? '?'} ₽</span>
 }
 
 export default UPrice

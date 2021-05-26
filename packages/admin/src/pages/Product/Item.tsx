@@ -93,15 +93,17 @@ const ProductItemPage: React.FunctionComponent<IProductItemPageProps> = (props) 
       </URow>
       <URow>
         <UCol span={24} lg={12}>
-          <Card title="Варианты исполнения продукта" style={{ marginTop: '5px' }}>
-            <ExecutionTypeProducts product={product} />
-          </Card>
-        </UCol>
-        <UCol span={24} lg={12}>
           <Card title="Поставки продукта" style={{ marginTop: '5px' }}>
             <ProcurementsList product={product} />
           </Card>
         </UCol>
+        {!productWithExecutionType && (
+          <UCol span={24} lg={12}>
+            <Card title="Варианты исполнения продукта" style={{ marginTop: '5px' }}>
+              <ExecutionTypeProducts product={product} />
+            </Card>
+          </UCol>
+        )}
       </URow>
 
       <UWAddProductToProcurementModal

@@ -7,7 +7,7 @@ const getProductPrice = (productWithPrice) => {
   }
 
   if (productWithPrice.price === null) {
-    return productWithPrice?.productLine?.price || null
+    return productWithPrice?.productLine?.price ?? null
   }
 
   if (productWithPrice.executionType) {

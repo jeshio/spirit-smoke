@@ -113,10 +113,11 @@ const ProductForm: FunctionComponent<IProductFormProps> = ({
                   initialValue={product?.productLineId}
                   help={
                     (productLineIsChanged &&
+                      productWithExecutionType &&
                       'При смене линейки все варианты исполнения этого продукта будут УДАЛЕНЫ!') ||
                     (productLineWarning && 'Эта линейка продуктов удалена, продукт невидим')
                   }
-                  validateStatus={((productLineWarning || productLineIsChanged) && 'warning') || undefined}
+                  validateStatus={productLineWarning || productLineIsChanged ? 'warning' : undefined}
                 >
                   <Select
                     onChange={productLineChangeHandler(fields, form)}

@@ -5,7 +5,7 @@ interface IUWeightProps {
 }
 
 const UWeight: React.FunctionComponent<IUWeightProps> = ({ children }) => {
-  return <span>{children?.toLocaleString() || '?'} гр.</span>
+  return <span>{children?.toLocaleString() ?? '?'} гр.</span>
 }
 
 export default UWeight

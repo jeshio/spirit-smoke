@@ -89,7 +89,7 @@ const UWAddExecutionTypeProductModal: FunctionComponent<IUWAddExecutionTypeProdu
     >
       <UForm id="modalProductExecutionTypeSelect" onFinish={handleSubmit}>
         <UForm.Item label="Вариант исполнения" name="executionTypeId" required>
-          <Select loading={originalProductRequest.loading}>
+          <Select loading={originalProductRequest.loading} notFoundContent="Список пуст">
             {executionTypes.map((item) => (
               <Select.Option value={item.id} key={item.id}>
                 {item.note} (<UWeight>{item.weight}</UWeight>, <UPrice>{item.price}</UPrice>)
