@@ -12,7 +12,16 @@ const STR_LENGTH_THRESHOLD = 4
  * При вводе 'Enter' собранная строка отправляется в обработчик и сбрасывается
  * с готовностью принять следующий ввод
  */
-const useBarcodeScanner = ({ isActive = true, onEnter }: { isActive?: boolean; onEnter: (value: string) => void }) => {
+const useBarcodeScanner = ({
+  isActive = true,
+  onEnter,
+  disableInputSetter,
+}: {
+  isActive?: boolean
+  onEnter: (value: string) => void
+  /** Не вставлять считанную строку в зафокусированный инпут */
+  disableInputSetter?: boolean
+}) => {
   const timer = useRef<number>()
   const inputValue = useRef('')
 
@@ -31,7 +40,7 @@ const useBarcodeScanner = ({ isActive = true, onEnter }: { isActive?: boolean; o
 
       /* eslint-disable @typescript-eslint/unbound-method */
       timer.current = setTimeout(() => {
-        if ('value' in (document.activeElement as any)) {
+        if (!disableInputSetter && 'value' in (document.activeElement as any)) {
           const inputHtml = document.activeElement as HTMLInputElement
           const tag = inputHtml.tagName.toLowerCase()
           let nativeInputValueSetter: ((v: any) => void) | undefined

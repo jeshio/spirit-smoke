@@ -18,7 +18,7 @@ import UWProductsSelector from '@/ui-widgets/UWProductsSelector'
 import { Card, Input, Select } from 'antd'
 import TextArea from 'antd/lib/input/TextArea'
 import { noop } from 'lodash'
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { ORDER_STATUSES } from './constants'
 
 export interface IOrderFormProps {
@@ -29,7 +29,7 @@ export interface IOrderFormProps {
 }
 
 const OrderForm: React.FunctionComponent<IOrderFormProps> = ({ order, loading, isUpdate, onSubmit }) => {
-  const addProductByBarcodeRef = useRef<(barcode: string) => void>()
+  const [addProductByBarcode, setAddProductByBarcode] = useState<(barcode: string) => void>()
   const [getOrderTotal, currentOrderTotal] = useOrderTotalLazyQuery()
   const initialSelectedProducts = useMemo(
     () =>
@@ -70,13 +70,14 @@ const OrderForm: React.FunctionComponent<IOrderFormProps> = ({ order, loading, i
   }
   const orderTotal = isUpdate ? order?.orderTotal : currentOrderTotal.data?.orderTotal
 
-  const setAddProductByBarcodeFn = (setter: typeof addProductByBarcodeRef.current) => {
-    addProductByBarcodeRef.current = setter
+  const setAddProductByBarcodeFn = (setter: typeof addProductByBarcode) => {
+    setAddProductByBarcode(() => setter)
   }
 
   useBarcodeScanner({
-    onEnter: addProductByBarcodeRef.current || noop,
+    onEnter: addProductByBarcode || noop,
     isActive: !isUpdate,
+    disableInputSetter: true,
   })
 
   useEffect(() => {
