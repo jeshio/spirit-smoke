@@ -8,7 +8,8 @@ import URow from '@/ui-components/URow'
 import UWProductsSelector from '@/ui-widgets/UWProductsSelector'
 import { Card, DatePicker, Input, InputNumber, Select } from 'antd'
 import moment from 'moment'
-import React, { useCallback, useMemo } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
+import { Prompt } from 'react-router-dom'
 import { PROCUREMENT_STATUSES } from './constants'
 
 export interface IProcurementFormProps {
@@ -24,6 +25,7 @@ const ProcurementForm: React.FunctionComponent<IProcurementFormProps> = ({
   isUpdate,
   onSubmit,
 }) => {
+  const [checkIsFinished, setCheckIsFinished] = useState(false)
   const selectedProductIds = useMemo(
     () =>
       procurement?.productProcurements.map(({ product, count, costs }) => ({ id: product.id, count, price: costs })) ||
@@ -31,7 +33,8 @@ const ProcurementForm: React.FunctionComponent<IProcurementFormProps> = ({
     [procurement]
   )
   const handleSubmit = useCallback(
-    (fields: any) =>
+    (fields: any) => {
+      setCheckIsFinished(true)
       onSubmit({
         ...fields,
         products: fields?.products.map(({ id, count, price }: UItemsSelectorValueObjectType) => ({
@@ -39,12 +42,15 @@ const ProcurementForm: React.FunctionComponent<IProcurementFormProps> = ({
           count: Number(count) || 0,
           costs: price,
         })),
-      }),
+      })
+    },
     [onSubmit]
   )
 
   return (
     <UForm labelCol={{ sm: 7, lg: 6, xl: 10 }} onFinish={handleSubmit}>
+      <Prompt message="Вы уверены, что хотите покинуть страницу?" when={!checkIsFinished} />
+
       <Card>
         <URow>
           <UCol xl={8}>

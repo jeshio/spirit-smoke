@@ -18,6 +18,7 @@ import UWeight from '@/ui-components/UWeight'
 import { Card, Modal, notification, Select } from 'antd'
 import { keyBy } from 'lodash'
 import React, { useEffect, useMemo, useState } from 'react'
+import { Prompt } from 'react-router-dom'
 import { getColumns } from './constants'
 import useCurrentProductsHandlers from './hooks/useCurrentProductsHandlers'
 import useTotal from './hooks/useTotal'
@@ -28,6 +29,7 @@ const CheckPage: React.FunctionComponent<ICheckPageProps> = (props) => {
   const [currentProducts, setCurrentProducts] = useState<ICurrentProducts>({})
   const handlers = useCurrentProductsHandlers(currentProducts, setCurrentProducts)
   const [lastScannedBarcode, setLastScannedBarcode] = useState<string>()
+  const [checkIsFinished, setCheckIsFinished] = useState(false)
   const [tryAgainModalIsVisible, setTryAgainModalIsVisible] = useState(false)
   const [procurementQuery, procurementQueryComponent] = useStableQuery(useProcurementItemPageQuery, {
     variables: {
@@ -40,6 +42,7 @@ const CheckPage: React.FunctionComponent<ICheckPageProps> = (props) => {
   const [updateProcurement, updateProcurementRequest] = useCheckProcurementProductsMutation({
     onCompleted: (r) => {
       if (!('errors' in r)) {
+        setCheckIsFinished(true)
         notification.success({
           message: 'Поставка успешно обновлена!',
         })
@@ -91,14 +94,29 @@ const CheckPage: React.FunctionComponent<ICheckPageProps> = (props) => {
   })
   const productsById = useMemo(
     () =>
-      productsQuery?.data.products.reduce(
+      (productsQuery?.data.products.reduce(
         (base, product) => ({
           ...base,
           [product.id]: product,
         }),
         {}
-      ) || [],
+      ) || []) as { [id: string]: ProcurementCheckProductsQuery['products'][0] },
     [productsQuery]
+  )
+
+  const currentProductsByCompany = useMemo(
+    () =>
+      Object.entries(currentProducts).reduce((base, [productId, currentProduct]) => {
+        const product = productsById[productId]
+        const company = product?.productLine?.company
+        const companyId = company?.id || 0
+
+        return {
+          ...base,
+          [companyId]: [company?.name, { ...base[companyId]?.[1], [productId]: currentProduct }],
+        }
+      }, {}),
+    [currentProducts]
   )
 
   const handleBarcodeTryAgainSearch = () => productsQuery?.refetch()
@@ -165,6 +183,8 @@ const CheckPage: React.FunctionComponent<ICheckPageProps> = (props) => {
 
   return (
     <UPageContainer title="Приём поставки">
+      <Prompt message="Вы уверены, что хотите покинуть страницу?" when={!checkIsFinished} />
+
       {tryAgainModalIsVisible && (
         <Modal
           title="Штрихкод не найден"
@@ -213,14 +233,16 @@ const CheckPage: React.FunctionComponent<ICheckPageProps> = (props) => {
           ))}
         </Select>
       </Card>
-      <Card>
-        <UTable
-          pagination={false}
-          dataSource={Object.entries(currentProducts)}
-          columns={columns}
-          rowKey={(row) => row[0]}
-        />
-      </Card>
+      {Object.entries(currentProductsByCompany).map(([companyId, [companyName, _currentProducts]]) => (
+        <Card title={companyName || 'Без компании'} key={companyId}>
+          <UTable
+            pagination={false}
+            dataSource={Object.entries(_currentProducts) as any}
+            columns={columns}
+            rowKey={(row) => row[0]}
+          />
+        </Card>
+      ))}
       <Card>
         <UBlock textAlign="right">
           <UButton onClick={handleApplyChangesClick} type="primary" loading={updateProcurementRequest.loading}>

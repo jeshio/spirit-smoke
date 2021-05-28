@@ -38,13 +38,14 @@ const UWProductsSelector: React.FunctionComponent<IUWProductsSelectorProps> = (p
     productsRequest.data?.products,
   ])
   const handleChange: IUItemsSelectorProps['onChange'] = useCallback(
-    (items) =>
+    (items) => {
       props.onChange?.(
         (items as UItemsSelectorValueObjectType[]).map((item) => ({
           ...item,
           product: productsById[item?.id],
         }))
-      ),
+      )
+    },
     [props.onChange, productsById]
   )
   const setAddValueFn = (setter: typeof addValueFnRef.current) => {

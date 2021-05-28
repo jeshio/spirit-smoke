@@ -70,6 +70,7 @@ const UItemsSelector: React.FunctionComponent<IUItemsSelectorProps> = ({
   )
   const deleteItemHandlerFn = useCallback(
     (deletedId: ValueType) => () => {
+      isChanged.current = true
       setSelectedIds(selectedIds.filter((selectedValue) => selectedValue !== deletedId))
       setSelectedValuesExtra(
         Object.keys(selectedValuesExtra).reduce(
