@@ -81,7 +81,6 @@ const OrderForm: React.FunctionComponent<IOrderFormProps> = ({ order, loading, i
   useBarcodeScanner({
     onEnter: addProductByBarcode || noop,
     isActive: !isUpdate,
-    disableInputSetter: true,
   })
 
   useEffect(() => {
