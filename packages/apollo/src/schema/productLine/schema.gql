@@ -25,8 +25,8 @@ interface IProductLine {
   id: ID!
   name: String!
   slug: String!
-  price: Int!
-  weight: Int!
+  price: Int
+  weight: Int
   productCategoryId: ID
   companyId: ID
   createdAt: Date!
@@ -37,8 +37,8 @@ type ProductLineSimple implements IProductLine {
   id: ID!
   name: String!
   slug: String!
-  price: Int!
-  weight: Int!
+  price: Int
+  weight: Int
   productCategoryId: ID
   companyId: ID
   createdAt: Date!
@@ -49,8 +49,8 @@ type ProductLine implements IProductLine {
   id: ID!
   name: String!
   slug: String!
-  price: Int!
-  weight: Int!
+  price: Int
+  weight: Int
   productCategoryId: ID
   companyId: ID
   createdAt: Date!

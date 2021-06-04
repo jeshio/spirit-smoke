@@ -148,7 +148,7 @@ resolvers.Procurement.saleAmount = async (...args) => {
 resolvers.Procurement.margin = async (...args) => {
   const totalPrice = await resolvers.Procurement.totalPrice(...args)
   const saleAmount = await resolvers.Procurement.saleAmount(...args)
-  return Number((saleAmount / totalPrice) * 100 - 100).toFixed(1)
+  return Number((saleAmount / totalPrice) * 100 - 100).toFixed(1) || 0
 }
 
 resolvers.Procurement.weight = async (...args) => {
