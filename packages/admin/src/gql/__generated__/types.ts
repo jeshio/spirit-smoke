@@ -662,6 +662,8 @@ export type IOrder = {
   ourComment?: Maybe<Scalars['String']>;
   deliveryTime?: Maybe<Scalars['DateTime']>;
   phoneNumber?: Maybe<Scalars['String']>;
+  profit: Scalars['Int'];
+  margin: Scalars['Float'];
   createdAt: Scalars['DateTime'];
   updatedAt: Scalars['DateTime'];
 };
@@ -677,6 +679,8 @@ export type OrderSimple = IOrder & {
   ourComment?: Maybe<Scalars['String']>;
   deliveryTime?: Maybe<Scalars['DateTime']>;
   phoneNumber?: Maybe<Scalars['String']>;
+  profit: Scalars['Int'];
+  margin: Scalars['Float'];
   createdAt: Scalars['DateTime'];
   updatedAt: Scalars['DateTime'];
 };
@@ -692,6 +696,8 @@ export type Order = IOrder & {
   ourComment?: Maybe<Scalars['String']>;
   deliveryTime?: Maybe<Scalars['DateTime']>;
   phoneNumber?: Maybe<Scalars['String']>;
+  profit: Scalars['Int'];
+  margin: Scalars['Float'];
   createdAt: Scalars['DateTime'];
   updatedAt: Scalars['DateTime'];
   orderTotal: OrderTotal;
@@ -830,6 +836,7 @@ export type IProduct = {
   price?: Maybe<Scalars['Int']>;
   priceIsSpecial: Scalars['Boolean'];
   count: Scalars['Int'];
+  primeCost: Scalars['Int'];
   originalProductId?: Maybe<Scalars['ID']>;
   executionTypeId?: Maybe<Scalars['ID']>;
   productCategoryId?: Maybe<Scalars['ID']>;
@@ -851,6 +858,7 @@ export type ProductSimple = IProduct & {
   price?: Maybe<Scalars['Int']>;
   priceIsSpecial: Scalars['Boolean'];
   count: Scalars['Int'];
+  primeCost: Scalars['Int'];
   originalProductId?: Maybe<Scalars['ID']>;
   executionTypeId?: Maybe<Scalars['ID']>;
   productCategoryId?: Maybe<Scalars['ID']>;
@@ -872,6 +880,7 @@ export type Product = IProduct & {
   price?: Maybe<Scalars['Int']>;
   priceIsSpecial: Scalars['Boolean'];
   count: Scalars['Int'];
+  primeCost: Scalars['Int'];
   originalProductId?: Maybe<Scalars['ID']>;
   executionTypeId?: Maybe<Scalars['ID']>;
   productCategoryId?: Maybe<Scalars['ID']>;
@@ -955,8 +964,8 @@ export type IProductLine = {
   id: Scalars['ID'];
   name: Scalars['String'];
   slug: Scalars['String'];
-  price: Scalars['Int'];
-  weight: Scalars['Int'];
+  price?: Maybe<Scalars['Int']>;
+  weight?: Maybe<Scalars['Int']>;
   productCategoryId?: Maybe<Scalars['ID']>;
   companyId?: Maybe<Scalars['ID']>;
   createdAt: Scalars['DateTime'];
@@ -968,8 +977,8 @@ export type ProductLineSimple = IProductLine & {
   id: Scalars['ID'];
   name: Scalars['String'];
   slug: Scalars['String'];
-  price: Scalars['Int'];
-  weight: Scalars['Int'];
+  price?: Maybe<Scalars['Int']>;
+  weight?: Maybe<Scalars['Int']>;
   productCategoryId?: Maybe<Scalars['ID']>;
   companyId?: Maybe<Scalars['ID']>;
   createdAt: Scalars['DateTime'];
@@ -981,8 +990,8 @@ export type ProductLine = IProductLine & {
   id: Scalars['ID'];
   name: Scalars['String'];
   slug: Scalars['String'];
-  price: Scalars['Int'];
-  weight: Scalars['Int'];
+  price?: Maybe<Scalars['Int']>;
+  weight?: Maybe<Scalars['Int']>;
   productCategoryId?: Maybe<Scalars['ID']>;
   companyId?: Maybe<Scalars['ID']>;
   createdAt: Scalars['DateTime'];
@@ -1504,7 +1513,7 @@ export type OrderItemPageQuery = (
 
 export type OrdersListPageFragment = (
   { __typename?: 'Order' }
-  & Pick<Order, 'updatedAt'>
+  & Pick<Order, 'updatedAt' | 'profit' | 'margin'>
   & { orderTotal: (
     { __typename?: 'OrderTotal' }
     & Pick<OrderTotal, 'totalPrice' | 'totalPriceWithDiscount' | 'totalDiscount'>
@@ -1686,7 +1695,7 @@ export type ProductFormProductLineListQuery = (
 
 export type ProductsListPageFragment = (
   { __typename?: 'Product' }
-  & Pick<Product, 'slug' | 'barcode' | 'productCategoryId' | 'originalProductId' | 'productLineId' | 'price' | 'count' | 'weight' | 'weightIsSpecial' | 'priceIsSpecial' | 'waitingCount' | 'createdAt'>
+  & Pick<Product, 'slug' | 'barcode' | 'productCategoryId' | 'originalProductId' | 'productLineId' | 'price' | 'count' | 'primeCost' | 'weight' | 'weightIsSpecial' | 'priceIsSpecial' | 'waitingCount' | 'createdAt'>
   & { executionType?: Maybe<(
     { __typename?: 'ExecutionType' }
     & ExecutionTypeMinimum_ExecutionType_Fragment
@@ -2052,12 +2061,12 @@ export type OrderTotalFragment = (
 
 type OrderSimple_OrderSimple_Fragment = (
   { __typename?: 'OrderSimple' }
-  & Pick<OrderSimple, 'id' | 'address' | 'status' | 'intercomCode' | 'personsCount' | 'comment' | 'ourComment' | 'deliveryTime' | 'phoneNumber' | 'createdAt' | 'updatedAt'>
+  & Pick<OrderSimple, 'id' | 'address' | 'status' | 'intercomCode' | 'personsCount' | 'comment' | 'ourComment' | 'deliveryTime' | 'phoneNumber' | 'profit' | 'margin' | 'createdAt' | 'updatedAt'>
 );
 
 type OrderSimple_Order_Fragment = (
   { __typename?: 'Order' }
-  & Pick<Order, 'id' | 'address' | 'status' | 'intercomCode' | 'personsCount' | 'comment' | 'ourComment' | 'deliveryTime' | 'phoneNumber' | 'createdAt' | 'updatedAt'>
+  & Pick<Order, 'id' | 'address' | 'status' | 'intercomCode' | 'personsCount' | 'comment' | 'ourComment' | 'deliveryTime' | 'phoneNumber' | 'profit' | 'margin' | 'createdAt' | 'updatedAt'>
 );
 
 export type OrderSimpleFragment = OrderSimple_OrderSimple_Fragment | OrderSimple_Order_Fragment;
@@ -2088,7 +2097,7 @@ export type ProcurementSimpleFragment = ProcurementSimple_ProcurementSimple_Frag
 
 export type ProductItemFragment = (
   { __typename?: 'Product' }
-  & Pick<Product, 'priceIsSpecial' | 'weightIsSpecial'>
+  & Pick<Product, 'priceIsSpecial' | 'weightIsSpecial' | 'primeCost'>
   & { executionType?: Maybe<(
     { __typename?: 'ExecutionType' }
     & ExecutionTypeMinimum_ExecutionType_Fragment
@@ -2927,6 +2936,8 @@ export type IOrderResolvers<ContextType = any, ParentType extends ResolversParen
   ourComment?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   deliveryTime?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
   phoneNumber?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  profit?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  margin?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
 };
@@ -2941,6 +2952,8 @@ export type OrderSimpleResolvers<ContextType = any, ParentType extends Resolvers
   ourComment?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   deliveryTime?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
   phoneNumber?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  profit?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  margin?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
@@ -2956,6 +2969,8 @@ export type OrderResolvers<ContextType = any, ParentType extends ResolversParent
   ourComment?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   deliveryTime?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
   phoneNumber?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
+  profit?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  margin?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   orderTotal?: Resolver<ResolversTypes['OrderTotal'], ParentType, ContextType>;
@@ -3035,6 +3050,7 @@ export type IProductResolvers<ContextType = any, ParentType extends ResolversPar
   price?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   priceIsSpecial?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  primeCost?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   originalProductId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   executionTypeId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   productCategoryId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
@@ -3055,6 +3071,7 @@ export type ProductSimpleResolvers<ContextType = any, ParentType extends Resolve
   price?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   priceIsSpecial?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  primeCost?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   originalProductId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   executionTypeId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   productCategoryId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
@@ -3076,6 +3093,7 @@ export type ProductResolvers<ContextType = any, ParentType extends ResolversPare
   price?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   priceIsSpecial?: Resolver<ResolversTypes['Boolean'], ParentType, ContextType>;
   count?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  primeCost?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   originalProductId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   executionTypeId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   productCategoryId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
@@ -3141,8 +3159,8 @@ export type IProductLineResolvers<ContextType = any, ParentType extends Resolver
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  price?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  weight?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  price?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  weight?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   productCategoryId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   companyId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
@@ -3153,8 +3171,8 @@ export type ProductLineSimpleResolvers<ContextType = any, ParentType extends Res
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  price?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  weight?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  price?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  weight?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   productCategoryId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   companyId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
@@ -3166,8 +3184,8 @@ export type ProductLineResolvers<ContextType = any, ParentType extends Resolvers
   id?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
   name?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
   slug?: Resolver<ResolversTypes['String'], ParentType, ContextType>;
-  price?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
-  weight?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
+  price?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  weight?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   productCategoryId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   companyId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
@@ -3315,6 +3333,8 @@ export const OrderSimpleFragmentDoc = gql`
   ourComment
   deliveryTime
   phoneNumber
+  profit
+  margin
   createdAt
   updatedAt
 }
@@ -3404,6 +3424,8 @@ export const OrdersListPageFragmentDoc = gql`
     fragment OrdersListPage on Order {
   ...OrderMinimum
   updatedAt
+  profit
+  margin
   orderTotal {
     totalPrice
     totalPriceWithDiscount
@@ -3542,6 +3564,7 @@ export const ProductsListPageFragmentDoc = gql`
   productLineId
   price
   count
+  primeCost
   weight
   weightIsSpecial
   priceIsSpecial
@@ -3801,6 +3824,7 @@ export const ProductItemFragmentDoc = gql`
   ...ProductSimple
   priceIsSpecial
   weightIsSpecial
+  primeCost
   executionType {
     ...ExecutionTypeMinimum
   }

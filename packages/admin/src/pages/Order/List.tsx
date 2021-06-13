@@ -45,14 +45,14 @@ const columns: ListColumnsType = (): IColumn<OrdersListPageFragment>[] => [
       return -1
     },
   },
-  {
-    field: 'address',
-    title: 'Адрес',
-  },
-  {
-    field: 'phoneNumber',
-    title: 'Телефон',
-  },
+  // {
+  //   field: 'address',
+  //   title: 'Адрес',
+  // },
+  // {
+  //   field: 'phoneNumber',
+  //   title: 'Телефон',
+  // },
   {
     field: ['orderTotal', 'totalDiscount'],
     title: 'Скидка',
@@ -62,6 +62,16 @@ const columns: ListColumnsType = (): IColumn<OrdersListPageFragment>[] => [
     field: ['orderTotal', 'totalPriceWithDiscount'],
     title: 'Сумма',
     render: (totalPriceWithDiscount) => <UPrice>{totalPriceWithDiscount}</UPrice>,
+  },
+  {
+    field: 'profit',
+    title: 'Прибыль',
+    render: (profit) => <UPrice>{profit}</UPrice>,
+  },
+  {
+    field: 'margin',
+    title: 'Прибыль',
+    render: (margin) => `${margin}%`,
   },
   {
     title: '',

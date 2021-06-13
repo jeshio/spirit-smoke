@@ -199,7 +199,11 @@ const OrderForm: React.FunctionComponent<IOrderFormProps> = ({ order, loading, i
                     <UPrice>{orderTotal?.totalDiscount}</UPrice>
                   </UDescriptions.Item>
                   <UDescriptions.Item label="Итого">
-                    <UPrice>{orderTotal?.totalPriceWithDiscount}</UPrice>
+                    <u>
+                      <strong>
+                        <UPrice>{orderTotal?.totalPriceWithDiscount}</UPrice>
+                      </strong>
+                    </u>
                   </UDescriptions.Item>
                 </UDescriptions>
               )}

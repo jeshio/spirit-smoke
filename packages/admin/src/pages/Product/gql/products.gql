@@ -15,6 +15,7 @@ fragment ProductsListPage on Product {
   productLineId
   price
   count
+  primeCost
   weight
   weightIsSpecial
   priceIsSpecial

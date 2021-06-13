@@ -58,6 +58,8 @@ interface IOrder {
   ourComment: String
   deliveryTime: Date
   phoneNumber: String
+  profit: Int!
+  margin: Float!
   createdAt: Date!
   updatedAt: Date!
 }
@@ -72,6 +74,8 @@ type OrderSimple implements IOrder {
   ourComment: String
   deliveryTime: Date
   phoneNumber: String
+  profit: Int!
+  margin: Float!
   createdAt: Date!
   updatedAt: Date!
 }
@@ -86,6 +90,8 @@ type Order implements IOrder {
   ourComment: String
   deliveryTime: Date
   phoneNumber: String
+  profit: Int!
+  margin: Float!
   createdAt: Date!
   updatedAt: Date!
   orderTotal: OrderTotal!

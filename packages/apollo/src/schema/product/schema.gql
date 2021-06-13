@@ -47,6 +47,7 @@ interface IProduct {
   # для продукта задана особенная цена
   priceIsSpecial: Boolean!
   count: Int!
+  primeCost: Int!
   originalProductId: ID
   executionTypeId: ID
   productCategoryId: ID
@@ -67,6 +68,7 @@ type ProductSimple implements IProduct {
   price: Int
   priceIsSpecial: Boolean!
   count: Int!
+  primeCost: Int!
   originalProductId: ID
   executionTypeId: ID
   productCategoryId: ID
@@ -87,6 +89,7 @@ type Product implements IProduct {
   price: Int
   priceIsSpecial: Boolean!
   count: Int!
+  primeCost: Int!
   originalProductId: ID
   executionTypeId: ID
   productCategoryId: ID

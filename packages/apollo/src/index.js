@@ -2,7 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import { ApolloServer, AuthenticationError } from 'apollo-server-express'
 
-import schema from './schema'
+import schema, { mergedResolvers } from './schema'
 import * as loadersCreator from './loaders'
 import models from './db/models'
 
@@ -48,6 +48,7 @@ const server = new ApolloServer({
       models,
       loaders: createLoaders(),
       sequelize: models.sequelize,
+      mergedResolvers,
     })
   },
 })

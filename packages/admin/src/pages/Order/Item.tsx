@@ -95,6 +95,10 @@ const OrderItemPage: React.FunctionComponent<IOrderItemPageProps> = (props) => {
               <UPrice>{order.orderTotal.totalPriceWithDiscount}</UPrice>
             </strong>
           </UDescriptions.Item>
+          <UDescriptions.Item label="Прибыль">
+            {order.profit >= 0 ? `+` : '-'}
+            <UPrice>{order.profit}</UPrice> ({order.margin}%)
+          </UDescriptions.Item>
         </UDescriptions>
       </Card>
       <Card title="Продукты">

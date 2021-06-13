@@ -154,6 +154,19 @@ const resolvers = {
     executionType: async (product) => product.getExecutionType(),
     executionTypes: async (product) => product.getExecutionTypes(), // TODO: сделать loader
     executionTypeProducts: async (product) => product.getExecutionTypeProducts(),
+    primeCost: async (...args) => {
+      const productProcurements = await resolvers.Product.productProcurements(...args)
+
+      const { totalCount, totalPrice } = productProcurements.reduce((base, { count, costs }) => ({
+        totalCount: base.totalCount + count,
+        totalPrice: base.totalPrice + count * costs,
+      }), {
+        totalCount: 0,
+        totalPrice: 0,
+      })
+
+      return Math.floor(totalPrice / totalCount) || 0
+    },
     name: async (product, args, { loaders }) => {
       if (!product.originalProductId || !product.executionTypeId) {
         return product.name

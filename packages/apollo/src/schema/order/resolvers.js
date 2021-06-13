@@ -212,6 +212,27 @@ const resolvers = {
         discount: discounts[0],
       })
     },
+    profit: async (...args) => {
+      const [,, { loaders, mergedResolvers }] = args
+      const [, ...otherArgs] = args
+      const orderProducts = await resolvers.Order.orderProducts(...args)
+      const products = await loaders.productWithPrice
+        .loadMany(orderProducts.map(({ productId }) => Number(productId)))
+      const productsPrimeCosts = await Promise.all(
+        products.map((product) => mergedResolvers.Product.primeCost(product, ...otherArgs)),
+      )
+      const totalPrimeCost = productsPrimeCosts.reduce((base, price) => base + price, 0)
+      const { totalPriceWithDiscount } = await resolvers.Order.orderTotal(...args)
+
+      return totalPriceWithDiscount - totalPrimeCost
+    },
+    margin: async (...args) => {
+      const orderTotal = await resolvers.Order.orderTotal(...args)
+      const profit = await resolvers.Order.profit(...args)
+      const totalPrimeCost = orderTotal.totalPriceWithDiscount - profit
+
+      return (((profit / totalPrimeCost) || 0) * 100).toFixed(2)
+    },
   },
 
   OrderProduct: {

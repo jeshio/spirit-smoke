@@ -3,6 +3,8 @@
 fragment OrdersListPage on Order {
   ...OrderMinimum
   updatedAt
+  profit
+  margin
   orderTotal {
     totalPrice
     totalPriceWithDiscount

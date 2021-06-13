@@ -76,7 +76,7 @@ const columns = ({
   },
   {
     title: 'Компания',
-    width: 280,
+    width: 150,
     field: ['productLine', 'company'],
     render: (company) =>
       company?.name ? (
@@ -92,7 +92,7 @@ const columns = ({
   },
   {
     title: 'Линейка продуктов',
-    width: 280,
+    width: 150,
     field: ['productLine', 'name'],
     render: (name, { productLineId }) =>
       name ? (
@@ -175,8 +175,9 @@ const columns = ({
   //   responsive: ['sm'],
   // },
   {
-    title: 'Создан',
-    field: 'createdAt',
+    title: 'Себестоимость',
+    field: 'primeCost',
+    render: (primeCost) => <UPrice>{primeCost}</UPrice>,
   },
   {
     title: ' ',
@@ -184,7 +185,7 @@ const columns = ({
     key: 'controls',
     disableSort: true,
     fixed: 'right',
-    width: 350,
+    width: 80,
     render: (id) => (
       <UBlock textAlign="center">
         <UButton onClick={() => addToProcurement(id)}>+</UButton>

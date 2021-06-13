@@ -53,14 +53,18 @@ const linkSchema = gql`
 
 typeDefs.unshift(linkSchema)
 
+const mergedResolvers = merge(...resolvers)
+
 const schema = makeExecutableSchema({
   typeDefs,
   // @ts-ignore
-  resolvers: merge(...resolvers),
+  resolvers: mergedResolvers,
   inheritResolversFromInterfaces: true,
   resolverValidationOptions: {
     requireResolversForResolveType: false,
   },
 })
+
+export { mergedResolvers }
 
 export default schema
