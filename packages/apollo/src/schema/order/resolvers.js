@@ -221,7 +221,10 @@ const resolvers = {
       const productsPrimeCosts = await Promise.all(
         products.map((product) => mergedResolvers.Product.primeCost(product, ...otherArgs)),
       )
-      const totalPrimeCost = productsPrimeCosts.reduce((base, price) => base + price, 0)
+      const totalPrimeCost = productsPrimeCosts.reduce(
+        (base, price, index) => base + price * orderProducts[index].productsCount,
+        0,
+      )
       const { totalPriceWithDiscount } = await resolvers.Order.orderTotal(...args)
 
       return totalPriceWithDiscount - totalPrimeCost

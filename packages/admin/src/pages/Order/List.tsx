@@ -70,7 +70,7 @@ const columns: ListColumnsType = (): IColumn<OrdersListPageFragment>[] => [
   },
   {
     field: 'margin',
-    title: 'Прибыль',
+    title: 'Наценка',
     render: (margin) => `${margin}%`,
   },
   {
