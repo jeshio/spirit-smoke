@@ -94,6 +94,7 @@ type Product implements IProduct {
   executionTypeId: ID
   productCategoryId: ID
   productLineId: ID!
+  needToBuyCount: Int!
   createdAt: Date!
   updatedAt: Date!
   waitingCount: Int! # количество продукта, ожидаемое от ближайших поставок

@@ -8,8 +8,6 @@ fragment OrderSimple on IOrder {
   ourComment
   deliveryTime
   phoneNumber
-  profit
-  margin
   createdAt
   updatedAt
 }

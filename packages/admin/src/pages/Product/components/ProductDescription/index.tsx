@@ -56,6 +56,7 @@ const ProductDescription: FC<IProductDescriptionProps> = ({ product }) => {
           {product.executionType?.note}
         </UDescriptions.Item>
         <UDescriptions.Item label="Осталось штук">{product.count}</UDescriptions.Item>
+        <UDescriptions.Item label="Нужно докупить штук">{product.needToBuyCount}</UDescriptions.Item>
         <UDescriptions.Item label="Себестоимость">
           <UPrice>{product.primeCost}</UPrice>
         </UDescriptions.Item>

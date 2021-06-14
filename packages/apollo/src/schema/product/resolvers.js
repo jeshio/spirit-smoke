@@ -245,6 +245,13 @@ const resolvers = {
           (procurementReadyStatuses.includes(procurementsById[procurementId]?.status) ? base : base + count),
         0)
     },
+    needToBuyCount: async (...args) => {
+      const [{ count: currentCount }] = args
+      const orderProducts = await resolvers.Product.orderProducts(...args)
+      const totalOrderCount = orderProducts.reduce((base, { productsCount }) => base + productsCount, 0)
+
+      return Math.max(0, Math.min(6, totalOrderCount) - currentCount)
+    },
   },
 }
 

@@ -3,6 +3,8 @@
 
 fragment OrderItemPage on Order {
   ...OrderSimple
+  margin
+  profit
   orderTotal {
     totalPrice
     totalPriceWithDiscount

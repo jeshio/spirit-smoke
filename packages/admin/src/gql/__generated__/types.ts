@@ -662,7 +662,6 @@ export type IOrder = {
   ourComment?: Maybe<Scalars['String']>;
   deliveryTime?: Maybe<Scalars['DateTime']>;
   phoneNumber?: Maybe<Scalars['String']>;
-  profit: Scalars['Int'];
   margin: Scalars['Float'];
   createdAt: Scalars['DateTime'];
   updatedAt: Scalars['DateTime'];
@@ -679,7 +678,6 @@ export type OrderSimple = IOrder & {
   ourComment?: Maybe<Scalars['String']>;
   deliveryTime?: Maybe<Scalars['DateTime']>;
   phoneNumber?: Maybe<Scalars['String']>;
-  profit: Scalars['Int'];
   margin: Scalars['Float'];
   createdAt: Scalars['DateTime'];
   updatedAt: Scalars['DateTime'];
@@ -885,6 +883,7 @@ export type Product = IProduct & {
   executionTypeId?: Maybe<Scalars['ID']>;
   productCategoryId?: Maybe<Scalars['ID']>;
   productLineId: Scalars['ID'];
+  needToBuyCount: Scalars['Int'];
   createdAt: Scalars['DateTime'];
   updatedAt: Scalars['DateTime'];
   waitingCount: Scalars['Int'];
@@ -1480,6 +1479,7 @@ export type FeatureListPageQuery = (
 
 export type OrderItemPageFragment = (
   { __typename?: 'Order' }
+  & Pick<Order, 'margin' | 'profit'>
   & { orderTotal: (
     { __typename?: 'OrderTotal' }
     & Pick<OrderTotal, 'totalPrice' | 'totalPriceWithDiscount' | 'totalDiscount'>
@@ -1695,7 +1695,7 @@ export type ProductFormProductLineListQuery = (
 
 export type ProductsListPageFragment = (
   { __typename?: 'Product' }
-  & Pick<Product, 'slug' | 'barcode' | 'productCategoryId' | 'originalProductId' | 'productLineId' | 'price' | 'count' | 'primeCost' | 'weight' | 'weightIsSpecial' | 'priceIsSpecial' | 'waitingCount' | 'createdAt'>
+  & Pick<Product, 'slug' | 'barcode' | 'productCategoryId' | 'originalProductId' | 'productLineId' | 'price' | 'count' | 'primeCost' | 'needToBuyCount' | 'weight' | 'weightIsSpecial' | 'priceIsSpecial' | 'waitingCount' | 'createdAt'>
   & { executionType?: Maybe<(
     { __typename?: 'ExecutionType' }
     & ExecutionTypeMinimum_ExecutionType_Fragment
@@ -2061,12 +2061,12 @@ export type OrderTotalFragment = (
 
 type OrderSimple_OrderSimple_Fragment = (
   { __typename?: 'OrderSimple' }
-  & Pick<OrderSimple, 'id' | 'address' | 'status' | 'intercomCode' | 'personsCount' | 'comment' | 'ourComment' | 'deliveryTime' | 'phoneNumber' | 'profit' | 'margin' | 'createdAt' | 'updatedAt'>
+  & Pick<OrderSimple, 'id' | 'address' | 'status' | 'intercomCode' | 'personsCount' | 'comment' | 'ourComment' | 'deliveryTime' | 'phoneNumber' | 'createdAt' | 'updatedAt'>
 );
 
 type OrderSimple_Order_Fragment = (
   { __typename?: 'Order' }
-  & Pick<Order, 'id' | 'address' | 'status' | 'intercomCode' | 'personsCount' | 'comment' | 'ourComment' | 'deliveryTime' | 'phoneNumber' | 'profit' | 'margin' | 'createdAt' | 'updatedAt'>
+  & Pick<Order, 'id' | 'address' | 'status' | 'intercomCode' | 'personsCount' | 'comment' | 'ourComment' | 'deliveryTime' | 'phoneNumber' | 'createdAt' | 'updatedAt'>
 );
 
 export type OrderSimpleFragment = OrderSimple_OrderSimple_Fragment | OrderSimple_Order_Fragment;
@@ -2097,7 +2097,7 @@ export type ProcurementSimpleFragment = ProcurementSimple_ProcurementSimple_Frag
 
 export type ProductItemFragment = (
   { __typename?: 'Product' }
-  & Pick<Product, 'priceIsSpecial' | 'weightIsSpecial' | 'primeCost'>
+  & Pick<Product, 'priceIsSpecial' | 'weightIsSpecial' | 'needToBuyCount' | 'primeCost'>
   & { executionType?: Maybe<(
     { __typename?: 'ExecutionType' }
     & ExecutionTypeMinimum_ExecutionType_Fragment
@@ -2936,7 +2936,6 @@ export type IOrderResolvers<ContextType = any, ParentType extends ResolversParen
   ourComment?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   deliveryTime?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
   phoneNumber?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  profit?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   margin?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
@@ -2952,7 +2951,6 @@ export type OrderSimpleResolvers<ContextType = any, ParentType extends Resolvers
   ourComment?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   deliveryTime?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
   phoneNumber?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  profit?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   margin?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
@@ -3098,6 +3096,7 @@ export type ProductResolvers<ContextType = any, ParentType extends ResolversPare
   executionTypeId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   productCategoryId?: Resolver<Maybe<ResolversTypes['ID']>, ParentType, ContextType>;
   productLineId?: Resolver<ResolversTypes['ID'], ParentType, ContextType>;
+  needToBuyCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   waitingCount?: Resolver<ResolversTypes['Int'], ParentType, ContextType>;
@@ -3333,8 +3332,6 @@ export const OrderSimpleFragmentDoc = gql`
   ourComment
   deliveryTime
   phoneNumber
-  profit
-  margin
   createdAt
   updatedAt
 }
@@ -3393,6 +3390,8 @@ export const ProductMinimumFragmentDoc = gql`
 export const OrderItemPageFragmentDoc = gql`
     fragment OrderItemPage on Order {
   ...OrderSimple
+  margin
+  profit
   orderTotal {
     totalPrice
     totalPriceWithDiscount
@@ -3565,6 +3564,7 @@ export const ProductsListPageFragmentDoc = gql`
   price
   count
   primeCost
+  needToBuyCount
   weight
   weightIsSpecial
   priceIsSpecial
@@ -3824,6 +3824,7 @@ export const ProductItemFragmentDoc = gql`
   ...ProductSimple
   priceIsSpecial
   weightIsSpecial
+  needToBuyCount
   primeCost
   executionType {
     ...ExecutionTypeMinimum

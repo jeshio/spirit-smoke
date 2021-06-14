@@ -151,6 +151,10 @@ const columns = ({
     field: 'count',
   },
   {
+    title: 'Нужно докупить шт.',
+    field: 'needToBuyCount',
+  },
+  {
     title: 'Ожидается шт.',
     field: 'waitingCount',
   },
