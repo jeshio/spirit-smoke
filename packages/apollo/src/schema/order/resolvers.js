@@ -233,8 +233,9 @@ const resolvers = {
       const orderTotal = await resolvers.Order.orderTotal(...args)
       const profit = await resolvers.Order.profit(...args)
       const totalPrimeCost = orderTotal.totalPriceWithDiscount - profit
+      const result = ((profit / totalPrimeCost) || 0) * 100
 
-      return (((profit / totalPrimeCost) || 0) * 100).toFixed(2)
+      return Number.isFinite(result) ? result.toFixed(2) : 0
     },
   },
 
