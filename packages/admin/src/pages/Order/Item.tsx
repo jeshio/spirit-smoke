@@ -1,15 +1,16 @@
 import React, { useMemo } from 'react'
 import { RouteComponentProps } from 'react-router'
-import { useOrderItemPageQuery } from '@/gql/__generated__/types'
+import { useDeleteOrderMutation, useOrderItemPageQuery } from '@/gql/__generated__/types'
 import UPageContainer from '@/ui-components/UPageContainer'
 import { Card } from 'antd'
 import UDescriptions from '@/ui-components/UDescriptions'
 import UButton from '@/ui-components/UButton'
 
 import useStableQuery from '@/hooks/gql/useStableQuery'
-import { EditFilled } from '@ant-design/icons'
+import { DeleteFilled, EditFilled } from '@ant-design/icons'
 import { Link } from 'umi'
 import UPrice from '@/ui-components/UPrice'
+import UPopconfirm from '@/ui-components/UPopconfirm'
 import {
   Item,
   ItemTitle,
@@ -32,6 +33,15 @@ const OrderItemPage: React.FunctionComponent<IOrderItemPageProps> = (props) => {
     },
     loadingTip: 'Загрузка заказа',
     queryName: 'order',
+  })
+  const [deleteOrder] = useDeleteOrderMutation({
+    variables: {
+      id,
+    },
+    onCompleted: () => {
+      props.history.push('/orders')
+    },
+    onError: () => {},
   })
 
   const order = query?.data?.order
@@ -64,11 +74,11 @@ const OrderItemPage: React.FunctionComponent<IOrderItemPageProps> = (props) => {
       title={`Заказ #${order.id}`}
       extra={
         <>
-          {/* <UPopconfirm onConfirm={deleteProduct as any}>
+          <UPopconfirm onConfirm={deleteOrder as any}>
             <UButton danger icon={<DeleteFilled />}>
-              Закрыть заказ
+              Удалить заказ
             </UButton>
-          </UPopconfirm> */}
+          </UPopconfirm>
           <UButton type="primary" href={`/orders/${order.id}/edit`} icon={<EditFilled />}>
             Редактировать
           </UButton>
@@ -90,9 +100,9 @@ const OrderItemPage: React.FunctionComponent<IOrderItemPageProps> = (props) => {
           <UDescriptions.Item label="Скидка">
             <UPrice>{order.orderTotal.totalDiscount}</UPrice>
           </UDescriptions.Item>
-          <UDescriptions.Item label="Итоговая цена">
+          <UDescriptions.Item label="Выручка">
             <strong>
-              <UPrice>{order.orderTotal.totalPriceWithDiscount}</UPrice>
+              <UPrice>{order.revenue}</UPrice>
             </strong>
           </UDescriptions.Item>
           <UDescriptions.Item label="Прибыль">

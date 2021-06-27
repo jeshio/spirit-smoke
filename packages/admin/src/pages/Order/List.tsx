@@ -59,9 +59,9 @@ const columns: ListColumnsType = (): IColumn<OrdersListPageFragment>[] => [
     render: (totalDiscount) => <UPrice>{totalDiscount}</UPrice>,
   },
   {
-    field: ['orderTotal', 'totalPriceWithDiscount'],
-    title: 'Сумма',
-    render: (totalPriceWithDiscount) => <UPrice>{totalPriceWithDiscount}</UPrice>,
+    field: 'revenue',
+    title: 'Выручка',
+    render: (revenue) => <UPrice>{revenue}</UPrice>,
   },
   {
     field: 'profit',

@@ -158,6 +158,8 @@ export type Mutation = {
   deleteFeature: Scalars['ID'];
   createOrder: OrderSimple;
   updateOrder: OrderSimple;
+  deleteOrder: Scalars['ID'];
+  updateOrdersRevenue?: Maybe<Scalars['Boolean']>;
   createParam: Param;
   createProcurement: ProcurementSimple;
   updateProcurement: ProcurementSimple;
@@ -293,6 +295,11 @@ export type MutationCreateOrderArgs = {
 export type MutationUpdateOrderArgs = {
   id: Scalars['ID'];
   input: OrderInput;
+};
+
+
+export type MutationDeleteOrderArgs = {
+  id: Scalars['ID'];
 };
 
 
@@ -662,7 +669,7 @@ export type IOrder = {
   ourComment?: Maybe<Scalars['String']>;
   deliveryTime?: Maybe<Scalars['DateTime']>;
   phoneNumber?: Maybe<Scalars['String']>;
-  margin: Scalars['Float'];
+  revenue?: Maybe<Scalars['Int']>;
   createdAt: Scalars['DateTime'];
   updatedAt: Scalars['DateTime'];
 };
@@ -674,11 +681,11 @@ export type OrderSimple = IOrder & {
   status: OrderStatus;
   intercomCode?: Maybe<Scalars['String']>;
   personsCount?: Maybe<Scalars['Int']>;
+  revenue?: Maybe<Scalars['Int']>;
   comment?: Maybe<Scalars['String']>;
   ourComment?: Maybe<Scalars['String']>;
   deliveryTime?: Maybe<Scalars['DateTime']>;
   phoneNumber?: Maybe<Scalars['String']>;
-  margin: Scalars['Float'];
   createdAt: Scalars['DateTime'];
   updatedAt: Scalars['DateTime'];
 };
@@ -690,6 +697,7 @@ export type Order = IOrder & {
   status: OrderStatus;
   intercomCode?: Maybe<Scalars['String']>;
   personsCount?: Maybe<Scalars['Int']>;
+  revenue?: Maybe<Scalars['Int']>;
   comment?: Maybe<Scalars['String']>;
   ourComment?: Maybe<Scalars['String']>;
   deliveryTime?: Maybe<Scalars['DateTime']>;
@@ -1160,6 +1168,16 @@ export type CreateOrderMutation = (
   ) }
 );
 
+export type DeleteOrderMutationVariables = Exact<{
+  id: Scalars['ID'];
+}>;
+
+
+export type DeleteOrderMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'deleteOrder'>
+);
+
 export type UpdateOrderMutationVariables = Exact<{
   id: Scalars['ID'];
   input: OrderInput;
@@ -1479,7 +1497,7 @@ export type FeatureListPageQuery = (
 
 export type OrderItemPageFragment = (
   { __typename?: 'Order' }
-  & Pick<Order, 'margin' | 'profit'>
+  & Pick<Order, 'margin' | 'profit' | 'revenue'>
   & { orderTotal: (
     { __typename?: 'OrderTotal' }
     & Pick<OrderTotal, 'totalPrice' | 'totalPriceWithDiscount' | 'totalDiscount'>
@@ -1513,7 +1531,7 @@ export type OrderItemPageQuery = (
 
 export type OrdersListPageFragment = (
   { __typename?: 'Order' }
-  & Pick<Order, 'updatedAt' | 'profit' | 'margin'>
+  & Pick<Order, 'updatedAt' | 'profit' | 'margin' | 'revenue'>
   & { orderTotal: (
     { __typename?: 'OrderTotal' }
     & Pick<OrderTotal, 'totalPrice' | 'totalPriceWithDiscount' | 'totalDiscount'>
@@ -2044,12 +2062,12 @@ export type FeatureSimpleFragment = FeatureSimple_FeatureSimple_Fragment | Featu
 
 type OrderMinimum_OrderSimple_Fragment = (
   { __typename?: 'OrderSimple' }
-  & Pick<OrderSimple, 'id' | 'address' | 'deliveryTime' | 'status' | 'phoneNumber'>
+  & Pick<OrderSimple, 'id' | 'address' | 'deliveryTime' | 'status' | 'phoneNumber' | 'revenue'>
 );
 
 type OrderMinimum_Order_Fragment = (
   { __typename?: 'Order' }
-  & Pick<Order, 'id' | 'address' | 'deliveryTime' | 'status' | 'phoneNumber'>
+  & Pick<Order, 'id' | 'address' | 'deliveryTime' | 'status' | 'phoneNumber' | 'revenue'>
 );
 
 export type OrderMinimumFragment = OrderMinimum_OrderSimple_Fragment | OrderMinimum_Order_Fragment;
@@ -2061,12 +2079,12 @@ export type OrderTotalFragment = (
 
 type OrderSimple_OrderSimple_Fragment = (
   { __typename?: 'OrderSimple' }
-  & Pick<OrderSimple, 'id' | 'address' | 'status' | 'intercomCode' | 'personsCount' | 'comment' | 'ourComment' | 'deliveryTime' | 'phoneNumber' | 'createdAt' | 'updatedAt'>
+  & Pick<OrderSimple, 'id' | 'address' | 'status' | 'intercomCode' | 'personsCount' | 'comment' | 'ourComment' | 'deliveryTime' | 'phoneNumber' | 'revenue' | 'createdAt' | 'updatedAt'>
 );
 
 type OrderSimple_Order_Fragment = (
   { __typename?: 'Order' }
-  & Pick<Order, 'id' | 'address' | 'status' | 'intercomCode' | 'personsCount' | 'comment' | 'ourComment' | 'deliveryTime' | 'phoneNumber' | 'createdAt' | 'updatedAt'>
+  & Pick<Order, 'id' | 'address' | 'status' | 'intercomCode' | 'personsCount' | 'comment' | 'ourComment' | 'deliveryTime' | 'phoneNumber' | 'revenue' | 'createdAt' | 'updatedAt'>
 );
 
 export type OrderSimpleFragment = OrderSimple_OrderSimple_Fragment | OrderSimple_Order_Fragment;
@@ -2699,6 +2717,8 @@ export type MutationResolvers<ContextType = any, ParentType extends ResolversPar
   deleteFeature?: Resolver<ResolversTypes['ID'], ParentType, ContextType, RequireFields<MutationDeleteFeatureArgs, 'id'>>;
   createOrder?: Resolver<ResolversTypes['OrderSimple'], ParentType, ContextType, RequireFields<MutationCreateOrderArgs, 'input'>>;
   updateOrder?: Resolver<ResolversTypes['OrderSimple'], ParentType, ContextType, RequireFields<MutationUpdateOrderArgs, 'id' | 'input'>>;
+  deleteOrder?: Resolver<ResolversTypes['ID'], ParentType, ContextType, RequireFields<MutationDeleteOrderArgs, 'id'>>;
+  updateOrdersRevenue?: Resolver<Maybe<ResolversTypes['Boolean']>, ParentType, ContextType>;
   createParam?: Resolver<ResolversTypes['Param'], ParentType, ContextType, RequireFields<MutationCreateParamArgs, 'input'>>;
   createProcurement?: Resolver<ResolversTypes['ProcurementSimple'], ParentType, ContextType, RequireFields<MutationCreateProcurementArgs, 'input'>>;
   updateProcurement?: Resolver<ResolversTypes['ProcurementSimple'], ParentType, ContextType, RequireFields<MutationUpdateProcurementArgs, 'id' | 'input'>>;
@@ -2936,7 +2956,7 @@ export type IOrderResolvers<ContextType = any, ParentType extends ResolversParen
   ourComment?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   deliveryTime?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
   phoneNumber?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  margin?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
+  revenue?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
 };
@@ -2947,11 +2967,11 @@ export type OrderSimpleResolvers<ContextType = any, ParentType extends Resolvers
   status?: Resolver<ResolversTypes['OrderStatus'], ParentType, ContextType>;
   intercomCode?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   personsCount?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  revenue?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   comment?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   ourComment?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   deliveryTime?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
   phoneNumber?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
-  margin?: Resolver<ResolversTypes['Float'], ParentType, ContextType>;
   createdAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   updatedAt?: Resolver<ResolversTypes['DateTime'], ParentType, ContextType>;
   __isTypeOf?: IsTypeOfResolverFn<ParentType>;
@@ -2963,6 +2983,7 @@ export type OrderResolvers<ContextType = any, ParentType extends ResolversParent
   status?: Resolver<ResolversTypes['OrderStatus'], ParentType, ContextType>;
   intercomCode?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   personsCount?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
+  revenue?: Resolver<Maybe<ResolversTypes['Int']>, ParentType, ContextType>;
   comment?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   ourComment?: Resolver<Maybe<ResolversTypes['String']>, ParentType, ContextType>;
   deliveryTime?: Resolver<Maybe<ResolversTypes['DateTime']>, ParentType, ContextType>;
@@ -3332,6 +3353,7 @@ export const OrderSimpleFragmentDoc = gql`
   ourComment
   deliveryTime
   phoneNumber
+  revenue
   createdAt
   updatedAt
 }
@@ -3392,6 +3414,7 @@ export const OrderItemPageFragmentDoc = gql`
   ...OrderSimple
   margin
   profit
+  revenue
   orderTotal {
     totalPrice
     totalPriceWithDiscount
@@ -3417,6 +3440,7 @@ export const OrderMinimumFragmentDoc = gql`
   deliveryTime
   status
   phoneNumber
+  revenue
 }
     `;
 export const OrdersListPageFragmentDoc = gql`
@@ -3425,6 +3449,7 @@ export const OrdersListPageFragmentDoc = gql`
   updatedAt
   profit
   margin
+  revenue
   orderTotal {
     totalPrice
     totalPriceWithDiscount
@@ -4223,6 +4248,36 @@ export function useCreateOrderMutation(baseOptions?: Apollo.MutationHookOptions<
 export type CreateOrderMutationHookResult = ReturnType<typeof useCreateOrderMutation>;
 export type CreateOrderMutationResult = Apollo.MutationResult<CreateOrderMutation>;
 export type CreateOrderMutationOptions = Apollo.BaseMutationOptions<CreateOrderMutation, CreateOrderMutationVariables>;
+export const DeleteOrderDocument = gql`
+    mutation deleteOrder($id: ID!) {
+  deleteOrder(id: $id)
+}
+    `;
+export type DeleteOrderMutationFn = Apollo.MutationFunction<DeleteOrderMutation, DeleteOrderMutationVariables>;
+
+/**
+ * __useDeleteOrderMutation__
+ *
+ * To run a mutation, you first call `useDeleteOrderMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteOrderMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteOrderMutation, { data, loading, error }] = useDeleteOrderMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteOrderMutation(baseOptions?: Apollo.MutationHookOptions<DeleteOrderMutation, DeleteOrderMutationVariables>) {
+        return Apollo.useMutation<DeleteOrderMutation, DeleteOrderMutationVariables>(DeleteOrderDocument, baseOptions);
+      }
+export type DeleteOrderMutationHookResult = ReturnType<typeof useDeleteOrderMutation>;
+export type DeleteOrderMutationResult = Apollo.MutationResult<DeleteOrderMutation>;
+export type DeleteOrderMutationOptions = Apollo.BaseMutationOptions<DeleteOrderMutation, DeleteOrderMutationVariables>;
 export const UpdateOrderDocument = gql`
     mutation updateOrder($id: ID!, $input: OrderInput!) {
   updateOrder(id: $id, input: $input) {

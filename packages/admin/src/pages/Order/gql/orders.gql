@@ -5,6 +5,7 @@ fragment OrdersListPage on Order {
   updatedAt
   profit
   margin
+  revenue
   orderTotal {
     totalPrice
     totalPriceWithDiscount

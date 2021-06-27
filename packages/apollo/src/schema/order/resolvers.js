@@ -35,7 +35,7 @@ const getTotalDiscount = ({
   return totalDiscount
 }
 
-const getTotalOrder = async ({
+const getTotalOrder = ({
   products,
   orderProductsById,
   discount,
@@ -109,7 +109,7 @@ const resolvers = {
         products,
         discountCode,
       },
-    }, { sequelize, models }) => sequelize.transaction(async (transaction) => {
+    }, { sequelize, models, loaders }) => sequelize.transaction(async (transaction) => {
       const discountByCode = await models.discount.findOne({
         where: {
           code: discountCode || '',
@@ -123,6 +123,15 @@ const resolvers = {
         },
       })
       const discountStatus = checkDiscount(discountByCode, discountByCode?.orders)
+      const productsWithData = await loaders.productWithPrice.loadMany(products.map(({ id }) => Number(id)))
+
+      const orderProductsById = keyBy(products, 'id')
+
+      const orderTotal = getTotalOrder({
+        products: productsWithData,
+        orderProductsById,
+        discount: discountByCode,
+      })
       const order = await models.order.create({
         address,
         intercomCode,
@@ -132,6 +141,7 @@ const resolvers = {
         status,
         deliveryTime: 10000,
         phoneNumber,
+        revenue: orderTotal.totalPriceWithDiscount,
       }, { transaction, individualHooks: true })
 
       if (!discountStatus.isDisabled) {
@@ -165,8 +175,17 @@ const resolvers = {
         phoneNumber,
         products,
       },
-    }, { models, sequelize }) =>
+    }, { models, sequelize, loaders }) =>
       sequelize.transaction(async (transaction) => {
+        const productsWithData = await loaders.productWithPrice.loadMany(products.map((product) => Number(product.id)))
+        const orderData = await models.order.findByPk(id)
+        const discounts = await resolvers.Order.discounts(orderData)
+        const orderProductsById = keyBy(products, 'id')
+        const orderTotal = getTotalOrder({
+          products: productsWithData,
+          orderProductsById,
+          discount: discounts[0],
+        })
         const updatedOrder = await models.order.update({
           address,
           intercomCode,
@@ -176,6 +195,7 @@ const resolvers = {
           status,
           deliveryTime: 50000,
           phoneNumber,
+          revenue: orderTotal.totalPriceWithDiscount,
         }, {
           where: { id }, returning: true, transaction, individualHooks: true,
         }).then(([, [order]]) => order)
@@ -192,6 +212,30 @@ const resolvers = {
 
         return updatedOrder
       }),
+    // TODO: удалить
+    updateOrdersRevenue: async (parent, args, context) => {
+      const orders = await resolvers.Query.orders(parent, args, context)
+
+      await context.sequelize.transaction(async (transaction) => {
+        const promises = orders.map(async (order) => {
+          const orderTotal = await resolvers.Order.orderTotal(order, args, context)
+          await context.models.order.update({
+            revenue: orderTotal.totalPriceWithDiscount,
+          }, {
+            where: { id: order.id }, returning: true, transaction, individualHooks: true,
+          })
+        })
+
+        await Promise.all(promises)
+      })
+
+      return true
+    },
+    deleteOrder: (parent, { id }, { models }) => models.order.destroy({
+      where: {
+        id,
+      },
+    }).then(() => id),
   },
 
   Order: {

@@ -44,6 +44,12 @@ module.exports = (sequelize, DataTypes) => {
         isInt: true,
       },
     },
+    revenue: {
+      type: DataTypes.INTEGER,
+      validate: {
+        isInt: true,
+      },
+    },
     comment: {
       type: DataTypes.STRING,
     },
