@@ -3,6 +3,7 @@ import { useMemo } from 'react'
 import { get } from 'lodash'
 import { IColumn, IColumnSorter } from '../types'
 import { IS_INVALID_ROW_COLUMN } from './useServiceDataWithRows'
+import { IUTableProps } from '..'
 
 const GRAY_COLOR = '#f5f5f5'
 
@@ -47,10 +48,26 @@ export const generateSorter = (field: any | any[], sorter?: IColumnSorter, inver
  * Преобразует колонки к формату, необходимому для оригинальной таблицы
  * @param columns IColumn[]
  */
-export default function useOriginalColumns(columns: IColumn<any>[]): ColumnsType<any> {
+export default function useOriginalColumns<RecordType extends Record<string, any> = any>(
+  columns: IColumn<any>[],
+  props: IUTableProps<RecordType>
+): ColumnsType<any> {
   const result = useMemo(() => {
     const cols = columns.map(
-      ({ title, field, key, render, responsive, disableSort, width, sorter, defaultSortOrder, fixed }) => ({
+      ({
+        title,
+        field,
+        key,
+        render,
+        responsive,
+        disableSort,
+        width,
+        sorter,
+        defaultSortOrder,
+        fixed,
+        filters,
+        onFilter,
+      }) => ({
         title,
         dataIndex: field,
         key: key || field,
@@ -60,6 +77,8 @@ export default function useOriginalColumns(columns: IColumn<any>[]): ColumnsType
         responsive,
         width,
         fixed,
+        filters: filters?.(props.dataSource || []),
+        onFilter,
       })
     ) as ColumnsType<any>
 

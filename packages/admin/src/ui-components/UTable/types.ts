@@ -26,4 +26,7 @@ export interface IColumn<RecordType> {
   fixed?: 'right' | 'left'
   /** Ширина колонки */
   width?: number
+  /** Список вариантов для фильтра */
+  filters?: (data: RecordType[]) => ColumnProps<RecordType>['filters']
+  onFilter?: ColumnProps<RecordType>['onFilter']
 }

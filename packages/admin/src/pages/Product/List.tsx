@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useMemo, useState, useCallback } from 'react'
 
 import {
   ProductsListPageFragment,
@@ -8,6 +8,7 @@ import {
   useSyncAllProductsCountMutation,
   useSetProductBarcodeMutation,
   useProductsXlsLazyQuery,
+  CompanyMinimumFragment,
 } from '@/gql/__generated__/types'
 import { IColumn } from '@/ui-components/UTable/types'
 import { Link } from 'umi'
@@ -22,14 +23,22 @@ import UPrice from '@/ui-components/UPrice'
 import downloadBase64 from '@/helpers/downloadBase64'
 import ExcelJS from 'exceljs'
 import UBlock from '@/ui-components/UBlock'
+import { debounce } from 'lodash'
 import BarcodePopover from './components/BarcodePopover'
+import Filters from './components/Filters'
 
 const columns = ({
   addToProcurement,
   setProductBarcode,
+  productCategoriesById,
+  productLinesById,
+  companiesById,
 }: {
   addToProcurement: (productId: string) => void
   setProductBarcode: ReturnType<typeof useSetProductBarcodeMutation>[0]
+  productCategoriesById: { [id: string]: ProductsListPageFragment['productCategory'] }
+  companiesById: { [id: string]: CompanyMinimumFragment }
+  productLinesById: { [id: string]: ProductsListPageFragment['productLine'] }
 }): ListColumnsType => ({ deleteItem }): IColumn<ProductsListPageFragment>[] => [
   {
     title: 'ID',
@@ -39,6 +48,15 @@ const columns = ({
   {
     title: 'Категория',
     field: 'productCategory',
+    filters: () =>
+      Object.keys(productCategoriesById).map((id) => ({
+        value: id,
+        text: productCategoriesById[id]?.name,
+      })),
+    onFilter: (filterValue, product) => {
+      const productCategory = product.productCategory || product.productLine?.productCategory
+      return productCategory?.id === filterValue
+    },
     render: (specificProductCategory, { productLine }) => {
       const productCategory = specificProductCategory || productLine?.productCategory
 
@@ -78,6 +96,12 @@ const columns = ({
     title: 'Компания',
     width: 150,
     field: ['productLine', 'company'],
+    filters: () =>
+      Object.keys(companiesById).map((id) => ({
+        value: id,
+        text: companiesById[id]?.name,
+      })),
+    onFilter: (filterValue, product) => product.productLine?.company?.id === filterValue,
     render: (company) =>
       company?.name ? (
         <>
@@ -94,6 +118,12 @@ const columns = ({
     title: 'Линейка продуктов',
     width: 150,
     field: ['productLine', 'name'],
+    filters: () =>
+      Object.keys(productLinesById).map((id) => ({
+        value: id,
+        text: productLinesById[id]?.name,
+      })),
+    onFilter: (filterValue, product) => product.productLine?.id === filterValue,
     render: (name, { productLineId }) =>
       name ? (
         <>
@@ -211,12 +241,32 @@ const columns = ({
 interface IProductListPageProps {}
 
 const ProductListPage: React.FunctionComponent<IProductListPageProps> = () => {
+  const [products, setProducts] = useState<ProductsListPageFragment[]>([])
+  const [filters, setFilters] = useState({
+    productName: '',
+  })
+  const handleFiltersChange = useCallback(
+    debounce((_filters: typeof filters) => setFilters(_filters), 500),
+    [debounce]
+  )
+  const [filteredIds, setFilteredIds] = useState<string[]>([])
   const [fetchProductsXls] = useProductsXlsLazyQuery({
     onCompleted: async (response) => {
       const workbook = new ExcelJS.Workbook()
       const worksheet = workbook.addWorksheet('Продукты')
 
-      worksheet.addRow(['Код', 'Наименование', 'Группа', 'Цена', 'В продаже', 'Остаток', 'Штрих-код', 'Ед.изм.', 'НДС'])
+      worksheet.addRow([
+        'Код',
+        'Наименование',
+        'Группа',
+        'Цена',
+        'Себестоимость',
+        'В продаже',
+        'Остаток',
+        'Штрих-код',
+        'Ед.изм.',
+        'НДС',
+      ])
 
       response.products.forEach((product) => {
         const group = `${product.productLine?.company?.name || ''} ${product.productLine?.name || ''}`.trim()
@@ -237,6 +287,7 @@ const ProductListPage: React.FunctionComponent<IProductListPageProps> = () => {
           name,
           group,
           product.price,
+          product.primeCost,
           'ИСТИНА',
           product.count,
           product.barcode,
@@ -284,6 +335,63 @@ const ProductListPage: React.FunctionComponent<IProductListPageProps> = () => {
   const handleImportClick = () => {
     fetchProductsXls()
   }
+  const productCategoriesById = useMemo(
+    () =>
+      products.reduce((base, product) => {
+        const productCategory = product.productCategory || product.productLine?.productCategory
+        return productCategory
+          ? {
+              ...base,
+              [productCategory.id]: productCategory,
+            }
+          : base
+      }, {} as { [id: string]: ProductsListPageFragment['productCategory'] }),
+    [products]
+  )
+  const companiesById = useMemo(
+    () =>
+      products.reduce(
+        (base, product) =>
+          product.productLine?.company?.id
+            ? {
+                ...base,
+                [product.productLine.company.id]: product.productLine.company,
+              }
+            : base,
+        {} as { [id: string]: CompanyMinimumFragment }
+      ),
+    [products]
+  )
+  const productLinesById = useMemo(
+    () =>
+      products.reduce(
+        (base, product) =>
+          product.productLine
+            ? {
+                ...base,
+                [product.productLine.id]: product.productLine,
+              }
+            : base,
+        {} as { [id: string]: ProductsListPageFragment['productLine'] }
+      ),
+    [products]
+  )
+  useEffect(() => {
+    setFilteredIds(
+      products.reduce<string[]>((base, product) => {
+        const filterName = filters.productName.toLocaleLowerCase()
+        const name = `${product.productLine?.name || ''} ${product.productLine?.company?.name || ''} ${
+          product.name
+        }`.toLocaleLowerCase()
+
+        if (!name.includes(filterName)) {
+          return base
+        }
+
+        return [...base, product.id]
+      }, [])
+    )
+  }, [filters, products])
 
   return (
     <>
@@ -303,10 +411,19 @@ const ProductListPage: React.FunctionComponent<IProductListPageProps> = () => {
         columns={columns({
           addToProcurement: switchAddToProcurementModalVisible,
           setProductBarcode,
+          productCategoriesById,
+          companiesById,
+          productLinesById,
         })}
         listQuery={{
           hook: useProductsListPageQuery,
           queryName: 'products',
+          hookOptions: {
+            onCompleted: (response) => {
+              const { products: responseList } = response
+              setProducts(responseList)
+            },
+          },
         }}
         loadingTip="Загрузка продуктов"
         title="Список продуктов"
@@ -322,6 +439,8 @@ const ProductListPage: React.FunctionComponent<IProductListPageProps> = () => {
             productLine: undefined,
           },
         }}
+        filtersBar={<Filters onFiltersChange={handleFiltersChange} />}
+        filteredIds={filteredIds}
       />
 
       <UWAddProductToProcurementModal

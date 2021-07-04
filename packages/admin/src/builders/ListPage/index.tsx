@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useMemo } from 'react'
 import UTable, { IUTableProps } from '@/ui-components/UTable'
 
 import { IColumn } from '@/ui-components/UTable/types'
@@ -9,6 +9,7 @@ import { QueryHookType, MutationHookType } from '@/types/apollo'
 import { QueryHookOptions, DocumentNode } from '@apollo/client'
 import useDeleteListItemMutation from '@/hooks/gql/useDeleteListItemMutation'
 import useStableQuery from '@/hooks/gql/useStableQuery'
+import { Card } from 'antd'
 
 export type DeleteItemType = (id: string) => void
 
@@ -19,7 +20,12 @@ interface IListPageBuilderProps<RecordType> {
   listQuery: {
     hook: QueryHookType<any, any>
     queryName: string
-    hookOptions?: QueryHookOptions<any, any>
+    hookOptions?: QueryHookOptions<
+      {
+        [queryName: string]: RecordType[]
+      },
+      any
+    >
   }
   deleteItemMutation?: {
     hook: MutationHookType<any, any>
@@ -36,6 +42,8 @@ interface IListPageBuilderProps<RecordType> {
   }
   extraButtons?: ReactElement[]
   tableProps?: Partial<IUTableProps<RecordType>>
+  filtersBar?: ReactElement
+  filteredIds?: string[]
 }
 
 function ListPageBuilder<RecordType>({
@@ -47,6 +55,8 @@ function ListPageBuilder<RecordType>({
   deleteItemMutation = {} as any,
   tableProps,
   extraButtons,
+  filtersBar,
+  filteredIds,
 }: IListPageBuilderProps<RecordType>) {
   const [query, queryComponent, originalQuery] = useStableQuery(listQuery.hook, {
     ...listQuery.hookOptions,
@@ -60,6 +70,19 @@ function ListPageBuilder<RecordType>({
     deleteItemMutation.queryName,
     deleteItemMutation.deleteName,
     deleteItemMutation.successMessage
+  )
+  const dataSource = useMemo(
+    () =>
+      (query?.data[listQuery.queryName] || []).filter((item) => {
+        if (filteredIds) {
+          if ('id' in item) {
+            return filteredIds.includes((item as any).id)
+          }
+        }
+
+        return true
+      }),
+    [query, filteredIds]
   )
 
   React.useEffect(() => {
@@ -82,11 +105,8 @@ function ListPageBuilder<RecordType>({
         </>
       }
     >
-      <UTable<any>
-        {...tableProps}
-        columns={columns({ deleteItem: handleDeleteItem })}
-        dataSource={query.data[listQuery.queryName] || []}
-      />
+      {filtersBar && <Card>{filtersBar}</Card>}
+      <UTable<any> {...tableProps} columns={columns({ deleteItem: handleDeleteItem })} dataSource={dataSource} />
     </UPageContainer>
   )
 }

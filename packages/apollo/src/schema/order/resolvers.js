@@ -62,6 +62,7 @@ const resolvers = {
   Query: {
     orders: async (parent, args, { models }) => models.order.findAll({
       include: { model: models.orderProduct, include: models.product },
+      order: [['id', 'DESC']],
     }),
     order: async (parent, { id }, { models }) => models.order.findByPk(id, {
       include: { model: models.orderProduct, include: models.product },

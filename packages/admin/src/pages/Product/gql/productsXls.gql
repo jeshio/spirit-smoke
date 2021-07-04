@@ -10,6 +10,7 @@ fragment productsXlsFragment on Product {
   slug
   barcode
   price
+  primeCost
   count
   weight
   productCategory {

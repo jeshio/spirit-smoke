@@ -1747,7 +1747,7 @@ export type ProductsListPageQuery = (
 
 export type ProductsXlsFragmentFragment = (
   { __typename?: 'Product' }
-  & Pick<Product, 'slug' | 'barcode' | 'price' | 'count' | 'weight'>
+  & Pick<Product, 'slug' | 'barcode' | 'price' | 'primeCost' | 'count' | 'weight'>
   & { productCategory?: Maybe<(
     { __typename?: 'ProductCategory' }
     & ProductCategoryMinimum_ProductCategory_Fragment
@@ -3622,6 +3622,7 @@ export const ProductsXlsFragmentFragmentDoc = gql`
   slug
   barcode
   price
+  primeCost
   count
   weight
   productCategory {

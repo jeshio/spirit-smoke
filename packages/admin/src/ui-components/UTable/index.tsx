@@ -12,7 +12,7 @@ export interface IUTableProps<RecordType> extends TableProps<RecordType> {
 }
 
 function UTable<RecordType extends Record<string, any> = any>(props: IUTableProps<RecordType>): JSX.Element {
-  const columns = useOriginalColumns(props.columns)
+  const columns = useOriginalColumns(props.columns, props)
   const dataSource = useServiceDataWithRows(props.dataSource || [], props.invalidRowCondition)
   return (
     <Table<RecordType>

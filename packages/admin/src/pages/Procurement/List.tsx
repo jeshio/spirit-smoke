@@ -47,6 +47,11 @@ const columns: ListColumnsType = (): IColumn<ProcurementsListPageFragment>[] => 
     width: 50,
   },
   {
+    title: 'Имя',
+    field: 'name',
+    render: (name, { id }) => <Link to={`/procurements/${id}`}>{name}</Link>,
+  },
+  {
     field: 'deliveryCost',
     title: 'Стоимость доставки',
     render: (price) => <UPrice>{price}</UPrice>,
