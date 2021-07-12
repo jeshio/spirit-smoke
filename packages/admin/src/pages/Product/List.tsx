@@ -258,6 +258,7 @@ const ProductListPage: React.FunctionComponent<IProductListPageProps> = () => {
       worksheet.addRow([
         'Код',
         'Наименование',
+        'Наименование для печати',
         'Группа',
         'Цена',
         'Себестоимость',
@@ -271,14 +272,17 @@ const ProductListPage: React.FunctionComponent<IProductListPageProps> = () => {
       ])
 
       response.products.forEach((product) => {
-        const group = `${product.productLine?.company?.name || ''} ${product.productLine?.name || ''}`.trim()
+        const productLineName = (product.productLine?.name || '').replace(/ \d+ грамм/, '')
+        const group = `${product.productLine?.company?.name || ''} ${productLineName}`.trim()
 
         const { name } = product
+
+        const pinterName = `${group ? `${group}, ` : ''}${name} ${product.weight || ''}`.trim()
 
         return worksheet.addRow([
           product.id,
           name,
-          group,
+          pinterName,
           product.price,
           product.primeCost,
           product.productLine?.name || '',
@@ -287,7 +291,7 @@ const ProductListPage: React.FunctionComponent<IProductListPageProps> = () => {
           product.count,
           product.barcode,
           'шт',
-          'VAT_18',
+          'VAT_20',
         ])
       })
 
