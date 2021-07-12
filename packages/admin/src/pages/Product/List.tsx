@@ -279,9 +279,7 @@ const ProductListPage: React.FunctionComponent<IProductListPageProps> = () => {
 
         const { name } = product
 
-        const pinterName = `${companyName ? `${companyName}, ` : ''}${name} ${
-          product.weight ? `${product.weight} гр.` : ''
-        }`.trim()
+        const pinterName = `${companyName ? `${companyName}, ` : ''}${name}`.trim()
 
         return worksheet.addRow([
           product.id,
