@@ -259,6 +259,7 @@ const ProductListPage: React.FunctionComponent<IProductListPageProps> = () => {
         'Код',
         'Наименование',
         'Наименование для печати',
+        'Компания',
         'Группа',
         'Линейка',
         'Цена',
@@ -273,16 +274,20 @@ const ProductListPage: React.FunctionComponent<IProductListPageProps> = () => {
 
       response.products.forEach((product) => {
         const productLineName = (product.productLine?.name || '').replace(/ \d+ грамм/, '')
-        const group = `${product.productLine?.company?.name || ''} ${productLineName}`.trim()
+        const companyName = product.productLine?.company?.name || ''
+        const group = `${companyName} ${productLineName}`.trim()
 
         const { name } = product
 
-        const pinterName = `${group ? `${group}, ` : ''}${name} ${product.weight || ''}`.trim()
+        const pinterName = `${companyName ? `${companyName}, ` : ''}${name} ${
+          product.weight ? `${product.weight} гр.` : ''
+        }`.trim()
 
         return worksheet.addRow([
           product.id,
           name,
           pinterName,
+          companyName,
           group,
           product.productLine?.name || '',
           product.price,
