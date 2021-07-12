@@ -272,17 +272,8 @@ const ProductListPage: React.FunctionComponent<IProductListPageProps> = () => {
 
       response.products.forEach((product) => {
         const group = `${product.productLine?.company?.name || ''} ${product.productLine?.name || ''}`.trim()
-        let name = group
 
-        if (name) {
-          name += ', '
-        }
-
-        name += product.name
-
-        if (product.weight) {
-          name += `, ${product.weight} гр`
-        }
+        const { name } = product
 
         return worksheet.addRow([
           product.id,
